@@ -836,7 +836,74 @@ std::string test_cohort(Cohort &cohort,const PairedPoolingRun &run,const fs::pat
   }
   return report.str()+"]}";
 }
+void validate_native_geometry(const NativeCurveRun &recipe) {
+  const auto &shape=recipe.card.shape;
+  require(shape.channel_count>0 && shape.history_length>0 && shape.input_width>0 &&
+      shape.dtype==torch::kFloat64 && shape.device.is_cpu() &&
+      shape.channel_count<=std::numeric_limits<int64_t>::max()/shape.history_length &&
+      shape.channel_count*shape.history_length<=std::numeric_limits<int64_t>::max()/shape.input_width &&
+      recipe.export_width>0 && recipe.card.threads>0,"native measurement geometry/precision/thread contract");
+}
+void validate_native_batch(const Batch &batch,const NativeCurveRun &recipe) {
+  const auto &shape=recipe.card.shape;
+  require(batch.data.defined() && batch.data.device().is_cpu() &&
+      batch.data.scalar_type()==torch::kFloat64 && batch.data.dim()==4 && batch.data.size(0)>0 &&
+      batch.data.size(1)==shape.channel_count && batch.data.size(2)==shape.history_length &&
+      batch.data.size(3)==shape.input_width && batch.feature_mask.defined() &&
+      batch.feature_mask.device().is_cpu() && batch.feature_mask.scalar_type()==torch::kBool &&
+      batch.feature_mask.sizes()==batch.data.sizes() &&
+      torch::isfinite(batch.data.masked_select(batch.feature_mask)).all().item<bool>(),
+      "native measurement requires configured CPU float64 observations and bool masks");
+}
+void validate_native_split(const ControlledDataset &split,const NativeCurveRun &recipe) {
+  validate_native_geometry(recipe);validate_native_batch(split.observed,recipe);
+  const auto rows=split.observed.data.size(0);
+  require(rows%2==0,"native development split must contain complete source pairs");
+  std::set<std::string> sources;validate_split(split,recipe,rows/2,sources);
+}
+void validate_new_archive(const std::string &destination) {
+  const fs::path path(destination);
+  const auto parent=path.has_parent_path()?path.parent_path():fs::path(".");
+  require(!path.empty() && !path.filename().empty() && !fs::exists(path) && fs::is_directory(parent),
+      "native measurement archive requires a new destination in an existing directory");
+}
 } // namespace
+
+ControlledDataset load_native_development_observations(const std::string &path) {
+  const MeasurementIsolation isolation;
+  require(!path.empty() && fs::is_regular_file(path),"native development observation archive missing");
+  auto split=load_observations(path);
+  require(split.observed.data.defined() && split.observed.data.dim()==4,
+      "native development observations must be BCHF");
+  NativeCurveRun recipe;
+  recipe.card.shape={split.observed.data.size(1),split.observed.data.size(2),
+      split.observed.data.size(3),torch::kFloat64,torch::kCPU};
+  validate_native_split(split,recipe);return split;
+}
+FeatureSurface extract_native_global(const CurveSnapshot &snapshot,const Batch &batch,
+                                     const NativeCurveRun &recipe) {
+  validate_native_geometry(recipe);validate_native_batch(batch,recipe);
+  const ThreadsIsolation threads;const MeasurementIsolation isolation;
+  torch::set_num_threads(recipe.card.threads);return global_surface(snapshot,batch,recipe);
+}
+void save_native_feature_archive(const std::string &path,const FeatureSurface &surface,
+                                 const ControlledDataset &split,const NativeCurveRun &recipe) {
+  validate_new_archive(path);validate_native_split(split,recipe);validate_features(surface);
+  require(surface.values.sizes()==torch::IntArrayRef({split.observed.data.size(0),recipe.export_width}) &&
+      !surface.provenance.empty() &&
+      !surface.valid.logical_and(split.observed.feature_mask.flatten(1).any(1).logical_not()).any().item<bool>(),
+      "native feature archive width/row lineage/support mismatch");
+  const MeasurementIsolation isolation;save_surface(path,surface,split);
+}
+std::string write_native_patch_reconstruction(const std::string &path,const ControlledDataset &split,
+                                             const CurveSnapshot &snapshot,const NativeCurveRun &recipe) {
+  validate_new_archive(path);validate_native_split(split,recipe);
+  require(recipe.patch_length>0 && recipe.card.shape.history_length%recipe.patch_length==0 &&
+      recipe.card.shape.history_length/recipe.patch_length>=3 && std::isfinite(recipe.huber_delta) &&
+      recipe.huber_delta>0 && bool(snapshot.reconstruct),"native patch reconstruction geometry/Huber/callback contract");
+  const ThreadsIsolation threads;const MeasurementIsolation isolation;
+  torch::set_num_threads(recipe.card.threads);return reconstruction(path,split,snapshot,recipe);
+}
 
 void run_paired_pooling(const PairedPoolingRun &run,const NamedCurveFactory &candidate,const RetainedCurveSnapshotLoader &load_reference,const PoolingInitializationAudit &audit_initialization) {
   validate_run(run,candidate,load_reference,audit_initialization);const ThreadsIsolation threads;const MeasurementIsolation ambient;const auto &r=run.recipe;torch::set_num_threads(r.card.threads);

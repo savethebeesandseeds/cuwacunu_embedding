@@ -224,6 +224,54 @@ ev::PoolingInitializationAudit initialization(bool accept=true) {
     return std::map<std::string,std::string>{{"common_parameters_exact",accept?"true":"false"},{"scaler_exact","true"},{"training_dataset_exact","true"},{"counter_streams_exact","true"}};
   };
 }
+void wrappers(const Fixture &input) {
+  const auto &cohort=input.run.cohorts.front();const fs::path output(input.run.recipe.output_directory);
+  const auto directory=output/("seed-"+std::to_string(cohort.master_seed)+"-lag_sign");
+  auto snapshot=input.reference_trainers->at(cohort.master_seed).snapshot(cohort.reference_checkpoint);
+  const auto original_threads=at::get_num_threads();torch::set_num_threads(2);torch::manual_seed(917331);
+  const auto generator=at::globalContext().defaultGenerator(at::Device(at::kCPU));const auto rng=generator.get_state().clone();
+  const auto split=ev::load_native_development_observations(cohort.validation_observations);
+  test::check(torch::equal(split.observed.data,tensor(cohort.validation_observations,"observed")) &&
+      torch::equal(split.observed.feature_mask,tensor(cohort.validation_observations,"feature_mask")) &&
+      torch::equal(split.clean.data,torch::where(split.observed.feature_mask,split.observed.data,torch::zeros_like(split.observed.data))) &&
+      torch::equal(split.clean.feature_mask,split.observed.feature_mask),"development loader changed observations or its legal clean placeholder");
+  const auto before_data=split.observed.data.clone(),before_mask=split.observed.feature_mask.clone();
+  const auto surface=ev::extract_native_global(snapshot,split.observed,input.run.recipe);
+  test::check(torch::equal(surface.values,tensor(cohort.reference_validation_features,"features")) &&
+      torch::equal(surface.valid,tensor(cohort.reference_validation_features,"valid")),"native wrapper changed the exact retained export");
+  const auto features=directory/"wrapper-validation-features.pt";
+  ev::save_native_feature_archive(features.string(),surface,split,input.run.recipe);
+  for(const auto &key:{"features","valid","provenance","labels_scoring_only","source_ids_json"})
+    test::check(torch::equal(tensor(features,key),tensor(cohort.reference_validation_features,key)),"native wrapper archive changed feature schema or row association");
+  const auto archive=directory/"wrapper-validation-reconstruction.pt";
+  const auto summary=ev::write_native_patch_reconstruction(archive.string(),split,snapshot,input.run.recipe);
+  auto expected=read(directory/"reference-validation-reconstruction.json");
+  const std::string previous="reference-validation-reconstruction.pt";
+  const auto position=expected.find(previous);test::check(position!=std::string::npos,"existing reconstruction artifact field missing");
+  expected.replace(position,previous.size(),archive.filename().string());
+  test::check(summary==expected,"public reconstruction wrapper changed fixed-query summary reductions");
+  for(const auto &key:{"standardized_prediction","standardized_target","target_mask","requested_observed_target_mask",
+      "visible_mask","trial_channel_eligible","channel_target_counts","channel_valid","channel_standardized_mae",
+      "channel_standardized_huber","example_valid","example_standardized_mae","example_standardized_huber","source_ids_json"})
+    test::check(torch::equal(tensor(archive,key),tensor(directory/"reference-validation-reconstruction.pt",key)),"public reconstruction wrapper changed fixed-query arrays");
+  test::check(torch::equal(split.observed.data,before_data) && torch::equal(split.observed.feature_mask,before_mask),"native wrapper callback mutated input observations");
+  test::check(torch::equal(generator.get_state(),rng) && at::get_num_threads()==2,"native wrappers changed ambient RNG/thread state");
+  const auto feature_bytes=read(features),reconstruction_bytes=read(archive);
+  rejects([&]{ev::save_native_feature_archive(features.string(),surface,split,input.run.recipe);},"native feature writer accepted an existing destination");
+  rejects([&]{ev::write_native_patch_reconstruction(archive.string(),split,snapshot,input.run.recipe);},"native reconstruction writer accepted an existing destination");
+  test::check(read(features)==feature_bytes && read(archive)==reconstruction_bytes,"native wrapper overwrote an existing archive");
+  auto wrong_geometry=input.run.recipe;wrong_geometry.patch_length=3;
+  rejects([&]{ev::write_native_patch_reconstruction((directory/"invalid-geometry.pt").string(),split,snapshot,wrong_geometry);},"native reconstruction accepted nondivisible patch geometry");
+  auto broken_lineage=split;broken_lineage.source_ids.pop_back();
+  rejects([&]{ev::save_native_feature_archive((directory/"invalid-lineage.pt").string(),surface,broken_lineage,input.run.recipe);},"native archive accepted missing row lineage");
+  auto missing=split;missing.observed.feature_mask=torch::zeros_like(split.observed.feature_mask);
+  rejects([&]{ev::save_native_feature_archive((directory/"invalid-support.pt").string(),surface,missing,input.run.recipe);},"native archive accepted allmissing valid features");
+  auto wrong_width=surface;wrong_width.values=surface.values.slice(1,0,1);
+  rejects([&]{ev::save_native_feature_archive((directory/"invalid-width.pt").string(),wrong_width,split,input.run.recipe);},"native archive accepted an undeclared width");
+  test::check(!fs::exists(directory/"invalid-geometry.pt") && !fs::exists(directory/"invalid-lineage.pt") &&
+      !fs::exists(directory/"invalid-support.pt") && !fs::exists(directory/"invalid-width.pt"),"invalid native wrapper input produced an archive");
+  torch::set_num_threads(original_threads);
+}
 void ordinary(const fs::path &temporary) {
   auto input=fixture(temporary/"ordinary");
   std::map<std::string,std::string> originals;
@@ -268,6 +316,7 @@ void ordinary(const fs::path &temporary) {
       test::check(read(stress/"report.json").find("random_dropout_030")!=std::string::npos,"primary additional30% deletion missing");
     }
   }
+  wrappers(input);
   rejects([&]{ev::run_paired_pooling(input.run,factory("candidate_dummy",input.candidate_recipe,Mode::ordinary,input.candidate_audits),loader(input),initialization());},"existing paired output overwritten");
 }
 void failures(const fs::path &temporary) {

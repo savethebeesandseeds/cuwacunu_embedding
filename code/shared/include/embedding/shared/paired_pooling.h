@@ -43,6 +43,25 @@ using PoolingInitializationAudit = std::function<std::map<std::string,std::strin
     const std::string &candidate_point0,const RetainedPoolingCohort &reference,
     const ProviderFitInput &metadata)>;
 
+// Small archive/measurement helpers for explicitly bound TRAIN/VALIDATION
+// cohorts. The caller owns role binding, source provenance and exclusive output
+// directory reservation. These helpers do not discover files, generate data,
+// fit preprocessing/readouts, or expose a TEST protocol. Loaded clean is only a
+// zero-masked legal-observation schema placeholder, never hidden ground truth.
+ControlledDataset load_native_development_observations(const std::string &path);
+FeatureSurface extract_native_global(const CurveSnapshot &snapshot,const Batch &batch,
+                                     const NativeCurveRun &recipe);
+void save_native_feature_archive(const std::string &new_archive_path,
+                                 const FeatureSurface &surface,const ControlledDataset &split,
+                                 const NativeCurveRun &recipe);
+// Writes the unchanged fixed original-patch query arrays and hierarchical
+// reductions, returning their existing JSON summary. Destinations must be new;
+// callback inputs are independent legal clones and RNG/thread state is restored.
+std::string write_native_patch_reconstruction(const std::string &new_archive_path,
+                                             const ControlledDataset &split,
+                                             const CurveSnapshot &snapshot,
+                                             const NativeCurveRun &recipe);
+
 // Fixed-budget label-free candidate only. Retained reference/control readouts
 // load as tensors without any fitting constructor. Candidate point0/positive
 // heads fit TRAIN only using the same paired recipe. All validation and exact
