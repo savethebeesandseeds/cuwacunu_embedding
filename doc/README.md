@@ -13,6 +13,15 @@ minimum `feature_harness` controls and encoder registration. Its controlled
 protocol v2 produces development evidence; historical baseline reports preserve
 their original protocol and measurements.
 
+Use the [results reporting standard](RESULTS_REPORTING_STANDARD.md) for compact
+quality/training tables and plain explanations. The
+[embedding version registry](EMBEDDING_VERSIONS.md) gives stable tags and short
+descriptions. **RPB-v4 — Learned global bottleneck** is the active experimental
+version; its [next advance plan](../code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md)
+uses native encoder outputs and standalone raw/PCA baselines. The
+[completed native baseline comparison](../code/encoders/raw_patch_bottleneck_mae/NATIVE_BASELINE_COMPARISON.md)
+fills the missing controls without retraining the encoder or opening TEST inputs.
+
 `representation-encoder.pdf` is the one-page outreach brief. Editable sources are
 `representation-encoder.tex` and `references.bib`.
 

@@ -2,6 +2,17 @@
 
 Date: 2026-10-06
 
+**Active experimental version: RPB-v4 — Learned global bottleneck.** Use
+[stable version tags](../../../doc/EMBEDDING_VERSIONS.md) and the
+[results reporting standard](../../../doc/RESULTS_REPORTING_STANDARD.md).
+The [next advance plan](NEXT_ADVANCE.md) focuses on native32 outputs and fixed
+heads, with PCA only on raw data. The new shared archive evaluator completed
+[phase-1 controls](NATIVE_BASELINE_COMPARISON.md) without encoder retraining or
+TEST access. The native-only training/selection runner is still needed:
+historical global/curve drivers retain their compressed selection protocols.
+The sections below preserve the validation chronology; older designs are
+archived references rather than routine retraining candidates.
+
 The first independent-channel candidate is implemented alongside the working
 MTF-JEPA-MAE-VICReg baseline. This records engineering checks and bounded
 development comparisons; it is not a promotion decision under the

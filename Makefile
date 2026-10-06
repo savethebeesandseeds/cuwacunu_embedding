@@ -369,3 +369,32 @@ $(RPB_TEST_DIR)/legacy_checkpoint_parity_test: $(RPB_TEST_DIR)/legacy_checkpoint
 
 test-rpb-legacy-checkpoint: $(RPB_TEST_DIR)/legacy_checkpoint_parity_test
 	$(RPB_TEST_DIR)/legacy_checkpoint_parity_test
+
+# Native archive controls use shared fitting only; no encoder is linked.
+ARCHIVE_READOUT_BIN := $(BUILD_DIR)/embedding_archive_readout
+ARCHIVE_READOUT_OBJECT := $(OBJECT_DIR)/shared/archive_readout.o
+ARCHIVE_READOUT_PROVENANCE_INPUTS := $(sort $(wildcard $(CODE_ROOT)/shared/include/embedding/shared/*.h $(CODE_ROOT)/shared/src/*.cpp) $(EVALUATION_ROOT)/src/archive_readout_main.cpp $(EVALUATION_ROOT)/cards/archive_readout_v1.md Makefile dependencies.lock)
+ARCHIVE_READOUT_SOURCE_ID := $(shell sha256sum $(ARCHIVE_READOUT_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
+ARCHIVE_READOUT_CPPFLAGS := $(COMMON_CPPFLAGS) -DEVALUATION_SOURCE_ID=\"$(ARCHIVE_READOUT_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
+.PHONY: archive-readout test-archive-readout evaluate-archive
+archive-readout: $(ARCHIVE_READOUT_BIN)
+
+$(EVALUATION_OBJECT_DIR)/archive_readout_main.o: $(EVALUATION_ROOT)/src/archive_readout_main.cpp $(ARCHIVE_READOUT_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(ARCHIVE_READOUT_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(ARCHIVE_READOUT_BIN): $(EVALUATION_OBJECT_DIR)/archive_readout_main.o $(ARCHIVE_READOUT_OBJECT) $(HARNESS_OBJECT) $(SHARED_OBJECTS)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(SHARED_TEST_DIR)/archive_readout_test.o: $(CODE_ROOT)/shared/tests/archive_readout_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(COMMON_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(SHARED_TEST_DIR)/archive_readout_test: $(SHARED_TEST_DIR)/archive_readout_test.o $(ARCHIVE_READOUT_OBJECT) $(HARNESS_OBJECT) $(SHARED_OBJECTS)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-archive-readout: $(SHARED_TEST_DIR)/archive_readout_test
+	$(SHARED_TEST_DIR)/archive_readout_test
+
+evaluate-archive: $(ARCHIVE_READOUT_BIN)
+	ARCHIVE_READOUT_BIN="$(abspath $(ARCHIVE_READOUT_BIN))" EMBEDDING_RUN_ROOT="$(RUN_ROOT)" bash $(CODE_ROOT)/scripts/evaluate-archive.sh $(ARCHIVE_ARGS)

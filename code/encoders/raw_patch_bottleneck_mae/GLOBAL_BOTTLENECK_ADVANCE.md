@@ -1,5 +1,14 @@
 # RPB MAE compression and global bottleneck experiments
 
+This is the completed historical experiment record. Its compressed tiers and
+selection rules remain part of that evidence. **RPB-v4 — Learned global
+bottleneck** is the active experimental version; future primary comparisons use
+its native32 output without PCA afterward. See the
+[version registry](../../../doc/EMBEDDING_VERSIONS.md),
+[reporting standard](../../../doc/RESULTS_REPORTING_STANDARD.md), and
+[next advance plan](NEXT_ADVANCE.md). Historical `current_mixer`, `mean_global`,
+and `learned_global` names map to RPB-v2, RPB-v3-mean, and RPB-v4 respectively.
+
 These development experiments target weak compact and global lag readouts after
 the [GPU learning curve](LEARNING_CURVE.md). Native channel vectors retain useful
 nonlinear lag access, while longer reconstruction training does not restore the
@@ -289,7 +298,7 @@ pipelines. It is additional validation diagnosis, not fresh confirmation.
 The [paired diagnosis report](../../../output/runs/rpb-implementation/encoder-advance-b88ddd4b38/matched-readout-validation/report.json)
 retains native/PCA/random results and all seeds; no favorable repetition is chosen.
 
-### Decision for this round
+### Decision after the recorded experiments
 
 Keep learned semantic global pooling as an opt-in candidate through
 [learned_global.conf](config/learned_global.conf), with mode 0 still the default.
@@ -304,3 +313,16 @@ not establish an absence of learned information. A new objective would need a
 separate hypothesis and frozen comparison. The immediate research target is
 compact linear accessibility and independent confirmation on consumer data.
 Every architecture remains reported; these test scores do not promote a default.
+
+### Active research direction
+
+For the 128-pair, fixed-512-update timing cohort, native32 linear/neural means are
+69.27% / 62.50% for RPB-v2 and 94.79% / 100% for RPB-v4. These use the encoder
+outputs directly. The former's reconstruction uses 96 contextual signal values;
+the latter's uses the exact 32-number global embedding. Reconstruction errors
+therefore describe different bottleneck capacities, while native32 head inputs
+have equal size.
+
+Next compare RPB-v4 to raw data and standalone raw PCA32 with fixed heads, then
+run a fresh native-only protocol. Keep RPB-v2 as a frozen historical reference
+and compatibility input rather than retraining it in every development cycle.

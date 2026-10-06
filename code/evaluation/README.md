@@ -6,6 +6,18 @@ the evidence and acceptance rules; the
 [implementation review](../../doc/EVALUATION_IMPLEMENTATION_REVIEW.md) records
 which requirements are implemented and which remain pending.
 
+New result summaries follow the
+[reporting standard](../../doc/RESULTS_REPORTING_STANDARD.md) and
+[version registry](../../doc/EMBEDDING_VERSIONS.md). Primary encoder rows use
+native exports without PCA afterward; the standalone raw-data row is labelled
+"PCA only — no encoder". RPB-v4 is the active experimental recipe.
+The [next advance plan](../encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md)
+uses the new validation-only [archive protocol](cards/archive_readout_v1.md);
+the native-only training/selection curve remains pending. Historical drivers
+still compute their compressed tiers, and the global driver selects using
+PCA12. A native-looking table does not change that selection rule. Older cards
+and results remain governed by their original declared versions.
+
 ## Ownership
 
 | Location | Responsibility |
@@ -171,6 +183,44 @@ The wrapper allocates a unique output directory. See
 the frozen training budget and measurements. Ordinary model binaries remain
 independent of evaluation. The minimum harness rejects reconstruction and does
 not link its engine or RPB provider.
+
+## Native archive controls
+
+The separate `embedding_archive_readout` executable (`archive-readout`) links
+shared preprocessing, PCA and head fitting only. It accepts explicit TRAIN and
+VALIDATION archives through a manifest, so it can evaluate saved exports from
+any encoder without importing that encoder or retraining it. It has no TEST
+input option. See [archive readout v1](cards/archive_readout_v1.md).
+
+~~~powershell
+.\container.ps1 -Action exec -Command @('bash', 'code/scripts/task.sh', 'archive-controls', '-j2', 'archive-readout', 'test-archive-readout')
+.\container.ps1 -Action exec -Command @('bash', 'code/scripts/task.sh', 'archive-controls', 'evaluate-archive', 'ARCHIVE_ARGS=--manifest /embedding/output/PATH/inputs.tsv')
+~~~
+
+The runner creates a fresh output directory. The instantiated card precedes
+fits; assets, row-level predictions, per-method coverage, paired common-support
+effects, source-group intervals and file hashes are retained. Native rows use
+the model tag alone; their descriptions sit beside result tables.
+
+The UTF-8 TSV manifest has this exact ordered header (joined by tab characters):
+`id`, `tag`, `task`, `master_seed`, `checkpoint_steps`,
+`producer_source_fingerprint`, `cohort_provenance`, `training_observations`,
+`validation_observations`, `training_features`, `validation_features`.
+For identity-bound archives append these five fields:
+`training_observations_sha256`, `validation_observations_sha256`,
+`training_features_sha256`, `validation_features_sha256`,
+`expected_feature_provenance`. All declared fields are nonempty; relative archive
+paths resolve against the manifest directory. SHA256 strings use lowercase hex.
+`cohort_provenance` records the caller-audited source order, producer checkpoint,
+scaler and manifest lineage. Native archives do not themselves contain row IDs.
+The C++ API additionally permits explicit archive key mappings.
+
+Raw/PCA use any-observation support. An encoder may declare a smaller supported
+population; unsupported native fits do not disable raw controls. Only standalone
+raw PCA is fitted, at the declared native width. Fixed head recipes remain the
+same; three declared neural initializations are paired across equal-width rows.
+These are head repetitions, not extra encoder training runs. All validation
+results remain development diagnosis.
 
 ## Evidence limits
 

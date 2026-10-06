@@ -186,7 +186,7 @@ legal observed-input lag oracle achieved 100% accuracy and coverage for all
 three seeds, while raw native ridge scores remained near chance. Thus the
 fixture was solvable under its legal support, but its linear raw readout was
 not a strong positive control for the interaction.
-Raw PCA12 with the fixed nonlinear probe scored 77.34%, 88.28% and 73.44%
+Raw PCA12 with the fixed nonlinear probe scored 76.56%, 88.28% and 73.44%
 on lag for seeds 101/202/303, consistent with nonlinear accessibility.
 Shuffled-label controls were not uniformly near chance: a single training-row
 permutation can align or invert a strongly separable class direction. They remain

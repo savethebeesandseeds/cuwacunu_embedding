@@ -4,6 +4,10 @@ This folder owns the existing MTF-JEPA-MAE-VICReg implementation. Its model
 behavior, parameter registration names, configuration defaults and version 1
 checkpoint format are preserved.
 
+Its stable design tag is **MTF-v1 — Multiscale JEPA and reconstruction** in the
+[version registry](../../../doc/EMBEDDING_VERSIONS.md). It remains a retained
+reference; active RPB development does not routinely retrain this encoder.
+
 The [embedding evaluation policy](../../../doc/EMBEDDING_EVALUATION_POLICY.md)
 defines shared evidence, protocol, reporting, and acceptance rules. The retained
 baseline evaluator and historical reports keep their original protocol and

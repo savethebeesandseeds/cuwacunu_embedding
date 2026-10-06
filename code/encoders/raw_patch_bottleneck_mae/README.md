@@ -6,6 +6,21 @@ candidate is a masked autoencoder whose reconstruction loss passes through the
 served embedding. The baseline API, executable, archive reader and checkpoint
 format remain separate.
 
+**Active research: RPB-v4 — Learned global bottleneck**, through
+[learned_global.conf](config/learned_global.conf). Its native 32-number global
+export is the sole reconstruction signal. The
+[native baseline comparison](NATIVE_BASELINE_COMPARISON.md) gives timing
+VALIDATION means of 93.75% linear-head and 99.91% neural-head accuracy, versus
+51.30%/69.62% for standalone raw PCA32. Reconstruction and severe missingness
+still have costs. Use the
+[version registry](../../../doc/EMBEDDING_VERSIONS.md),
+[reporting standard](../../../doc/RESULTS_REPORTING_STANDARD.md), and
+[next advance plan](NEXT_ADVANCE.md). Future primary comparisons apply no PCA
+after an encoder; PCA remains a standalone raw-data baseline. Historical drivers
+and the validation chronology below retain their original recipes. Mode-0
+loader/configuration defaults remain compatible, and this research designation
+does not assert consumer acceptance.
+
 The [embedding evaluation policy](../../../doc/EMBEDDING_EVALUATION_POLICY.md)
 governs shared protocols, reporting and acceptance. The
 [architecture and evaluation specification](RPB_MAE_architecture_and_evaluation_spec.md)
@@ -13,7 +28,7 @@ states the research hypotheses; the
 [implementation guidelines](RPB_MAE_implementation_guidelines.md) define tensor,
 support, precision and extension contracts.
 
-**Validation status:** core/workflow checks and archived protocol-v1 comparisons
+**Validation chronology:** core/workflow checks and archived protocol-v1 comparisons
 are recorded in [validation evidence](IMPLEMENTATION_STATUS.md). The feature
 evaluator refactor passed its container isolation, adapter, repeated-card and
 regression checks; see the [shared review](../../../doc/EVALUATION_IMPLEMENTATION_REVIEW.md).

@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "registered_date": "2026-10-06",
+  "active_research_tag": "RPB-v4",
+  "tag_scope": "encoder design; exact trained-instance identity is recorded separately",
+  "versions": [
+    {
+      "tag": "MTF-v1",
+      "family": "mtf_jepa_mae_vicreg",
+      "description": "Multiscale JEPA and reconstruction",
+      "status": "retained",
+      "configuration_template": "code/encoders/mtf_jepa_mae_vicreg/config/default.conf",
+      "native_global_size": null,
+      "size_rule": "resolved configuration"
+    },
+    {
+      "tag": "RPB-v1",
+      "family": "raw_patch_bottleneck_mae",
+      "description": "Independent channel summaries",
+      "status": "archived_reference",
+      "configuration_template": "code/encoders/raw_patch_bottleneck_mae/config/evaluation.conf",
+      "native_global_size": 32,
+      "channel_mixer_layers": 0,
+      "global_bottleneck_mode": 0,
+      "reconstruction_signal": "independent channel vectors",
+      "historical_global_comparison_name": null
+    },
+    {
+      "tag": "RPB-v2",
+      "family": "raw_patch_bottleneck_mae",
+      "description": "Channel mixing and channel reconstruction",
+      "status": "archived_reference",
+      "configuration_template": "code/encoders/raw_patch_bottleneck_mae/config/channel_mixer.conf",
+      "native_global_size": 32,
+      "channel_mixer_layers": 1,
+      "global_bottleneck_mode": 0,
+      "reconstruction_signal": "contextual channel vectors",
+      "historical_global_comparison_name": "current_mixer"
+    },
+    {
+      "tag": "RPB-v3-mean",
+      "family": "raw_patch_bottleneck_mae",
+      "description": "Averaged global bottleneck",
+      "status": "ablation_reference",
+      "configuration_template": "code/encoders/raw_patch_bottleneck_mae/config/mean_global.conf",
+      "native_global_size": 32,
+      "channel_mixer_layers": 1,
+      "global_bottleneck_mode": 1,
+      "reconstruction_signal": "exact mean global export",
+      "historical_global_comparison_name": "mean_global"
+    },
+    {
+      "tag": "RPB-v4",
+      "family": "raw_patch_bottleneck_mae",
+      "description": "Learned global bottleneck",
+      "status": "active_experimental",
+      "configuration_template": "code/encoders/raw_patch_bottleneck_mae/config/learned_global.conf",
+      "native_global_size": 32,
+      "channel_mixer_layers": 1,
+      "global_bottleneck_mode": 2,
+      "reconstruction_signal": "exact learned global export",
+      "historical_global_comparison_name": "learned_global"
+    }
+  ]
+}

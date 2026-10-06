@@ -20,9 +20,16 @@ not depend on or modify `cuwacunu_torch` at runtime.
 The independent [Raw Patch Bottleneck MAE](code/encoders/raw_patch_bottleneck_mae/README.md)
 now has its own model, configuration, CLI, checkpoint format and tests. It shares
 archive utilities and frozen-feature evaluation components with the baseline.
-Its first candidate uses raw ordered patches and trains reconstruction through
-the compact vectors it exports. This implementation does not establish a
-representation-quality improvement; see its README for the bounded comparison.
+The active research version is **RPB-v4 — Learned global bottleneck**. It trains
+reconstruction through its exact native 32-number global embedding. The latest
+controlled timing VALIDATION comparison gives 93.75% linear-head and 99.91%
+neural-head accuracy, versus 51.30%/69.62% for standalone raw PCA32; see the
+[native baseline comparison](code/encoders/raw_patch_bottleneck_mae/NATIVE_BASELINE_COMPARISON.md).
+These are synthetic development results, not consumer acceptance.
+Older designs remain available as archived references. See the
+[version registry](doc/EMBEDDING_VERSIONS.md),
+[results reporting standard](doc/RESULTS_REPORTING_STANDARD.md), and
+[next advance plan](code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md).
 
 Its [held-out reconstruction track](code/encoders/raw_patch_bottleneck_mae/DECODER_RELIANCE.md)
 tests whether the compact vector carries trajectory information beyond

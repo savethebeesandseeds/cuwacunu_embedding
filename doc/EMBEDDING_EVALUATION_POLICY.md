@@ -1,8 +1,8 @@
 # Embedding evaluation policy
 
-Policy version: 1.1
+Policy version: 1.2
 
-Last updated: 2026-10-05
+Last updated: 2026-10-06
 
 Scope: every encoder evaluated in `cuwacunu_embedding`, including the existing
 MTF-JEPA-MAE-VICReg encoder, RPB-MAE, and future local or external encoders.
@@ -18,6 +18,17 @@ The requirements below apply to new acceptance claims. Historical reports retain
 their original protocol and limitations; they are not retroactively relabeled as
 passing this policy. A policy requirement, source file, or Make target is not
 evidence that an implementation has passed it.
+
+Version 1.2 adopts the [results reporting standard](RESULTS_REPORTING_STANDARD.md)
+and [stable model tags](EMBEDDING_VERSIONS.md). New primary encoder comparisons
+use native exports without PCA afterward, with fixed classifier recipes and
+standalone raw/PCA controls. It removes the prior requirement to make a
+compressed encoder tier primary. Historical version-1.1 cards/drivers retain
+their declared protocols and measurements. The new
+[shared archive readout](../code/evaluation/cards/archive_readout_v1.md) implements
+the validation-only native/raw/PCA comparison. The native-only training/selection
+runner remains an implementation task, recorded in the
+[RPB-v4 plan](../code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md).
 
 ## 1. Evidence layers and claim scope
 
@@ -81,8 +92,8 @@ be a saved section/file or an immutable manifest, but must contain:
   observation support, precision/preparation, and permitted invariances.
 - Dataset/generator version, source-group and split manifests, eligible
   population, corruption definitions, and independent sampling unit.
-- Named global/local/contextual/channel readouts, validity rules, and native
-  and matched-dimension tiers.
+- Named global/local/contextual/channel readouts, validity rules, native
+  dimensions, and any declared matched-size controls.
 - Legal controls, their input/pretraining/metadata access, and how the comparator
   is selected without using confirmation scores.
 - Encoder, checkpoint, preprocessing and compression assets; initialization,
@@ -190,12 +201,21 @@ per-channel accuracy. For true per-channel probes, report each channel's score,
 support and omissions, plus the declared macro or weighted aggregate. Neither
 that aggregate nor concatenation can certify cross-channel interaction by itself.
 
-Report native dimensions and a primary matched-dimension tier. Count appended
+Use the native served encoder export as the primary tier. Do not apply PCA or
+random projection after an encoder in new primary comparisons. Count appended
 masks, IDs, normalization statistics, and other metadata in the feature budget.
 Give controls the same legal metadata or identify a separate privileged track.
-Fit compression on valid training rows and persist its assets. Joint PCA of a
-concatenation, separate PCA per channel, and training a narrower encoder are
-different comparisons. Seeded random projection is a separately named control.
+Keep head architectures, training budgets and declared seed policies fixed;
+fit each head's weights separately using its training representation. Disclose
+input/head parameter counts when native dimensions differ.
+
+PCA remains a standalone raw-data comparator, labelled "PCA only — no encoder",
+with its width matched to the active native export for the compact comparison.
+Fit scaling/compression on valid training rows and persist its assets. Raw data
+with all declared coordinates is a larger-input reference. Training a narrower
+encoder is a separate architecture/configuration experiment. Additional
+compression or random-projection diagnoses are separately declared development
+tracks; historical cards retain their compressed primary tiers unchanged.
 
 For centered PCA require requested width no greater than input width, valid
 training rows minus one, and numerical rank. Mark unsupported compression rather
