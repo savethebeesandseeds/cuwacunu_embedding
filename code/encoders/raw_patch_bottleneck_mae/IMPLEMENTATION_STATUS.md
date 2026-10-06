@@ -8,8 +8,14 @@ Date: 2026-10-06
 The [next advance plan](NEXT_ADVANCE.md) focuses on native32 outputs and fixed
 heads, with PCA only on raw data. The new shared archive evaluator completed
 [phase-1 controls](NATIVE_BASELINE_COMPARISON.md) without encoder retraining or
-TEST access. The native-only training/selection runner is still needed:
-historical global/curve drivers retain their compressed selection protocols.
+TEST access. The separate shared native-only training/selection runner now
+completes [phase 2](NATIVE_CURVE_ADVANCE.md): CUDA correctness and focused tests
+passed, 512 updates were selected on native linear VALIDATION before fresh TEST,
+and the independent audit passed 70,619,069 checks. Timing TEST means are 94.01%
+linear / 96.09% neural, at 100% coverage. Historical global/curve drivers retain
+their compressed selection protocols. More training improves reconstruction
+without improving timing validation; phase 3 targets pooling consistency and
+moderate missingness with one encoder change and fixed heads.
 The sections below preserve the validation chronology; older designs are
 archived references rather than routine retraining candidates.
 

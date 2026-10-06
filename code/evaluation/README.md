@@ -13,7 +13,8 @@ native exports without PCA afterward; the standalone raw-data row is labelled
 "PCA only — no encoder". RPB-v4 is the active experimental recipe.
 The [next advance plan](../encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md)
 uses the new validation-only [archive protocol](cards/archive_readout_v1.md);
-the native-only training/selection curve remains pending. Historical drivers
+the new [native-only curve](cards/native_curve_v1.md) provides a separate
+training/selection protocol. Historical drivers
 still compute their compressed tiers, and the global driver selects using
 PCA12. A native-looking table does not change that selection rule. Older cards
 and results remain governed by their original declared versions.
@@ -26,6 +27,7 @@ and results remain governed by their original declared versions.
 | `code/shared/feature_harness` headers/source/tests | Controlled tasks and legal oracles, valid-row scaling/PCA, frozen probes, scoring and diagnostics |
 | `code/shared/feature_stress` headers/source/tests | Testing-only missingness masks, fixed fitted-readout predictions, conditional/full-population scores and robustness sidecars |
 | `code/shared/reconstruction_evaluation` headers/source/tests | Held-out targets, latent interventions, training-fit metric scaling, paired reconstruction errors and source-exchange uncertainty |
+| `code/shared/native_curve` headers/source/tests | One continuous label-free trainer, native checkpoint selection, retained raw/PCA-only controls, exact point-zero comparison and frozen TEST/stress readouts |
 | `code/encoders/<encoder>/evaluation_adapter.*` | Exact model/checkpoint/preprocessing, optional training on permitted observations, frozen extraction, surface/support semantics and adapter assets |
 | `code/encoders/<encoder>/reconstruction_adapter.*` | Training, exact served latent decoding, independently fitted metadata control and checkpoint assets for reconstruction providers |
 | `code/evaluation/src/main.cpp` | Explicit registry and CLI composition; currently baseline and RPB-MAE |
@@ -36,6 +38,23 @@ The shorthand shared paths above refer to their files under
 either encoder's include directory. Encoder training loss, optimizer and teacher
 logic stay inside their adapter/model workflow; probe fitting and labels stay
 inside the evaluator.
+
+The native-curve CLI registers RPB-v4 through its existing learning-curve adapter.
+Its encoder-owned CUDA gate verifies actual updates and exact32 checkpoint/decoder
+parity before a full run. Build and run the fixed development recipe with:
+
+~~~powershell
+.\container.ps1 -Action exec -Command @('bash', 'code/scripts/task.sh', 'rpb-native-curve', '-j2', 'native-curve', 'test-native-curve', 'test-rpb-native-gate')
+.\container.ps1 -Action exec -Command @('bash', 'code/scripts/task.sh', 'rpb-native-curve', 'evaluate-native-curve')
+~~~
+
+The runner checks compiled source hashes against an exact source snapshot before
+generation, saves a launch plan and CUDA gate, then creates a unique results root.
+The shared engine saves its instantiated card, TRAIN/VALIDATION cohorts, immutable
+checkpoints/fits and native32 selection before generating any fresh TEST cohort.
+No PCA follows the encoder. Raw576/PCA-only32 maps and heads remain fixed across
+milestones, TEST and the shared twelve-case stress sweep. See the
+[advance record](../encoders/raw_patch_bottleneck_mae/NATIVE_CURVE_ADVANCE.md).
 
 ~~~mermaid
 flowchart LR

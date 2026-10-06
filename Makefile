@@ -112,7 +112,7 @@ EVALUATION_OBJECT_DIR := $(OBJECT_DIR)/evaluation
 EVALUATION_BIN ?= $(BUILD_DIR)/embedding_evaluate
 HARNESS_BIN ?= $(BUILD_DIR)/feature_harness
 
-RPB_CORE_HEADERS := $(filter-out $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h,$(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/*.h))
+RPB_CORE_HEADERS := $(filter-out $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/native_curve_gate.h,$(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/*.h))
 RPB_PROVENANCE_INPUTS := $(sort $(RPB_CORE_HEADERS) $(RPB_ROOT)/src/workflow.cpp $(RPB_ROOT)/src/main.cpp $(wildcard $(RPB_ROOT)/config/*.conf) $(CODE_ROOT)/shared/include/embedding/shared/data.h $(CODE_ROOT)/shared/include/embedding/shared/types.h $(CODE_ROOT)/shared/include/embedding/shared/tensor_ops.h $(CODE_ROOT)/shared/src/data.cpp Makefile dependencies.lock)
 RPB_SOURCE_ID := $(shell sha256sum $(RPB_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 SOURCE_GIT_HEAD := $(shell git -c safe.directory=$(CURDIR) rev-parse HEAD 2>/dev/null || printf unrecorded)
@@ -398,3 +398,44 @@ test-archive-readout: $(SHARED_TEST_DIR)/archive_readout_test
 
 evaluate-archive: $(ARCHIVE_READOUT_BIN)
 	ARCHIVE_READOUT_BIN="$(abspath $(ARCHIVE_READOUT_BIN))" EMBEDDING_RUN_ROOT="$(RUN_ROOT)" bash $(CODE_ROOT)/scripts/evaluate-archive.sh $(ARCHIVE_ARGS)
+
+# Native-only curves select and score the served export. Historical curve
+# executables/cards above retain their projection-based protocol semantics.
+NATIVE_CURVE_BIN := $(BUILD_DIR)/embedding_native_curve
+NATIVE_CURVE_OBJECT := $(OBJECT_DIR)/shared/native_curve.o
+RPB_NATIVE_GATE_OBJECT := $(RPB_OBJECT_DIR)/native_curve_gate.o
+NATIVE_CURVE_PROVENANCE_INPUTS := $(sort $(wildcard $(CODE_ROOT)/shared/include/embedding/shared/*.h $(CODE_ROOT)/shared/src/*.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/*.h) $(RPB_ROOT)/src/workflow.cpp $(RPB_ROOT)/src/evaluation_adapter.cpp $(RPB_ROOT)/src/learning_curve_adapter.cpp $(RPB_ROOT)/src/native_curve_gate.cpp $(RPB_ROOT)/config/learned_global.conf $(EVALUATION_ROOT)/src/native_curve_main.cpp $(EVALUATION_ROOT)/cards/native_curve_v1.md $(CODE_ROOT)/scripts/evaluate-native-curve.sh Makefile dependencies.lock)
+NATIVE_CURVE_SOURCE_ID := $(shell sha256sum $(NATIVE_CURVE_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
+NATIVE_CURVE_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(NATIVE_CURVE_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
+.PHONY: native-curve test-native-curve test-rpb-native-gate evaluate-native-curve
+native-curve: $(NATIVE_CURVE_BIN)
+
+$(EVALUATION_OBJECT_DIR)/native_curve_main.o: $(EVALUATION_ROOT)/src/native_curve_main.cpp $(NATIVE_CURVE_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(NATIVE_CURVE_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_NATIVE_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(NATIVE_CURVE_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(NATIVE_CURVE_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(NATIVE_CURVE_BIN): $(EVALUATION_OBJECT_DIR)/native_curve_main.o $(NATIVE_CURVE_OBJECT) $(RPB_NATIVE_GATE_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(EVALUATION_COMMON_OBJECTS)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(SHARED_TEST_DIR)/native_curve_test.o: $(CODE_ROOT)/shared/tests/native_curve_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(COMMON_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(SHARED_TEST_DIR)/native_curve_test: $(SHARED_TEST_DIR)/native_curve_test.o $(NATIVE_CURVE_OBJECT) $(EVALUATION_COMMON_OBJECTS)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(RPB_TEST_DIR)/native_curve_gate_test: $(RPB_TEST_DIR)/native_curve_gate_test.o $(RPB_NATIVE_GATE_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(HARNESS_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-native-curve: $(SHARED_TEST_DIR)/native_curve_test
+	$(SHARED_TEST_DIR)/native_curve_test
+
+test-rpb-native-gate: $(RPB_TEST_DIR)/native_curve_gate_test
+	$(RPB_TEST_DIR)/native_curve_gate_test
+
+evaluate-native-curve: $(NATIVE_CURVE_BIN)
+	NATIVE_CURVE_BIN="$(abspath $(NATIVE_CURVE_BIN))" NATIVE_CURVE_SOURCE_INPUTS="$(NATIVE_CURVE_PROVENANCE_INPUTS)" EMBEDDING_RUN_ROOT="$(RUN_ROOT)" bash $(CODE_ROOT)/scripts/evaluate-native-curve.sh

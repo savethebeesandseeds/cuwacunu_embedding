@@ -13,8 +13,9 @@ loaders; routine experiments need not retrain all of them.
 | **RPB-v4** | **Learned global bottleneck** | **Active experimental version** | [Learned global](../code/encoders/raw_patch_bottleneck_mae/config/learned_global.conf) |
 
 The [machine-readable registry](embedding_versions.json) records the same mapping.
-Use the tag plus its short description in result tables. The number identifies a
-design milestone; it is not a quality score or the checkpoint format version.
+Use only the tag in result table cells; place its short description in adjacent
+prose. The number identifies a design milestone; it is not a quality score or
+the checkpoint format version.
 
 ## Exact interpretation
 

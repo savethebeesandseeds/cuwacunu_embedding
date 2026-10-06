@@ -36,6 +36,8 @@ bash code/scripts/task.sh rpb-mae smoke-rpb-mae smoke-rpb-mae-cuda periodic-rpb-
 bash code/scripts/task.sh comparison -j2 evaluation feature-harness test-feature-harness
 bash code/scripts/task.sh comparison evaluate-minimum
 bash code/scripts/task.sh comparison evaluate-rpb-mae
+bash code/scripts/task.sh rpb-native-curve -j2 native-curve test-native-curve test-rpb-native-gate
+bash code/scripts/task.sh rpb-native-curve evaluate-native-curve
 ```
 
 The first argument is a session name: 1 to 64 lowercase letters, digits,

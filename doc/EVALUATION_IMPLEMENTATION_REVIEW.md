@@ -4,16 +4,21 @@ Date: 2026-10-06
 
 The agreed [reporting standard](RESULTS_REPORTING_STANDARD.md) and
 [version registry](EMBEDDING_VERSIONS.md) designate RPB-v4 as active research.
-Future primary comparisons use native exports without PCA afterward, fixed
+Primary comparisons use native exports without PCA afterward, fixed
 heads, and standalone raw/PCA controls. This is policy version 1.2. Existing
 drivers/cards remain pinned to their historical protocols. The new shared
 [archive readout](../code/evaluation/cards/archive_readout_v1.md) passed its
 focused container tests and completed the
 [native baseline comparison](../code/encoders/raw_patch_bottleneck_mae/NATIVE_BASELINE_COMPARISON.md)
 using TRAIN/VALIDATION inputs only, with fixed heads and no encoder retraining.
-The separate native-only training/selection curve remains planned in
-[the next advance](../code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md).
-Historical validation below does not certify that pending curve path.
+The separate [native-only training/selection curve](../code/encoders/raw_patch_bottleneck_mae/NATIVE_CURVE_ADVANCE.md)
+is now implemented and measured under native-curve-v1. Focused generic and CUDA
+gate tests passed; independent artifacts passed 70,619,069 checks. Selection
+precedes all fresh TEST generation, controls fit once, and checkpoint/readout
+assets are reused without TEST/stress fitting. The
+[next advance](../code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md) records
+the measured gaps and one planned encoder mechanism. This is development
+evidence; consumer acceptance contracts remain unimplemented.
 
 RPB-MAE is an encoder governed by the shared
 [evaluation policy](EMBEDDING_EVALUATION_POLICY.md). Its architecture-specific
@@ -33,6 +38,8 @@ RPB training/export. The refactor separates those responsibilities:
 | Label-free fit/extraction interface | [Shared provider contract](../code/shared/include/embedding/shared/feature_evaluation.h) |
 | Splits/cards, fitting, paired populations, scores and reports | [Shared engine](../code/shared/src/feature_evaluation.cpp) and feature-harness math |
 | Native archived exports versus raw/PCA-only controls, with TRAIN-only readouts | [Shared archive readout](../code/shared/src/archive_readout.cpp), no encoder dependency |
+| Native continuous training/selection, fit-once controls, fresh TEST and fixed-readout stress | [Shared native curve engine](../code/shared/src/native_curve.cpp); label-free curve/reconstruction factories, no encoder dependency |
+| Actual CUDA/checkpoint/exact global bottleneck correctness gate | [Encoder-owned native gate](../code/encoders/raw_patch_bottleneck_mae/src/native_curve_gate.cpp) |
 | Testing-only missingness masks and frozen-readout robustness sidecars | [Shared stress engine](../code/shared/src/feature_stress.cpp) |
 | Held-out targets, latent interventions, reconstruction metrics and exchange-block effects | [Shared reconstruction engine](../code/shared/src/reconstruction_evaluation.cpp) |
 | Registered adapters and CLI options | [Independent evaluation integration](../code/evaluation/README.md) |

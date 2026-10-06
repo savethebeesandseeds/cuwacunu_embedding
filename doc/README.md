@@ -21,6 +21,11 @@ version; its [next advance plan](../code/encoders/raw_patch_bottleneck_mae/NEXT_
 uses native encoder outputs and standalone raw/PCA baselines. The
 [completed native baseline comparison](../code/encoders/raw_patch_bottleneck_mae/NATIVE_BASELINE_COMPARISON.md)
 fills the missing controls without retraining the encoder or opening TEST inputs.
+The separate [completed native curve](../code/encoders/raw_patch_bottleneck_mae/NATIVE_CURVE_ADVANCE.md)
+trains fresh RPB-v4 instances on verified CUDA, selects 512 updates on native
+linear VALIDATION, and reports fresh synthetic TEST plus fixed-readout stress.
+It introduces no post-encoder PCA or classifier tuning. Phase 3 is the next
+encoder mechanism experiment, as recorded in the advance plan.
 
 `representation-encoder.pdf` is the one-page outreach brief. Editable sources are
 `representation-encoder.tex` and `references.bib`.

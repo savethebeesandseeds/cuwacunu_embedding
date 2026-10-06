@@ -67,7 +67,8 @@ not consumer acceptance.
 implements this shared archive protocol and reports all four tasks. Timing
 validation means are 48.7%/52.8% raw, 51.3%/69.6% PCA-only, and 93.8%/99.9%
 RPB-v4 (linear/neural), all with 100% coverage. Encoder checkpoints are unchanged.
-The definitions below record the frozen phase-1 procedure; phase 2 is next.
+The definitions below record the frozen phase-1 procedure. Phase 2 is also
+complete; its fresh TEST results are kept separate from these validation scores.
 
 The small generic archive readout protocol lives in shared evaluation.
 It consumes legal raw TRAIN/VALIDATION observations and archived native feature
@@ -103,6 +104,21 @@ adding another encoder training path.
 
 ## Phase 2 Re-evaluate RPB v4 on fresh development data
 
+**Completed:** the [native curve advance](NATIVE_CURVE_ADVANCE.md) implements
+the separate shared native-only driver and its frozen card. CUDA correctness
+and focused container tests passed, followed by an independent artifact audit.
+Three timing trainers continued through 0/128/512/2048. Native linear VALIDATION
+selected 512 (94.79%), ahead of 128 (92.19%) and 2048 (90.10%), before any TEST
+generation. Fresh timing TEST means are 94.01% linear / 96.09% neural, versus
+51.82% / 79.51% PCA-only and 46.61% / 50.61% raw; coverage is 100% throughout.
+Direction, level and amplitude each reach 100% with trained native32 heads.
+
+Reconstruction improves through 2048, but native linear validation does not.
+The remaining timing gap is consistency across trained instances and moderate
+additional missingness. The exact untrained timing controls score 55.47% linear
+/ 65.19% neural, showing a substantial training contribution. The procedure
+below records the completed protocol; historical compressed drivers stay intact.
+
 Create a separate native-only training/selection protocol before another curve.
 The historical global driver requires three variants, computes compressed tiers,
 and selects a budget with PCA12. Changing the displayed table cannot change that
@@ -136,17 +152,33 @@ corruptions and no fit under stress. Do not routinely train RPB-v1/v2/v3-mean.
 
 ## Phase 3 Change the encoder only for a measured gap
 
-If native linear accessibility or missingness remains weak relative to the
-declared controls, register one new version and change one encoder mechanism.
-A candidate hypothesis is learned global pooling directly over aligned
-patch/channel states, before information is compressed into separate channel
-vectors. It aims to preserve joint temporal relationships at the served
-32-number bottleneck. Its benefit is a hypothesis, not an established result.
+**Next:** register one new design and test learned global pooling directly over
+aligned patch/channel states, before separate channel summaries compress them.
+RPB-v4 already mixes aligned channel states; the proposed pool bypasses its
+subsequent per-channel compression. It aims to preserve joint temporal
+relationships more consistently at the served 32-number bottleneck. These measurements
+do not establish that compression caused the remaining errors.
 
-Keep the reconstruction objective, data, classifier recipes and selection budget
-fixed for that comparison. Use RPB-v4 as the relevant reference for this one
-advance; do not bring every older variant back. Do not add auxiliary losses or
-tune classifier capacity without a separate, justified experiment.
+Keep the temporal blocks, channel mixer, legal preprocessing, reconstruction
+objective, exact served 32-number decoder input, sampling/mask policy, fixed heads and
+512 encoder updates. Freeze pooling support/position/channel rules and pair
+common-module initialization with RPB-v4's point-zero assets. Record added
+parameters and training cost; equal export width does not mean equal encoder
+capacity. All-absent exports remain zero and invalid.
+
+Use only the selected RPB-v4 instances and their original TRAIN-fitted assets
+as the relevant reference. Do not bring every older variant back, add auxiliary
+losses, tune classifier capacity, or fit under stress. Declare intact timing
+and the existing 30% additional-deletion case before scores; its legal raw rule
+retains full accuracy and coverage. Primary evidence is native linear accuracy,
+per-master spread and within-master paired effects, with neural results secondary.
+
+Freeze a candidate card and durable fixed-budget manifest before generating a
+new TEST namespace. The opened phase-2 TEST data are now development evidence.
+Reuse legal TRAIN/VALIDATION cohorts for paired development if needed, and apply
+candidate and frozen RPB-v4 to common new TEST sources and corruption masks,
+without TEST refitting. Preserve every declared master/head and point-zero
+diagnostic. No across-retraining confidence interval is claimed from three masters.
 
 If raw/PCA controls and RPB-v4 already solve the simple synthetic tasks, move to
 harder declared tasks or the intended consumer dataset instead of optimizing a

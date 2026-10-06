@@ -8,14 +8,17 @@ format remain separate.
 
 **Active research: RPB-v4 — Learned global bottleneck**, through
 [learned_global.conf](config/learned_global.conf). Its native 32-number global
-export is the sole reconstruction signal. The
-[native baseline comparison](NATIVE_BASELINE_COMPARISON.md) gives timing
-VALIDATION means of 93.75% linear-head and 99.91% neural-head accuracy, versus
-51.30%/69.62% for standalone raw PCA32. Reconstruction and severe missingness
-still have costs. Use the
+export is the sole reconstruction signal. The completed
+[native curve advance](NATIVE_CURVE_ADVANCE.md) gives fresh timing TEST means of
+94.01% linear-head and 96.09% neural-head accuracy, versus 51.82% / 79.51% for
+standalone raw PCA32, all at 100% coverage. Native linear VALIDATION selected 512
+updates before TEST; 2048 improved reconstruction but reduced classification
+validation accuracy. Consistency and moderate missingness remain measured gaps.
+The [native baseline comparison](NATIVE_BASELINE_COMPARISON.md) preserves the
+separate archived TRAIN/VALIDATION milestone. Use the
 [version registry](../../../doc/EMBEDDING_VERSIONS.md),
 [reporting standard](../../../doc/RESULTS_REPORTING_STANDARD.md), and
-[next advance plan](NEXT_ADVANCE.md). Future primary comparisons apply no PCA
+[next advance plan](NEXT_ADVANCE.md). Primary comparisons apply no PCA
 after an encoder; PCA remains a standalone raw-data baseline. Historical drivers
 and the validation chronology below retain their original recipes. Mode-0
 loader/configuration defaults remain compatible, and this research designation

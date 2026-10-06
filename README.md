@@ -21,10 +21,15 @@ The independent [Raw Patch Bottleneck MAE](code/encoders/raw_patch_bottleneck_ma
 now has its own model, configuration, CLI, checkpoint format and tests. It shares
 archive utilities and frozen-feature evaluation components with the baseline.
 The active research version is **RPB-v4 — Learned global bottleneck**. It trains
-reconstruction through its exact native 32-number global embedding. The latest
-controlled timing VALIDATION comparison gives 93.75% linear-head and 99.91%
-neural-head accuracy, versus 51.30%/69.62% for standalone raw PCA32; see the
-[native baseline comparison](code/encoders/raw_patch_bottleneck_mae/NATIVE_BASELINE_COMPARISON.md).
+reconstruction through its exact native 32-number global embedding. The fresh
+native-only timing TEST comparison gives 94.01% linear-head and 96.09% neural-head
+accuracy, versus 51.82% / 79.51% for standalone raw PCA32, all at 100% coverage;
+see the [native curve advance](code/encoders/raw_patch_bottleneck_mae/NATIVE_CURVE_ADVANCE.md).
+CUDA training and an independent artifact audit passed. Native linear VALIDATION
+selected 512 updates before TEST; longer training improved reconstruction without
+improving classification validation. The earlier
+[native baseline comparison](code/encoders/raw_patch_bottleneck_mae/NATIVE_BASELINE_COMPARISON.md)
+remains a separate archived TRAIN/VALIDATION record.
 These are synthetic development results, not consumer acceptance.
 Older designs remain available as archived references. See the
 [version registry](doc/EMBEDDING_VERSIONS.md),
