@@ -308,7 +308,7 @@ int main() {
             "implicit CPU fallback");
     check(torch::cuda::is_available(), "learning-curve adapter test requires CUDA");
     for (const int64_t mixer_layers : {0, 1})
-      for (const int64_t global_mode : {0, 1, 2})
+      for (const int64_t global_mode : {0, 1, 2, 3})
         continuity_and_snapshots(mixer_layers, global_mode);
     exhausted_attempts_preserve_recovery();
   } catch (const std::exception &error) { std::cerr << error.what() << '\n'; return 1; }

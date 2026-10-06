@@ -25,6 +25,11 @@ fixed across encoder comparisons; fit their weights separately on training data.
 ## Active research version
 
 RPB-v4, the learned global bottleneck, is the active experimental encoder.
+RPB-v5, the direct patch global bottleneck, failed the fixed512 comparison under
+paired-pooling-v1 and is not promoted. This rejects that measured advance, not
+the design under every budget. A separately frozen TRAIN/VALIDATION-only
+continuation may diagnose optimization at1024/2048 without reopening TEST/stress
+or changing the fixed512 disposition. RPB-v4 remains the active reference.
 Older versions remain available for archived evidence, explicit comparisons,
 and compatibility tests. Do not routinely retrain all older architectures.
 Model tags identify designs; exact configurations, source revisions, datasets,

@@ -1,6 +1,6 @@
 # RPB v4 evaluation and development plan
 
-Date: 2026-10-06
+Date: 2026-10-07
 
 Advance **RPB-v4 — Learned global bottleneck**, using its native 32-number
 embedding and fixed classifier heads. PCA is a standalone raw-data baseline.
@@ -152,8 +152,17 @@ corruptions and no fit under stress. Do not routinely train RPB-v1/v2/v3-mean.
 
 ## Phase 3 Change the encoder only for a measured gap
 
-**Next:** register one new design and test learned global pooling directly over
-aligned patch/channel states, before separate channel summaries compress them.
+**Completed:** the [paired pooling record](PAIRED_POOLING_ADVANCE.md) reports
+RPB-v5 versus the frozen RPB-v4 reference at512. Intact timing linear accuracy
+is84.38% versus94.53%; additional30% deletion is66.15% versus85.16%, with equal
+100% coverage. V5 TRAIN/VALIDATION fixed-query MAE also worsens. The claimed
+advance is rejected at this fixed budget; RPB-v4 stays active. The unchanged
+card and full independent audit preserve this measured result rather than
+universally rejecting the architecture.
+
+The following conditions record that completed experiment: learned global
+pooling directly over aligned patch/channel states, before separate channel
+summaries compress them.
 RPB-v4 already mixes aligned channel states; the proposed pool bypasses its
 subsequent per-channel compression. It aims to preserve joint temporal
 relationships more consistently at the served 32-number bottleneck. These measurements
@@ -184,3 +193,20 @@ If raw/PCA controls and RPB-v4 already solve the simple synthetic tasks, move to
 harder declared tasks or the intended consumer dataset instead of optimizing a
 saturated score. Consumer confirmation requires the dataset/task, chronology,
 support, thresholds and cost contract to be defined before acceptance.
+
+## Next diagnostic: continue v5 on TRAIN and VALIDATION only
+
+Save and commit the fixed512 milestone before further source work. A separate
+prospective recipe may resume each exact saved v5 point512 model, AdamW state,
+scaler and counter stream through absolute1024 and2048 updates on the same
+TRAIN observations. Keep all three masters, native32 and the fixed readout
+recipes; candidate heads at new points fit only TRAIN. Record any settings
+step-ceiling override and cumulative cost without resetting initialization,
+optimizer, preprocessing or sampling/mask progression.
+
+This is an optimization diagnosis using known VALIDATION, fixed-query
+TRAIN/VALIDATION reconstruction and native linear access. Do not open or
+rescore TEST/stress, introduce a replacement seed, alter the fixed512 rejection,
+or promote v5 based on it. Freeze its own card before running; no follow-up
+has been measured yet. Any later trained-budget comparison needs its own
+declared reference/budget and new TEST namespace before unseen scoring.

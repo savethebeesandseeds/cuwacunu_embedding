@@ -12,6 +12,10 @@ inline constexpr const char *kEncoderId = "raw_patch_bottleneck_mae_v1";
 inline constexpr const char *kOutputSemantics = "local_observed_global_equal_valid_v1";
 
 inline const char *output_semantics(const Config &config) {
+  if (config.global_bottleneck_mode == 3)
+    return config.channel_mixer_layers > 0 ?
+        "local_diagnostic_observed_contextual_aligned_patch_state_global_semantic_mlp_bottleneck_v1" :
+        "local_diagnostic_observed_patch_state_global_semantic_mlp_bottleneck_v1";
   if (config.global_bottleneck_mode == 1)
     return config.channel_mixer_layers > 0 ?
         "local_observed_contextual_aligned_global_mean_bottleneck_v1" :
@@ -25,6 +29,10 @@ inline const char *output_semantics(const Config &config) {
 }
 
 inline const char *reconstruction_output_semantics(const Config &config) {
+  if (config.global_bottleneck_mode == 3)
+    return config.channel_mixer_layers > 0 ?
+        "exact_contextual_observed_patch_state_global_semantic_mlp_export_v1" :
+        "exact_observed_patch_state_global_semantic_mlp_export_v1";
   if (config.global_bottleneck_mode == 1)
     return config.channel_mixer_layers > 0 ?
         "exact_contextual_observed_global_mean_export_v1" :
@@ -38,6 +46,10 @@ inline const char *reconstruction_output_semantics(const Config &config) {
 }
 
 inline const char *global_readout_description(const Config &config, bool contextual) {
+  if (config.global_bottleneck_mode == 3)
+    return contextual ?
+        "at least one visible patch; semantic-channel-ordered original-patch-aligned contextual W states and slot-visible bits through a learned global MLP before diagnostic D compression" :
+        "at least one visible patch; semantic-channel-ordered original-patch-aligned temporal W states and slot-visible bits through a learned global MLP before diagnostic D compression";
   if (config.global_bottleneck_mode == 2)
     return contextual ?
         "at least one channel has visible observations; semantic-ordered contextual vectors and observed-support bits through a learned global MLP" :

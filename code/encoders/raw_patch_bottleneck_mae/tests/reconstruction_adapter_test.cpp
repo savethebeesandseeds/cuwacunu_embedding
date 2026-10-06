@@ -47,7 +47,7 @@ void adapter_contracts(int64_t mixer_layers) {
   card.feature_units = "volts,amperes"; card.patch_length = c.patch_length;
   card.seeds = {44}; card.tasks = {ev::Task::level};
   rpb::ReconstructionOptions options{configuration.string(), 2, 2, 2};
-  for (const int64_t global_mode : {1, 2}) {
+  for (const int64_t global_mode : {1, 2, 3}) {
     auto global_settings = settings; global_settings.model.global_bottleneck_mode = global_mode;
     const auto global_configuration = directory / ("global-" + std::to_string(global_mode) + ".conf");
     { std::ofstream out(global_configuration); out << rpb::settings_text(global_settings); }

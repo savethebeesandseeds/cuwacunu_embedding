@@ -69,7 +69,7 @@ void test_settings(const TemporaryFiles &files,int64_t mixer_layers) {
       "legacy settings must omit/default global bottleneck mode");
   check(rpb::settings_text(rpb::parse_settings(text+"global_bottleneck_mode=0\n"))==text,
       "explicit mode0 changed archived canonical settings text");
-  for(const int64_t global_mode:{1,2}) {
+  for(const int64_t global_mode:{1,2,3}) {
     auto global=settings;global.model.global_bottleneck_mode=global_mode;
     const auto encoded=rpb::settings_text(global);
     check(encoded.find("global_bottleneck_mode="+std::to_string(global_mode)+"\n")!=std::string::npos &&
@@ -92,7 +92,7 @@ void test_settings(const TemporaryFiles &files,int64_t mixer_layers) {
       "encoder_width=7\n","channel_count=2\nchannel_ids=1,1\n","seed=3\nseed=4\n",
       "channel_mixer_layers=-1\n","channel_mixer_layers=0\nchannel_mixer_layers=1\n"})
     rejects([&]{rpb::parse_settings(bad);},std::string("invalid config ")+bad);
-  for(const auto *bad:{"global_bottleneck_mode=-1\n","global_bottleneck_mode=3\n",
+  for(const auto *bad:{"global_bottleneck_mode=-1\n","global_bottleneck_mode=4\n",
       "global_bottleneck_mode=1\nglobal_bottleneck_mode=2\n"})
     rejects([&]{rpb::parse_settings(bad);},std::string("invalid global mode config ")+bad);
 }
@@ -338,7 +338,7 @@ int main() {
       TemporaryFiles files;
       test_settings(files,mixer_layers);test_raw_archive(files,mixer_layers);
       test_training_resume_export(files,mixer_layers);test_skips_and_aliases(files,mixer_layers);
-      for(const int64_t global_mode:{1,2}) {
+      for(const int64_t global_mode:{1,2,3}) {
         TemporaryFiles global_files;test_training_resume_export(global_files,mixer_layers,global_mode);
       }
     }

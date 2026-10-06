@@ -70,8 +70,10 @@ inline void validate_input(const Input &input, const Config &c,
 
 struct EncodeOutput {
   torch::Tensor z_local, z_global;
-  // Global fields are equal-valid means in modes 0/1, semantic learned pools
-  // in mode 2. In modes 1/2 the selected global is the sole decoder input.
+  // Global fields are equal-valid means in modes 0/1, semantic channel-summary
+  // learned pools in mode 2, original-patch-state learned pools in mode 3.
+  // In modes 1/2/3 the selected global is the sole decoder input. Mode 3 leaves
+  // per-channel D summaries diagnostic-only; reconstruction does not train them.
   // Undefined with channel_mixer_layers=0. Support remains observed-only.
   torch::Tensor z_contextual, z_contextual_global;
   torch::Tensor channel_valid_mask, sample_valid_mask;

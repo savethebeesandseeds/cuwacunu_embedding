@@ -4,6 +4,7 @@
 #include <torch/torch.h>
 #include <cmath>
 #include <cstdint>
+#include <limits>
 #include <set>
 #include <vector>
 
@@ -13,7 +14,8 @@ struct Config {
   int64_t channel_count{3}, history_length{32}, input_width{3}, patch_length{8};
   int64_t encoder_width{64}, export_width{32}, num_layers{3}, num_heads{4};
   int64_t channel_mixer_layers{0}; // 0 preserves the independent-channel encoder.
-  // 0: per-channel decoder input; 1: sole mean global; 2: sole learned global.
+  // 0: per-channel decoder; 1: mean global; 2: learned channel-summary global;
+  // 3: learned original-patch-state global, before channel-summary compression.
   int64_t global_bottleneck_mode{0};
   int64_t feedforward_width{256}, decoder_hidden_width{128};
   double dropout{0.0}, layer_norm_epsilon{1e-5}, mask_ratio{0.25};
@@ -38,10 +40,17 @@ inline void validate_config(const Config &c) {
               "[rpb-mae] dimensions must be positive");
   TORCH_CHECK(c.channel_mixer_layers >= 0,
               "[rpb-mae] channel_mixer_layers must be nonnegative");
-  TORCH_CHECK(c.global_bottleneck_mode >= 0 && c.global_bottleneck_mode <= 2,
-              "[rpb-mae] global_bottleneck_mode must be 0, 1 or 2");
+  TORCH_CHECK(c.global_bottleneck_mode >= 0 && c.global_bottleneck_mode <= 3,
+              "[rpb-mae] global_bottleneck_mode must be 0, 1, 2 or 3");
   TORCH_CHECK(c.history_length % c.patch_length == 0,
               "[rpb-mae] history must be divisible by patch length");
+  if (c.global_bottleneck_mode == 3) {
+    const auto K = c.history_length / c.patch_length;
+    TORCH_CHECK(c.encoder_width < std::numeric_limits<int64_t>::max() &&
+                    c.channel_count <= std::numeric_limits<int64_t>::max() / K &&
+                    c.channel_count * K <= std::numeric_limits<int64_t>::max() / (c.encoder_width + 1),
+                "[rpb-mae] original-patch global pool input width overflow");
+  }
   TORCH_CHECK(c.encoder_width % c.num_heads == 0,
               "[rpb-mae] encoder width must be divisible by heads");
   TORCH_CHECK(std::isfinite(c.dropout) && c.dropout >= 0 && c.dropout < 1 &&

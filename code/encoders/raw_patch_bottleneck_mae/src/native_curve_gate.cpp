@@ -26,7 +26,7 @@ namespace fs = std::filesystem;
 constexpr uint64_t preflight_seed = 424243;
 
 void require(bool value, const std::string &message) {
-  if (!value) throw std::runtime_error("[RPB-v4 CUDA gate] " + message);
+  if (!value) throw std::runtime_error("[RPB learned-global CUDA gate] " + message);
 }
 std::string quote(const std::string &value) {
   std::ostringstream out; out << '"';
@@ -142,8 +142,12 @@ void cpu_export_parity(const ev::CurveSnapshot &snapshot, const std::string &pat
 std::string run_native_curve_cuda_gate(const Settings &settings, const std::string &output_directory) {
   validate_settings(settings);
   require(settings.model.device.is_cuda() && torch::cuda::is_available(), "explicit CUDA required; no CPU fallback");
-  require(settings.model.channel_mixer_layers == 1 && settings.model.global_bottleneck_mode == 2
-          && settings.model.export_width == 32, "sole RPB-v4 requires mixer1/global-mode2/native32");
+  require(settings.model.channel_mixer_layers == 1 &&
+          (settings.model.global_bottleneck_mode == 2 || settings.model.global_bottleneck_mode == 3)
+          && settings.model.export_width == 32, "learned-global gate requires mixer1/mode2-or3/native32");
+  const bool direct_patch = settings.model.global_bottleneck_mode == 3;
+  const std::string tag = direct_patch ? "RPB-v5" : "RPB-v4";
+  const std::string gate_protocol = direct_patch ? "native-rpb-v5-cuda-gate-v1" : "native-rpb-v4-cuda-gate-v1";
   require(settings.model.channel_count >= 2 && settings.model.history_length >= 8
           && settings.model.history_length / settings.model.patch_length >= 3,
           "preflight needs lag-compatible geometry and three observed patch groups");
@@ -163,7 +167,7 @@ std::string run_native_curve_cuda_gate(const Settings &settings, const std::stri
   const embedding::input_shape_t shape{config.channel_count, config.history_length, config.input_width, torch::kFloat64, torch::kCPU};
   std::string units;
   for (int64_t f = 0; f < config.input_width; ++f) { if (f) units += ','; units += "unitless"; }
-  save_text(directory / "gate-card.json", "{\"version\":1,\"protocol\":\"native-rpb-v4-cuda-gate-v1\",\"embedding_tag\":\"RPB-v4\","
+  save_text(directory / "gate-card.json", "{\"version\":1,\"protocol\":" + quote(gate_protocol) + ",\"embedding_tag\":" + quote(tag) + ","
       "\"engineering_only\":true,\"preflight_seed\":424243,\"train_pairs\":4,\"validation_pairs\":2,\"test_generation\":false,"
       "\"training_label_access\":false,\"classifier_fitting\":false,\"main_experiment_training\":false,\"milestones\":[0,2,4],"
       "\"missing_rate\":0.1,\"settings\":" + quote(settings_text(gate_settings)) + ",\"requested_settings\":" + quote(settings_text(settings)) +
@@ -173,7 +177,7 @@ std::string run_native_curve_cuda_gate(const Settings &settings, const std::stri
   save_split(directory / "controlled-training.pt", protocol.training);
   save_split(directory / "controlled-validation.pt", protocol.validation);
   ev::ProviderFitInput fit{protocol.training.observed, shape, preflight_seed, protocol.training.source_ids,
-      resolved_channel_ids(config), units, "native-rpb-v4-cuda-gate-v1", config.sampling_interval,
+      resolved_channel_ids(config), units, gate_protocol, config.sampling_interval,
       (config.history_length - 1) * config.sampling_interval};
   auto trainer = make_learning_curve_trainer(gate_settings)(fit);
   const auto zero = trainer.train_to(0);
@@ -221,7 +225,9 @@ std::string run_native_curve_cuda_gate(const Settings &settings, const std::stri
   auto cpu_four = load_checkpoint(four_path, torch::kCPU); freeze(cpu_four);
   std::map<std::string, bool> changed;
   const auto old_parameters = cpu_zero.model->named_parameters(), new_parameters = cpu_four.model->named_parameters();
-  for (const std::string prefix : {"global_pool_first", "global_pool_second", "decoder_first", "decoder_second"}) {
+  const std::vector<std::string> active_groups{direct_patch ? "global_patch_pool_first" : "global_pool_first",
+      direct_patch ? "global_patch_pool_second" : "global_pool_second", "decoder_first", "decoder_second"};
+  for (const std::string &prefix : active_groups) {
     bool any = false;
     for (const auto &parameter : new_parameters)
       if (parameter.key().rfind(prefix + '.', 0) == 0)
@@ -281,11 +287,11 @@ std::string run_native_curve_cuda_gate(const Settings &settings, const std::stri
   witness.write("served_global", served.detach().to(torch::kCPU), true); witness.write("decoded_from_global", decoded.detach().to(torch::kCPU), true);
   embedding::archive::save_archive((directory / "reconstruction-witness.pt").string(), witness);
   std::ostringstream report; report << std::setprecision(17)
-      << "{\"version\":1,\"protocol\":\"native-rpb-v4-cuda-gate-v1\",\"status\":\"passed\",\"embedding_tag\":\"RPB-v4\","
+      << "{\"version\":1,\"protocol\":" << quote(gate_protocol) << ",\"status\":\"passed\",\"embedding_tag\":" << quote(tag) << ','
       << "\"engineering_only\":true,\"preflight_seed\":424243,\"train_rows\":8,\"validation_rows\":4,\"test_generation\":false,"
       << "\"classifier_fitting\":false,\"main_experiment_training\":false,\"milestones\":[0,2,4],\"completed\":4,\"attempted\":" << four.attempted
       << ",\"sampled_rows\":" << four.sampled_rows << ",\"parameters\":" << four.parameter_count << ",\"cuda_parameters\":" << four.cuda_parameter_count
-      << ",\"input_cuda\":true,\"loss_cuda\":true,\"finite_gradients\":true,\"weights_changed\":true,\"global_bottleneck_mode\":2,\"channel_mixer_layers\":1,"
+      << ",\"input_cuda\":true,\"loss_cuda\":true,\"finite_gradients\":true,\"weights_changed\":true,\"global_bottleneck_mode\":" << config.global_bottleneck_mode << ",\"channel_mixer_layers\":1,"
       << "\"native_size\":32,\"point_zero_hashed_initialization_exact\":true,\"optimizer_moments_cuda\":true,\"optimizer_steps\":[2,4],"
       << "\"continuous_trace_prefix\":true,\"cpu_checkpoint_export_exact\":true,\"gpu_checkpoint_reconstruction_exact\":true,\"decoder_uses_exact_global\":true,"
       << "\"per_channel_decoder_bypass_rejected\":true,\"zero_global_changes_prediction\":true,\"hidden_target_isolation\":true,"

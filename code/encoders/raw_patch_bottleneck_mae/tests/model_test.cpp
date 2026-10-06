@@ -262,7 +262,7 @@ void channel_mixer_bottleneck_and_gradients() {
 void global_bottleneck_initialization(int64_t mixer_layers) {
   auto baseline_config = config(); baseline_config.channel_mixer_layers = mixer_layers;
   check(baseline_config.global_bottleneck_mode == 0, "global bottleneck must default off");
-  for (const int64_t invalid_mode : {-1, 3}) {
+  for (const int64_t invalid_mode : {-1, 4}) {
     auto invalid = baseline_config; invalid.global_bottleneck_mode = invalid_mode;
     rejects([&] { rpb::validate_config(invalid); }, "invalid global bottleneck mode");
   }
@@ -273,18 +273,18 @@ void global_bottleneck_initialization(int64_t mixer_layers) {
   const auto x = rpb::fit_scaler(raw, baseline_config).transform(raw, baseline_config);
   torch::NoGradGuard no_grad;
   const auto old = baseline->encode(x);
-  for (const int64_t mode : {0, 1, 2}) {
+  for (const int64_t mode : {0, 1, 2, 3}) {
     auto c = baseline_config; c.global_bottleneck_mode = mode;
     torch::manual_seed(719);
     rpb::Model model(c); model->eval();
     const auto next_rng = torch::rand({8});
-    if (mode != 2)
+    if (mode < 2)
       close(next_rng, baseline_rng, "mode0/mean-global consumes no extra initialization RNG", 0, 0);
     const auto parameters = model->named_parameters();
     for (const auto &parameter : baseline->named_parameters())
       close(parameters[parameter.key()], parameter.value(),
             "global-mode common initialization/" + parameter.key(), 0, 0);
-    check(parameters.size() == baseline->named_parameters().size() + (mode == 2 ? 4 : 0),
+    check(parameters.size() == baseline->named_parameters().size() + (mode >= 2 ? 4 : 0),
           "only learned-global mode may register pooling parameters");
     const auto encoded = model->encode(x);
     close(encoded.z_local, old.z_local, "global modes preserve initial local diagnostic vectors", 0, 0);
@@ -336,10 +336,11 @@ void global_bottleneck_semantics_and_gradients(int64_t mixer_layers, int64_t mod
   out.loss.backward();
   finite(served.grad(), "sole global reconstruction gradient");
   check(served.grad().abs().sum().item<double>() > 0, "reconstruction loss does not train served global");
-  std::vector<std::string> prefixes{"patch_projection", "block_0", "pool_score",
-                                    "export_projection", "decoder_first"};
+  std::vector<std::string> prefixes{"patch_projection", "block_0", "decoder_first"};
+  if (mode != 3) { prefixes.push_back("pool_score"); prefixes.push_back("export_projection"); }
   if (mixer_layers > 0) prefixes.push_back("channel_mixer_block_0");
   if (mode == 2) { prefixes.push_back("global_pool_first"); prefixes.push_back("global_pool_second"); }
+  if (mode == 3) { prefixes.push_back("global_patch_pool_first"); prefixes.push_back("global_patch_pool_second"); }
   for (const auto &prefix : prefixes) {
     double gradient = 0;
     for (const auto &parameter : model->named_parameters())
@@ -349,6 +350,12 @@ void global_bottleneck_semantics_and_gradients(int64_t mixer_layers, int64_t mod
       }
     check(gradient > 0, "global reconstruction gradient missing from " + prefix);
   }
+  if (mode == 3)
+    for (const auto &parameter : model->named_parameters())
+      if (parameter.key().rfind("pool_score", 0) == 0 || parameter.key().rfind("pool_positions", 0) == 0 ||
+          parameter.key().rfind("export_projection", 0) == 0)
+        check(!parameter.value().grad().defined() || parameter.value().grad().abs().sum().item<double>() == 0,
+              "patch-state global reconstruction routed through diagnostic D compression");
   model->zero_grad();
   auto differentiable = x; differentiable.data = x.data.detach().clone().set_requires_grad(true);
   rpb::compact_reconstruction_export(model->forward(differentiable, masks.hidden).encoding, c)
@@ -410,6 +417,96 @@ void global_bottleneck_semantics_and_gradients(int64_t mixer_layers, int64_t mod
   close(restored->forward(x, masks.hidden).reconstruction, model->forward(x, masks.hidden).reconstruction,
         "sole-global decoder archive roundtrip", 0, 0);
 }
+
+void patch_global_original_slots_and_diagnostic_bypass(int64_t mixer_layers) {
+  auto c = config(); c.channel_ids = {202, 101};
+  c.channel_mixer_layers = mixer_layers; c.global_bottleneck_mode = 3;
+  auto raw = input(c, 1); const auto x = rpb::fit_scaler(raw, c).transform(raw, c);
+  rpb::Model model(c); model->eval(); torch::NoGradGuard no_grad;
+  const auto before = model->encode(x);
+  for (auto &parameter : model->named_parameters()) {
+    if (parameter.key().rfind("export_projection", 0) == 0) parameter.value().fill_(7);
+    if (parameter.key().rfind("pool_score", 0) == 0 || parameter.key().rfind("pool_positions", 0) == 0)
+      parameter.value().fill_(-9);
+  }
+  const auto after = model->encode(x);
+  close(after.z_global, before.z_global, "patch-state global bypasses local D readout weights", 0, 0);
+  check(!torch::equal(after.z_local, before.z_local), "diagnostic D intervention failed");
+  if (mixer_layers > 0)
+    close(after.z_contextual_global, before.z_contextual_global,
+          "patch-state contextual global bypasses contextual D readout weights", 0, 0);
+
+  const auto K = c.history_length / c.patch_length, W = c.encoder_width;
+  auto parameters = model->named_parameters();
+  for (auto &parameter : model->named_parameters())
+    if (parameter.key().rfind("global_patch_pool_", 0) == 0) parameter.value().zero_();
+  // Read one declared support bit exactly. Unequal packed lengths make packed
+  // rank an invalid surrogate for this semantic-channel/original-patch slot.
+  parameters["global_patch_pool_first.weight"].index_put_({0, c.channel_count * K * W + 3}, 1);
+  parameters["global_patch_pool_second.weight"].index_put_({0, 0}, 1);
+  auto sparse = x; sparse.observed = torch::zeros_like(x.observed);
+  sparse.observed.select(1, 0).narrow(1, 3 * c.patch_length, c.patch_length).fill_(true);
+  sparse.observed.select(1, 1).narrow(1, 0, c.patch_length).fill_(true);
+  sparse.observed.select(1, 1).narrow(1, 2 * c.patch_length, c.patch_length).fill_(true);
+  const auto selected = model->encode(sparse);
+  auto expected = torch::zeros({1, c.export_width});
+  expected.index_put_({0, 0}, torch::gelu(torch::ones({1})).item<float>());
+  close(rpb::compact_reconstruction_export(selected, c), expected,
+        "patch-state pool restores original patch3 support rather than packed rank0", 0, 0);
+  const auto permutation = torch::tensor({1, 0}, torch::kInt64);
+  auto reordered = sparse; reordered.data = sparse.data.index_select(1, permutation);
+  reordered.observed = sparse.observed.index_select(1, permutation);
+  reordered.channel_ids = sparse.channel_ids.index_select(0, permutation);
+  close(rpb::compact_reconstruction_export(model->encode(reordered), c), expected,
+        "patch-state slots follow custom semantic IDs rather than physical channel rank", 0, 0);
+  parameters["global_patch_pool_first.weight"].zero_();
+  parameters["global_patch_pool_first.weight"].index_put_({0, c.channel_count * K * W}, 1);
+  close(rpb::compact_reconstruction_export(model->encode(sparse), c), torch::zeros_like(expected),
+        "absent original patch0 cannot inherit packed patch3 support", 0, 0);
+  auto poison = sparse; poison.data = sparse.data.masked_fill(sparse.observed.logical_not(),
+      std::numeric_limits<float>::quiet_NaN());
+  close(rpb::compact_reconstruction_export(model->encode(poison), c), torch::zeros_like(expected),
+        "patch-state padded absent values remain zero", 0, 0);
+  // A hand-set original-position state gives a second witness independent of
+  // support bits. Residual blocks and projection metadata simplify the known
+  // patch3 state without changing the scatter/semantic-order/pooling route.
+  for (auto &parameter : model->named_parameters())
+    if (parameter.key().rfind("block_", 0) == 0 ||
+        parameter.key().rfind("channel_mixer_block_", 0) == 0 ||
+        parameter.key().rfind("patch_projection", 0) == 0 ||
+        parameter.key().rfind("channels", 0) == 0 ||
+        parameter.key().rfind("positions", 0) == 0)
+      parameter.value().zero_();
+  parameters["positions.weight"].index_put_({3, 0}, 2);
+  parameters["positions.weight"].index_put_({2, 0}, -3);
+  parameters["final_norm.weight"].fill_(1); parameters["final_norm.bias"].zero_();
+  parameters["global_patch_pool_first.weight"].zero_();
+  parameters["global_patch_pool_first.weight"].index_put_({0, 3 * W}, 1);
+  auto state = torch::zeros({1, W}); state.index_put_({0, 0}, 2);
+  const auto normalized = torch::layer_norm(state, {W}, torch::ones({W}), torch::zeros({W}),
+                                            c.layer_norm_epsilon);
+  expected.zero_(); expected.index_put_({0, 0}, torch::gelu(normalized)[0][0]);
+  close(rpb::compact_reconstruction_export(model->encode(sparse), c), expected,
+        "patch-state value goes to original patch3 rather than packed rank0", 0, 0);
+  close(rpb::compact_reconstruction_export(model->encode(reordered), c), expected,
+        "original-position W state uses canonical semantic channel order", 0, 0);
+}
+
+void patch_global_parameter_count() {
+  rpb::Config c; c.channel_mixer_layers = 1; c.global_bottleneck_mode = 2;
+  rpb::Model summary(c); c.global_bottleneck_mode = 3; rpb::Model direct(c);
+  int64_t summary_count = 0, direct_count = 0, head_count = 0;
+  for (const auto &parameter : summary->parameters()) summary_count += parameter.numel();
+  for (const auto &parameter : direct->named_parameters()) {
+    direct_count += parameter.value().numel();
+    if (parameter.key().rfind("global_patch_pool_", 0) == 0) head_count += parameter.value().numel();
+  }
+  check(summary_count == 225805 && direct_count == 269389 && head_count == 52064 &&
+            direct_count - summary_count == 43584,
+        "production patch-state candidate parameter budget changed");
+  auto overflow = c; overflow.encoder_width = std::numeric_limits<int64_t>::max();
+  rejects([&] { rpb::validate_config(overflow); }, "patch-state input width overflow");
+}
 }
 
 int main() {
@@ -420,8 +517,10 @@ int main() {
     channel_mixer_original_patch_alignment(); channel_mixer_bottleneck_and_gradients();
     for (const int64_t mixer_layers : {0, 1}) {
       global_bottleneck_initialization(mixer_layers);
-      for (const int64_t mode : {1, 2}) global_bottleneck_semantics_and_gradients(mixer_layers, mode);
+      for (const int64_t mode : {1, 2, 3}) global_bottleneck_semantics_and_gradients(mixer_layers, mode);
+      patch_global_original_slots_and_diagnostic_bypass(mixer_layers);
     }
+    patch_global_parameter_count();
     std::cout << "RPB-MAE model tests passed\n";
   }
   catch (const std::exception &error) { std::cerr << error.what() << '\n'; return 1; }

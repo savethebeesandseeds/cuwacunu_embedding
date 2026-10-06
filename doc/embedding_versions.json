@@ -2,6 +2,8 @@
   "schema_version": 1,
   "registered_date": "2026-10-06",
   "active_research_tag": "RPB-v4",
+  "bounded_candidate_tag": null,
+  "last_measured_candidate_tag": "RPB-v5",
   "tag_scope": "encoder design; exact trained-instance identity is recorded separately",
   "versions": [
     {
@@ -60,6 +62,23 @@
       "global_bottleneck_mode": 2,
       "reconstruction_signal": "exact learned global export",
       "historical_global_comparison_name": "learned_global"
+    },
+    {
+      "tag": "RPB-v5",
+      "family": "raw_patch_bottleneck_mae",
+      "description": "Direct patch global bottleneck",
+      "status": "rejected_fixed512_development",
+      "measured_protocol": "paired-pooling-v1",
+      "measured_completed_updates": 512,
+      "decision_scope": "claimed advance rejected at fixed512; not a universal architecture rejection",
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/PAIRED_POOLING_ADVANCE.md",
+      "planned_diagnostic": "separately frozen TRAIN/VALIDATION-only exact512-to-1024-to-2048 continuation; no TEST/stress reopening or promotion",
+      "configuration_template": "code/encoders/raw_patch_bottleneck_mae/config/learned_patch_global.conf",
+      "native_global_size": 32,
+      "channel_mixer_layers": 1,
+      "global_bottleneck_mode": 3,
+      "reconstruction_signal": "exact learned original-patch-state global export",
+      "historical_global_comparison_name": null
     }
   ]
 }

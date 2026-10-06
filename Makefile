@@ -112,7 +112,7 @@ EVALUATION_OBJECT_DIR := $(OBJECT_DIR)/evaluation
 EVALUATION_BIN ?= $(BUILD_DIR)/embedding_evaluate
 HARNESS_BIN ?= $(BUILD_DIR)/feature_harness
 
-RPB_CORE_HEADERS := $(filter-out $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/native_curve_gate.h,$(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/*.h))
+RPB_CORE_HEADERS := $(filter-out $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/native_curve_gate.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/paired_pooling_adapter.h,$(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/*.h))
 RPB_PROVENANCE_INPUTS := $(sort $(RPB_CORE_HEADERS) $(RPB_ROOT)/src/workflow.cpp $(RPB_ROOT)/src/main.cpp $(wildcard $(RPB_ROOT)/config/*.conf) $(CODE_ROOT)/shared/include/embedding/shared/data.h $(CODE_ROOT)/shared/include/embedding/shared/types.h $(CODE_ROOT)/shared/include/embedding/shared/tensor_ops.h $(CODE_ROOT)/shared/src/data.cpp Makefile dependencies.lock)
 RPB_SOURCE_ID := $(shell sha256sum $(RPB_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 SOURCE_GIT_HEAD := $(shell git -c safe.directory=$(CURDIR) rev-parse HEAD 2>/dev/null || printf unrecorded)
@@ -439,3 +439,42 @@ test-rpb-native-gate: $(RPB_TEST_DIR)/native_curve_gate_test
 
 evaluate-native-curve: $(NATIVE_CURVE_BIN)
 	NATIVE_CURVE_BIN="$(abspath $(NATIVE_CURVE_BIN))" NATIVE_CURVE_SOURCE_INPUTS="$(NATIVE_CURVE_PROVENANCE_INPUTS)" EMBEDDING_RUN_ROOT="$(RUN_ROOT)" bash $(CODE_ROOT)/scripts/evaluate-native-curve.sh
+
+# One pooling candidate versus immutable retained native-only reference assets.
+PAIRED_POOLING_BIN := $(BUILD_DIR)/embedding_paired_pooling
+PAIRED_POOLING_OBJECT := $(OBJECT_DIR)/shared/paired_pooling.o
+RPB_PAIRED_ADAPTER_OBJECT := $(RPB_OBJECT_DIR)/paired_pooling_adapter.o
+RPB_PAIRED_GATE_OBJECT := $(RPB_OBJECT_DIR)/paired_pooling_gate.o
+PAIRED_POOLING_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(RPB_ROOT)/config/learned_patch_global.conf $(EVALUATION_ROOT)/src/paired_pooling_main.cpp $(EVALUATION_ROOT)/cards/paired_pooling_v1.md $(CODE_ROOT)/scripts/evaluate-paired-pooling.sh)
+PAIRED_POOLING_SOURCE_ID := $(shell sha256sum $(PAIRED_POOLING_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
+PAIRED_POOLING_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(PAIRED_POOLING_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
+.PHONY: paired-pooling test-paired-pooling evaluate-paired-pooling
+paired-pooling: $(PAIRED_POOLING_BIN)
+
+$(EVALUATION_OBJECT_DIR)/paired_pooling_main.o: $(EVALUATION_ROOT)/src/paired_pooling_main.cpp $(PAIRED_POOLING_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(PAIRED_POOLING_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_PAIRED_ADAPTER_OBJECT): $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(PAIRED_POOLING_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(PAIRED_POOLING_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_PAIRED_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(PAIRED_POOLING_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(PAIRED_POOLING_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(PAIRED_POOLING_BIN): $(EVALUATION_OBJECT_DIR)/paired_pooling_main.o $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(RPB_PAIRED_ADAPTER_OBJECT) $(RPB_PAIRED_GATE_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(EVALUATION_COMMON_OBJECTS)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(SHARED_TEST_DIR)/paired_pooling_test.o: $(CODE_ROOT)/shared/tests/paired_pooling_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(COMMON_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(SHARED_TEST_DIR)/paired_pooling_test: $(SHARED_TEST_DIR)/paired_pooling_test.o $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(EVALUATION_COMMON_OBJECTS)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-paired-pooling: $(SHARED_TEST_DIR)/paired_pooling_test
+	$(SHARED_TEST_DIR)/paired_pooling_test
+
+evaluate-paired-pooling: $(PAIRED_POOLING_BIN)
+	PAIRED_POOLING_BIN="$(abspath $(PAIRED_POOLING_BIN))" PAIRED_POOLING_SOURCE_INPUTS="$(PAIRED_POOLING_PROVENANCE_INPUTS)" EMBEDDING_RUN_ROOT="$(RUN_ROOT)" bash $(CODE_ROOT)/scripts/evaluate-paired-pooling.sh

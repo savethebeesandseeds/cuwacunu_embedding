@@ -44,6 +44,12 @@ struct ModelImpl : torch::nn::Module {
       global_pool_second = register_module("global_pool_second",
           torch::nn::Linear(W, config_.export_width));
     }
+    if (config_.global_bottleneck_mode == 3) {
+      global_patch_pool_first = register_module("global_patch_pool_first",
+          torch::nn::Linear(config_.channel_count * K * (W + 1), W));
+      global_patch_pool_second = register_module("global_patch_pool_second",
+          torch::nn::Linear(W, config_.export_width));
+    }
     to(config_.device, config_.dtype);
   }
 
@@ -55,6 +61,11 @@ struct ModelImpl : torch::nn::Module {
     auto local = torch::zeros({B * C, D}, torch::TensorOptions().dtype(config_.dtype).device(config_.device));
     torch::Tensor contextual;
     if (config_.channel_mixer_layers > 0) contextual = torch::zeros_like(local);
+    torch::Tensor patch_global, contextual_patch_global;
+    if (config_.global_bottleneck_mode == 3) {
+      patch_global = torch::zeros({B, D}, local.options());
+      if (config_.channel_mixer_layers > 0) contextual_patch_global = torch::zeros_like(patch_global);
+    }
     if (patches.row_indices.numel() != 0) {
       auto projected = patch_projection(torch::cat({patches.values, patches.visibility.to(config_.dtype)}, -1));
       // Public original indices keep padding=-1; only private embedding lookup uses 0.
@@ -63,6 +74,8 @@ struct ModelImpl : torch::nn::Module {
       h = torch::where(patches.valid.unsqueeze(-1), h, torch::zeros_like(h));
       for (auto &block : blocks) h = block(h, patches.valid);
       h = torch::where(patches.valid.unsqueeze(-1), final_norm(h), torch::zeros_like(h));
+      if (config_.global_bottleneck_mode == 3)
+        patch_global = learned_patch_global(h, patches, B, input.channel_ids);
       auto scores = pool_score(torch::tanh(h)).squeeze(-1) + pool_positions(lookup_positions).squeeze(-1);
       scores = scores.masked_fill(patches.valid.logical_not(), -std::numeric_limits<float>::infinity());
       auto weights = torch::softmax(scores, 1);
@@ -71,6 +84,8 @@ struct ModelImpl : torch::nn::Module {
       local = local.index_copy(0, patches.row_indices, z);
       if (config_.channel_mixer_layers > 0) {
         auto mixed = mix_aligned_channels(h, patches, B);
+        if (config_.global_bottleneck_mode == 3)
+          contextual_patch_global = learned_patch_global(mixed, patches, B, input.channel_ids);
         auto contextual_scores = pool_score(torch::tanh(mixed)).squeeze(-1) +
             pool_positions(lookup_positions).squeeze(-1);
         contextual_scores = contextual_scores.masked_fill(
@@ -99,6 +114,10 @@ struct ModelImpl : torch::nn::Module {
       if (config_.channel_mixer_layers > 0)
         out.z_contextual_global = learned_global(out.z_contextual, out.channel_valid_mask,
                                                  out.channel_ids);
+    }
+    if (config_.global_bottleneck_mode == 3) {
+      out.z_global = patch_global;
+      if (config_.channel_mixer_layers > 0) out.z_contextual_global = contextual_patch_global;
     }
     TORCH_CHECK(torch::isfinite(out.z_local).all().item<bool>() && torch::isfinite(out.z_global).all().item<bool>(),
                 "[rpb-mae] nonfinite encoding");
@@ -154,6 +173,28 @@ struct ModelImpl : torch::nn::Module {
   }
 
 private:
+  torch::Tensor learned_patch_global(const torch::Tensor &h, const VisiblePatches &patches,
+                                     int64_t B, const torch::Tensor &ids) {
+    const auto C = config_.channel_count, K = config_.history_length / config_.patch_length;
+    const auto W = config_.encoder_width;
+    // Packed rank is not time: scatter only valid states to original patch slots.
+    const auto packed = torch::nonzero(patches.valid.reshape({-1})).reshape({-1});
+    const auto lookup = (patches.row_indices.unsqueeze(1) * K +
+                         patches.positions.clamp_min(0)).reshape({-1});
+    const auto indices = lookup.index_select(0, packed);
+    const auto grid = torch::zeros({B * C * K, W}, h.options()).index_copy(
+        0, indices, h.reshape({-1, W}).index_select(0, packed)).reshape({B, C, K, W});
+    const auto valid = torch::zeros({B * C * K}, patches.valid.options())
+                           .index_fill(0, indices, true).reshape({B, C, K});
+    const auto order = channel_indices(ids, config_, B, config_.device).argsort(int64_t{1});
+    const auto canonical = grid.gather(1, order.unsqueeze(-1).unsqueeze(-1).expand({B, C, K, W}));
+    const auto support = valid.gather(1, order.unsqueeze(-1).expand({B, C, K}));
+    const auto observed = torch::where(support.unsqueeze(-1), canonical, torch::zeros_like(canonical));
+    const auto features = torch::cat({observed.flatten(1), support.flatten(1).to(config_.dtype)}, 1);
+    const auto pooled = global_patch_pool_second(torch::gelu(global_patch_pool_first(features)));
+    return torch::where(support.flatten(1).any(1).unsqueeze(-1), pooled, torch::zeros_like(pooled));
+  }
+
   torch::Tensor learned_global(const torch::Tensor &vectors, const torch::Tensor &valid,
                                const torch::Tensor &ids) {
     const auto B = vectors.size(0), C = config_.channel_count, D = config_.export_width;
@@ -203,6 +244,7 @@ private:
   torch::nn::Linear patch_projection{nullptr}, pool_score{nullptr}, export_projection{nullptr};
   torch::nn::Linear decoder_first{nullptr}, decoder_second{nullptr};
   torch::nn::Linear global_pool_first{nullptr}, global_pool_second{nullptr};
+  torch::nn::Linear global_patch_pool_first{nullptr}, global_patch_pool_second{nullptr};
   torch::nn::Embedding positions{nullptr}, channels{nullptr}, pool_positions{nullptr};
   torch::nn::Embedding decoder_positions{nullptr}, decoder_channels{nullptr};
   torch::nn::LayerNorm final_norm{nullptr};
