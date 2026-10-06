@@ -20,13 +20,14 @@ torch_root="$PWD/.external/libtorch"
 grep -q -- '-D_GLIBCXX_USE_CXX11_ABI=1' "$torch_root/share/cmake/Torch/TorchConfig.cmake"
 export DEBIAN_FRONTEND=noninteractive
 apt=(apt-get -o Acquire::Retries=3 -o Acquire::https::Timeout=30 -o Acquire::http::Timeout=30)
-mkdir -p .build
+setup_state=/opt/cuwacunu_embedding/setup
+mkdir -p "$setup_state"
 "${apt[@]}" update
 mapfile -t bootstrap < <(grep -E '^(ca-certificates|curl)=' dependencies.lock)
 "${apt[@]}" install -y --no-install-recommends "${bootstrap[@]}"
 
 # Use the same keyring and repository as the original project's installer.
-keyring=.build/cuda-keyring_1.1-1_all.deb
+keyring="$setup_state/cuda-keyring_1.1-1_all.deb"
 if [[ "$(dpkg-query -W -f='${Version}' cuda-keyring 2>/dev/null || true)" != '1.1-1' ]]; then
   curl -fsSL -o "$keyring" https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb
   printf '%s  %s\n' e7f219eab6fe4819cdb5c15b98233dc3420302d9c00883219cd3d896857cf48d "$keyring" | sha256sum -c -
@@ -59,7 +60,7 @@ EOF
 profile_line='source /etc/profile.d/embedding.sh'
 grep -Fqx "$profile_line" /root/.bashrc || printf '\n%s\n' "$profile_line" >> /root/.bashrc
 source /etc/profile.d/embedding.sh
-dpkg-query -W -f='${Package}=${Version}\n' > .build/debian-packages.txt
+dpkg-query -W -f='${Package}=${Version}\n' > "$setup_state/debian-packages.txt"
 for library in libtorch.so libtorch_cpu.so libtorch_cuda.so; do
   dependencies="$(ldd "$torch_root/lib/$library")"
   if grep -q 'not found' <<< "$dependencies"; then

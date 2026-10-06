@@ -1,5 +1,18 @@
 # MTF-JEPA-MAE-VICReg: research and development brief
 
+For container setup, named task sessions and coordination, see
+[the development environment](ENVIRONMENT.md).
+
+The [embedding evaluation policy](EMBEDDING_EVALUATION_POLICY.md) is the shared
+reference for evaluating any encoder, separating correctness, optimization,
+representation evidence, and acceptance decisions.
+The [implementation review](EVALUATION_IMPLEMENTATION_REVIEW.md) records current
+policy coverage and gaps. The separate [evaluation integration](../code/evaluation/README.md)
+documents shared provider/card contracts, the `embedding_evaluate` command,
+minimum `feature_harness` controls and encoder registration. Its controlled
+protocol v2 produces development evidence; historical baseline reports preserve
+their original protocol and measurements.
+
 `representation-encoder.pdf` is the one-page outreach brief. Editable sources are
 `representation-encoder.tex` and `references.bib`.
 
@@ -38,9 +51,17 @@ No LaTeX packages are added to the embedding runtime container.
 
 ## Sources
 
-Implementation claims were checked against `../include/embedding/` and the
+Implementation claims were checked against `../code/encoders/mtf_jepa_mae_vicreg/include/embedding/encoders/mtf_jepa_mae_vicreg/` and the
 project's documented validation results. The three bibliography entries link to
 the original JEPA, masked-autoencoder and VICReg papers as methodological
 background; their image benchmarks are not results for this encoder.
 
 See `vendor/PROVENANCE.md` for the formatting dependency.
+
+The implementation is organized under [code](../code/encoders/mtf_jepa_mae_vicreg/README.md),
+with [shared components](../code/shared/README.md) and the
+[RPB-MAE encoder](../code/encoders/raw_patch_bottleneck_mae/README.md).
+Its separate [implementation guidelines](../code/encoders/raw_patch_bottleneck_mae/RPB_MAE_implementation_guidelines.md)
+define architecture contracts, reuse boundaries and evaluation gates.
+See [environment coordination](ENVIRONMENT.md) for development commands from
+the repository root. Paper build commands above run from this `doc/` directory.

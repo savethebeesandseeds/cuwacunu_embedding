@@ -1,0 +1,214 @@
+# Reusable embedding evaluation
+
+This folder composes encoder adapters with the encoder-independent evaluation
+engine. The [evaluation policy](../../doc/EMBEDDING_EVALUATION_POLICY.md) defines
+the evidence and acceptance rules; the
+[implementation review](../../doc/EVALUATION_IMPLEMENTATION_REVIEW.md) records
+which requirements are implemented and which remain pending.
+
+## Ownership
+
+| Location | Responsibility |
+| --- | --- |
+| `code/shared/feature_evaluation` headers/source/tests | Provider contract, versioned cards, orchestration, fitted assets, paired comparisons and reports |
+| `code/shared/feature_harness` headers/source/tests | Controlled tasks and legal oracles, valid-row scaling/PCA, frozen probes, scoring and diagnostics |
+| `code/shared/feature_stress` headers/source/tests | Testing-only missingness masks, fixed fitted-readout predictions, conditional/full-population scores and robustness sidecars |
+| `code/shared/reconstruction_evaluation` headers/source/tests | Held-out targets, latent interventions, training-fit metric scaling, paired reconstruction errors and source-exchange uncertainty |
+| `code/encoders/<encoder>/evaluation_adapter.*` | Exact model/checkpoint/preprocessing, optional training on permitted observations, frozen extraction, surface/support semantics and adapter assets |
+| `code/encoders/<encoder>/reconstruction_adapter.*` | Training, exact served latent decoding, independently fitted metadata control and checkpoint assets for reconstruction providers |
+| `code/evaluation/src/main.cpp` | Explicit registry and CLI composition; currently baseline and RPB-MAE |
+| `cards/` | Human-readable protocol definitions; each run saves its instantiated card |
+
+The shorthand shared paths above refer to their files under
+`include/embedding/shared/`, `src/` and `tests/`. Shared sources compile without
+either encoder's include directory. Encoder training loss, optimizer and teacher
+logic stay inside their adapter/model workflow; probe fitting and labels stay
+inside the evaluator.
+
+~~~mermaid
+flowchart LR
+  M[Frozen encoder] --> A[Encoder adapter]
+  A -->|features, validity, semantics and provenance| E[Shared evaluation engine]
+  C[Versioned evaluation card] --> E
+  E --> R[Measurements and saved assets]
+~~~
+
+## Build and run
+
+Use the existing managed container from the project root:
+
+~~~powershell
+.\container.ps1 -Action exec -Command @('bash', 'code/scripts/task.sh', 'comparison', '-j4', 'evaluation', 'feature-harness', 'test-feature-harness')
+~~~
+
+The `evaluation` target builds `embedding_evaluate` with the registered baseline
+and RPB adapters. `feature-harness` builds `feature_harness` with the baseline
+adapter only, so minimum controls do not require the RPB model.
+`test-feature-evaluation` tests the shared engine using dummy feature providers;
+`test-feature-harness` includes those checks and the fitting/math tests.
+
+Inside the container, after the build:
+
+~~~bash
+eval_bin=/opt/cuwacunu_embedding/build/comparison/embedding_evaluate
+mkdir -p /embedding/output/runs
+run_parent="$(mktemp -d /embedding/output/runs/comparison-XXXXXX)"
+"$eval_bin" --output "$run_parent/results" --encoders baseline,rpb \
+  --seeds 101,202,303 --train-pairs 32 --validation-pairs 16 --test-pairs 32 \
+  --baseline-steps 8 --rpb-steps 20
+~~~
+
+`--encoders` selects adapters. `--baseline-config`, `--rpb-config` and
+`--rpb-checkpoint` configure only those adapters. Geometry, channel IDs/units,
+tasks, matched dimensions and compared methods come from the shared card:
+
+~~~bash
+"$eval_bin" --output /embedding/output/new-comparison \
+  --encoders baseline,rpb --channels 3 --history 32 --features 3 \
+  --matched-global-width 12 --matched-channel-width 36 \
+  --compare rpb_untrained_global,untrained_baseline_global,matched_global
+~~~
+
+The output directory must not exist. Repeat `--compare LEFT,RIGHT,TIER` to declare
+additional pairs; the first is the primary development comparison. Without it,
+the integration CLI declares named default pairs before generating data.
+An unrelated additional provider cannot change an existing pair's validity
+intersection. Each pair reports its own common population and effect interval.
+
+The runners `code/scripts/evaluate-minimum.sh` and `evaluate-rpb-mae.sh` allocate
+unique output directories. The latter now selects the separate evaluator.
+Run comparisons through `embedding_evaluate` directly. The RPB model executable
+owns prepare/train/embed and has no evaluator dependency or evaluation command.
+The original baseline `embedding evaluate` retains its historical protocol.
+
+## Add an encoder
+
+1. Add an encoder-owned adapter returning the shared `FeatureProviderFactory`.
+   A fit callback receives `ProviderFitInput`: permitted training observations,
+   shape, IDs, units, endpoint/interval, source IDs and seeds. It receives no
+   labels, hidden clean signals or held-out observations.
+2. Load exact frozen weights/preprocessing or fit only on that permitted input.
+   Expose named CPU `[B,D]` features plus bool `[B]` validity through
+   `FeatureMap`, with typed `SurfaceDescription` entries and persisted assets.
+3. Register that factory in the integration CLI/build. No split, PCA, probe,
+   scoring or report implementation needs to be copied into the encoder.
+4. Declare meaningful tasks, feature semantics, metadata access, dimensions,
+   comparisons and applicable correctness evidence in the card.
+
+Kinds are `global`, `channel_concatenation` and `control` for the current driver.
+Concatenation declares its complete semantic channel order and support rule;
+local versus contextual constituents are documented by the adapter. Names do
+not determine kind, dimensions or eligibility. True per-channel probes and
+inferred-support tracks need explicit future protocol extensions.
+
+The generic feature contract can wrap local, external or already exported
+embeddings. A model with a different input layout maps the common observations
+in its adapter and discloses that mapping. The current executable supports the
+four binary controlled tasks in [controlled pairs v2](cards/controlled_pairs_v2.md);
+it is not an implementation of every domain task in the policy.
+
+The optional `rpb_mixer` registration uses the same RPB adapter with its own
+surface namespace and requires an enabled mixer. Select `--encoders rpb,rpb_mixer`
+to fit both variants on the same permitted training observations and score
+declared paired comparisons. Its settings use `--rpb-mixer-config`,
+`--rpb-mixer-steps` or `--rpb-mixer-checkpoint`. Contextual surfaces have explicit
+`*_contextual_global` and `*_contextual_channel_concatenation` names; existing
+local surface names retain their meaning. Splits, fitting, probes and scoring
+remain in the shared engine. See the [mixer record](../encoders/raw_patch_bottleneck_mae/CHANNEL_MIXER_ADVANCE.md).
+
+## Fixed-readout missingness
+
+Add `--stress-sweep fixed-readout-v1` to a feature comparison to enable the
+separate [fixed-readout-stress-v1 card](cards/fixed_readout_stress_v1.md)
+development track. The default is `none`.
+The engine saves `stress-card.json` before generating data, then fits each
+provider, scaler, normalizer, PCA and readout once on the ordinary training
+split. All stress predictions reuse those fitted objects. Encoders need no
+stress-specific adapter or training objective.
+
+The sweep includes intact observations, additional coordinate deletion at
+10/30/60/90%, temporal blackouts covering 25/50/75% of history, each semantic
+channel absent separately, and all observations absent. Deletion masks are
+nested and shared within each source pair and across providers. Blackouts use
+one source-specific temporal anchor with a centered, edge-clamped interval.
+Corruption never adds observations; newly hidden raw cells are stored as zero.
+
+`stress-report.json` aggregates the sidecars under each run's `stress/`
+directory. Artifacts retain the corrupted batches, source identities and
+requested/actual retention. Scores include coverage, conditional accuracy and
+full-population correctness with abstentions counted as failure. Each declared
+architecture comparison uses its own common valid population and source-group
+uncertainty; stress-versus-intact comparisons also use matched populations.
+Signal surfaces with no observations abstain. A complete-channel concatenation
+abstains when any required channel is absent; a global surface may retain
+support from the remaining channels. Mask-only controls remain explicit controls.
+
+Stressed legal-raw oracle scores are descriptive. The ordinary fixture's oracle
+gate still applies before stress. Existing v2 reports and fitted assets retain
+their meaning; the optional sidecars do not revise archived measurements.
+See the [fresh-seed recipe](../encoders/raw_patch_bottleneck_mae/FRESH_SEEDS_AND_STRESS.md).
+
+## Held-out reconstruction
+
+`embedding_evaluate reconstruct` uses a separate shared provider contract and
+the [controlled-reconstruction-v1 card](cards/controlled_reconstruction_v1.md).
+The initial registered provider is RPB-MAE. Fit receives the same label-free
+training input as feature evaluation; decoding exposes raw-unit predictions and
+the exact served latent. The shared engine owns fixed hidden targets, source
+swaps, zero interventions, metric scaling, support and block bootstrap.
+
+Build/check through the existing container task runner:
+
+~~~bash
+bash code/scripts/task.sh comparison -j2 evaluation test-reconstruction-evaluation test-rpb-reconstruction
+env EVALUATION_BIN=/opt/cuwacunu_embedding/build/comparison/embedding_evaluate \
+  EMBEDDING_RUN_ROOT=/embedding/output/runs/comparison \
+  bash code/scripts/reconstruct-rpb-mae.sh
+~~~
+
+The wrapper allocates a unique output directory. See
+[decoder reliance](../encoders/raw_patch_bottleneck_mae/DECODER_RELIANCE.md) for
+the frozen training budget and measurements. Ordinary model binaries remain
+independent of evaluation. The minimum harness rejects reconstruction and does
+not link its engine or RPB provider.
+
+## Evidence limits
+
+The separate `embedding_projection_diagnostic` executable (`projection-diagnostic`)
+compares PCA and frozen random projections using explicit archived training and
+validation features. It links shared fitting code without an encoder.
+`embedding_global_bottleneck` (`global-bottleneck`) registers the three RPB
+trainer variants with the shared bottleneck experiment. Run its four-update
+`--gpu-check true --output NEW_DIRECTORY` gate before full training. The
+[experiment record](../encoders/raw_patch_bottleneck_mae/GLOBAL_BOTTLENECK_ADVANCE.md)
+fixes the recipe; `test-projection-diagnostic` and `test-global-bottleneck`
+validate the shared protocols independently of model implementation.
+
+The [validation-selected learning curve](cards/learning_curve_v1.md) has a separate
+`embedding_learning_curve` executable (`make learning-curve`). It preserves one
+optimizer through several update budgets, measures fixed train/validation
+reconstruction and selects a common budget before generating fresh test sources.
+Its RPB adapter requires CUDA training. Run `--gpu-check true --output NEW_DIRECTORY`
+first to verify actual GPU updates; then run with another new output directory.
+The [RPB record](../encoders/raw_patch_bottleneck_mae/LEARNING_CURVE.md) freezes the
+current recipe and contains its evidence.
+
+Reports are development evidence. They save the policy/protocol/card versions,
+source identities, fitted scalers/compression/probes, surface semantics,
+coverage, unsupported fits and paired grouped uncertainty.
+The generic feature card does not serialize a provider's full training recipe.
+Save a companion experiment plan with exact configuration content, actual seed
+and update overrides, source identities and command before generation/fitting.
+The RPB [frozen-probe record](../encoders/raw_patch_bottleneck_mae/FROZEN_PROBE_ADVANCE.md)
+contains a completed example. Adapter audits and assets retain the resolved
+settings and separate weight-training from preprocessing provenance.
+Insufficient valid training support or PCA rank is reported, not repaired by
+inventing features or silently changing widths.
+
+Confirmation, consumer acceptance thresholds, domain outage contracts and cost
+measurement remain pending. The optional fixed-readout sweep covers the current
+synthetic card. Decoder interventions have their own development
+track; reconstruction evidence does not establish frozen-feature usefulness.
+Architecture-specific correctness tests stay with each encoder. The refactor
+changes the development protocol to v2; earlier v1 reports retain their original
+measurements and interpretation.

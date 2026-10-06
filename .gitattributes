@@ -1,0 +1,6 @@
+# Linux entry points must survive a Windows checkout without CRLF conversion.
+*.sh text eol=lf
+Makefile text eol=lf
+# Keep Linux C++ sources consistent when staged from Windows.
+*.cpp text eol=lf
+*.h text eol=lf
