@@ -671,6 +671,8 @@ void register_inputs(const RetainedPoolingCohort &cohort,InputGuard &guard) {
 }
 void validate_run(const PairedPoolingRun &run,const NamedCurveFactory &candidate,const RetainedCurveSnapshotLoader &loader,const PoolingInitializationAudit &audit) {
   const auto &recipe=run.recipe;const auto &card=recipe.card;const auto &shape=card.shape;
+  require(safe_name(run.protocol_id) && run.fresh_test_namespace==run.protocol_id+"/fresh-testing" &&
+      run.fresh_test_stream!=0,"paired protocol/fresh-testing namespace/stream contract");
   require(card.version==2 && card.policy_version=="1.2" && card.stage=="development" && card.tasks==std::vector<Task>{Task::lag_sign},"lag-only policy1.2 development card required");
   require(shape.channel_count>=2 && shape.history_length>=8 && shape.input_width>0 && shape.dtype==torch::kFloat64 && shape.device.is_cpu() &&
       shape.channel_count<=std::numeric_limits<int64_t>::max()/shape.history_length && shape.channel_count*shape.history_length<=std::numeric_limits<int64_t>::max()/shape.input_width/2,"geometry/precision overflow");
@@ -712,14 +714,14 @@ EvaluationCard fixed_stress_card(const EvaluationCard &input) {
 }
 std::string card_json(const PairedPoolingRun &run,const NamedCurveFactory &candidate) {
   const auto &r=run.recipe;const auto &c=r.card;std::ostringstream out;out << std::setprecision(17)
-      << "{\"protocol\":\"paired-pooling-v1\",\"policy_version\":\"1.2\",\"stage\":\"development\",\"reference_tag\":" << quote(run.reference_tag)
+      << "{\"protocol\":" << quote(run.protocol_id) << ",\"policy_version\":\"1.2\",\"stage\":\"development\",\"reference_tag\":" << quote(run.reference_tag)
       << ",\"candidate_tag\":" << quote(run.candidate_tag) << ",\"candidate_recipe\":" << quote(candidate.recipe)
       << ",\"source_fingerprint\":" << quote(r.source_fingerprint) << ",\"git_head\":" << quote(r.git_head) << ",\"git_dirty\":" << quote(r.git_dirty)
       << ",\"masters\":" << numbers(c.seeds) << ",\"task\":\"lag_sign\",\"shape\":[" << c.shape.channel_count << ',' << c.shape.history_length << ',' << c.shape.input_width
       << "],\"channel_ids\":" << numbers(c.channel_ids) << ",\"feature_units\":" << quote(c.feature_units) << ",\"sampling_interval\":" << c.sampling_interval
       << ",\"train_pairs\":" << c.train_pairs << ",\"validation_pairs\":" << c.validation_pairs << ",\"test_pairs\":" << c.test_pairs << ",\"threads\":" << c.threads
       << ",\"candidate_milestones\":[0," << run.completed_updates << "],\"completed_updates\":" << run.completed_updates << ",\"patch_length\":" << r.patch_length
-      << ",\"export_width\":" << r.export_width << ",\"post_encoder_pca\":false,\"fresh_test_namespace\":\"paired-pooling-v1/fresh-testing\",\"fresh_test_stream\":" << quote(std::to_string(run.fresh_test_stream))
+      << ",\"export_width\":" << r.export_width << ",\"post_encoder_pca\":false,\"fresh_test_namespace\":" << quote(run.fresh_test_namespace) << ",\"fresh_test_stream\":" << quote(std::to_string(run.fresh_test_stream))
       << ",\"primary_cases\":[\"intact\",\"random_dropout_030\"],\"primary_pair\":\"candidate minus reference\",\"primary_head\":\"ridge\",\"missing_rate\":" << r.missing_rate
       << ",\"fixed_budget_no_selection\":true,\"old_test_access\":false,\"reused_validation_is_diagnostic\":true,\"retained_readout_refits\":0,\"retained_transform_refits\":0"
       << ",\"candidate_fit\":\"TRAIN-only exact native export; outer normalizer once per checkpoint; heads paired by declared seed and width; no encoder PCA\""
@@ -912,7 +914,7 @@ void run_paired_pooling(const PairedPoolingRun &run,const NamedCurveFactory &can
   if(r.stress_sweep)write_text(output/"stress-card.json",fixed_readout_stress_card_json(fixed_stress_card(r.card)));
   InputGuard guard;for(const auto &cohort:run.cohorts)register_inputs(cohort,guard);write_text(output/"input-manifest.json",guard.manifest());
   std::vector<Cohort> cohorts;cohorts.reserve(run.cohorts.size());std::set<std::string> universe;
-  std::ostringstream validation;validation << "{\"protocol\":\"paired-pooling-v1\",\"policy_version\":\"1.2\",\"stage\":\"development\",\"fixed_budget\":" << run.completed_updates << ",\"cohorts\":[";
+  std::ostringstream validation;validation << "{\"protocol\":" << quote(run.protocol_id) << ",\"policy_version\":\"1.2\",\"stage\":\"development\",\"fixed_budget\":" << run.completed_updates << ",\"cohorts\":[";
   bool first=true;
   for(const auto &retained:run.cohorts) {
     Cohort cohort;cohort.retained=retained;cohort.directory=output/("seed-"+std::to_string(retained.master_seed)+"-lag_sign");require(fs::create_directory(cohort.directory),"paired cohort directory exists");
@@ -980,10 +982,10 @@ void run_paired_pooling(const PairedPoolingRun &run,const NamedCurveFactory &can
   write_text(output/"validation-report.json",validation.str()+"]}");guard.verify();
   // This fixed budget is not selected using reused validation or fresh TEST.
   // Close+fsync file and directory make the admission boundary durable.
-  durable_selection(output/"comparison-manifest.json","{\"protocol\":\"paired-pooling-v1\",\"policy_version\":\"1.2\",\"stage\":\"development\",\"completed_updates\":"+
+  durable_selection(output/"comparison-manifest.json","{\"protocol\":"+quote(run.protocol_id)+",\"policy_version\":\"1.2\",\"stage\":\"development\",\"completed_updates\":"+
       std::to_string(run.completed_updates)+",\"budget_policy\":\"predeclared fixed positive budget, no validation search\",\"all_validation_complete\":true,\"all_retained_witnesses_exact\":true,\"all_testing_after_manifest\":true,\"fresh_test_stream\":"+
       quote(std::to_string(run.fresh_test_stream))+",\"validation_report\":\"validation-report.json\",\"input_manifest\":\"input-manifest.json\",\"source_fingerprint\":"+quote(r.source_fingerprint)+'}');
-  std::ostringstream report,stress;report << "{\"protocol\":\"paired-pooling-v1\",\"policy_version\":\"1.2\",\"stage\":\"development\",\"card\":\"paired-pooling-card.json\",\"comparison_manifest\":\"comparison-manifest.json\",\"source_fingerprint\":" << quote(r.source_fingerprint)
+  std::ostringstream report,stress;report << "{\"protocol\":" << quote(run.protocol_id) << ",\"policy_version\":\"1.2\",\"stage\":\"development\",\"card\":\"paired-pooling-card.json\",\"comparison_manifest\":\"comparison-manifest.json\",\"source_fingerprint\":" << quote(r.source_fingerprint)
       << ",\"fixed_updates\":" << run.completed_updates << ",\"reference_tag\":" << quote(run.reference_tag) << ",\"candidate_tag\":" << quote(run.candidate_tag) << ",\"retained_transform_refits\":0,\"retained_readout_refits\":0,\"testing_runs\":[";
   stress << "{\"protocol\":\"fixed-readout-stress-v1\",\"primary_cases\":[\"intact\",\"random_dropout_030\"],\"stage\":\"development\",\"runs\":[";
   bool first_test=true,first_stress=true;

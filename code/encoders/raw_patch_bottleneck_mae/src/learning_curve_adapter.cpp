@@ -7,6 +7,7 @@
 #include <torch/cuda.h>
 
 #include <algorithm>
+#include <array>
 #include <chrono>
 #include <cmath>
 #include <filesystem>
@@ -62,6 +63,7 @@ std::string path_key(const std::string &path) {
 
 struct CurveState {
   Settings settings;
+  ContextDeletionOptions context_options;
   ev::ProviderFitInput fit;
   Dataset training;
   FrozenScaler scaler;
@@ -71,6 +73,8 @@ struct CurveState {
   ev::CurveProgress progress;
   ev::CurveLossPoint last_loss;
   std::map<std::string, std::pair<int64_t, int64_t>> saved;
+  std::array<int64_t, 3> context_counts{0, 0, 0}; // Requested, actual, restored.
+  std::map<std::string, std::array<int64_t, 3>> saved_context_counts;
   std::map<std::string, std::string> audit;
   uint64_t initialization_seed{0};
 };
@@ -114,6 +118,7 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
   checkpoint.dataset_id = state->training.dataset_id;
   checkpoint.scaler_fit_dataset_id = state->training.dataset_id;
   checkpoint.source_fingerprint = workflow_source_fingerprint();
+  if (state->context_options.enabled) checkpoint.training_policy_id = context_deletion::policy_id;
   save_checkpoint(path, checkpoint, *state->optimizer);
   save_dataset(path + ".training-raw.pt", state->training);
   save_scaler(path + ".scaler.pt", state->scaler, state->settings.model,
@@ -133,8 +138,16 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
   const auto report = progress_report(state);
   audit.write("weights_changed", torch::tensor(report.weights_changed, torch::kBool), true);
   audit.write("finite_gradients", torch::tensor(report.finite_gradients, torch::kBool), true);
+  if (state->context_options.enabled) {
+    audit.write("context_deletion_ratio_value", torch::tensor(context_deletion::ratio, torch::kFloat64), true);
+    audit.write("context_deletion_stream_value", torch::tensor(static_cast<int64_t>(context_deletion::stream)), true);
+    audit.write("context_requested_deleted_coordinates", torch::tensor(state->context_counts[0]), true);
+    audit.write("context_actual_deleted_coordinates", torch::tensor(state->context_counts[1]), true);
+    audit.write("context_restored_coordinates", torch::tensor(state->context_counts[2]), true);
+  }
   embedding::archive::save_archive(path + ".audit.pt", audit);
   state->saved.emplace(key, std::make_pair(checkpoint.attempted_steps, checkpoint.completed_steps));
+  if (state->context_options.enabled) state->saved_context_counts.emplace(key, state->context_counts);
 }
 
 ev::CurveSnapshot snapshot_point(const std::shared_ptr<CurveState> &state,
@@ -152,6 +165,8 @@ ev::CurveSnapshot snapshot_point(const std::shared_ptr<CurveState> &state,
       checkpoint->attempted_steps == saved->second.first &&
       checkpoint->completed_steps == saved->second.second,
       "saved point settings, scaler, training identity or counters differ from the trainer");
+  require(checkpoint->training_policy_id == (state->context_options.enabled ? context_deletion::policy_id : ""),
+      "saved training policy differs from the trainer");
   checkpoint->model->eval();
   for (auto &parameter : checkpoint->model->parameters()) parameter.set_requires_grad(false);
   EvaluationOptions options;
@@ -163,6 +178,9 @@ ev::CurveSnapshot snapshot_point(const std::shared_ptr<CurveState> &state,
   ev::CurveSnapshot snapshot;
   snapshot.features.provenance = frozen.provenance +
       "; exact saved continuous CUDA training point; no matched random provider surface";
+  if (state->context_options.enabled)
+    snapshot.features.provenance += "; model_tag=RPB-v6; training_policy=" + std::string(context_deletion::policy_id) +
+        "; inference remains ordinary mode2/mixer1/native32";
   snapshot.features.audit_fields = frozen.audit_fields;
   for (auto field = snapshot.features.audit_fields.begin(); field != snapshot.features.audit_fields.end();) {
     if (field->first.rfind("curve_checkpoint_untrained_", 0) == 0)
@@ -176,14 +194,25 @@ ev::CurveSnapshot snapshot_point(const std::shared_ptr<CurveState> &state,
   snapshot.features.audit_fields["completed_steps"] = std::to_string(saved->second.second);
   snapshot.features.audit_fields["snapshot_policy"] =
       "independent_CPU_feature_model_and_CUDA_reconstruction_model;frozen_train_scaler;no_refit";
+  if (state->context_options.enabled) {
+    const auto &counts = state->saved_context_counts.at(path_key(path));
+    snapshot.features.audit_fields["context_requested_deleted_coordinates"] = std::to_string(counts[0]);
+    snapshot.features.audit_fields["context_actual_deleted_coordinates"] = std::to_string(counts[1]);
+    snapshot.features.audit_fields["context_restored_coordinates"] = std::to_string(counts[2]);
+  }
   snapshot.features.surfaces.emplace("curve_global", frozen.surfaces.at(base + "_global"));
   snapshot.features.surfaces.emplace("curve_channel_concatenation",
       frozen.surfaces.at(base + "_channel_concatenation"));
-  snapshot.features.extract = [frozen, base](const embedding::Batch &batch) {
+  snapshot.features.extract = [frozen, base, enabled = state->context_options.enabled](const embedding::Batch &batch) {
     const auto all = frozen.extract(batch);
     ev::FeatureMap result;
     result.emplace("curve_global", all.at(base + "_global"));
     result.emplace("curve_channel_concatenation", all.at(base + "_channel_concatenation"));
+    if (enabled)
+      for (auto &[name, surface] : result) {
+        (void)name;
+        surface.provenance += "; model_tag=RPB-v6; training_policy=" + std::string(context_deletion::policy_id);
+      }
     return result;
   };
   // Ordinary checkpoint, raw/scaler companions and producer audit were saved
@@ -218,10 +247,17 @@ ev::CurveSnapshot snapshot_point(const std::shared_ptr<CurveState> &state,
 } // namespace
 
 ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings) {
+  return make_learning_curve_trainer(settings, ContextDeletionOptions{});
+}
+
+ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, ContextDeletionOptions options) {
   validate_settings(settings);
   require(settings.model.device.is_cuda(), "learning-curve training requires an explicit CUDA device");
   require(torch::cuda::is_available(), "CUDA is unavailable; CPU fallback is not permitted");
-  return [settings](const ev::ProviderFitInput &fit) {
+  require(!options.enabled || (settings.model.global_bottleneck_mode == 2 &&
+      settings.model.channel_mixer_layers == 1 && settings.model.export_width == 32),
+      "context deletion requires the unchanged mode2/mixer1/native32 architecture");
+  return [settings, options](const ev::ProviderFitInput &fit) {
     require(fit.shape.channel_count == settings.model.channel_count &&
         fit.shape.history_length == settings.model.history_length &&
         fit.shape.input_width == settings.model.input_width,
@@ -251,6 +287,7 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings) {
 
     auto state = std::make_shared<CurveState>();
     state->settings = settings;
+    state->context_options = options;
     state->settings.seed = static_cast<int64_t>(fit.seed & 0x7fffffffffffffffULL);
     state->fit = fit;
     state->fit.training_observations.data = fit.training_observations.data.detach().clone();
@@ -300,6 +337,17 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings) {
         {"source_fingerprint_scope", "ordinary_checkpoint_field=core_writer;companion_audit_training_producer=evaluation_source"},
         {"trace_policy", "first_completed_update;every_log_every_updates;queried_milestone_endpoints_persist_as_cumulative_prefix"},
         {"sampling_policy", "with_replacement_counter_rows;sampled_rows_includes_no_update_attempts"}};
+    if (options.enabled) {
+      state->audit.emplace("model_tag", "RPB-v6");
+      state->audit.emplace("training_policy_id", context_deletion::policy_id);
+      state->audit.emplace("context_deletion_ratio", "0.30");
+      state->audit.emplace("context_deletion_stream", "0x6374782d64726f70");
+      state->audit.emplace("context_deletion_rng_policy", context_deletion::rng_policy);
+      state->audit.emplace("context_deletion_repair_policy", context_deletion::repair_policy);
+      state->audit.emplace("context_deletion_visibility_policy", context_deletion::visibility_policy);
+      state->audit.emplace("context_deletion_count_policy", "cumulative-requested/actual/restored-coordinate-counts;eligible-forward-batches-only");
+      state->audit.emplace("context_deletion_resume_policy", "fresh-continuous-only;ordinary-workflow-resume-rejected;no-augmented-resume-API");
+    }
 
     ev::CurveTrainer trainer;
     trainer.audit_fields = state->audit;
@@ -334,7 +382,20 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings) {
           state->progress.sampled_rows += state->settings.batch_size;
           if (!mask.eligible_channels.any().item<bool>()) continue;
           state->optimizer->zero_grad();
-          const auto output = state->model->forward(batch, mask.hidden);
+          ForwardOutput output;
+          if (state->context_options.enabled) {
+            const auto context = context_deletion::make_plan(mask, batch.channel_ids,
+                state->settings.model, state->settings.seed, attempt);
+            const std::array<int64_t, 3> counts{context.requested_count, context.actual_count, context.restored_count};
+            for (size_t i = 0; i < counts.size(); ++i) {
+              require(state->context_counts[i] <= std::numeric_limits<int64_t>::max() - counts[i],
+                  "cumulative context-deletion counter overflow");
+              state->context_counts[i] += counts[i];
+            }
+            output = context_deletion::training_forward(*state->model, batch, mask, context);
+          } else {
+            output = state->model->forward(batch, mask.hidden);
+          }
           state->progress.last_loss_cuda = output.loss.is_cuda();
           require(state->progress.last_loss_cuda && output.eligible_example_count > 0 &&
               torch::isfinite(output.loss).all().item<bool>(), "invalid/non-CUDA training loss");

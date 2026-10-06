@@ -194,7 +194,14 @@ harder declared tasks or the intended consumer dataset instead of optimizing a
 saturated score. Consumer confirmation requires the dataset/task, chronology,
 support, thresholds and cost contract to be defined before acceptance.
 
-## Next diagnostic: continue v5 on TRAIN and VALIDATION only
+## Completed diagnostic: continue v5 on TRAIN and VALIDATION only
+
+The [optimization diagnostic](OPTIMIZATION_DIAGNOSTIC.md) is complete and
+independently audited. Mean linear VALIDATION accuracy was84.38% at512,
+84.38% at1024 and82.81% at2048, while reconstruction error improved at both
+new budgets. Longer training did not improve mean linear access under the fixed
+heads. This does not change the fixed512 rejection or establish universal
+failure at every possible budget. The following records its frozen procedure.
 
 Save and commit the fixed512 milestone before further source work. A separate
 prospective recipe may resume each exact saved v5 point512 model, AdamW state,
@@ -207,6 +214,51 @@ optimizer, preprocessing or sampling/mask progression.
 This is an optimization diagnosis using known VALIDATION, fixed-query
 TRAIN/VALIDATION reconstruction and native linear access. Do not open or
 rescore TEST/stress, introduce a replacement seed, alter the fixed512 rejection,
-or promote v5 based on it. Freeze its own card before running; no follow-up
-has been measured yet. Any later trained-budget comparison needs its own
+or promote v5 based on it. Its own card was frozen before running. Any later trained-budget comparison needs its own
 declared reference/budget and new TEST namespace before unseen scoring.
+
+## Completed bounded candidate: RPB-v6 context deletion
+
+The [context-deletion advance](CONTEXT_DELETION_ADVANCE.md) is complete and
+independently audited. Timing TEST means are98.96%/100% intact and97.14%/99.65%
+with30% additional deletion (linear/neural), versus93.49%/96.35% and86.72%/93.06%
+for frozen RPB-v4, with full coverage. The quality guards pass, but mean original
+fixed-query TRAIN/VALIDATION MAE worsens to.08552/.08577 from.06160/.06349.
+This unresolved reconstruction tradeoff prevents promotion. The following
+records the completed card.
+
+Keep the RPB-v4 inference architecture, all225,805 parameters and exact served
+32-number decoder input. Change only its training view: remove30% of originally
+visible coordinates through a separate deterministic counter stream, repairing
+only extra deletion to retain two original visible patch groups for each target
+eligible channel. Keep the original target queries, loss, scaler, batches,
+optimizer,512-update budget and classifier recipes.
+
+Freeze [context-deletion-v1](../../evaluation/cards/context_deletion_v1.md)
+before measurement. Reuse the three retained TRAIN/VALIDATION cohorts, paired
+point-zero weights and frozen RPB-v4/control readouts. Preserve enabled-context
+CUDA test evidence and source identity before the new TEST namespace is opened.
+Ordinary training must reject resuming a checkpoint carrying the new training
+policy; ordinary inference may serve its normal native32 embedding.
+
+Both mean linear primaries (intact and30% additional deletion) must improve,
+with equal coverage, no lower worst-master primary score and no worse mean
+TRAIN/VALIDATION fixed-query reconstruction error. Neural and other stress
+results stay secondary. Preserve every seed and audit the artifacts before any
+explicit promotion.
+
+## Next diagnostic: RPB-v6 optimization with the same training view
+
+Freeze a separate TRAIN/known VALIDATION-only card for absolute512/1024/2048.
+Keep the exact30% context policy, native32, all three cohorts and fixed heads.
+Use the existing continuous trainer with ceiling2048: deterministically replay
+to512, verify exact weights/buffers/AdamW/scaler/absolute counters and context
+deletion counts against the saved C checkpoints, then advance the same live
+optimizer. Record replay cost separately and retain every budget/seed.
+
+Measure whether reconstruction reaches the frozen v4 fixed512 reference while
+intact and moderate-missingness native linear VALIDATION access is preserved.
+Use an explicitly declared VALIDATION corruption diagnostic; preserve the
+existing TEST-only stress protocol's semantics. No TEST reopening, checkpoint
+selection, head tuning or promotion occurs in this diagnostic. The fixed512
+record and its reconstruction-guard failure remain unchanged.

@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "registered_date": "2026-10-06",
+  "registered_date": "2026-10-07",
   "active_research_tag": "RPB-v4",
-  "bounded_candidate_tag": null,
-  "last_measured_candidate_tag": "RPB-v5",
-  "tag_scope": "encoder design; exact trained-instance identity is recorded separately",
+  "bounded_candidate_tag": "RPB-v6",
+  "last_measured_candidate_tag": "RPB-v6",
+  "tag_scope": "encoder design and frozen training-view milestones; exact trained-instance identity is recorded separately",
   "versions": [
     {
       "tag": "MTF-v1",
@@ -72,12 +72,34 @@
       "measured_completed_updates": 512,
       "decision_scope": "claimed advance rejected at fixed512; not a universal architecture rejection",
       "measured_record": "code/encoders/raw_patch_bottleneck_mae/PAIRED_POOLING_ADVANCE.md",
-      "planned_diagnostic": "separately frozen TRAIN/VALIDATION-only exact512-to-1024-to-2048 continuation; no TEST/stress reopening or promotion",
+      "optimization_diagnostic_status": "measured: lower reconstruction error, no mean native linear VALIDATION gain; no TEST/stress reopening or promotion",
+      "optimization_diagnostic_record": "code/encoders/raw_patch_bottleneck_mae/OPTIMIZATION_DIAGNOSTIC.md",
       "configuration_template": "code/encoders/raw_patch_bottleneck_mae/config/learned_patch_global.conf",
       "native_global_size": 32,
       "channel_mixer_layers": 1,
       "global_bottleneck_mode": 3,
       "reconstruction_signal": "exact learned original-patch-state global export",
+      "historical_global_comparison_name": null
+    },
+    {
+      "tag": "RPB-v6",
+      "family": "raw_patch_bottleneck_mae",
+      "description": "Global bottleneck with context deletion",
+      "status": "measured_primary_gains_unresolved_reconstruction_tradeoff",
+      "inference_architecture_tag": "RPB-v4",
+      "measured_protocol": "context-deletion-v1",
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/CONTEXT_DELETION_ADVANCE.md",
+      "decision_scope": "intact and drop30 linear means/worst-master/coverage pass; TRAIN and VALIDATION query-MAE guards fail; not promoted",
+      "optimization_diagnostic_status": "planned: unchanged-policy deterministic replay then TRAIN/known VALIDATION-only longer-budget curve; no TEST or promotion",
+      "configuration_template": "code/encoders/raw_patch_bottleneck_mae/config/learned_global.conf",
+      "native_global_size": 32,
+      "channel_mixer_layers": 1,
+      "global_bottleneck_mode": 2,
+      "reconstruction_signal": "exact learned global export; original reconstruction targets unchanged",
+      "training_policy_id": "rpb-training-context-deletion-v1",
+      "context_coordinate_deletion_rate": 0.30,
+      "measured_completed_updates": 512,
+      "ordinary_resume": "rejected; matching context adapter required",
       "historical_global_comparison_name": null
     }
   ]

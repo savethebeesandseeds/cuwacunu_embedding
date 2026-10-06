@@ -94,6 +94,9 @@ struct Checkpoint {
   std::string source_fingerprint;
   std::string git_head;
   std::string git_dirty;
+  // Empty means the ordinary training loop. Nonempty policies may share these
+  // inference tensors, but require their matching training adapter to resume.
+  std::string training_policy_id;
 };
 
 Settings default_settings();

@@ -31,6 +31,13 @@ improving classification validation. The earlier
 [native baseline comparison](code/encoders/raw_patch_bottleneck_mae/NATIVE_BASELINE_COMPARISON.md)
 remains a separate archived TRAIN/VALIDATION record.
 These are synthetic development results, not consumer acceptance.
+The [direct-pooling comparison](code/encoders/raw_patch_bottleneck_mae/PAIRED_POOLING_ADVANCE.md)
+and its [longer-training diagnostic](code/encoders/raw_patch_bottleneck_mae/OPTIMIZATION_DIAGNOSTIC.md)
+did not improve the declared linear primaries. The audited
+[RPB-v6 advance](code/encoders/raw_patch_bottleneck_mae/CONTEXT_DELETION_ADVANCE.md)
+improves intact and moderate-missingness timing accuracy by changing the training
+view while keeping RPB-v4's inference model. Reconstruction error worsens, so
+RPB-v4 stays active pending a focused diagnosis of that tradeoff.
 Older designs remain available as archived references. See the
 [version registry](doc/EMBEDDING_VERSIONS.md),
 [results reporting standard](doc/RESULTS_REPORTING_STANDARD.md), and

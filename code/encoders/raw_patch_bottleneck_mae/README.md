@@ -24,6 +24,20 @@ and the validation chronology below retain their original recipes. Mode-0
 loader/configuration defaults remain compatible, and this research designation
 does not assert consumer acceptance.
 
+The [RPB-v5 comparison](PAIRED_POOLING_ADVANCE.md) and
+[optimization diagnostic](OPTIMIZATION_DIAGNOSTIC.md) are complete. Direct patch
+pooling did not improve the fixed-budget linear primaries; additional training
+improved reconstruction without improving mean linear validation accuracy.
+The audited candidate is **RPB-v6 — Global bottleneck with context deletion**.
+It keeps the RPB-v4 architecture and serves the same native32 vector, while
+training with fewer visible coordinates and unchanged reconstruction targets.
+Its [measured advance](CONTEXT_DELETION_ADVANCE.md) improves both linear accuracy
+primaries with full coverage, but reconstruction worsens and promotion remains
+blocked by the declared guard. Its [separate card](../../evaluation/cards/context_deletion_v1.md)
+fixed the recipe before scoring. Policy-tagged checkpoints remain normal inference
+checkpoints; ordinary training rejects their resume to prevent losing the
+training view silently. The dedicated experiment currently starts fresh.
+
 The [embedding evaluation policy](../../../doc/EMBEDDING_EVALUATION_POLICY.md)
 governs shared protocols, reporting and acceptance. The
 [architecture and evaluation specification](RPB_MAE_architecture_and_evaluation_spec.md)

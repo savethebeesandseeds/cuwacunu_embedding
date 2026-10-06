@@ -427,6 +427,9 @@ void save_checkpoint(const std::string &path,const Checkpoint &checkpoint,torch:
   require(checkpoint.model && checkpoint.attempted_steps>=checkpoint.completed_steps &&
       checkpoint.completed_steps>=0,"invalid checkpoint model/counters");
   require(!checkpoint.schema_id.empty() && !checkpoint.dataset_id.empty(),"missing checkpoint dataset provenance");
+  require(checkpoint.training_policy_id.empty() || (checkpoint.training_policy_id.size()<=128 &&
+      checkpoint.training_policy_id.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-")==std::string::npos),
+      "invalid checkpoint training policy identifier");
   torch::serialize::OutputArchive archive,weights,state,scaler;
   envelope(archive,"rpb_training_checkpoint_v1");
   write_text(archive,"output_semantics",output_semantics(checkpoint.settings.model));
@@ -442,6 +445,8 @@ void save_checkpoint(const std::string &path,const Checkpoint &checkpoint,torch:
   write_text(archive,"source_fingerprint_algorithm","sha256-source-manifest-v1");
   write_text(archive,"source_fingerprint",RPB_SOURCE_ID);write_text(archive,"git_head",RPB_GIT_HEAD);
   write_text(archive,"git_dirty",RPB_GIT_DIRTY);
+  // Omit the optional field on ordinary checkpoints, preserving old schemas.
+  if(!checkpoint.training_policy_id.empty())write_text(archive,"training_policy_id",checkpoint.training_policy_id);
   archive.write("attempted_steps",torch::tensor(checkpoint.attempted_steps),true);
   archive.write("completed_steps",torch::tensor(checkpoint.completed_steps),true);
   write_text(archive,"rng_policy","splitmix64-counter-rows-masks-torch-attempt-v1");
@@ -471,6 +476,13 @@ Checkpoint load_checkpoint(const std::string &path,const torch::Device &device) 
   checkpoint.scaler_fit_dataset_id=read_text(archive,"scaler_fit_dataset_id");
   checkpoint.source_fingerprint=read_text(archive,"source_fingerprint");
   checkpoint.git_head=read_text(archive,"git_head");checkpoint.git_dirty=read_text(archive,"git_dirty");
+  torch::Tensor policy_tag;
+  if(archive.try_read("training_policy_id",policy_tag,true)) {
+    checkpoint.training_policy_id=tensor_text(policy_tag);
+    require(!checkpoint.training_policy_id.empty() && checkpoint.training_policy_id.size()<=128 &&
+        checkpoint.training_policy_id.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-")==std::string::npos,
+        "invalid checkpoint training policy identifier");
+  }
   require(!checkpoint.schema_id.empty() && !checkpoint.dataset_id.empty(),"checkpoint lacks dataset provenance");
   checkpoint.attempted_steps=read_count(archive,"attempted_steps");checkpoint.completed_steps=read_count(archive,"completed_steps");
   require(checkpoint.completed_steps<=checkpoint.attempted_steps,"checkpoint counters are inconsistent");
@@ -517,7 +529,11 @@ int run_cli(int argc,char **argv) {
     require(resume.empty() || (!args.count("--config") && !args.count("--seed") && !args.count("--scaler")),
             "resume restores config, seed and scaler; omit --config/--seed/--scaler");
     Checkpoint checkpoint;
-    if(!resume.empty())checkpoint=load_checkpoint(resume,device_from(optional(args,"--device","cpu")));
+    if(!resume.empty()) {
+      checkpoint=load_checkpoint(resume,device_from(optional(args,"--device","cpu")));
+      require(checkpoint.training_policy_id.empty(),
+          "ordinary train cannot resume this saved training policy; use its matching training adapter: "+checkpoint.training_policy_id);
+    }
     else checkpoint.settings=args.count("--config")?read_settings(args.at("--config")):default_settings();
     auto &settings=checkpoint.settings;
     if(args.count("--device"))settings.model.device=device_from(args.at("--device"));
@@ -615,6 +631,7 @@ int run_cli(int argc,char **argv) {
     write_text(archive,"scaler_fit_dataset_id",checkpoint.scaler_fit_dataset_id);
     write_text(archive,"checkpoint_source_fingerprint",checkpoint.source_fingerprint);
     write_text(archive,"inference_source_fingerprint",RPB_SOURCE_ID);
+    if(!checkpoint.training_policy_id.empty())write_text(archive,"training_policy_id",checkpoint.training_policy_id);
     archive.write("z_local",torch::cat(local),true);archive.write("z_global",torch::cat(global),true);
     if(!contextual.empty()) {
       archive.write("z_contextual",torch::cat(contextual),true);

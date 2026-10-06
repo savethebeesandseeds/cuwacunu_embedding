@@ -272,6 +272,41 @@ void wrappers(const Fixture &input) {
       !fs::exists(directory/"invalid-support.pt") && !fs::exists(directory/"invalid-width.pt"),"invalid native wrapper input produced an archive");
   torch::set_num_threads(original_threads);
 }
+void custom_protocol(const Fixture &input) {
+  ev::PairedPoolingRun defaults;
+  test::check(defaults.protocol_id=="paired-pooling-v1" &&
+      defaults.fresh_test_namespace=="paired-pooling-v1/fresh-testing" &&
+      defaults.fresh_test_stream==0x7070763174657374ULL,"historical paired protocol defaults changed");
+  auto run=input.run;run.recipe.output_directory+="-context";run.recipe.stress_sweep=false;
+  run.protocol_id="context-deletion-v1";run.fresh_test_namespace="context-deletion-v1/fresh-testing";
+  run.fresh_test_stream=0x6374763174657374ULL;run.candidate_tag="RPB-v6";
+  auto recipe=input.candidate_recipe;recipe.output_directory=run.recipe.output_directory;
+  const auto audits=std::make_shared<Audits>();
+  ev::run_paired_pooling(run,factory("candidate_dummy",recipe,Mode::ordinary,audits),loader(input),initialization());
+  const fs::path output(run.recipe.output_directory);
+  for(const auto &name:{"paired-pooling-card.json","validation-report.json","comparison-manifest.json","report.json"}) {
+    const auto ledger=read(output/name);
+    test::check(ledger.find("\"protocol\":\"context-deletion-v1\"")!=std::string::npos &&
+        ledger.find("\"protocol\":\"paired-pooling-v1\"")==std::string::npos,"custom protocol ledger retained historical identity");
+  }
+  test::check(read(output/"paired-pooling-card.json").find("\"fresh_test_namespace\":\"context-deletion-v1/fresh-testing\"")!=std::string::npos,
+      "custom fresh-testing namespace was not serialized");
+  for(const auto &cohort:run.cohorts) {
+    const auto directory=output/("seed-"+std::to_string(cohort.master_seed)+"-lag_sign");
+    const auto fresh=ev::make_controlled_test_dataset(ev::Task::lag_sign,run.recipe.card.shape,
+        run.recipe.card.test_pairs,ev::stream_seed(cohort.master_seed,run.fresh_test_stream));
+    test::close(tensor(directory/"controlled-testing.pt","observed"),fresh.observed.data,"custom protocol used historical TEST stream",0,0);
+    test::check(!torch::equal(tensor(directory/"controlled-testing.pt","source_ids_json"),
+        tensor(fs::path(input.run.recipe.output_directory)/directory.filename()/"controlled-testing.pt","source_ids_json")),
+        "distinct protocol namespace reused historical TEST sources");
+  }
+  run.recipe.output_directory+="-invalid";recipe.output_directory=run.recipe.output_directory;
+  auto invalid_audits=std::make_shared<Audits>();run.fresh_test_namespace="paired-pooling-v1/fresh-testing";
+  rejects([&]{ev::run_paired_pooling(run,factory("candidate_dummy",recipe,Mode::ordinary,invalid_audits),loader(input),initialization());},"mismatched protocol namespace accepted");
+  test::check(!fs::exists(run.recipe.output_directory) && invalid_audits->empty(),"invalid namespace reached data/provider creation");
+  run.fresh_test_namespace="context-deletion-v1/fresh-testing";run.protocol_id="invalid/protocol";
+  rejects([&]{ev::run_paired_pooling(run,factory("candidate_dummy",recipe,Mode::ordinary,invalid_audits),loader(input),initialization());},"unsafe protocol identity accepted");
+}
 void ordinary(const fs::path &temporary) {
   auto input=fixture(temporary/"ordinary");
   std::map<std::string,std::string> originals;
@@ -317,6 +352,7 @@ void ordinary(const fs::path &temporary) {
     }
   }
   wrappers(input);
+  custom_protocol(input);
   rejects([&]{ev::run_paired_pooling(input.run,factory("candidate_dummy",input.candidate_recipe,Mode::ordinary,input.candidate_audits),loader(input),initialization());},"existing paired output overwritten");
 }
 void failures(const fs::path &temporary) {

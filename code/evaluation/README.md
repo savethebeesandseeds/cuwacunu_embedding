@@ -19,6 +19,13 @@ still compute their compressed tiers, and the global driver selects using
 PCA12. A native-looking table does not change that selection rule. Older cards
 and results remain governed by their original declared versions.
 
+The shared [paired comparison](cards/paired_pooling_v1.md) engine also hosts
+[context-deletion-v1](cards/context_deletion_v1.md) through encoder-owned training
+and checkpoint adapters. It reuses frozen reference/control assets, owns the
+new TEST namespace and corruption populations, and never fits on TEST or stress.
+The completed [optimization diagnostic](cards/optimization_validation_v1.md)
+uses only TRAIN and known VALIDATION through the shared archive-readout engine.
+
 ## Ownership
 
 | Location | Responsibility |

@@ -112,7 +112,7 @@ EVALUATION_OBJECT_DIR := $(OBJECT_DIR)/evaluation
 EVALUATION_BIN ?= $(BUILD_DIR)/embedding_evaluate
 HARNESS_BIN ?= $(BUILD_DIR)/feature_harness
 
-RPB_CORE_HEADERS := $(filter-out $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/native_curve_gate.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/paired_pooling_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/optimization_diagnostic_adapter.h,$(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/*.h))
+RPB_CORE_HEADERS := $(filter-out $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/native_curve_gate.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/paired_pooling_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/optimization_diagnostic_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h,$(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/*.h))
 RPB_PROVENANCE_INPUTS := $(sort $(RPB_CORE_HEADERS) $(RPB_ROOT)/src/workflow.cpp $(RPB_ROOT)/src/main.cpp $(wildcard $(RPB_ROOT)/config/*.conf) $(CODE_ROOT)/shared/include/embedding/shared/data.h $(CODE_ROOT)/shared/include/embedding/shared/types.h $(CODE_ROOT)/shared/include/embedding/shared/tensor_ops.h $(CODE_ROOT)/shared/src/data.cpp Makefile dependencies.lock)
 RPB_SOURCE_ID := $(shell sha256sum $(RPB_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 SOURCE_GIT_HEAD := $(shell git -c safe.directory=$(CURDIR) rev-parse HEAD 2>/dev/null || printf unrecorded)
@@ -120,7 +120,7 @@ SOURCE_GIT_DIRTY := $(shell if source_status=$$(git -c safe.directory=$(CURDIR) 
 RPB_CPPFLAGS := -I$(RPB_ROOT)/include -I$(RPB_ROOT)/tests $(COMMON_CPPFLAGS) -DRPB_SOURCE_ID=\"$(RPB_SOURCE_ID)\" -DRPB_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DRPB_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
 
 MINIMUM_PROVENANCE_INPUTS := $(sort $(wildcard $(CODE_ROOT)/shared/include/embedding/shared/*.h $(CODE_ROOT)/shared/src/*.cpp $(ENCODER_ROOT)/include/embedding/encoders/mtf_jepa_mae_vicreg/*.h $(ENCODER_ROOT)/src/*.cpp $(ENCODER_ROOT)/config/*.conf $(EVALUATION_ROOT)/src/*.cpp $(EVALUATION_ROOT)/include/*.h) Makefile dependencies.lock)
-EVALUATION_PROVENANCE_INPUTS := $(sort $(MINIMUM_PROVENANCE_INPUTS) $(RPB_PROVENANCE_INPUTS) $(RPB_ROOT)/src/evaluation_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/src/reconstruction_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/src/learning_curve_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h)
+EVALUATION_PROVENANCE_INPUTS := $(sort $(MINIMUM_PROVENANCE_INPUTS) $(RPB_PROVENANCE_INPUTS) $(RPB_ROOT)/src/evaluation_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/src/reconstruction_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/src/learning_curve_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h $(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h))
 MINIMUM_SOURCE_ID := $(shell sha256sum $(MINIMUM_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 EVALUATION_SOURCE_ID := $(shell sha256sum $(EVALUATION_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 EVALUATION_PROVENANCE_CPPFLAGS := -DEVALUATION_SOURCE_ID=\"$(EVALUATION_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
@@ -513,3 +513,50 @@ test-rpb-optimization-diagnostic: $(RPB_TEST_DIR)/optimization_diagnostic_adapte
 
 evaluate-optimization-diagnostic: $(OPTIMIZATION_DIAGNOSTIC_BIN)
 	OPTIMIZATION_DIAGNOSTIC_BIN="$(abspath $(OPTIMIZATION_DIAGNOSTIC_BIN))" OPTIMIZATION_DIAGNOSTIC_SOURCE_INPUTS="$(OPTIMIZATION_DIAGNOSTIC_PROVENANCE_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-optimization-diagnostic.sh
+
+# Same v4 inference tensors, one independently recorded TRAIN context policy.
+CONTEXT_DELETION_BIN := $(BUILD_DIR)/embedding_context_deletion
+RPB_CONTEXT_ADAPTER_OBJECT := $(RPB_OBJECT_DIR)/context_deletion_adapter.o
+RPB_CONTEXT_GATE_OBJECT := $(RPB_OBJECT_DIR)/context_deletion_gate.o
+CONTEXT_DELETION_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(RPB_ROOT)/src/context_deletion_adapter.cpp $(EVALUATION_ROOT)/src/context_deletion_main.cpp $(EVALUATION_ROOT)/cards/context_deletion_v1.md $(CODE_ROOT)/scripts/evaluate-context-deletion.sh $(CODE_ROOT)/scripts/check-context-deletion.sh)
+CONTEXT_DELETION_SOURCE_ID := $(shell sha256sum $(CONTEXT_DELETION_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
+CONTEXT_DELETION_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(CONTEXT_DELETION_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
+.PHONY: context-deletion test-rpb-context-deletion test-rpb-training-policy evaluate-context-deletion print-context-deletion-sources
+context-deletion: $(CONTEXT_DELETION_BIN)
+
+print-context-deletion-sources:
+	@printf '%s\n' $(CONTEXT_DELETION_PROVENANCE_INPUTS)
+
+$(EVALUATION_OBJECT_DIR)/context_deletion_main.o: $(EVALUATION_ROOT)/src/context_deletion_main.cpp $(CONTEXT_DELETION_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(CONTEXT_DELETION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_CONTEXT_ADAPTER_OBJECT): $(RPB_ROOT)/src/context_deletion_adapter.cpp $(CONTEXT_DELETION_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(CONTEXT_DELETION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_CONTEXT_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(CONTEXT_DELETION_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(CONTEXT_DELETION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(CONTEXT_DELETION_BIN): $(EVALUATION_OBJECT_DIR)/context_deletion_main.o $(RPB_CONTEXT_ADAPTER_OBJECT) $(RPB_CONTEXT_GATE_OBJECT) $(RPB_PAIRED_ADAPTER_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(EVALUATION_COMMON_OBJECTS)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(RPB_TEST_DIR)/training_policy_test: $(RPB_TEST_DIR)/training_policy_test.o $(RPB_WORKFLOW_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-training-policy: $(RPB_TEST_DIR)/training_policy_test
+	$(RPB_TEST_DIR)/training_policy_test
+
+$(RPB_TEST_DIR)/context_deletion_test: $(RPB_TEST_DIR)/context_deletion_test.o $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(HARNESS_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(RPB_TEST_DIR)/context_deletion_adapter_test: $(RPB_TEST_DIR)/context_deletion_adapter_test.o $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(HARNESS_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-context-deletion: $(RPB_TEST_DIR)/context_deletion_test $(RPB_TEST_DIR)/context_deletion_adapter_test
+	$(RPB_TEST_DIR)/context_deletion_test
+	$(RPB_TEST_DIR)/context_deletion_adapter_test
+
+evaluate-context-deletion: $(CONTEXT_DELETION_BIN)
+	CONTEXT_DELETION_BIN="$(abspath $(CONTEXT_DELETION_BIN))" CONTEXT_DELETION_SOURCE_INPUTS="$(CONTEXT_DELETION_PROVENANCE_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-context-deletion.sh

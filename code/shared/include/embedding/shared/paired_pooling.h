@@ -32,6 +32,10 @@ struct PairedPoolingRun {
   std::vector<RetainedPoolingCohort> cohorts;
   int64_t completed_updates{512};
   std::string reference_tag{"RPB-v4"},candidate_tag{"RPB-v5"};
+  // Historical defaults preserve paired-pooling-v1; new training-view
+  // candidates must declare their own truthful protocol and fresh namespace.
+  std::string protocol_id{"paired-pooling-v1"};
+  std::string fresh_test_namespace{"paired-pooling-v1/fresh-testing"};
   uint64_t fresh_test_stream{0x7070763174657374ULL}; // ppv1test.
 };
 

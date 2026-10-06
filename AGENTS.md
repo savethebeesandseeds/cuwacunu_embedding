@@ -27,9 +27,16 @@ fixed across encoder comparisons; fit their weights separately on training data.
 RPB-v4, the learned global bottleneck, is the active experimental encoder.
 RPB-v5, the direct patch global bottleneck, failed the fixed512 comparison under
 paired-pooling-v1 and is not promoted. This rejects that measured advance, not
-the design under every budget. A separately frozen TRAIN/VALIDATION-only
-continuation may diagnose optimization at1024/2048 without reopening TEST/stress
-or changing the fixed512 disposition. RPB-v4 remains the active reference.
+the design under every budget. Its separately frozen TRAIN/VALIDATION-only
+continuation at1024/2048 improved reconstruction without improving mean native
+linear accuracy. It did not reopen TEST/stress or change the fixed512 disposition.
+RPB-v6's audited context-deletion comparison improves both linear timing primaries,
+with equal coverage and improved worst-master scores, but fails the no-worse
+TRAIN/VALIDATION reconstruction guard. It is not promoted. A separate unchanged
+policy TRAIN/known VALIDATION-only longer-budget diagnosis may test that tradeoff;
+it must not reopen TEST or change the fixed512 disposition. Deterministic replay
+must match the saved512 model/optimizer/scaler/counters before continuing.
+RPB-v4 remains the active reference until an explicit decision.
 Older versions remain available for archived evidence, explicit comparisons,
 and compatibility tests. Do not routinely retrain all older architectures.
 Model tags identify designs; exact configurations, source revisions, datasets,
