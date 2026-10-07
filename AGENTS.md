@@ -32,11 +32,20 @@ continuation at1024/2048 improved reconstruction without improving mean native
 linear accuracy. It did not reopen TEST/stress or change the fixed512 disposition.
 RPB-v6's audited context-deletion comparison improves both linear timing primaries,
 with equal coverage and improved worst-master scores, but fails the no-worse
-TRAIN/VALIDATION reconstruction guard. It is not promoted. A separate unchanged
-policy TRAIN/known VALIDATION-only longer-budget diagnosis may test that tradeoff;
-it must not reopen TEST or change the fixed512 disposition. Deterministic replay
-must match the saved512 model/optimizer/scaler/counters before continuing.
+TRAIN/VALIDATION reconstruction guard. It is not promoted. Its completed
+[context optimization diagnostic](code/encoders/raw_patch_bottleneck_mae/CONTEXT_OPTIMIZATION_DIAGNOSTIC.md)
+replays the exact saved 512 state and continues the unchanged policy through
+1024 and 2048 on TRAIN and known VALIDATION only. No measured budget combines
+the original v4 fixed-512 reconstruction reference with preserved v6 fixed-512
+linear accuracy in both validation views. At 2048, mean TRAIN/VALIDATION MAE is
+0.035736/0.035845, while intact/deletion linear accuracy is 96.875%/95.3125%.
+This diagnostic accessed no TEST and did not change the fixed-512 disposition.
 RPB-v4 remains the active reference until an explicit decision.
+The next focused action is a separately frozen five-master paired v4/v6
+replication at equal 512 updates: 4404, 5505, 6606, 7707 and 8808. Keep native32,
+architecture, loss and classifier recipes fixed. Prepare the baseline's exact
+TRAIN/VALIDATION assets in a shared development-only phase before fresh paired
+TEST generation; preserve the independently initialized models and all outcomes.
 Older versions remain available for archived evidence, explicit comparisons,
 and compatibility tests. Do not routinely retrain all older architectures.
 Model tags identify designs; exact configurations, source revisions, datasets,

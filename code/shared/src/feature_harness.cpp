@@ -277,6 +277,40 @@ std::string task_name(Task task) {
   throw std::runtime_error("unknown controlled task");
 }
 
+CoordinateDeletionView make_coordinate_deletion_view(const Batch &observations,
+    const std::vector<std::string> &source_ids, Task task, uint64_t seed,
+    double rate, const std::string &rng_namespace) {
+  batch_valid(observations);
+  require(source_ids.size() == static_cast<size_t>(observations.data.size(0)),
+          "coordinate deletion source rows do not match observations");
+  require(std::isfinite(rate) && rate >= 0 && rate <= 1 && !rng_namespace.empty(),
+          "coordinate deletion requires a finite rate in [0,1] and a namespace");
+  const auto prefix = rng_namespace + "/" + task_name(task) + "/coordinate/";
+  std::map<std::string, torch::Tensor> requested;
+  std::vector<torch::Tensor> rows;
+  for (const auto &id : source_ids) {
+    require(!id.empty(), "coordinate deletion source IDs must be nonempty");
+    if (!requested.count(id)) {
+      uint64_t hash = 14695981039346656037ULL;
+      for (const unsigned char c : prefix + std::to_string(id.size()) + ":" + id) {
+        hash ^= c; hash *= 1099511628211ULL;
+      }
+      std::mt19937_64 rng(stream_seed(seed, hash));
+      auto erased = torch::zeros({observations.data.size(1), observations.data.size(2),
+                                  observations.data.size(3)}, torch::kBool);
+      auto flat = erased.reshape({-1}); auto values = flat.accessor<bool, 1>();
+      for (int64_t i = 0; i < flat.numel(); ++i)
+        values[i] = (rng() >> 11) * (1.0 / 9007199254740992.0) < rate;
+      requested.emplace(id, erased);
+    }
+    rows.push_back(requested.at(id));
+  }
+  const auto erased = torch::stack(rows);
+  const auto mask = observations.feature_mask.logical_and(erased.logical_not());
+  return {{torch::where(mask, observations.data, torch::zeros_like(observations.data)).detach().clone(),
+           mask.clone()}, erased};
+}
+
 namespace {
 ControlledProtocol generate_controlled_protocol(Task task, const input_shape_t &shape,
     int64_t training_pairs, int64_t validation_pairs, int64_t testing_pairs,

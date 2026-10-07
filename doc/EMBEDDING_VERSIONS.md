@@ -7,6 +7,13 @@ RPB-v6 keeps the v4 inference architecture with a fixed training policy that
 removes some visible context while preserving targets. Its audited fixed512
 comparison improves both linear accuracy primaries, but worsens reconstruction.
 The declared reconstruction guard prevents promotion while that tradeoff remains.
+Its completed [context optimization diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_OPTIMIZATION_DIAGNOSTIC.md)
+keeps that policy at 512, 1024 and 2048 updates on the same TRAIN and known
+VALIDATION cohorts. No measured budget reaches the v4 fixed-512 reconstruction
+reference while preserving v6's 512-update linear accuracy in both validation
+views. At 2048, mean TRAIN/VALIDATION MAE is 0.035736/0.035845, but intact/deletion
+linear accuracy falls to 96.875%/95.3125%. This diagnostic accessed no TEST and
+made no promotion decision.
 
 | Tag | Very short description | Status | Configuration template |
 | --- | --- | --- | --- |
@@ -81,3 +88,10 @@ change the fixed512 disposition or promote the candidate. Retain RPB-v2's frozen
 for this completed milestone and existing compatibility tests. Later advances
 compare against a named relevant checkpoint of RPB-v4, without automatically
 bringing every older design back into training.
+
+The next focused action is a separately frozen paired replication of RPB-v4
+and RPB-v6 at equal 512 updates on five fresh masters: 4404, 5505, 6606, 7707
+and 8808. Keep the native 32-number export, architecture, loss and classifier
+recipes fixed. A shared development-only phase prepares baseline TRAIN/VALIDATION
+assets before a new paired TEST namespace is opened. This is planned independent
+training replication, not a completed result or consumer acceptance.

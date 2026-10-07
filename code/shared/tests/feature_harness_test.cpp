@@ -183,6 +183,80 @@ void input_precision() {
   const auto mean_before = scaler.mean.clone(); (void)scaler.transform(test_data);
   test::close(scaler.mean, mean_before, "future data changes observation scaler", 0, 0);
 }
+void coordinate_deletion_views() {
+  auto values = torch::arange(4 * 2 * 32 * 3, torch::kFloat64).reshape({4,2,32,3});
+  auto mask = torch::ones_like(values, torch::kBool);
+  mask.select(2, 0).fill_(false);
+  values = values.masked_fill(mask.logical_not(), std::numeric_limits<double>::quiet_NaN());
+  const embedding::Batch source{values, mask};
+  const std::vector<std::string> ids{"source-a", "source-a", "source-b", "source-b"};
+  const auto original_values = values.clone(), original_mask = mask.clone();
+  const auto seed = ev::stream_seed(3101, 0x63766c3164726f70ULL);
+  const std::string space = "context-optimization-validation-v1";
+  torch::manual_seed(717); const auto expected_rng = torch::rand({8});
+  torch::manual_seed(717);
+  const auto view = ev::make_coordinate_deletion_view(source, ids, ev::Task::lag_sign, seed, .3, space);
+  test::close(torch::rand({8}), expected_rng, "pure coordinate deletion consumed Torch RNG", 0, 0);
+  const auto repeated = ev::make_coordinate_deletion_view(source, ids, ev::Task::lag_sign, seed, .3, space);
+  test::check(torch::equal(view.requested_erasure, repeated.requested_erasure) &&
+      torch::equal(view.observations.data, repeated.observations.data), "coordinate view replay changed");
+  for (int64_t row = 0; row < 4; row += 2)
+    test::check(torch::equal(view.requested_erasure[row], view.requested_erasure[row + 1]),
+        "coordinate view exposed paired variant identity to missingness");
+  test::check(!torch::equal(view.requested_erasure[0], view.requested_erasure[2]),
+      "different source identities reused one coordinate mask");
+  test::check(!view.observations.feature_mask.logical_and(mask.logical_not()).any().item<bool>() &&
+      torch::equal(view.observations.feature_mask, mask.logical_and(view.requested_erasure.logical_not())),
+      "coordinate deletion added observations or erased outside the requested view");
+  test::close(view.observations.data.masked_select(view.observations.feature_mask),
+      values.masked_select(view.observations.feature_mask), "coordinate deletion changed retained values", 0, 0);
+  test::check(view.observations.data.masked_select(view.observations.feature_mask.logical_not()).eq(0).all().item<bool>(),
+      "coordinate view retained hidden NaN storage");
+  test::check(view.requested_erasure.masked_select(mask.logical_not()).any().item<bool>(),
+      "coordinate mask did not index originally absent coordinates");
+  const auto permutation = torch::tensor({2,0,3,1}, torch::kInt64);
+  const embedding::Batch reordered{values.index_select(0, permutation), mask.index_select(0, permutation)};
+  const std::vector<std::string> reordered_ids{ids[2],ids[0],ids[3],ids[1]};
+  const auto reordered_view = ev::make_coordinate_deletion_view(reordered, reordered_ids,
+      ev::Task::lag_sign, seed, .3, space);
+  test::check(torch::equal(reordered_view.requested_erasure, view.requested_erasure.index_select(0, permutation)),
+      "source coordinate masks depended on row order");
+  auto previous = ev::make_coordinate_deletion_view(source, ids, ev::Task::lag_sign, seed, 0, space);
+  test::check(previous.observations.feature_mask.equal(mask) && !previous.requested_erasure.any().item<bool>(),
+      "zero deletion changed support");
+  for (const double rate : {.1, .3, .6, .9, 1.}) {
+    const auto next = ev::make_coordinate_deletion_view(source, ids, ev::Task::lag_sign, seed, rate, space);
+    test::check(!previous.requested_erasure.logical_and(next.requested_erasure.logical_not()).any().item<bool>(),
+        "coordinate severities did not share nested uniforms");
+    previous = next;
+  }
+  test::check(previous.requested_erasure.all().item<bool>() &&
+      !previous.observations.feature_mask.any().item<bool>() && previous.observations.data.eq(0).all().item<bool>(),
+      "complete deletion acquired observation support");
+  test::check(!torch::equal(view.requested_erasure,
+      ev::make_coordinate_deletion_view(source, ids, ev::Task::lag_sign, seed + 1, .3, space).requested_erasure) &&
+      !torch::equal(view.requested_erasure,
+      ev::make_coordinate_deletion_view(source, ids, ev::Task::lag_sign, seed, .3, space + "/other").requested_erasure),
+      "declared seed or namespace did not affect coordinate erasures");
+  test::close(mask, original_mask, "coordinate view mutated original support", 0, 0);
+  test::close(torch::isnan(values), torch::isnan(original_values), "coordinate view mutated hidden storage", 0, 0);
+  test::close(values.masked_select(mask), original_values.masked_select(mask), "coordinate view mutated observed storage", 0, 0);
+  view.observations.data.fill_(1); view.observations.feature_mask.fill_(false);
+  test::close(mask, original_mask, "view storage aliases original support", 0, 0);
+  test::close(values.masked_select(mask), original_values.masked_select(mask), "view storage aliases original values", 0, 0);
+  rejects([&] { ev::make_coordinate_deletion_view(source, {"too-few"}, ev::Task::lag_sign, seed, .3, space); },
+      "coordinate view accepted unequal source row count");
+  auto empty_id = ids; empty_id[0].clear();
+  rejects([&] { ev::make_coordinate_deletion_view(source, empty_id, ev::Task::lag_sign, seed, .3, space); },
+      "coordinate view accepted empty source identity");
+  for (const double rate : {-.1, 1.1, std::numeric_limits<double>::quiet_NaN()})
+    rejects([&] { ev::make_coordinate_deletion_view(source, ids, ev::Task::lag_sign, seed, rate, space); },
+        "coordinate view accepted invalid rate");
+  rejects([&] { ev::make_coordinate_deletion_view(source, ids, static_cast<ev::Task>(999), seed, .3, space); },
+      "coordinate view accepted unknown task");
+  rejects([&] { ev::make_coordinate_deletion_view(source, ids, ev::Task::lag_sign, seed, .3, ""); },
+      "coordinate view accepted empty namespace");
+}
 void diagnostic_parity() {
   auto x=torch::tensor({{1.,2.,0.,3.,-1.,1.},{0.,1.,3.,-1.,2.,0.},
       {-2.,0.,1.,2.,0.,-1.},{3.,-1.,2.,0.,1.,2.},{1e9,1e9,1e9,1e9,1e9,1e9}},torch::kFloat64);
@@ -221,7 +295,7 @@ int main() {
   try {
     torch::set_num_threads(1);
     fitting(); protocols(); legacy_generator_regression(); development_and_final_generation();
-    input_precision(); coverage(); diagnostic_parity();
+    input_precision(); coordinate_deletion_views(); coverage(); diagnostic_parity();
     std::cout << "feature harness tests passed\n";
     return 0;
   } catch (const std::exception &error) {

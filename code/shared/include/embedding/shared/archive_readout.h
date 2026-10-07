@@ -7,6 +7,12 @@
 
 namespace embedding::evaluation {
 
+struct ArchiveReadoutValidationView {
+  std::string id, observations, features;
+  std::string observations_sha256, features_sha256;
+  std::string expected_feature_provenance, corruption_provenance;
+};
+
 struct ArchiveReadoutInput {
   std::string id, tag, task;
   uint64_t master_seed{0};
@@ -25,6 +31,11 @@ struct ArchiveReadoutInput {
   std::string training_observations_sha256, validation_observations_sha256;
   std::string training_features_sha256, validation_features_sha256;
   std::string expected_feature_provenance;
+  // Optional declared VALIDATION views, never fitted. Rows/labels/source IDs
+  // must exactly match ordinary VALIDATION; support can only be deleted,
+  // retained values must be identical and hidden observation storage zero.
+  // Every view uses this input's unchanged ordinary-TRAIN maps and readouts.
+  std::vector<ArchiveReadoutValidationView> validation_views;
 };
 
 struct ArchiveReadoutRepetition {

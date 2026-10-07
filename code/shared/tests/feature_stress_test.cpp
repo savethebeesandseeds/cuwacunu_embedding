@@ -133,6 +133,15 @@ void primitives_and_frozen_contract() {
         manifest.find(protocol.testing.source_ids.front()) != std::string::npos,
         name + " missing checksum/source manifest");
   }
+  const double rates[]{.1,.3,.6,.9};
+  for (size_t i = 0; i < random.size(); ++i) {
+    const auto saved = load_case(first, random[i]);
+    const auto pure = ev::make_coordinate_deletion_view(protocol.testing.observed,
+        protocol.testing.source_ids, protocol.task, protocol.seed, rates[i]);
+    close(saved.erased, pure.requested_erasure, "historical TEST coordinate stream changed", 0, 0);
+    close(saved.mask, pure.observations.feature_mask, "historical TEST support changed", 0, 0);
+    close(saved.values, pure.observations.data, "historical TEST hidden storage changed", 0, 0);
+  }
   for (const auto &family : {random, contiguous})
     for (size_t i = 1; i < family.size(); ++i) {
       const auto less = load_case(first, family[i - 1]), more = load_case(first, family[i]);

@@ -38,6 +38,18 @@ fixed the recipe before scoring. Policy-tagged checkpoints remain normal inferen
 checkpoints; ordinary training rejects their resume to prevent losing the
 training view silently. The dedicated experiment currently starts fresh.
 
+Its completed [context optimization diagnostic](CONTEXT_OPTIMIZATION_DIAGNOSTIC.md)
+replays the audited 512 state and continues the same training policy to 1024
+and 2048 on TRAIN and known VALIDATION only. No measured budget both reaches
+the v4 fixed-512 reconstruction reference and preserves v6's 512-update linear
+accuracy in intact and fixed-deletion validation views. At 2048, mean
+TRAIN/VALIDATION MAE is 0.035736/0.035845, while linear accuracy falls to
+96.875% intact and 95.3125% with additional 30% deletion. No TEST was opened and
+RPB-v4 remains active. The next separately frozen comparison will pair fresh
+v4/v6 training at equal 512 updates on masters 4404, 5505, 6606, 7707 and 8808,
+with unchanged native32, heads, architecture and loss. Shared development-only
+baseline preparation precedes the fresh paired TEST phase.
+
 The [embedding evaluation policy](../../../doc/EMBEDDING_EVALUATION_POLICY.md)
 governs shared protocols, reporting and acceptance. The
 [architecture and evaluation specification](RPB_MAE_architecture_and_evaluation_spec.md)

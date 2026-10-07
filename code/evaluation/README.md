@@ -25,6 +25,12 @@ and checkpoint adapters. It reuses frozen reference/control assets, owns the
 new TEST namespace and corruption populations, and never fits on TEST or stress.
 The completed [optimization diagnostic](cards/optimization_validation_v1.md)
 uses only TRAIN and known VALIDATION through the shared archive-readout engine.
+The completed [context optimization diagnostic](cards/context_optimization_validation_v1.md)
+adds a fixed deletion view of known VALIDATION. Each ordinary TRAIN-fitted head
+scores both views without additional fitting. Its deterministic replay and live
+optimizer continuation stay in the encoder adapter; shared evaluation owns the
+view association, support, predictions and paired scores. It selects no checkpoint
+and accesses no TEST or historical stress payload.
 
 ## Ownership
 

@@ -222,10 +222,11 @@ struct Split {
   torch::Tensor labels;
   std::vector<std::string> source_ids;
 };
-Split load_split(const ArchiveReadoutInput &input,const ArchiveReadoutRun &run,bool training) {
+Split load_split(const ArchiveReadoutInput &input,const ArchiveReadoutRun &run,bool training,
+                 const ArchiveReadoutValidationView *view=nullptr) {
   torch::serialize::InputArchive observations,features;
-  observations.load_from(training?input.training_observations:input.validation_observations,torch::kCPU);
-  features.load_from(training?input.training_features:input.validation_features,torch::kCPU);
+  observations.load_from(view?view->observations:(training?input.training_observations:input.validation_observations),torch::kCPU);
+  features.load_from(view?view->features:(training?input.training_features:input.validation_features),torch::kCPU);
   Split out;torch::Tensor sources,provenance;
   observations.read(input.observations_key,out.observed.data,true);
   observations.read(input.observation_mask_key,out.observed.feature_mask,true);
@@ -249,7 +250,8 @@ Split load_split(const ArchiveReadoutInput &input,const ArchiveReadoutRun &run,b
   const auto observed_valid=mask.flatten(1).any(1);
   require(out.native.valid.logical_and(observed_valid.logical_not()).any().item<bool>()==false,
       "native support includes an all-missing observation row");
-  require(!out.native.provenance.empty() && (input.expected_feature_provenance.empty() || input.expected_feature_provenance==out.native.provenance),
+  const auto &expected_provenance=view?view->expected_feature_provenance:input.expected_feature_provenance;
+  require(!out.native.provenance.empty() && (expected_provenance.empty() || expected_provenance==out.native.provenance),
       "native feature provenance empty or differs from pinned provenance");
   std::map<std::string,std::vector<int64_t>> groups;
   for (int64_t row=0;row<data.size(0);++row) groups[out.source_ids.at(row)].push_back(row);
@@ -259,6 +261,20 @@ Split load_split(const ArchiveReadoutInput &input,const ArchiveReadoutRun &run,b
   out.observed={data.detach().clone(),mask.clone()};
   out.native.values=out.native.values.detach().clone();out.native.valid=out.native.valid.clone();out.labels=out.labels.clone();
   return out;
+}
+void validate_view(const Split &view,const Split &ordinary) {
+  require(view.source_ids==ordinary.source_ids && torch::equal(view.labels,ordinary.labels),
+      "validation view labels/source IDs/order differ from ordinary VALIDATION");
+  require(view.observed.data.sizes()==ordinary.observed.data.sizes() &&
+      view.native.values.scalar_type()==ordinary.native.values.scalar_type(),
+      "validation view geometry/native dtype differs from ordinary VALIDATION");
+  const auto &mask=view.observed.feature_mask;
+  require(!mask.logical_and(ordinary.observed.feature_mask.logical_not()).any().item<bool>(),
+      "validation view introduces observation support");
+  require(torch::equal(view.observed.data.masked_select(mask),ordinary.observed.data.masked_select(mask)),
+      "validation view changes retained observed values");
+  require(view.observed.data.masked_select(mask.logical_not()).eq(0).all().item<bool>(),
+      "validation view hidden observation storage must be zero");
 }
 std::string population(const Split &split,const torch::Tensor &valid) {
   std::map<std::string,std::pair<int64_t,int64_t>> groups;
@@ -289,8 +305,13 @@ std::string interval_json(const GroupedInterval &value,int64_t replicates) {
   out << ",\"upper\":";if(value.supported)out << value.upper;else out << "null";
   return out.str()+'}';
 }
+std::string view_json(const ArchiveReadoutValidationView &view) {
+  return "{\"id\":"+quote(view.id)+",\"observations\":"+quote(view.observations)+",\"features\":"+quote(view.features)+
+      ",\"observations_sha256\":"+quote(view.observations_sha256)+",\"features_sha256\":"+quote(view.features_sha256)+
+      ",\"expected_feature_provenance\":"+quote(view.expected_feature_provenance)+",\"corruption_provenance\":"+quote(view.corruption_provenance)+'}';
+}
 std::string input_json(const ArchiveReadoutInput &input) {
-  return "{\"id\":"+quote(input.id)+",\"tag\":"+quote(input.tag)+",\"task\":"+quote(input.task)+
+  auto value="{\"id\":"+quote(input.id)+",\"tag\":"+quote(input.tag)+",\"task\":"+quote(input.task)+
       ",\"master_seed\":"+quote(std::to_string(input.master_seed))+",\"checkpoint_steps\":"+std::to_string(input.checkpoint_steps)+
       ",\"producer_source_fingerprint\":"+quote(input.producer_source_fingerprint)+",\"cohort_provenance\":"+quote(input.cohort_provenance)+
       ",\"training_observations\":"+quote(input.training_observations)+",\"validation_observations\":"+quote(input.validation_observations)+
@@ -301,7 +322,13 @@ std::string input_json(const ArchiveReadoutInput &input) {
       ",\"feature_provenance_key\":"+quote(input.feature_provenance_key)+
       ",\"training_observations_sha256\":"+quote(input.training_observations_sha256)+",\"validation_observations_sha256\":"+quote(input.validation_observations_sha256)+
       ",\"training_features_sha256\":"+quote(input.training_features_sha256)+",\"validation_features_sha256\":"+quote(input.validation_features_sha256)+
-      ",\"expected_feature_provenance\":"+quote(input.expected_feature_provenance)+'}';
+      ",\"expected_feature_provenance\":"+quote(input.expected_feature_provenance);
+  if(!input.validation_views.empty()) {
+    value+=",\"validation_views\":[";
+    for(size_t i=0;i<input.validation_views.size();++i) {if(i)value+=',';value+=view_json(input.validation_views[i]);}
+    value+=']';
+  }
+  return value+'}';
 }
 std::string card_json(const ArchiveReadoutRun &run) {
   std::ostringstream out;out << std::setprecision(17) << "{\"version\":1,\"protocol\":\"archive-readout-v1\",\"stage\":\"development\",\"policy_version\":\"1.2\","
@@ -313,7 +340,14 @@ std::string card_json(const ArchiveReadoutRun &run) {
   for(size_t i=0;i<run.repetitions.size();++i) {if(i)out << ',';out << "{\"id\":" << quote(run.repetitions[i].id)
       << ",\"probe_seed\":" << quote(std::to_string(run.repetitions[i].probe_seed)) << '}';}
   out << "],\"inputs\":[";for(size_t i=0;i<run.inputs.size();++i){if(i)out << ',';out << input_json(run.inputs[i]);}
-  out << "],\"recipe\":{\"observation_scaler\":\"existing ObservationScaler; float64 observed TRAIN per-channel/feature population mean/std across rows/history; scale floor1e-8\","
+  if(std::any_of(run.inputs.begin(),run.inputs.end(),[](const auto &input){return !input.validation_views.empty();}))
+    out << "],\"validation_view_policy\":{\"roles\":\"declared VALIDATION only; exact ordinary row/source/label order\","
+        "\"corruption\":\"support deletion only; retained raw values exact; hidden storage zero\","
+        "\"fit_policy\":\"ordinary TRAIN maps and each head fitted once; all validation views reuse those same tensors; no view fit\","
+        "\"effects\":\"view minus ordinary on common valid rows; full-population correctness counts abstentions as failure\","
+        "\"bootstrap_seed\":\"stream_seed(rep.probe_seed,FNV1a64(archive-readout-validation-view-v1/view_id)); named method/probe streams\"},\"recipe\":{";
+  else out << "],\"recipe\":{";
+  out << "\"observation_scaler\":\"existing ObservationScaler; float64 observed TRAIN per-channel/feature population mean/std across rows/history; scale floor1e-8\","
       << "\"raw\":\"masked standardized observations flattened in declared C/H/F order, followed by original visibility flags; no clean values\","
       << "\"pca_only\":\"raw TRAIN outer FeatureNormalizer -> centered train-fit PCA to compact_width; no encoder\","
       << "\"native\":\"exact archived compact_width export -> TRAIN outer FeatureNormalizer; no projection\","
@@ -391,6 +425,93 @@ void save_predictions(Outputs &out,const fs::path &path,const torch::Tensor &rid
   value.write("valid",features.valid,true);value.write("probe_features",features.values,true);
   value.write("labels_scoring_only",split.labels,true);value.write("source_ids_json",archive::text_tensor(strings(split.source_ids)),true);out.archive(path,value);
 }
+uint64_t validation_view_seed(uint64_t seed,const std::string &id) {
+  uint64_t hash=14695981039346656037ULL;
+  for(const unsigned char c:"archive-readout-validation-view-v1/"+id) {hash^=c;hash*=1099511628211ULL;}
+  return stream_seed(seed,hash);
+}
+std::vector<torch::Tensor> readout_tensors(const Readout &readout,const Method &method) {
+  return {method.outer->mean,method.outer->scale,readout.ridge.normalizer.mean,readout.ridge.normalizer.scale,
+      readout.ridge.weights,readout.ridge.intercept,readout.tiny.normalizer.mean,readout.tiny.normalizer.scale,
+      readout.tiny.w1,readout.tiny.b1,readout.tiny.w2,readout.tiny.b2};
+}
+void write_validation_views(Outputs &outputs,std::ostringstream &report,const ArchiveReadoutInput &input,
+    const ArchiveReadoutRun &run,const ArchiveReadoutRepetition &rep,const fs::path &rep_dir,
+    const std::vector<Split> &views,const std::vector<Method> &methods,
+    const std::array<std::vector<FeatureSurface>,3> &features,
+    const std::vector<std::unique_ptr<Readout>> &readouts) {
+  if(views.empty())return;
+  fs::create_directory(outputs.root/rep_dir/"validation-views");
+  report << ",\"validation_views\":[";
+  for(size_t view_index=0;view_index<views.size();++view_index) {
+    if(view_index)report << ',';
+    const auto &view=views[view_index];const auto &declared=input.validation_views[view_index];
+    const auto directory=rep_dir/"validation-views"/declared.id;fs::create_directory(outputs.root/directory);
+    const auto view_seed=validation_view_seed(rep.probe_seed,declared.id);
+    report << "{\"view\":" << view_json(declared) << ",\"bootstrap_seed_decimal\":" << quote(std::to_string(view_seed))
+        << ",\"fit_policy\":\"same ordinary TRAIN fit tensors; no validation-view fitting\",\"methods\":[";
+    std::array<torch::Tensor,3> valid,ridge,tiny;
+    for(size_t m=0;m<methods.size();++m) {
+      if(m)report << ',';
+      const auto &method=methods[m];
+      valid[m]=(m==2?view.native.valid:view.observed.feature_mask.flatten(1).any(1)).clone();
+      const auto common=valid[m].logical_and(method.validation_support);
+      report << "{\"method\":" << quote(method.id) << ",\"label\":" << quote(method.label) << ",\"size\":" << method.width
+          << ",\"validation_population\":" << population(view,valid[m]) << ",\"ordinary_common_population\":" << population(view,common);
+      if(!readouts[m]) {
+        report << ",\"status\":\"unsupported\",\"reason\":" << quote(method.reason) << ",\"ridge\":null,\"tiny_secondary\":null}";
+        continue;
+      }
+      const auto &readout=*readouts[m];const auto &surface=features[m].at(view_index);
+      require(torch::equal(surface.valid,valid[m]),"validation view transform changed support");
+      std::vector<torch::Tensor> frozen;
+      for(const auto &value:readout_tensors(readout,method))frozen.push_back(value.clone());
+      ridge[m]=Readout::ridge_predictions(readout.ridge,surface);tiny[m]=Readout::tiny_predictions(readout.tiny,surface);
+      const auto after=readout_tensors(readout,method);
+      for(size_t i=0;i<after.size();++i)require(torch::equal(after[i],frozen[i]),"validation view mutated ordinary TRAIN fit tensors");
+      const auto predictions=directory/(method.id+"-predictions.pt");
+      save_predictions(outputs,predictions,ridge[m],tiny[m],surface,view);
+      const auto method_seed=stream_seed(view_seed,m+1);
+      auto probe_json=[&](const torch::Tensor &predicted,const torch::Tensor &base,uint64_t stream) {
+        const auto seed=stream_seed(method_seed,stream);
+        const auto all=torch::ones_like(valid[m]);const auto truth=torch::ones_like(view.labels);
+        const auto correct=predicted.eq(view.labels).logical_and(valid[m]).to(torch::kInt64);
+        const auto base_correct=base.eq(view.labels).logical_and(method.validation_support).to(torch::kInt64);
+        return "{\"validation\":"+score_json(score(predicted,view.labels,valid[m]))+
+            ",\"validation_interval\":"+interval_json(grouped_accuracy_interval(predicted,view.labels,valid[m],view.source_ids,seed,run.bootstrap_replicates),run.bootstrap_replicates)+
+            ",\"ordinary_validation_on_common\":"+score_json(score(base,view.labels,common))+
+            ",\"view_validation_on_common\":"+score_json(score(predicted,view.labels,common))+
+            ",\"view_minus_ordinary_common_interval\":"+interval_json(grouped_accuracy_interval(predicted,view.labels,common,view.source_ids,stream_seed(seed,1),run.bootstrap_replicates,base),run.bootstrap_replicates)+
+            ",\"view_minus_ordinary_full_population_interval\":"+interval_json(grouped_accuracy_interval(correct,truth,all,view.source_ids,stream_seed(seed,2),run.bootstrap_replicates,base_correct),run.bootstrap_replicates)+'}';
+      };
+      report << ",\"status\":\"measured\",\"fit_file\":" << quote((rep_dir/(method.id+"-fit.pt")).generic_string())
+          << ",\"validation_predictions_file\":" << quote(predictions.generic_string())
+          << ",\"ridge\":" << probe_json(ridge[m],readout.validation_ridge,0x7269646765ULL)
+          << ",\"tiny_secondary\":" << probe_json(tiny[m],readout.validation_tiny,0x74696e79ULL) << '}';
+    }
+    report << "],\"paired_comparisons\":[";
+    const std::array<std::pair<size_t,size_t>,3> pairs{{{2,1},{2,0},{1,0}}};
+    for(size_t p=0;p<pairs.size();++p) {
+      if(p)report << ',';
+      const auto [left,right]=pairs[p];const auto common=valid[left].logical_and(valid[right]);
+      report << "{\"id\":" << quote(methods[left].id+"_minus_"+methods[right].id) << ",\"candidate\":" << quote(methods[left].id)
+          << ",\"comparator\":" << quote(methods[right].id) << ",\"common_population\":" << population(view,common);
+      if(!readouts[left] || !readouts[right]) {
+        report << ",\"status\":\"unsupported\",\"reason\":\"at least one ordinary TRAIN fit unsupported\",\"ridge\":null,\"tiny_secondary\":null}";
+        continue;
+      }
+      const auto pair_seed=stream_seed(view_seed,0x706169720000ULL+p);
+      auto paired=[&](const torch::Tensor &candidate,const torch::Tensor &comparator,uint64_t stream) {
+        return "{\"candidate\":"+score_json(score(candidate,view.labels,common))+",\"comparator\":"+score_json(score(comparator,view.labels,common))+
+            ",\"candidate_minus_comparator_interval\":"+interval_json(grouped_accuracy_interval(candidate,view.labels,common,view.source_ids,stream_seed(pair_seed,stream),run.bootstrap_replicates,comparator),run.bootstrap_replicates)+'}';
+      };
+      report << ",\"status\":\"measured\",\"ridge\":" << paired(ridge[left],ridge[right],0x7269646765ULL)
+          << ",\"tiny_secondary\":" << paired(tiny[left],tiny[right],0x74696e79ULL) << '}';
+    }
+    report << "]}";
+  }
+  report << ']';
+}
 bool both_classes(const torch::Tensor &labels,const torch::Tensor &valid) {
   const auto selected=labels.masked_select(valid);
   return selected.eq(0).any().item<bool>() && selected.eq(1).any().item<bool>();
@@ -415,6 +536,14 @@ void validate_run(const ArchiveReadoutRun &run) {
       require(!key.empty(),"declared archive key is empty");
     for(const auto &hash:{input.training_observations_sha256,input.validation_observations_sha256,input.training_features_sha256,input.validation_features_sha256})
       require(hash.empty() || (hash.size()==64 && hash.find_first_not_of("0123456789abcdef")==std::string::npos),"expected SHA-256 must be empty or64 lowercase hex digits");
+    std::set<std::string> views;
+    for(const auto &view:input.validation_views) {
+      require(safe_name(view.id) && views.insert(view.id).second && !view.corruption_provenance.empty(),
+          "validation view requires a unique safe ID and frozen corruption provenance");
+      for(const auto &hash:{view.observations_sha256,view.features_sha256})
+        require(hash.empty() || (hash.size()==64 && hash.find_first_not_of("0123456789abcdef")==std::string::npos),
+            "validation view expected SHA-256 must be empty or64 lowercase hex digits");
+    }
   }
   ids.clear();for(const auto &rep:run.repetitions)require(safe_name(rep.id) && ids.insert(rep.id).second,"repetition requires unique safe ID");
 }
@@ -428,6 +557,10 @@ void run_archive_readout(const ArchiveReadoutRun &run) {
     guard.add(input.training_features,input.training_features_sha256);guard.add(input.validation_features,input.validation_features_sha256);
     for(const auto &path:{input.training_observations,input.training_features})training_paths.insert(fs::canonical(path).string());
     for(const auto &path:{input.validation_observations,input.validation_features})validation_paths.insert(fs::canonical(path).string());
+    for(const auto &view:input.validation_views) {
+      guard.add(view.observations,view.observations_sha256);guard.add(view.features,view.features_sha256);
+      for(const auto &path:{view.observations,view.features})validation_paths.insert(fs::canonical(path).string());
+    }
   }
   for(const auto &path:training_paths)require(!validation_paths.count(path),"archive appears in both TRAIN and VALIDATION roles");
   Outputs outputs{fs::absolute(run.output_directory),{}};
@@ -437,12 +570,18 @@ void run_archive_readout(const ArchiveReadoutRun &run) {
   try {
     std::set<std::string> train_sources,validation_sources;
     std::vector<std::pair<Split,Split>> splits;
+    std::vector<std::vector<Split>> validation_views;
     // Validate all roles across the complete declared matrix before any fitting.
     for(const auto &input:run.inputs) {
       auto training=load_split(input,run,true),validation=load_split(input,run,false);
       require(training.native.values.scalar_type()==validation.native.values.scalar_type() && training.native.provenance==validation.native.provenance,
           "native dtype/provenance differs between TRAIN and VALIDATION");
       train_sources.insert(training.source_ids.begin(),training.source_ids.end());validation_sources.insert(validation.source_ids.begin(),validation.source_ids.end());
+      std::vector<Split> views;
+      for(const auto &view:input.validation_views) {
+        views.push_back(load_split(input,run,false,&view));validate_view(views.back(),validation);
+      }
+      validation_views.push_back(std::move(views));
       splits.emplace_back(std::move(training),std::move(validation));
     }
     for(const auto &id:train_sources)require(!validation_sources.count(id),"source group overlaps TRAIN and VALIDATION roles");
@@ -453,7 +592,17 @@ void run_archive_readout(const ArchiveReadoutRun &run) {
     for(size_t index=0;index<run.inputs.size();++index) {
       if(index)report << ',';
       const auto &input=run.inputs[index];const auto &[training,validation]=splits[index];
+      const auto &views=validation_views[index];
+      std::array<std::vector<FeatureSurface>,3> view_features;
       const fs::path directory=input.id;fs::create_directory(outputs.root/directory);
+      if(!views.empty()) {
+        fs::create_directory(outputs.root/directory/"validation-views");
+        for(size_t i=0;i<views.size();++i) {
+          const auto view_dir=directory/"validation-views"/input.validation_views[i].id;
+          fs::create_directory(outputs.root/view_dir);
+          save_features(outputs,view_dir/"native-features.pt",views[i].native,views[i]);
+        }
+      }
       std::vector<Method> methods;
       methods.push_back({"raw","Raw data — no encoder","",2*run.shape.channel_count*run.shape.history_length*run.shape.input_width,{},{},nullptr,{},{}});
       methods.push_back({"pca_only","PCA only — no encoder","",run.compact_width,{},{},nullptr,{},{}});
@@ -472,6 +621,7 @@ void run_archive_readout(const ArchiveReadoutRun &run) {
       if(methods[2].supported()) {
         auto &native=methods[2];native.outer=std::make_unique<FeatureNormalizer>(training.native);
         native.training=native.outer->transform(training.native);native.validation=native.outer->transform(validation.native);
+        for(const auto &view:views)view_features[2].push_back(native.outer->transform(view.native));
         save_normalizer(outputs,directory/"native-normalizer.pt",*native.outer);
       }
       if(methods[0].supported()) {
@@ -490,6 +640,11 @@ void run_archive_readout(const ArchiveReadoutRun &run) {
           save_features(outputs,directory/"raw-training.pt",raw_training,training);save_features(outputs,directory/"raw-validation.pt",raw_validation,validation);
           auto &raw=methods[0];raw.outer=std::make_unique<FeatureNormalizer>(raw_training);
           raw.training=raw.outer->transform(raw_training);raw.validation=raw.outer->transform(raw_validation);
+          for(size_t i=0;i<views.size();++i) {
+            const auto raw_view=raw_surface(scaler.transform(views[i].observed),views[i]);
+            save_features(outputs,directory/"validation-views"/input.validation_views[i].id/"raw-features.pt",raw_view,views[i]);
+            view_features[0].push_back(raw.outer->transform(raw_view));
+          }
           save_normalizer(outputs,directory/"raw-normalizer.pt",*raw.outer);
           auto &pca_method=methods[1];
           // Reuse precisely the raw TRAIN normalizer; PCA never sees native exports.
@@ -497,6 +652,10 @@ void run_archive_readout(const ArchiveReadoutRun &run) {
           try {
             TrainPca pca(raw.training,run.compact_width);raw_pca_rank=pca.numerical_rank;
             pca_method.training=pca.transform(raw.training);pca_method.validation=pca.transform(raw.validation);
+            for(size_t i=0;i<views.size();++i) {
+              view_features[1].push_back(pca.transform(view_features[0][i]));
+              save_features(outputs,directory/"validation-views"/input.validation_views[i].id/"pca-features.pt",view_features[1].back(),views[i]);
+            }
             validate_features(pca_method.training);validate_features(pca_method.validation);
             torch::serialize::OutputArchive pca_asset;pca_asset.write("pca_mean",pca.mean,true);pca_asset.write("pca_components",pca.components,true);
             pca_asset.write("pca_singular_values",pca.singular_values,true);pca_asset.write("pca_numerical_rank",torch::tensor(pca.numerical_rank),true);
@@ -561,7 +720,9 @@ void run_archive_readout(const ArchiveReadoutRun &run) {
           report << ",\"status\":\"measured\",\"ridge\":" << paired(readouts[left]->validation_ridge,readouts[right]->validation_ridge,0x7269646765ULL)
               << ",\"tiny_secondary\":" << paired(readouts[left]->validation_tiny,readouts[right]->validation_tiny,0x74696e79ULL) << '}';
         }
-        report << "]}";
+        report << ']';
+        write_validation_views(outputs,report,input,run,rep,rep_dir,views,methods,view_features,readouts);
+        report << '}';
       }
       report << "]}";
     }

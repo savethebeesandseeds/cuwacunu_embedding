@@ -235,6 +235,112 @@ void known_sha256(const fs::path &root) {
   rejects([&]{ev::run_archive_readout(run);},"invalid abc archive accepted");
   test::check(fs::exists(root/"abc-results/archive-readout-card.json"),"SHA-256 standard vector rejected before archive decoding");
 }
+ev::ArchiveReadoutValidationView save_view(const Fixture &fixture,const std::string &id,
+    const embedding::Batch &observed,const ev::FeatureSurface &features,
+    const torch::Tensor &labels,const std::string &source_prefix="validation") {
+  ev::ArchiveReadoutValidationView view;
+  view.id=id;view.observations=(fixture.directory/(id+"-validation.pt")).string();
+  view.features=(fixture.directory/(id+"-features.pt")).string();
+  view.expected_feature_provenance=features.provenance;view.corruption_provenance="declared dummy deletion-only VALIDATION view";
+  fixture.save_observations(view.observations,observed,source_prefix,labels);fixture.save_native(view.features,features);
+  return view;
+}
+void validation_views_and_fit_isolation(const fs::path &root) {
+  Fixture fixture(root/"view-inputs");fixture.save();
+  auto ordinary=configuration(root/"view-ordinary",fixture);ev::run_archive_readout(ordinary);
+  test::check(read(root/"view-ordinary/archive-readout-card.json").find("validation_views")==std::string::npos &&
+      read(root/"view-ordinary/report.json").find("validation_views")==std::string::npos,"empty view option changed historical schema");
+  const embedding::Batch intact{torch::where(fixture.validation.feature_mask,fixture.validation.data,
+      torch::zeros_like(fixture.validation.data)),fixture.validation.feature_mask.clone()};
+  const auto identity=save_view(fixture,"identity",intact,fixture.native_validation,fixture.validation_labels);
+  const embedding::Batch absent{torch::zeros_like(intact.data),torch::zeros_like(intact.feature_mask)};
+  const ev::FeatureSurface absent_features{torch::full_like(fixture.native_validation.values,std::numeric_limits<double>::quiet_NaN()),
+      torch::zeros_like(fixture.native_validation.valid),fixture.native_validation.provenance};
+  const auto empty=save_view(fixture,"absent",absent,absent_features,fixture.validation_labels);
+  auto reduced=fixture.native_validation;reduced.valid=reduced.valid.clone();reduced.values=reduced.values.clone();
+  reduced.valid.narrow(0,0,4).fill_(false);reduced.values.narrow(0,0,4).fill_(std::numeric_limits<double>::quiet_NaN());
+  const auto unequal=save_view(fixture,"unequal",intact,reduced,fixture.validation_labels);
+  auto run=configuration(root/"view-results",fixture);run.inputs[0].validation_views={identity,empty,unequal};
+  const auto input_before=read(identity.observations),features_before=read(identity.features);RuntimeState runtime;
+  ev::run_archive_readout(run);runtime.unchanged();
+  test::check(read(identity.observations)==input_before && read(identity.features)==features_before,"view input archives changed");
+  const auto result=root/"view-results/dummy",base=root/"view-ordinary/dummy";
+  for(const auto &method:{"raw","pca_only","native"}) {
+    compare_fit(base/"rep-1"/(std::string(method)+"-fit.pt"),result/"rep-1"/(std::string(method)+"-fit.pt"));
+    const auto normal=result/"rep-1"/(std::string(method)+"-validation-predictions.pt");
+    const auto view=result/"rep-1/validation-views/identity"/(std::string(method)+"-predictions.pt");
+    for(const auto &key:{"ridge","tiny_secondary","valid","probe_features","labels_scoring_only","source_ids_json"})
+      test::check(torch::equal(tensor(normal,key),tensor(view,key)),"identity view changed exact frozen predictions/row lineage");
+    test::check(!fs::exists(result/"rep-1/validation-views/identity"/(std::string(method)+"-fit.pt")),"validation view fabricated a refit artifact");
+    test::check(tensor(result/"rep-1/validation-views/absent"/(std::string(method)+"-predictions.pt"),"valid").sum().item<int64_t>()==0,
+        "all-absent validation view acquired support");
+  }
+  for(const auto &key:{"mean","scale","counts"})test::check(torch::equal(tensor(base/"raw-scaler.pt",key),tensor(result/"raw-scaler.pt",key)),"view changed TRAIN observation scaler");
+  for(const auto &key:{"pca_mean","pca_components","pca_singular_values","pca_numerical_rank","fitted_rows"})
+    test::check(torch::equal(tensor(base/"pca-only.pt",key),tensor(result/"pca-only.pt",key)),"view changed TRAIN PCA tensors");
+  const auto report=read(root/"view-results/report.json"),card=read(root/"view-results/archive-readout-card.json");
+  test::check(card.find("validation_view_policy")!=std::string::npos &&
+      card.find("same tensors; no view fit")!=std::string::npos && report.find("view_minus_ordinary_full_population_interval")!=std::string::npos,
+      "view recipe/effects were not frozen and reported");
+  const auto start=report.find("\"view\":{\"id\":\"absent\"");test::check(start!=std::string::npos,"absent view was silently omitted");
+  const auto effect=report.find("\"view_minus_ordinary_full_population_interval\":",start);
+  const auto estimate=report.find("\"estimate\":",effect);
+  const auto base_predictions=tensor(base/"rep-1/raw-validation-predictions.pt","ridge");
+  const auto base_valid=tensor(base/"rep-1/raw-validation-predictions.pt","valid");
+  const auto expected=-double(ev::score(base_predictions,fixture.validation_labels,base_valid).correct)/16;
+  test::check(std::abs(std::stod(report.substr(estimate+11))-expected)<1e-12,
+      "full-population view effect dropped abstentions or changed denominator");
+  test::check(tensor(result/"rep-1/validation-views/unequal/native-predictions.pt","valid").sum().item<int64_t>()==10 &&
+      tensor(result/"rep-1/validation-views/unequal/raw-predictions.pt","valid").sum().item<int64_t>()==14,
+      "unequal native view support changed raw coverage");
+  // A view's legal frozen native output can change substantially without changing
+  // any ordinary TRAIN fit or base prediction. Its observation lineage stays fixed.
+  auto changed=fixture.native_validation;changed.values=changed.values.clone()*17.0+37.0;
+  const auto perturb=save_view(fixture,"perturbed",intact,changed,fixture.validation_labels);
+  auto changed_run=configuration(root/"view-changed-results",fixture);changed_run.inputs[0].validation_views={perturb};ev::run_archive_readout(changed_run);
+  for(const auto &method:{"raw","pca_only","native"})
+    compare_fit(base/"rep-1"/(std::string(method)+"-fit.pt"),root/"view-changed-results/dummy/rep-1"/(std::string(method)+"-fit.pt"));
+  test::check(!torch::equal(tensor(result/"rep-1/validation-views/identity/native-predictions.pt","probe_features"),
+      tensor(root/"view-changed-results/dummy/rep-1/validation-views/perturbed/native-predictions.pt","probe_features")),"view perturbation fixture ineffective");
+}
+void validation_view_rejections_and_unsupported(const fs::path &root) {
+  Fixture fixture(root/"bad-view-inputs");fixture.save();
+  const embedding::Batch intact{torch::where(fixture.validation.feature_mask,fixture.validation.data,torch::zeros_like(fixture.validation.data)),
+      fixture.validation.feature_mask.clone()};
+  const auto attempt=[&](const std::string &id,const embedding::Batch &batch,const torch::Tensor &labels,const std::string &prefix="validation") {
+    auto run=configuration(root/("bad-view-"+id),fixture);
+    run.inputs[0].validation_views={save_view(fixture,id,batch,fixture.native_validation,labels,prefix)};
+    RuntimeState runtime;rejects([&]{ev::run_archive_readout(run);},"illegal validation view accepted: "+id);runtime.unchanged();
+    test::check(!fs::exists(fs::path(run.output_directory)/"dummy"),"view validation happened after ordinary fits");
+  };
+  attempt("labels",intact,1-fixture.validation_labels);
+  attempt("sources",intact,fixture.validation_labels,"other-validation");
+  auto introduced=intact;introduced.data=intact.data.clone();introduced.feature_mask=intact.feature_mask.clone();
+  introduced.feature_mask.narrow(0,0,2).select(1,0).select(1,0).fill_(true);introduced.data[0][0][0][0]=1;
+  attempt("support",introduced,fixture.validation_labels);
+  auto changed=intact;changed.data=intact.data.clone();changed.data[0][0][1][0]+=1;
+  attempt("retained-value",changed,fixture.validation_labels);
+  changed=intact;changed.data=intact.data.clone();changed.data[0][0][0][0]=1;
+  attempt("hidden-value",changed,fixture.validation_labels);
+  auto wrong=configuration(root/"bad-view-hash",fixture);
+  wrong.inputs[0].validation_views={save_view(fixture,"hash",intact,fixture.native_validation,fixture.validation_labels)};
+  wrong.inputs[0].validation_views[0].observations_sha256=std::string(64,'0');rejects([&]{ev::run_archive_readout(wrong);},"view hash mismatch accepted");
+  test::check(!fs::exists(wrong.output_directory),"view hash guard ran after deserialization");
+  wrong.output_directory=(root/"bad-view-testing").string();wrong.inputs[0].validation_views[0].observations_sha256.clear();
+  wrong.inputs[0].validation_views[0].observations=(fixture.directory/"controlled-testing.pt").string();rejects([&]{ev::run_archive_readout(wrong);},"testing-marked view accepted");
+  test::check(!fs::exists(wrong.output_directory),"view TEST guard ran after decoding");
+  Fixture rank(root/"view-rank-inputs");rank.training.feature_mask.fill_(true);
+  rank.training.data=rank.labels.to(torch::kFloat64).mul(2).sub(1).reshape({16,1,1,1}).expand({16,2,4,1}).clone();
+  rank.native_training.valid.fill_(true);rank.native_training.values.narrow(0,14,2).fill_(0);rank.save();
+  const embedding::Batch rank_view{torch::where(rank.validation.feature_mask,rank.validation.data,torch::zeros_like(rank.validation.data)),rank.validation.feature_mask.clone()};
+  auto rank_run=configuration(root/"view-rank-results",rank);
+  rank_run.inputs[0].validation_views={save_view(rank,"rank-view",rank_view,rank.native_validation,rank.validation_labels)};ev::run_archive_readout(rank_run);
+  test::check(fs::exists(root/"view-rank-results/dummy/rep-1/validation-views/rank-view/native-predictions.pt") &&
+      fs::exists(root/"view-rank-results/dummy/rep-1/validation-views/rank-view/raw-predictions.pt") &&
+      !fs::exists(root/"view-rank-results/dummy/rep-1/validation-views/rank-view/pca_only-predictions.pt") &&
+      read(root/"view-rank-results/report.json").find("PCA dimensions exceed numerical training rank")!=std::string::npos,
+      "unsupported PCA view disabled legal methods or fabricated predictions");
+}
 } // namespace
 
 int main() {
@@ -242,6 +348,7 @@ int main() {
     const auto nonce=std::chrono::steady_clock::now().time_since_epoch().count();
     const auto root=fs::temp_directory_path()/("archive-readout-test-"+std::to_string(nonce));fs::create_directories(root);
     normal_and_isolation(root);unsupported_and_abstention(root);rejections(root);known_sha256(root);
+    validation_views_and_fit_isolation(root);validation_view_rejections_and_unsupported(root);
     std::cout << "archive readout tests passed: " << root.string() << '\n';return 0;
   } catch(const std::exception &error) {std::cerr << error.what() << '\n';return 1;}
 }

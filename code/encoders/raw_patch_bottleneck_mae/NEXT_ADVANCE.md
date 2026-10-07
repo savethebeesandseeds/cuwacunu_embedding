@@ -247,18 +247,48 @@ TRAIN/VALIDATION fixed-query reconstruction error. Neural and other stress
 results stay secondary. Preserve every seed and audit the artifacts before any
 explicit promotion.
 
-## Next diagnostic: RPB-v6 optimization with the same training view
+## Completed diagnostic: RPB-v6 optimization with the same training view
 
-Freeze a separate TRAIN/known VALIDATION-only card for absolute512/1024/2048.
-Keep the exact30% context policy, native32, all three cohorts and fixed heads.
-Use the existing continuous trainer with ceiling2048: deterministically replay
-to512, verify exact weights/buffers/AdamW/scaler/absolute counters and context
-deletion counts against the saved C checkpoints, then advance the same live
-optimizer. Record replay cost separately and retain every budget/seed.
+The [context optimization diagnostic](CONTEXT_OPTIMIZATION_DIAGNOSTIC.md) is
+complete and independently audited. It keeps the 30% context policy, native32,
+three original cohorts and fixed heads at 512, 1024 and 2048 updates. Fresh
+replay matches the saved 512 weights, buffers, AdamW, scaler, absolute counters
+and context deletion counts before the same live optimizer continues.
 
-Measure whether reconstruction reaches the frozen v4 fixed512 reference while
-intact and moderate-missingness native linear VALIDATION access is preserved.
-Use an explicitly declared VALIDATION corruption diagnostic; preserve the
-existing TEST-only stress protocol's semantics. No TEST reopening, checkpoint
-selection, head tuning or promotion occurs in this diagnostic. The fixed512
-record and its reconstruction-guard failure remain unchanged.
+Mean TRAIN/VALIDATION fixed-query MAE reaches 0.035736/0.035845 at 2048,
+passing the historical v4 fixed-512 reconstruction reference. But mean linear
+VALIDATION accuracy falls to 96.875% intact and 95.3125% under the one fixed
+additional 30% deletion view, versus 98.9583%/98.4375% at replay 512. At 1024,
+reconstruction still exceeds the reference and deletion-view linear accuracy
+also falls. No measured point satisfies both reconstruction and preserved
+512-update linear quality. All budgets and masters remain in the record.
+
+The same ordinary TRAIN-fitted heads score intact and deleted VALIDATION without
+fitting on corruption. This diagnostic accessed no TEST or old stress payload,
+selected no checkpoint and made no promotion decision. The original fixed-512
+tradeoff and active RPB-v4 reference remain unchanged.
+
+## Next focused action: five independent paired masters
+
+Freeze a separate paired replication card for masters 4404, 5505, 6606, 7707
+and 8808 at equal 512 updates. Train fresh RPB-v4 and RPB-v6 on the same new
+TRAIN sources with paired complete initialization, scaler and original row,
+patch-mask and Torch streams. Change only the already frozen context policy;
+keep architecture, reconstruction loss, native32 and the classifier recipes.
+Preserve all five outcomes; do not replace a seed or choose a head after scoring.
+
+Use 128 TRAIN, 64 VALIDATION and 64 fresh TEST source pairs, batch size 8,
+C3/H32/F3 with patch length 8 and 10% natural missingness. Keep ridge penalty 1
+and the secondary tanh-16 head with Adam 0.01 for 100 updates and all three
+declared repetitions. New heads fit TRAIN only. No PCA follows an encoder;
+the retained raw and standalone PCA32 controls use the same legal sources.
+
+A shared development-only baseline phase prepares v4's exact point-zero and
+512-update checkpoints, TRAIN/VALIDATION exports and fitted controls/readouts.
+It performs no selection or TEST generation. The paired phase verifies the
+frozen baseline assets and fresh v6 training, then durably records the complete
+comparison before generating a new common TEST namespace and corruption masks.
+Known VALIDATION cannot select a different replication budget. The question is
+whether the fixed-512 context benefit repeats across independent training,
+with reconstruction and cost reported alongside quality. This plan is not a
+completed result, a promotion decision or formal consumer confirmation.

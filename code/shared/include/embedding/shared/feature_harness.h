@@ -89,6 +89,20 @@ struct ControlledProtocol {
   ControlledDataset training, validation, testing;
 };
 
+struct CoordinateDeletionView {
+  Batch observations;
+  torch::Tensor requested_erasure; // CPU bool BCHF, including already absent cells.
+};
+
+// Pure, role-neutral corruption: no labels, fitting, split discovery or Torch
+// RNG. A source's paired rows share one C*H*F high53-bit mt19937_64 stream;
+// rates are nested. Retained values are unchanged and hidden storage is zero.
+// The caller freezes the seed/namespace and binds the observation role. The
+// default namespace preserves the historical fixed-readout stress mask stream.
+CoordinateDeletionView make_coordinate_deletion_view(const Batch &observations,
+    const std::vector<std::string> &source_ids, Task task, uint64_t seed,
+    double rate, const std::string &rng_namespace = "fixed-readout-stress-v1");
+
 // Source groups are assigned before their paired observations/windows are drawn.
 ControlledProtocol make_controlled_protocol(Task task, const input_shape_t &shape,
     int64_t training_pairs, int64_t validation_pairs, int64_t testing_pairs,

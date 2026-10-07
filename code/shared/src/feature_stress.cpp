@@ -210,12 +210,7 @@ torch::Tensor source_erasure(const Case &value, const EvaluationCard &card,
                             const ControlledProtocol &protocol, const std::string &source) {
   auto erased = torch::zeros({card.shape.channel_count, card.shape.history_length,
                               card.shape.input_width}, torch::kBool);
-  if (value.family == "coordinate_dropout") {
-    std::mt19937_64 rng(source_seed(protocol, source, "coordinate"));
-    auto flat = erased.reshape({-1}); auto a = flat.accessor<bool, 1>();
-    for (int64_t i = 0; i < flat.numel(); ++i)
-      a[i] = (rng() >> 11) * (1.0 / 9007199254740992.0) < value.rate;
-  } else if (value.family == "contiguous_gap") {
+  if (value.family == "contiguous_gap") {
     std::mt19937_64 rng(source_seed(protocol, source, "contiguous_anchor"));
     std::uniform_int_distribution<int64_t> draw(0, card.shape.history_length - 1);
     const auto anchor = draw(rng);
@@ -230,6 +225,11 @@ struct Corrupted { Batch batch; torch::Tensor erased; };
 Corrupted corrupt(const Case &value, const EvaluationCard &card,
                   const ControlledProtocol &protocol) {
   const auto &base = protocol.testing.observed;
+  if (value.family == "coordinate_dropout") {
+    const auto view = make_coordinate_deletion_view(base, protocol.testing.source_ids,
+        protocol.task, protocol.seed, value.rate);
+    return {view.observations, view.requested_erasure};
+  }
   std::map<std::string, torch::Tensor> requested;
   std::vector<torch::Tensor> rows;
   for (const auto &id : protocol.testing.source_ids) {
