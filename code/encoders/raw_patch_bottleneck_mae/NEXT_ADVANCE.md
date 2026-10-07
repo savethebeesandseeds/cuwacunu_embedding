@@ -368,13 +368,17 @@ generalization gain or prove irreversible timing-information loss.
 
 ## Next focused action
 
-Implement the separate [RPB-v9 native view agreement plan](NATIVE_VIEW_AGREEMENT_PLAN.md).
-Keep ordinary reconstruction as the anchor and align native32 embeddings of
-the same row under ordinary and extra-missingness views, with the fixed
-loss-only scale and variance safeguard. Freeze a separate quality card and
-exact legal TRAIN/known-VALIDATION role list before CUDA admission or data access.
-Compare five fresh fixed512 candidates with retained v4/v7 checkpoints and
-unchanged shared heads; keep the joint quality/coverage/reconstruction guard.
-Preserve v4 as active and all measured tradeoffs. Stop the mechanism if that
-guard fails, without rate, weight or budget rescue. Historical TEST/stress
-remain closed; any confirmation needs unopened held-out sources.
+The [RPB-v9 comparison](NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md) is complete.
+Actual CUDA admission and independent archive audit passed, but the fixed recipe
+failed all six numeric guards and produced severe reconstruction instability.
+RPB-v4 remains active. Stop this mechanism; do not search its coefficients,
+rate or budget, and preserve all five runs including master4404.
+
+Follow [tomorrow's continuation note](../../../doc/CONTINUATION_2026-10-08.md):
+start with the saved TRAIN calibration scales and per-update loss components,
+identify when the reconstruction path degrades, and distinguish numerical scale
+or gradient-allocation problems from an inadequate representation objective.
+This is a diagnosis of saved evidence, not another training experiment or a
+post-hoc rescue. Before executing a new analysis beyond the completed audit,
+freeze its exact TRAIN-only input roles and diagnostic question. Propose a new
+bounded mechanism only after that diagnosis. Historical TEST/stress remain closed.

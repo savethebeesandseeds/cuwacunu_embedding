@@ -89,5 +89,8 @@ The subsequent [TRAIN objective diagnosis](../code/encoders/raw_patch_bottleneck
 and [durable diagnostic summary](results/training_objective_diagnostic_v1.json)
 reject the proposed all-pair residual-difference auxiliary under its prospective
 rule, with zero encoder updates and zero head refits. The independent saved-arithmetic
-audit passed. The [RPB-v9 plan](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_PLAN.md)
-defines the next native view agreement mechanism; it has no measured quality claim.
+audit passed. The completed [RPB-v9 diagnostic](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md)
+and [durable summary](results/native_view_agreement_validation_v1.json) record
+a severe failed experiment, with passed implementation admission and independent
+audit. RPB-v4 remains active. The [continuation note](CONTINUATION_2026-10-08.md)
+defines tomorrow's saved-evidence diagnosis; no new training is scheduled.

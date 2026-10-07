@@ -760,3 +760,54 @@ test-rpb-training-objective-diagnostic: $(RPB_TEST_DIR)/training_objective_diagn
 
 evaluate-training-objective-diagnostic: $(TRAINING_OBJECTIVE_BIN)
 	TRAINING_OBJECTIVE_BIN="$(abspath $(TRAINING_OBJECTIVE_BIN))" TRAINING_OBJECTIVE_SOURCE_INPUTS="$(TRAINING_OBJECTIVE_PROVENANCE_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-training-objective-diagnostic.sh
+
+# One native-space view-agreement objective; shared scoring stays unchanged.
+NATIVE_VIEW_AGREEMENT_VALIDATION_BIN := $(BUILD_DIR)/embedding_native_view_agreement_validation
+RPB_NATIVE_VIEW_AGREEMENT_OBJECT := $(RPB_OBJECT_DIR)/native_view_agreement.o
+RPB_NATIVE_VIEW_AGREEMENT_PAIR_GATE_OBJECT := $(RPB_OBJECT_DIR)/native_view_agreement_pair_gate.o
+RPB_NATIVE_VIEW_AGREEMENT_RETAINED_OBJECT := $(RPB_OBJECT_DIR)/native_view_agreement_retained.o
+RPB_NATIVE_VIEW_AGREEMENT_SERVING_GATE_OBJECT := $(RPB_OBJECT_DIR)/native_view_agreement_serving_gate.o
+NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/native_view_agreement.cpp $(RPB_ROOT)/src/context_replication_adapter.cpp $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(EVALUATION_ROOT)/src/native_view_agreement_validation_main.cpp $(EVALUATION_ROOT)/cards/native_view_agreement_validation_v1.md $(CODE_ROOT)/scripts/check-native-view-agreement-validation.sh $(CODE_ROOT)/scripts/evaluate-native-view-agreement-validation.sh)
+NATIVE_VIEW_AGREEMENT_VALIDATION_SOURCE_ID := $(shell sha256sum $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
+NATIVE_VIEW_AGREEMENT_VALIDATION_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(NATIVE_VIEW_AGREEMENT_VALIDATION_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
+.PHONY: native-view-agreement-validation print-native-view-agreement-validation-sources test-rpb-native-view-agreement evaluate-native-view-agreement-validation
+native-view-agreement-validation: $(NATIVE_VIEW_AGREEMENT_VALIDATION_BIN)
+
+print-native-view-agreement-validation-sources:
+	@printf '%s\n' $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
+
+$(EVALUATION_OBJECT_DIR)/native_view_agreement_validation_main.o: $(EVALUATION_ROOT)/src/native_view_agreement_validation_main.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(NATIVE_VIEW_AGREEMENT_VALIDATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_NATIVE_VIEW_AGREEMENT_OBJECT): $(RPB_ROOT)/src/native_view_agreement.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(NATIVE_VIEW_AGREEMENT_VALIDATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_NATIVE_VIEW_AGREEMENT_PAIR_GATE_OBJECT): $(RPB_ROOT)/src/context_replication_adapter.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(NATIVE_VIEW_AGREEMENT_VALIDATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_NATIVE_VIEW_AGREEMENT_RETAINED_OBJECT): $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(NATIVE_VIEW_AGREEMENT_VALIDATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_NATIVE_VIEW_AGREEMENT_SERVING_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(NATIVE_VIEW_AGREEMENT_VALIDATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(NATIVE_VIEW_AGREEMENT_VALIDATION_BIN): $(EVALUATION_OBJECT_DIR)/native_view_agreement_validation_main.o $(RPB_NATIVE_VIEW_AGREEMENT_OBJECT) $(RPB_NATIVE_VIEW_AGREEMENT_PAIR_GATE_OBJECT) $(RPB_NATIVE_VIEW_AGREEMENT_RETAINED_OBJECT) $(RPB_NATIVE_VIEW_AGREEMENT_SERVING_GATE_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(RPB_TEST_DIR)/native_view_agreement_test.o: $(RPB_ROOT)/tests/native_view_agreement_test.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(NATIVE_VIEW_AGREEMENT_VALIDATION_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/native_view_agreement_test: $(RPB_TEST_DIR)/native_view_agreement_test.o $(RPB_NATIVE_VIEW_AGREEMENT_OBJECT) $(RPB_NATIVE_VIEW_AGREEMENT_RETAINED_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(HARNESS_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-native-view-agreement: $(RPB_TEST_DIR)/native_view_agreement_test
+	$(RPB_TEST_DIR)/native_view_agreement_test
+
+evaluate-native-view-agreement-validation: $(NATIVE_VIEW_AGREEMENT_VALIDATION_BIN)
+	NATIVE_VIEW_AGREEMENT_VALIDATION_BIN="$(abspath $(NATIVE_VIEW_AGREEMENT_VALIDATION_BIN))" NATIVE_VIEW_AGREEMENT_VALIDATION_SOURCE_INPUTS="$(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-native-view-agreement-validation.sh

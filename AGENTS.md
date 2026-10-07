@@ -71,11 +71,15 @@ Do not train that auxiliary or tune its weights or pair subsets. Independent
 saved-arithmetic audit v3 passed 16,119,003 checks; the failed v2 reader and
 cross-backend correction are preserved. This is local TRAIN evidence, not a
 new accuracy result. Preserve the diagnostic sources, card and captured evidence.
-The next bounded mechanism is [RPB-v9 native view agreement](code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_PLAN.md):
-ordinary reconstruction plus same-row agreement on the exact native32 export
-under an extra 0.15 missing-data view. Keep its fixed coefficients and heads;
-freeze its separate quality card and legal input roles before admission/data
-access. No TEST/stress, rate/budget/weight search or automatic promotion.
+The completed [RPB-v9 native view agreement diagnostic](code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md)
+fails all six numeric guards at fixed512. Native linear means are 59.21875%
+intact / 57.03125% under extra deletion; mean TRAIN/VALIDATION MAE is
+29.194490 / 29.371655, including one especially unstable run. Actual CUDA
+admission and independent audit passed 74,721,050 checks. Stop this frozen
+mechanism without coefficient/rate/budget rescue. RPB-v4 remains active;
+v9 is the last measured candidate. Follow the [continuation note](doc/CONTINUATION_2026-10-08.md)
+to inspect saved TRAIN loss-scale/component evidence before proposing another
+mechanism. No TEST/stress or automatic promotion.
 Older versions remain available for archived evidence, explicit comparisons,
 and compatibility tests. Do not routinely retrain all older architectures.
 Model tags identify designs; exact configurations, source revisions, datasets,
@@ -95,3 +99,11 @@ Follow [the environment instructions](doc/ENVIRONMENT.md). Build, test, and run
 project code in the existing managed development container using named sessions.
 Verify actual CUDA parameters, inputs, loss, gradients, and weight updates before
 expensive encoder training. Preserve all existing artifacts and container data.
+
+Train each declared encoder run once on CUDA. CPU work may fit the fixed
+classifier heads and raw-data PCA, or verify calculations from saved tensors.
+It must not repeat encoder training. Reuse saved native feature archives for
+routine scoring; frozen inference is for extracting needed features or an
+explicit correctness/parity witness. Do not rerun encoders merely to repeat
+already captured measurements. Keep training, inference, head fitting and
+archive-audit time separate in reports.

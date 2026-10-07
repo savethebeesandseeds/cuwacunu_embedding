@@ -50,10 +50,13 @@ also fails the fixed quality/reconstruction guard. The new
 rejects an extra all-pair reconstruction loss: it helps the local fixed-head
 gradient direction on two runs and worsens it on three. CUDA admission and
 independent saved-arithmetic audit passed; no encoder update or head refit
-occurred. Its next [bounded experiment](code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_PLAN.md)
-is RPB-v9: ordinary reconstruction plus native embedding agreement between
-two missing-data views of the same row. This is a prospective mechanism, with
-no measured quality claim yet.
+occurred. The subsequent [RPB-v9 comparison](code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md)
+is implemented and independently audited. Its native view agreement loss fails
+all six numeric guards: mean linear accuracy is 59.21875% intact and 57.03125%
+under extra deletion, with severe reconstruction degradation and one especially
+unstable run. Stop this frozen mechanism; RPB-v4 remains active. The
+[continuation note](doc/CONTINUATION_2026-10-08.md) records tomorrow's diagnosis,
+saved evidence and execution boundaries. No further training is scheduled.
 Older designs remain available as archived references. See the
 [version registry](doc/EMBEDDING_VERSIONS.md),
 [results reporting standard](doc/RESULTS_REPORTING_STANDARD.md), and

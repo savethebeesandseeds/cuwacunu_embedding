@@ -98,12 +98,17 @@ rule. CUDA admission and independent saved-arithmetic audit passed; do not
 train or tune that auxiliary. These are TRAIN mechanism results, with no new
 quality score. The failed reader and its CPU/GPU correction remain recorded.
 
-**RPB-v9 — Global bottleneck with native view agreement** is the next prospective
-[mechanism](NATIVE_VIEW_AGREEMENT_PLAN.md). It keeps ordinary reconstruction
-and adds same-row agreement directly on the native32 output under an extra
-0.15 missing-data view, with a small variance safeguard. Inference and fixed
-shared heads stay the same. Its separate quality card and input boundary must
-be frozen before admission or data access; no quality gain is claimed yet.
+**RPB-v9 — Global bottleneck with native view agreement** is implemented and
+measured in the [five-run diagnostic](NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md).
+It adds same-row native32 agreement and a variance safeguard to ordinary
+reconstruction, with unchanged inference and fixed shared heads. Actual CUDA
+admission and the independent audit passed, but all six numeric guards failed:
+linear means are 59.21875% intact / 57.03125% with extra deletion; mean standardized
+TRAIN/VALIDATION MAE is 29.194490 / 29.371655. One run is especially unstable,
+and the other four also reconstruct much worse than v4. RPB-v4 remains active.
+The [prospective plan](NATIVE_VIEW_AGREEMENT_PLAN.md) and quality card remain the
+frozen design record. Stop this mechanism without weight/rate/budget rescue.
+See [tomorrow's continuation](../../../doc/CONTINUATION_2026-10-08.md).
 
 The [embedding evaluation policy](../../../doc/EMBEDDING_EVALUATION_POLICY.md)
 governs shared protocols, reporting and acceptance. The

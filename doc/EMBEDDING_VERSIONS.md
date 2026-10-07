@@ -34,7 +34,7 @@ preserved alongside the successful result.
 | RPB-v6 | Global bottleneck with context deletion | Accuracy gains, reconstruction tradeoff; not promoted | [Context deletion card](../code/evaluation/cards/context_deletion_v1.md) |
 | RPB-v7 | Global bottleneck with lighter context deletion | Measured validation gains, unresolved reconstruction tradeoff; not promoted | [Lighter-policy diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_LIGHTER_VALIDATION_DIAGNOSTIC.md) |
 | RPB-v8 | Global bottleneck with balanced context views | Measured and audited; joint guard failed; not promoted | [Balanced-view diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_BALANCED_VALIDATION_DIAGNOSTIC.md) |
-| RPB-v9 | Global bottleneck with native view agreement | Planned; not admitted or measured | [Native view agreement plan](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_PLAN.md) |
+| RPB-v9 | Global bottleneck with native view agreement | Measured and audited; severe fixed512 failure; not promoted | [Native view agreement diagnostic](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md) |
 
 The [machine-readable registry](embedding_versions.json) records the same mapping.
 Use only the tag in result table cells; place its short description in adjacent
@@ -139,11 +139,16 @@ the local fixed-head gradient direction and three worsen it. No encoder update
 or head refit occurred; CUDA admission and independent saved-arithmetic audit
 passed. This is not a new quality score or model version.
 
-**RPB-v9 — Global bottleneck with native view agreement** is registered as a
-prospective mechanism in its [separate plan](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_PLAN.md).
-It retains the v4 inference architecture and ordinary reconstruction, adding
-same-row native32 agreement under extra 0.15 missingness and a variance safeguard.
-Its loss scale is TRAIN-fitted once and used only in the loss. No implementation
-admission or measurement is claimed yet. Freeze a separate quality card and
-legal input roles before either; future confirmation needs unopened held-out
-sources. RPB-v4 remains active and RPB-v8 remains the last measured candidate.
+**RPB-v9 — Global bottleneck with native view agreement** is implemented and
+measured in its [separate diagnostic](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md).
+Its [plan](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_PLAN.md)
+and quality card remain frozen prospective records. Five fresh CUDA runs at512
+use the same v4 inference architecture, ordinary reconstruction and fixed heads.
+All six numeric guards fail: mean native linear accuracy is 59.21875% intact /
+57.03125% under extra deletion; mean TRAIN/VALIDATION MAE is
+29.194490 / 29.371655. Master4404 is especially unstable; all other masters also
+reconstruct substantially worse than v4. Actual CUDA admission and independent
+audit passed 74,721,050 checks, establishing the recorded computations rather
+than useful optimization. Stop this recipe without coefficient/rate/budget
+rescue. RPB-v4 remains active; RPB-v9 is the last measured candidate.
+The [continuation note](CONTINUATION_2026-10-08.md) defines tomorrow's diagnosis.
