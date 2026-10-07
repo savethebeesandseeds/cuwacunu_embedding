@@ -79,3 +79,8 @@ Its separate [implementation guidelines](../code/encoders/raw_patch_bottleneck_m
 define architecture contracts, reuse boundaries and evaluation gates.
 See [environment coordination](ENVIRONMENT.md) for development commands from
 the repository root. Paper build commands above run from this `doc/` directory.
+
+The [balanced-view RPB-v8 diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_BALANCED_VALIDATION_DIAGNOSTIC.md)
+and [durable result summary](results/context_balanced_validation_v1.json) record
+the latest completed and independently audited TRAIN/known-VALIDATION comparison.
+RPB-v4 remains active; no TEST/stress or promotion occurred.

@@ -98,6 +98,46 @@ ev::CurveSnapshot make_retained_curve_snapshot(const std::string &path,const ev:
     torch::Tensor value; producer_audit.read(name,value,true);
     snapshot.features.audit_fields["retained_"+name]=embedding::archive::tensor_text(value);
   }
+  if (checkpoint->training_policy_id == "rpb-training-context-balanced-030-v1") {
+    // Bind the balanced training witness without changing ordinary inference
+    // or any historical uniform-policy metadata contract.
+    for (const std::string name:{"model_tag","training_policy_id","context_deletion_ratio",
+        "context_deletion_stream","context_deletion_rng_policy","context_deletion_repair_policy",
+        "context_deletion_visibility_policy","context_deletion_count_policy","context_deletion_resume_policy",
+        "context_deletion_schedule_policy","context_deletion_rate_scope","context_deletion_branch_count_policy",
+        "context_deletion_skip_policy","context_ordinary_attempts","context_deletion_attempts"}) {
+      torch::Tensor value; producer_audit.read(name,value,true);
+      snapshot.features.audit_fields[name]=embedding::archive::tensor_text(value);
+    }
+    require(snapshot.features.audit_fields.at("training_policy_id")==checkpoint->training_policy_id &&
+        snapshot.features.audit_fields.at("model_tag")=="RPB-v8" &&
+        snapshot.features.audit_fields.at("context_deletion_ratio")=="0.30" &&
+        snapshot.features.audit_fields.at("context_deletion_schedule_policy")=="absolute-attempt-even-ordinary-odd-coordinate30-v1" &&
+        snapshot.features.audit_fields.at("context_deletion_rate_scope")=="active-odd-attempts-only;not-uniform-effective-rate" &&
+        snapshot.features.audit_fields.at("context_deletion_branch_count_policy")=="absolute-attempt-prefix;no-skips;ordinary-plus-deletion-equals-attempted" &&
+        snapshot.features.audit_fields.at("context_deletion_skip_policy")=="abort-before-update-on-ineligible-original-mask;no-replacement-or-schedule-shift",
+        "balanced retained companion policy differs from its checkpoint");
+    for (const std::string name:{"context_requested_deleted_coordinates","context_actual_deleted_coordinates",
+        "context_restored_coordinates"}) {
+      torch::Tensor value; producer_audit.read(name,value,true);
+      require(value.scalar_type()==torch::kInt64 && value.dim()==0 && value.numel()==1 && value.item<int64_t>()>=0,
+          "balanced retained coordinate count is invalid: "+name);
+      snapshot.features.audit_fields[name]=std::to_string(value.item<int64_t>());
+    }
+    for (const std::string name:{"context_ordinary_attempts","context_deletion_attempts"}) {
+      torch::Tensor value; producer_audit.read(name+"_value",value,true);
+      require(value.scalar_type()==torch::kInt64 && value.dim()==0 && value.numel()==1 && value.item<int64_t>()>=0 &&
+          snapshot.features.audit_fields.at(name)==std::to_string(value.item<int64_t>()),
+          "balanced retained branch text/typed count differs: "+name);
+    }
+    require(checkpoint->attempted_steps==checkpoint->completed_steps &&
+        snapshot.features.audit_fields.at("context_ordinary_attempts")==
+            std::to_string(checkpoint->attempted_steps/2+checkpoint->attempted_steps%2) &&
+        snapshot.features.audit_fields.at("context_deletion_attempts")==
+            std::to_string(checkpoint->attempted_steps/2),
+        "balanced retained absolute-attempt prefix differs");
+    snapshot.features.provenance += "; model_tag=RPB-v8; training_policy="+checkpoint->training_policy_id;
+  }
   snapshot.features.audit_fields["curve_checkpoint_trained_training_producer_source_fingerprint"]=
       snapshot.features.audit_fields.at("retained_training_producer_source_fingerprint");
   snapshot.features.audit_fields[base+"_training_producer_source_fingerprint"]=

@@ -6,9 +6,9 @@
 
 namespace embedding::encoders::raw_patch_bottleneck_mae {
 
-// Two explicitly identified training recipes on unchanged mode2/mixer1/native32
+// Explicitly identified training recipes on unchanged mode2/mixer1/native32
 // inference. The old aggregate {true} retains the historical .30 recipe.
-enum class ContextDeletionRecipe { coordinate30_v1, coordinate15_v1 };
+enum class ContextDeletionRecipe { coordinate30_v1, coordinate15_v1, balanced30_v1 };
 struct ContextDeletionOptions {
   bool enabled{false};
   ContextDeletionRecipe recipe{ContextDeletionRecipe::coordinate30_v1};
@@ -24,6 +24,12 @@ inline constexpr const char *repair_policy =
     "eligible-channels-only;restore-earliest-erased-original-patch-first-original-visible-coordinate-until-two-groups-v1";
 inline constexpr const char *visibility_policy =
     "V=(O&~A)&~E;E-subset-original-visible;repair-only-E;original-O-A-Q-eligibility-Huber-unchanged-v1";
+inline constexpr const char *balanced_schedule_policy = "absolute-attempt-even-ordinary-odd-coordinate30-v1";
+inline constexpr const char *balanced_rate_scope = "active-odd-attempts-only;not-uniform-effective-rate";
+inline constexpr const char *balanced_branch_count_policy =
+    "absolute-attempt-prefix;no-skips;ordinary-plus-deletion-equals-attempted";
+inline constexpr const char *balanced_skip_policy =
+    "abort-before-update-on-ineligible-original-mask;no-replacement-or-schedule-shift";
 
 struct RecipeDescriptor {
   double ratio;
@@ -34,11 +40,23 @@ inline const RecipeDescriptor &descriptor(ContextDeletionRecipe recipe) {
   // The public constants above remain the immutable v6 .30 contract.
   static constexpr RecipeDescriptor coordinate30{ratio, "0.30", policy_id, "RPB-v6"};
   static constexpr RecipeDescriptor coordinate15{.15, "0.15", "rpb-training-context-deletion-015-v1", "RPB-v7"};
+  static constexpr RecipeDescriptor balanced30{ratio, "0.30", "rpb-training-context-balanced-030-v1", "RPB-v8"};
   switch (recipe) {
     case ContextDeletionRecipe::coordinate30_v1: return coordinate30;
     case ContextDeletionRecipe::coordinate15_v1: return coordinate15;
+    case ContextDeletionRecipe::balanced30_v1: return balanced30;
   }
   TORCH_CHECK(false, "[rpb context deletion] unknown bounded context recipe");
+}
+
+inline bool is_balanced(ContextDeletionRecipe recipe) {
+  (void)descriptor(recipe);
+  return recipe == ContextDeletionRecipe::balanced30_v1;
+}
+
+inline bool deletion_attempt(ContextDeletionRecipe recipe, int64_t attempt) {
+  TORCH_CHECK(attempt >= 0, "[rpb context deletion] nonnegative absolute counters required");
+  return !is_balanced(recipe) || attempt % 2 == 1;
 }
 
 inline void validate_options(const ContextDeletionOptions &options) {
@@ -69,6 +87,12 @@ inline Plan make_plan(const MaskPlan &original, const torch::Tensor &ids,
   const auto H = config.history_length, F = config.input_width;
   const auto K = H / config.patch_length, PF = config.patch_length * F;
   (void)channel_indices(ids, config, B, torch::kCPU);
+  if (!deletion_attempt(recipe, attempt)) {
+    // Even attempts use the ordinary forward in the trainer, not this helper's
+    // alternate forward. This support-only result consumes no deletion draws.
+    const auto empty = torch::zeros_like(original.visible);
+    return {original.visible.clone(), empty, empty.clone(), 0, 0, 0};
+  }
   const auto rows = (ids.dim() == 1 ? ids.unsqueeze(0).expand({B, C}) : ids).to(torch::kCPU);
   const auto order = rows.argsort(int64_t{1}).contiguous();
   const auto canonical = order.accessor<int64_t, 2>();

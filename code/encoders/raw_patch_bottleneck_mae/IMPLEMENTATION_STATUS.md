@@ -376,3 +376,24 @@ contextual summaries. Inferred missing-channel summaries, multiscale/frequency f
 prediction heads, EMA/JEPA/VICReg objectives, external pretrained controls and
 specialist banks remain separate experiments. The original architecture
 specification describes that broader direction.
+
+## Current milestone: balanced context views
+
+**RPB-v8 — Global bottleneck with balanced context views** is implemented and
+measured under the frozen [balanced-view card](../../evaluation/cards/context_balanced_validation_v1.md).
+It alternates 256 ordinary and 256 deletion-0.30 attempts at 512 completed updates,
+with unchanged mode2/mixer1/native32 architecture, original targets/loss and heads.
+The [five-master diagnostic](CONTEXT_BALANCED_VALIDATION_DIAGNOSTIC.md) reports
+mean native linear accuracy of 95.93750% intact and
+91.71875% under the exact saved v7 additional-deletion view,
+at 100% coverage. Mean TRAIN/VALIDATION MAE is
+0.085022/0.087620.
+The predeclared joint development guard **failed**. Independent archive audit v2
+passed 67,099,959 checks; actual CUDA admission and prior-policy regressions passed.
+V8 is not promoted, and RPB-v4 remains active. No TEST/stress, checkpoint selection,
+head tuning or post-encoder PCA occurred. Five new v8 trajectories use ten
+retained v4/v7 references; all five masters and both heads remain in the report.
+
+Earlier sections retain their historical recipes and chronology. See the
+[durable result summary](../../../doc/results/context_balanced_validation_v1.json)
+for this completed known-VALIDATION diagnostic.

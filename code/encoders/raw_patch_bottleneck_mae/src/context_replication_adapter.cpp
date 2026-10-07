@@ -152,9 +152,29 @@ std::map<std::string, std::string> audit_point(const std::string &path, const Ch
         "fresh candidate companion differs from the fixed context policy");
     for (const std::string name : {"context_requested_deleted_coordinates", "context_actual_deleted_coordinates",
         "context_restored_coordinates"}) require(integer(archive, name) == 0, "candidate point zero has consumed context deletion");
+    if (context_deletion::is_balanced(expected_recipe)) {
+      require(text(archive, "context_deletion_schedule_policy") == context_deletion::balanced_schedule_policy &&
+          text(archive, "context_deletion_rate_scope") == context_deletion::balanced_rate_scope &&
+          text(archive, "context_deletion_branch_count_policy") == context_deletion::balanced_branch_count_policy &&
+          text(archive, "context_deletion_skip_policy") == context_deletion::balanced_skip_policy &&
+          text(archive, "context_ordinary_attempts") == "0" && text(archive, "context_deletion_attempts") == "0" &&
+          integer(archive, "context_ordinary_attempts_value") == 0 &&
+          integer(archive, "context_deletion_attempts_value") == 0,
+          "fresh balanced candidate schedule/rate scope/branch-count companion differs");
+    } else {
+      for (const std::string name : {"context_deletion_schedule_policy", "context_deletion_rate_scope",
+          "context_deletion_branch_count_policy", "context_deletion_skip_policy", "context_ordinary_attempts",
+          "context_deletion_attempts", "context_ordinary_attempts_value", "context_deletion_attempts_value"}) {
+        torch::Tensor value;
+        require(!archive.try_read(name, value, true), "uniform context candidate contains a balanced schedule: " + name);
+      }
+    }
   } else {
     for (const std::string name : {"training_policy_id", "context_deletion_ratio", "context_deletion_stream",
-        "context_requested_deleted_coordinates", "context_actual_deleted_coordinates", "context_restored_coordinates"}) {
+        "context_requested_deleted_coordinates", "context_actual_deleted_coordinates", "context_restored_coordinates",
+        "context_deletion_schedule_policy", "context_deletion_rate_scope", "context_deletion_branch_count_policy",
+        "context_deletion_skip_policy", "context_ordinary_attempts", "context_deletion_attempts",
+        "context_ordinary_attempts_value", "context_deletion_attempts_value"}) {
       torch::Tensor value;
       require(!archive.try_read(name, value, true), "ordinary fresh reference contains a training context policy: " + name);
     }
@@ -215,7 +235,7 @@ std::map<std::string, std::string> audit_context_replication_initialization(cons
   const auto positive_fields = audit_point(reference.reference_checkpoint, positive, fit, false, expected_recipe);
   require(candidate_fields == initial_fields && initial_fields == positive_fields,
       "fresh paired source order or original initialization/row/mask/Torch streams differ");
-  return {{"common_parameters_exact", "true"}, {"all_parameters_exact_including_global_pool", "true"},
+  std::map<std::string, std::string> result{{"common_parameters_exact", "true"}, {"all_parameters_exact_including_global_pool", "true"},
       {"common_parameter_count", std::to_string(count)}, {"common_tensors", std::to_string(a.size())},
       {"all_buffers_exact", "true"}, {"scaler_exact", "true"}, {"training_dataset_exact", "true"},
       {"counter_streams_exact", "true"}, {"training_policy_id", selected.policy_id},
@@ -227,5 +247,14 @@ std::map<std::string, std::string> audit_context_replication_initialization(cons
       {"reference_role", "fresh_equal_budget_training_reference"},
       {"input_byte_integrity_owner", "shared_engine_explicit_input_hash_guard"},
       {"scope", "fresh complete same-mode2 point0 weights/buffers/scaler/TRAIN/source order/original counter streams; context-only policy; fresh reference has no skips"}};
+  if (context_deletion::is_balanced(expected_recipe)) {
+    result.emplace("context_deletion_schedule_policy", context_deletion::balanced_schedule_policy);
+    result.emplace("context_deletion_rate_scope", context_deletion::balanced_rate_scope);
+    result.emplace("context_deletion_branch_count_policy", context_deletion::balanced_branch_count_policy);
+    result.emplace("context_deletion_skip_policy", context_deletion::balanced_skip_policy);
+    result.emplace("context_ordinary_attempts", "0");
+    result.emplace("context_deletion_attempts", "0");
+  }
+  return result;
 }
 } // namespace embedding::encoders::raw_patch_bottleneck_mae

@@ -19,6 +19,7 @@ std::map<std::string, std::string> audit_context_replication_initialization(
     int64_t expected_reference_updates = 512);
 
 // Explicit expected recipe; never infer an accepted policy from the candidate.
+// Balanced30 requires its active-rate/schedule/branch-count companion at point0.
 // The legacy overload above remains bound to coordinate30_v1.
 std::map<std::string, std::string> audit_context_replication_initialization(
     const std::string &candidate_point_zero,

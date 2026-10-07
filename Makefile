@@ -682,3 +682,45 @@ test-rpb-context-lighter: $(RPB_TEST_DIR)/context_lighter_test
 
 evaluate-context-lighter-validation: $(CONTEXT_LIGHTER_BIN)
 	CONTEXT_LIGHTER_BIN="$(abspath $(CONTEXT_LIGHTER_BIN))" CONTEXT_LIGHTER_SOURCE_INPUTS="$(CONTEXT_LIGHTER_PROVENANCE_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-context-lighter-validation.sh
+
+# One alternating ordinary/deleted training recipe on known development sources.
+CONTEXT_BALANCED_BIN := $(BUILD_DIR)/embedding_context_balanced_validation
+RPB_CONTEXT_BALANCED_PAIR_GATE_OBJECT := $(RPB_OBJECT_DIR)/context_balanced_pair_gate.o
+RPB_CONTEXT_BALANCED_RETAINED_OBJECT := $(RPB_OBJECT_DIR)/context_balanced_retained.o
+RPB_CONTEXT_BALANCED_SERVING_GATE_OBJECT := $(RPB_OBJECT_DIR)/context_balanced_serving_gate.o
+CONTEXT_BALANCED_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/context_replication_adapter.cpp $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(EVALUATION_ROOT)/src/context_balanced_validation_main.cpp $(EVALUATION_ROOT)/cards/context_balanced_validation_v1.md $(CODE_ROOT)/scripts/check-context-balanced-validation.sh $(CODE_ROOT)/scripts/evaluate-context-balanced-validation.sh)
+CONTEXT_BALANCED_SOURCE_ID := $(shell sha256sum $(CONTEXT_BALANCED_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
+CONTEXT_BALANCED_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(CONTEXT_BALANCED_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
+.PHONY: context-balanced-validation print-context-balanced-sources test-rpb-context-balanced evaluate-context-balanced-validation
+context-balanced-validation: $(CONTEXT_BALANCED_BIN)
+
+print-context-balanced-sources:
+	@printf '%s\n' $(CONTEXT_BALANCED_PROVENANCE_INPUTS)
+
+$(EVALUATION_OBJECT_DIR)/context_balanced_validation_main.o: $(EVALUATION_ROOT)/src/context_balanced_validation_main.cpp $(CONTEXT_BALANCED_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(CONTEXT_BALANCED_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_CONTEXT_BALANCED_PAIR_GATE_OBJECT): $(RPB_ROOT)/src/context_replication_adapter.cpp $(CONTEXT_BALANCED_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(CONTEXT_BALANCED_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_CONTEXT_BALANCED_RETAINED_OBJECT): $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(CONTEXT_BALANCED_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(CONTEXT_BALANCED_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_CONTEXT_BALANCED_SERVING_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(CONTEXT_BALANCED_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(CONTEXT_BALANCED_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(CONTEXT_BALANCED_BIN): $(EVALUATION_OBJECT_DIR)/context_balanced_validation_main.o $(RPB_CONTEXT_BALANCED_PAIR_GATE_OBJECT) $(RPB_CONTEXT_BALANCED_RETAINED_OBJECT) $(RPB_CONTEXT_BALANCED_SERVING_GATE_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(RPB_TEST_DIR)/context_balanced_test: $(RPB_TEST_DIR)/context_balanced_test.o $(RPB_CONTEXT_BALANCED_PAIR_GATE_OBJECT) $(RPB_CONTEXT_BALANCED_RETAINED_OBJECT) $(RPB_CONTEXT_REPLAY_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(HARNESS_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-context-balanced: $(RPB_TEST_DIR)/context_balanced_test
+	$(RPB_TEST_DIR)/context_balanced_test
+
+evaluate-context-balanced-validation: $(CONTEXT_BALANCED_BIN)
+	CONTEXT_BALANCED_BIN="$(abspath $(CONTEXT_BALANCED_BIN))" CONTEXT_BALANCED_SOURCE_INPUTS="$(CONTEXT_BALANCED_PROVENANCE_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-context-balanced-validation.sh

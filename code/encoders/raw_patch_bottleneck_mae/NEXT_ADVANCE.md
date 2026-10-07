@@ -338,20 +338,29 @@ The new fixed VALIDATION deletion view is distinct from historical TEST/stress.
 Known development gains do not supply fresh held-out confirmation. The card
 and measured report remain frozen evidence, separate from the current next plan.
 
-## Next bounded question: ordinary and deleted training views
+## Completed balanced-view diagnostic: RPB-v8
 
-The evidence motivates one fixed balanced view schedule: 256 ordinary and
-256 deletion-0.30 attempts at the same 512 budget, preserving the architecture,
-Q/support/loss, data streams and heads. Ordinary views may anchor reconstruction;
-deleted views may preserve robustness. Equal expected deletion exposure does
-not make this equivalent to deleting 0.15 on every update. Neither success nor
-causation is established by the lighter-policy results.
+**RPB-v8 — Global bottleneck with balanced context views** is implemented and
+measured under the frozen [balanced-view card](../../evaluation/cards/context_balanced_validation_v1.md).
+It alternates 256 ordinary and 256 deletion-0.30 attempts at 512 completed updates,
+with unchanged mode2/mixer1/native32 architecture, original targets/loss and heads.
+The [five-master diagnostic](CONTEXT_BALANCED_VALIDATION_DIAGNOSTIC.md) reports
+mean native linear accuracy of 95.93750% intact and
+91.71875% under the exact saved v7 additional-deletion view,
+at 100% coverage. Mean TRAIN/VALIDATION MAE is
+0.085022/0.087620.
+The predeclared joint development guard **failed**. Independent archive audit v2
+passed 67,099,959 checks; actual CUDA admission and prior-policy regressions passed.
+V8 is not promoted, and RPB-v4 remains active. No TEST/stress, checkpoint selection,
+head tuning or post-encoder PCA occurred. Five new v8 trajectories use ten
+retained v4/v7 references; all five masters and both heads remain in the report.
 
-The [implementation plan](BALANCED_CONTEXT_IMPLEMENTATION_PLAN.md) is proposed
-and unimplemented. Freeze its exact absolute-attempt schedule, new policy
-identity, admitted source, permitted TRAIN/known VALIDATION roles and fixed
-decision guards before measuring it. Keep every seed, both heads, coverage,
-reconstruction and timers visible. Do not reopen historical TEST/stress or
-expand to a ratio, budget, head or loss grid. Subsequent quality confirmation
-requires its own prospective plan and unopened held-out sources. RPB-v4 stays
-active until full declared evidence supports an explicit decision.
+## Next focused action
+
+Stop this local schedule/rate/budget tuning sequence. Preserve v4 as the active
+reference and the v6/v7/v8 measured tradeoffs. The next encoder change needs a
+separate prospective plan addressing how the reconstruction objective shapes
+the native timing representation, using permitted TRAIN diagnostics to choose
+one hypothesis. Keep heads fixed and freeze the quality/coverage/reconstruction
+decision rule before a new run. Confirmation needs unopened held-out sources;
+historical TEST/stress must not become tuning data.

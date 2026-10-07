@@ -75,6 +75,9 @@ struct CurveState {
   std::map<std::string, std::pair<int64_t, int64_t>> saved;
   std::array<int64_t, 3> context_counts{0, 0, 0}; // Requested, actual, restored.
   std::map<std::string, std::array<int64_t, 3>> saved_context_counts;
+  std::array<int64_t, 2> branch_counts{0, 0}; // Balanced ordinary, deletion attempts.
+  std::map<std::string, std::array<int64_t, 2>> saved_branch_counts;
+  bool balanced_failed{false};
   std::map<std::string, std::string> audit;
   uint64_t initialization_seed{0};
 };
@@ -101,6 +104,11 @@ void write_text(torch::serialize::OutputArchive &archive, const std::string &key
 }
 
 void save_point(const std::shared_ptr<CurveState> &state, const std::string &path) {
+  require(!state->balanced_failed, "balanced policy previously aborted; saving is forbidden");
+  const bool balanced = state->context_options.enabled && context_deletion::is_balanced(state->context_options.recipe);
+  require(!balanced || (state->progress.attempted == state->progress.completed &&
+      state->branch_counts[0] == state->progress.attempted / 2 + state->progress.attempted % 2 &&
+      state->branch_counts[1] == state->progress.attempted / 2), "balanced absolute branch counters differ");
   const auto key = path_key(path);
   const std::vector<std::string> outputs{path, path + ".training-raw.pt",
       path + ".scaler.pt", path + ".audit.pt"};
@@ -146,14 +154,22 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
     audit.write("context_requested_deleted_coordinates", torch::tensor(state->context_counts[0]), true);
     audit.write("context_actual_deleted_coordinates", torch::tensor(state->context_counts[1]), true);
     audit.write("context_restored_coordinates", torch::tensor(state->context_counts[2]), true);
+    if (balanced) {
+      write_text(audit, "context_ordinary_attempts", std::to_string(state->branch_counts[0]));
+      write_text(audit, "context_deletion_attempts", std::to_string(state->branch_counts[1]));
+      audit.write("context_ordinary_attempts_value", torch::tensor(state->branch_counts[0]), true);
+      audit.write("context_deletion_attempts_value", torch::tensor(state->branch_counts[1]), true);
+    }
   }
   embedding::archive::save_archive(path + ".audit.pt", audit);
   state->saved.emplace(key, std::make_pair(checkpoint.attempted_steps, checkpoint.completed_steps));
   if (state->context_options.enabled) state->saved_context_counts.emplace(key, state->context_counts);
+  if (balanced) state->saved_branch_counts.emplace(key, state->branch_counts);
 }
 
 ev::CurveSnapshot snapshot_point(const std::shared_ptr<CurveState> &state,
                                 const std::string &path) {
+  require(!state->balanced_failed, "balanced policy previously aborted; snapshots are forbidden");
   const auto saved = state->saved.find(path_key(path));
   require(saved != state->saved.end(), "snapshot requires a point saved by this trainer");
   // Separate model construction is essential: core keeps its construction device
@@ -204,6 +220,11 @@ ev::CurveSnapshot snapshot_point(const std::shared_ptr<CurveState> &state,
     snapshot.features.audit_fields["context_requested_deleted_coordinates"] = std::to_string(counts[0]);
     snapshot.features.audit_fields["context_actual_deleted_coordinates"] = std::to_string(counts[1]);
     snapshot.features.audit_fields["context_restored_coordinates"] = std::to_string(counts[2]);
+    if (context_deletion::is_balanced(state->context_options.recipe)) {
+      const auto &branches = state->saved_branch_counts.at(path_key(path));
+      snapshot.features.audit_fields["context_ordinary_attempts"] = std::to_string(branches[0]);
+      snapshot.features.audit_fields["context_deletion_attempts"] = std::to_string(branches[1]);
+    }
   }
   snapshot.features.surfaces.emplace("curve_global", frozen.surfaces.at(base + "_global"));
   snapshot.features.surfaces.emplace("curve_channel_concatenation",
@@ -357,11 +378,19 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
       state->audit.emplace("context_deletion_visibility_policy", context_deletion::visibility_policy);
       state->audit.emplace("context_deletion_count_policy", "cumulative-requested/actual/restored-coordinate-counts;eligible-forward-batches-only");
       state->audit.emplace("context_deletion_resume_policy", "fresh-continuous-only;ordinary-workflow-resume-rejected;no-augmented-resume-API");
+      if (context_deletion::is_balanced(options.recipe)) {
+        state->audit.emplace("context_deletion_schedule_policy", context_deletion::balanced_schedule_policy);
+        state->audit.emplace("context_deletion_rate_scope", context_deletion::balanced_rate_scope);
+        state->audit.emplace("context_deletion_branch_count_policy", context_deletion::balanced_branch_count_policy);
+        state->audit.emplace("context_deletion_skip_policy", context_deletion::balanced_skip_policy);
+      }
     }
 
     ev::CurveTrainer trainer;
     trainer.audit_fields = state->audit;
     trainer.train_to = [state](int64_t budget) {
+      require(!state->balanced_failed, "balanced policy previously aborted; further training is forbidden");
+      const bool balanced = state->context_options.enabled && context_deletion::is_balanced(state->context_options.recipe);
       require(budget >= state->progress.completed, "completed-update budgets must be monotonic");
       require(budget <= state->settings.steps, "requested completed updates exceed the frozen session budget");
       if (budget == state->progress.completed) return progress_report(state);
@@ -390,10 +419,18 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
           torch::manual_seed(training_detail::counter_seed(state->settings.seed, attempt, 0x746f726368ULL));
           ++state->progress.attempted;
           state->progress.sampled_rows += state->settings.batch_size;
-          if (!mask.eligible_channels.any().item<bool>()) continue;
+          if (!mask.eligible_channels.any().item<bool>()) {
+            if (balanced) {
+              state->balanced_failed = true;
+              require(false, "balanced policy aborts an ineligible original masking attempt before update");
+            }
+            continue;
+          }
           state->optimizer->zero_grad();
           ForwardOutput output;
-          if (state->context_options.enabled) {
+          const bool deletion = state->context_options.enabled &&
+              context_deletion::deletion_attempt(state->context_options.recipe, attempt);
+          if (deletion) {
             const auto context = context_deletion::make_plan(mask, batch.channel_ids,
                 state->settings.model, state->settings.seed, attempt, state->context_options.recipe);
             const std::array<int64_t, 3> counts{context.requested_count, context.actual_count, context.restored_count};
@@ -420,6 +457,7 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
           require(state->progress.finite_gradients, "nonfinite training gradients");
           state->optimizer->step();
           ++state->progress.completed;
+          if (balanced) ++state->branch_counts[deletion ? 1 : 0];
           state->last_loss = {state->progress.attempted, state->progress.completed,
               output.target_cell_count, output.loss.item<double>(), gradient_norm};
           if (state->progress.completed == 1 ||
@@ -427,6 +465,7 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
             state->progress.losses.push_back(state->last_loss);
         }
       } catch (...) {
+        if (balanced) state->balanced_failed = true;
         finish_timing();
         throw;
       }

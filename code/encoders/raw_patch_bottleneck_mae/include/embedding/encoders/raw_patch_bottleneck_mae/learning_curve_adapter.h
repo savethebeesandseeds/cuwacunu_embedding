@@ -15,6 +15,8 @@ make_learning_curve_trainer(const Settings &settings);
 
 // Fresh continuous TRAIN only. Enabled defaults to fixed RPB-v6 .30; explicit
 // coordinate15_v1 selects RPB-v7 .15 on the same mode2/mixer1/native32 architecture.
+// balanced30_v1 selects RPB-v8: absolute even attempts are ordinary forward,
+// odd attempts use the original .30 deletion. Ineligible attempts abort this recipe.
 // Checkpoints retain a policy tag; ordinary workflow resume must reject them.
 // No augmented resume API is exposed in this bounded experiment.
 embedding::evaluation::CurveTrainerFactory
