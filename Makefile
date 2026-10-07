@@ -112,7 +112,7 @@ EVALUATION_OBJECT_DIR := $(OBJECT_DIR)/evaluation
 EVALUATION_BIN ?= $(BUILD_DIR)/embedding_evaluate
 HARNESS_BIN ?= $(BUILD_DIR)/feature_harness
 
-RPB_CORE_HEADERS := $(filter-out $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/native_curve_gate.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/paired_pooling_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/optimization_diagnostic_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_replay_adapter.h,$(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/*.h))
+RPB_CORE_HEADERS := $(filter-out $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/native_curve_gate.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/paired_pooling_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/optimization_diagnostic_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_replay_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_replication_adapter.h,$(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/*.h))
 RPB_PROVENANCE_INPUTS := $(sort $(RPB_CORE_HEADERS) $(RPB_ROOT)/src/workflow.cpp $(RPB_ROOT)/src/main.cpp $(wildcard $(RPB_ROOT)/config/*.conf) $(CODE_ROOT)/shared/include/embedding/shared/data.h $(CODE_ROOT)/shared/include/embedding/shared/types.h $(CODE_ROOT)/shared/include/embedding/shared/tensor_ops.h $(CODE_ROOT)/shared/src/data.cpp Makefile dependencies.lock)
 RPB_SOURCE_ID := $(shell sha256sum $(RPB_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 SOURCE_GIT_HEAD := $(shell git -c safe.directory=$(CURDIR) rev-parse HEAD 2>/dev/null || printf unrecorded)
@@ -598,3 +598,45 @@ test-rpb-context-replay: $(RPB_TEST_DIR)/context_replay_adapter_test
 
 evaluate-context-optimization-validation: $(CONTEXT_OPTIMIZATION_BIN)
 	CONTEXT_OPTIMIZATION_BIN="$(abspath $(CONTEXT_OPTIMIZATION_BIN))" CONTEXT_OPTIMIZATION_SOURCE_INPUTS="$(CONTEXT_OPTIMIZATION_PROVENANCE_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-context-optimization-validation.sh
+
+# Five fresh equal-budget context-policy pairs; no checkpoint selection.
+CONTEXT_REPLICATION_BIN := $(BUILD_DIR)/embedding_context_replication
+RPB_CONTEXT_REPLICATION_OBJECT := $(RPB_OBJECT_DIR)/context_replication_adapter.o
+RPB_CONTEXT_REPLICATION_GATE_OBJECT := $(RPB_OBJECT_DIR)/context_replication_gate.o
+RPB_CONTEXT_REPLICATION_RETAINED_OBJECT := $(RPB_OBJECT_DIR)/context_replication_retained.o
+CONTEXT_REPLICATION_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/context_replication_adapter.cpp $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(EVALUATION_ROOT)/src/context_replication_main.cpp $(EVALUATION_ROOT)/cards/context_replication_v1.md $(CODE_ROOT)/scripts/evaluate-context-replication.sh $(CODE_ROOT)/scripts/check-context-replication.sh)
+CONTEXT_REPLICATION_SOURCE_ID := $(shell sha256sum $(CONTEXT_REPLICATION_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
+CONTEXT_REPLICATION_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(CONTEXT_REPLICATION_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
+.PHONY: context-replication print-context-replication-sources test-rpb-context-replication evaluate-context-replication
+context-replication: $(CONTEXT_REPLICATION_BIN)
+
+print-context-replication-sources:
+	@printf '%s\n' $(CONTEXT_REPLICATION_PROVENANCE_INPUTS)
+
+$(EVALUATION_OBJECT_DIR)/context_replication_main.o: $(EVALUATION_ROOT)/src/context_replication_main.cpp $(CONTEXT_REPLICATION_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(CONTEXT_REPLICATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_CONTEXT_REPLICATION_OBJECT): $(RPB_ROOT)/src/context_replication_adapter.cpp $(CONTEXT_REPLICATION_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(CONTEXT_REPLICATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_CONTEXT_REPLICATION_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(CONTEXT_REPLICATION_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(CONTEXT_REPLICATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_CONTEXT_REPLICATION_RETAINED_OBJECT): $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(CONTEXT_REPLICATION_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(CONTEXT_REPLICATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(CONTEXT_REPLICATION_BIN): $(EVALUATION_OBJECT_DIR)/context_replication_main.o $(RPB_CONTEXT_REPLICATION_OBJECT) $(RPB_CONTEXT_REPLICATION_GATE_OBJECT) $(RPB_CONTEXT_REPLICATION_RETAINED_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(EVALUATION_COMMON_OBJECTS)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(RPB_TEST_DIR)/context_replication_adapter_test: $(RPB_TEST_DIR)/context_replication_adapter_test.o $(RPB_CONTEXT_REPLICATION_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(HARNESS_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-context-replication: $(RPB_TEST_DIR)/context_replication_adapter_test
+	$(RPB_TEST_DIR)/context_replication_adapter_test
+
+evaluate-context-replication: $(CONTEXT_REPLICATION_BIN)
+	CONTEXT_REPLICATION_BIN="$(abspath $(CONTEXT_REPLICATION_BIN))" CONTEXT_REPLICATION_SOURCE_INPUTS="$(CONTEXT_REPLICATION_PROVENANCE_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-context-replication.sh

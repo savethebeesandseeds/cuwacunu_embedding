@@ -45,18 +45,22 @@ struct Audit {
   std::vector<int64_t> requests;
   std::vector<double> draws;
   torch::Tensor expected_rng;
+  std::string protocol_id;
 };
 using Audits=std::map<std::string,std::shared_ptr<Audit>>;
 struct State {ev::CurveProgress progress;std::shared_ptr<Audit> audit;};
 ev::NamedCurveFactory factory(const std::string &variant,const ev::NativeCurveRun &run,Mode mode,
-                             const std::shared_ptr<Audits> &audits) {
-  return {variant,"dummy continuous train-only frozen snapshot recipe",[variant,run,mode,audits](const ev::ProviderFitInput &fit) {
+                             const std::shared_ptr<Audits> &audits,const std::string &training_namespace="") {
+  const auto protocol=training_namespace.empty()?(run.development_only?"native-development-v1":"native-curve-v1"):training_namespace;
+  return {variant,"dummy continuous train-only frozen snapshot recipe",[variant,run,mode,audits,protocol](const ev::ProviderFitInput &fit) {
     const fs::path output(run.output_directory);
-    test::check((fs::exists(output/"native-curve-card.json") || fs::exists(output/"paired-pooling-card.json")) && !fs::exists(output/"comparison-manifest.json") && !fs::exists(output/"selection.json"),
+    test::check((fs::exists(output/"native-curve-card.json") || fs::exists(output/"native-development-card.json") || fs::exists(output/"paired-pooling-card.json")) && !fs::exists(output/"comparison-manifest.json") && !fs::exists(output/"selection.json"),
                 "factory called without preregistered card or after test selection");
     ev::Task task=ev::Task::lag_sign;
+    bool matched=false;
     for(const auto candidate:run.card.tasks)
-      if(fit.protocol_id=="native-curve-v1/"+ev::task_name(candidate)) task=candidate;
+      if(fit.protocol_id==protocol+"/"+ev::task_name(candidate)){task=candidate;matched=true;}
+    test::check(matched,"candidate fit received the wrong explicit training namespace");
     auto expected=ev::make_controlled_development_protocol(task,run.card.shape,
         run.card.train_pairs,
         run.card.validation_pairs,fit.seed);
@@ -66,7 +70,7 @@ ev::NamedCurveFactory factory(const std::string &variant,const ev::NativeCurveRu
         torch::equal(fit.training_observations.feature_mask,expected.training.observed.feature_mask.slice(0,0,2*run.card.train_pairs)),
         "factory fit received another task, altered data or held-out observations");
     const auto audit_key=std::to_string(fit.seed)+"/"+ev::task_name(task);
-    auto audit=std::make_shared<Audit>();++audit->factories;
+    auto audit=std::make_shared<Audit>();++audit->factories;audit->protocol_id=fit.protocol_id;
     test::check(audits->emplace(audit_key,audit).second,"factory reinitialized a continuous path");
     const ev::ObservationScaler scaler(fit.training_observations);
     auto state=std::make_shared<State>();state->audit=audit;
@@ -176,8 +180,10 @@ struct Fixture {
   std::shared_ptr<Audits> candidate_audits=std::make_shared<Audits>();
   std::shared_ptr<std::map<uint64_t,ev::CurveTrainer>> reference_trainers=std::make_shared<std::map<uint64_t,ev::CurveTrainer>>();
 };
-Fixture fixture(const fs::path &root) {
+Fixture fixture(const fs::path &root,bool development_only=false) {
   auto prior=configuration(root/"reference");prior.card.tasks={ev::Task::lag_sign};prior.stress_sweep=false;
+  prior.development_only=development_only;
+  if(development_only){prior.card.test_pairs=0;prior.card.id="native-development-v1";}
   const auto original=factory("reference_dummy",prior,Mode::ordinary,std::make_shared<Audits>());
   Fixture out;auto registered=original;
   registered.factory=[original,registry=out.reference_trainers](const ev::ProviderFitInput &input) {
@@ -185,6 +191,8 @@ Fixture fixture(const fs::path &root) {
   };
   ev::run_native_curve(prior,registered);
   out.run.recipe=prior;out.run.recipe.output_directory=(root/"paired").string();out.run.recipe.stress_sweep=true;out.run.recipe.card.comparisons.clear();
+  out.run.recipe.development_only=false;out.run.recipe.card.test_pairs=5;
+  if(development_only)out.run.training_protocol_namespace="native-development-v1";
   out.run.completed_updates=2;out.candidate_recipe=out.run.recipe;out.candidate_recipe.milestones={0,2};
   for(const auto seed:prior.card.seeds) {
     const auto cohort=fs::path(prior.output_directory)/("seed-"+std::to_string(seed)+"-lag_sign");
@@ -205,7 +213,8 @@ Fixture fixture(const fs::path &root) {
   return out;
 }
 ev::RetainedCurveSnapshotLoader loader(const Fixture &fixture) {
-  return [registry=fixture.reference_trainers](const std::string &path,const ev::ProviderFitInput &input) {
+  return [registry=fixture.reference_trainers,protocol=fixture.run.training_protocol_namespace](const std::string &path,const ev::ProviderFitInput &input) {
+    test::check(input.protocol_id==protocol+"/lag_sign","retained snapshot loader received another training namespace");
     auto snapshot=registry->at(input.seed).snapshot(path);
     // A loader that writes through const tensors must not poison the candidate
     // fitting metadata; every callback receives a fresh legal independent clone.
@@ -213,9 +222,9 @@ ev::RetainedCurveSnapshotLoader loader(const Fixture &fixture) {
     return snapshot;
   };
 }
-ev::PoolingInitializationAudit initialization(bool accept=true) {
-  return [accept](const std::string &path,const ev::RetainedPoolingCohort &prior,const ev::ProviderFitInput &input) {
-    test::check(input.protocol_id=="native-curve-v1/lag_sign" && tensor(path,"completed").item<int64_t>()==0 &&
+ev::PoolingInitializationAudit initialization(bool accept=true,const std::string &training_namespace="native-curve-v1") {
+  return [accept,training_namespace](const std::string &path,const ev::RetainedPoolingCohort &prior,const ev::ProviderFitInput &input) {
+    test::check(input.protocol_id==training_namespace+"/lag_sign" && tensor(path,"completed").item<int64_t>()==0 &&
         tensor(prior.reference_initial_checkpoint,"completed").item<int64_t>()==0,"actual continuous-path initialization was not compared");
     test::check(torch::equal(tensor(path,"train_mean"),tensor(prior.reference_initial_checkpoint,"train_mean")) &&
         torch::equal(tensor(path,"train_scale"),tensor(prior.reference_initial_checkpoint,"train_scale")) &&
@@ -276,7 +285,7 @@ void custom_protocol(const Fixture &input) {
   ev::PairedPoolingRun defaults;
   test::check(defaults.protocol_id=="paired-pooling-v1" &&
       defaults.fresh_test_namespace=="paired-pooling-v1/fresh-testing" &&
-      defaults.fresh_test_stream==0x7070763174657374ULL,"historical paired protocol defaults changed");
+      defaults.fresh_test_stream==0x7070763174657374ULL && defaults.training_protocol_namespace=="native-curve-v1","historical paired protocol defaults changed");
   auto run=input.run;run.recipe.output_directory+="-context";run.recipe.stress_sweep=false;
   run.protocol_id="context-deletion-v1";run.fresh_test_namespace="context-deletion-v1/fresh-testing";
   run.fresh_test_stream=0x6374763174657374ULL;run.candidate_tag="RPB-v6";
@@ -320,6 +329,8 @@ void ordinary(const fs::path &temporary) {
       !fs::exists(output/"selection.json") && report.find("\"retained_readout_refits\":0")!=std::string::npos &&
       report.find("ridge_candidate_minus_comparator_grouped_interval")!=std::string::npos,"fixed budget/retained fits or paired intervals changed");
   const auto card=read(output/"paired-pooling-card.json"),stress_card=read(output/"stress-card.json");
+  test::check(card.find("training_protocol_namespace")==std::string::npos && manifest.find("training_protocol_namespace")==std::string::npos,
+      "default paired output acquired a nondefault training namespace field");
   test::check(stress_card.find("fixed-readout-stress-v1")!=std::string::npos,"frozen stress protocol missing");
   for(const auto &pair:{"candidate_vs_reference","candidate_vs_candidate_initial","reference_vs_reference_initial","candidate_vs_pca_only","reference_vs_pca_only"})
     test::check(card.find(pair)!=std::string::npos,"prescoring paired card omits actual declared stress comparisons");
@@ -354,6 +365,54 @@ void ordinary(const fs::path &temporary) {
   wrappers(input);
   custom_protocol(input);
   rejects([&]{ev::run_paired_pooling(input.run,factory("candidate_dummy",input.candidate_recipe,Mode::ordinary,input.candidate_audits),loader(input),initialization());},"existing paired output overwritten");
+}
+void development_integration(const fs::path &temporary) {
+  auto input=fixture(temporary/"development-to-paired",true);
+  const auto baseline=fs::path(input.run.cohorts.front().training_observations).parent_path().parent_path();
+  const auto complete=read(baseline/"development-complete.json");
+  test::check(complete.find("\"protocol\":\"native-development-v1\"")!=std::string::npos &&
+      complete.find("\"checked_points\":6")!=std::string::npos && !fs::exists(baseline/"selection.json") &&
+      !fs::exists(baseline/"report.json"),"development reference requires a fabricated selection or TEST report");
+  for(const auto &entry:fs::recursive_directory_iterator(baseline))
+    test::check(entry.path().filename().string().find("testing")==std::string::npos,"development reference contains TEST observations");
+  input.run.protocol_id="context-replication-v1";
+  input.run.fresh_test_namespace="context-replication-v1/fresh-testing";
+  input.run.fresh_test_stream=0x6372763174657374ULL;
+  input.run.recipe.stress_sweep=false;
+  input.candidate_recipe.stress_sweep=false;
+  std::map<std::string,std::string> original_fits;
+  for(const auto &cohort:input.run.cohorts)for(const auto *paths:{&cohort.reference_fits,&cohort.reference_initial_fits,&cohort.raw_fits,&cohort.pca_fits,&cohort.mask_fits})
+    for(const auto &path:*paths)original_fits.emplace(path,read(path));
+  ev::run_paired_pooling(input.run,
+      factory("candidate_dummy",input.candidate_recipe,Mode::ordinary,input.candidate_audits,input.run.training_protocol_namespace),
+      loader(input),initialization(true,input.run.training_protocol_namespace));
+  const fs::path output(input.run.recipe.output_directory);
+  for(const auto &name:{"paired-pooling-card.json","comparison-manifest.json"})
+    test::check(read(output/name).find("\"training_protocol_namespace\":\"native-development-v1\"")!=std::string::npos,
+        "nondefault label-free training namespace not frozen before fresh TEST");
+  test::check(read(output/"report.json").find("\"retained_readout_refits\":0")!=std::string::npos &&
+      !fs::exists(output/"selection.json"),"development assets were refitted or required a budget search");
+  for(const auto &[path,bytes]:original_fits)test::check(read(path)==bytes,"paired integration changed a development TRAIN-fitted readout");
+  test::check(read(baseline/"development-complete.json")==complete,"paired integration changed the durable development completion");
+  for(const auto &cohort:input.run.cohorts) {
+    const auto audit=input.candidate_audits->at(std::to_string(cohort.master_seed)+"/lag_sign");
+    test::check(audit->protocol_id=="native-development-v1/lag_sign" && audit->requests==std::vector<int64_t>({0,2}) &&
+        audit->testing_calls>0,"paired candidate lost the preparation namespace or did not use one continuous path");
+    const auto directory=output/("seed-"+std::to_string(cohort.master_seed)+"-lag_sign");
+    test::check(read(directory/"retained-fit-audit.json").find("\"readout_fitting_constructors\":0")!=std::string::npos,
+        "development retained fits were reconstructed by fitting");
+    const auto fresh=ev::make_controlled_test_dataset(ev::Task::lag_sign,input.run.recipe.card.shape,input.run.recipe.card.test_pairs,
+        ev::stream_seed(cohort.master_seed,input.run.fresh_test_stream));
+    test::close(tensor(directory/"controlled-testing.pt","observed"),fresh.observed.data,"development integration reused a historical TEST stream",0,0);
+  }
+  for(const auto &unsafe:{"","../bad","bad/namespace"}) {
+    auto bad=input.run;bad.recipe.output_directory+="-invalid-namespace";bad.training_protocol_namespace=unsafe;
+    auto recipe=input.candidate_recipe;recipe.output_directory=bad.recipe.output_directory;
+    auto audits=std::make_shared<Audits>();
+    rejects([&]{ev::run_paired_pooling(bad,factory("candidate_dummy",recipe,Mode::ordinary,audits,bad.training_protocol_namespace),loader(input),initialization());},
+        "unsafe or empty training namespace accepted");
+    test::check(!fs::exists(bad.recipe.output_directory) && audits->empty(),"invalid training namespace reached output or fitting");
+  }
 }
 void failures(const fs::path &temporary) {
   {
@@ -398,7 +457,7 @@ void failures(const fs::path &temporary) {
 int main() {
   try {
     const auto directory=fs::temp_directory_path()/("embedding-paired-pooling-test-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
-    fs::create_directory(directory);ordinary(directory);failures(directory);
+    fs::create_directory(directory);ordinary(directory);failures(directory);development_integration(directory);
     std::cout << "shared paired pooling tests passed; artifacts=" << directory << '\n';return 0;
   }catch(const std::exception &error){std::cerr << error.what() << '\n';return 1;}
 }

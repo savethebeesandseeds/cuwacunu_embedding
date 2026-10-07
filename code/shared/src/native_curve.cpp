@@ -544,6 +544,7 @@ void compare_reconstruction(const fs::path &original,const fs::path &witness) {
 }
 void validate_run(const NativeCurveRun &run,const NamedCurveFactory &factory) {
   const auto &card=run.card;const auto &shape=card.shape;
+  if(run.development_only)require(card.test_pairs==0 && !run.stress_sweep,"development-only requires zero TEST pairs and disabled stress sweep");
   require(card.version==2 && card.policy_version=="1.2" && card.stage=="development" && safe_name(card.id),"new development policy/card contract");
   require(shape.channel_count>0 && shape.history_length>=8 && shape.input_width>0 && shape.dtype==torch::kFloat64 && shape.device.is_cpu(),"CPU float64 positive geometry required");
   require(shape.channel_count<=std::numeric_limits<int64_t>::max()/shape.history_length && shape.channel_count*shape.history_length<=std::numeric_limits<int64_t>::max()/shape.input_width/2,"geometry overflow");
@@ -551,11 +552,11 @@ void validate_run(const NativeCurveRun &run,const NamedCurveFactory &factory) {
   require(card.channel_ids.size()==size_t(shape.channel_count) && std::set<int64_t>(card.channel_ids.begin(),card.channel_ids.end()).size()==card.channel_ids.size(),"channel ID geometry/uniqueness");
   require(!card.feature_units.empty() && size_t(1+std::count(card.feature_units.begin(),card.feature_units.end(),','))==size_t(shape.input_width),"feature units width");
   require(std::isfinite(card.sampling_interval) && card.sampling_interval>0 && std::isfinite((shape.history_length-1)*card.sampling_interval),"finite uniform sampling metadata");
-  require(card.train_pairs>=2 && card.validation_pairs>0 && card.test_pairs>0 && card.train_pairs<=std::numeric_limits<int64_t>::max()/2 && card.validation_pairs<=std::numeric_limits<int64_t>::max()/2 && card.test_pairs<=std::numeric_limits<int64_t>::max()/2,"split pair counts");
+  require(card.train_pairs>=2 && card.validation_pairs>0 && (run.development_only?card.test_pairs==0:card.test_pairs>0) && card.train_pairs<=std::numeric_limits<int64_t>::max()/2 && card.validation_pairs<=std::numeric_limits<int64_t>::max()/2 && card.test_pairs<=std::numeric_limits<int64_t>::max()/2,"split pair counts");
   require(!card.seeds.empty() && std::set<uint64_t>(card.seeds.begin(),card.seeds.end()).size()==card.seeds.size(),"master seeds empty/duplicate");
-  require(!card.tasks.empty() && std::set<Task>(card.tasks.begin(),card.tasks.end()).size()==card.tasks.size() && std::find(card.tasks.begin(),card.tasks.end(),run.selection_task)!=card.tasks.end(),"task list and selection task");
+  require(!card.tasks.empty() && std::set<Task>(card.tasks.begin(),card.tasks.end()).size()==card.tasks.size() && (run.development_only || std::find(card.tasks.begin(),card.tasks.end(),run.selection_task)!=card.tasks.end()),"task list and selection task");
   for(const auto task:card.tasks) {task_name(task);require(task!=Task::lag_sign || shape.channel_count>=2,"lag task needs >=2 channels");}
-  require(card.threads>0 && run.export_width>0 && !run.model_tag.empty() && run.sanity_budget>0,"thread/export/tag/sanity settings");
+  require(card.threads>0 && run.export_width>0 && !run.model_tag.empty() && (run.development_only || run.sanity_budget>0),"thread/export/tag/sanity settings");
   require(run.milestones.size()>=2 && run.milestones.front()==0 && std::is_sorted(run.milestones.begin(),run.milestones.end()) && std::adjacent_find(run.milestones.begin(),run.milestones.end())==run.milestones.end(),"ordered unique point0/positive milestones");
   for(const auto budget:run.milestones)require(budget>=0,"negative budget");
   require(std::isfinite(run.huber_delta) && run.huber_delta>0 && std::isfinite(run.missing_rate) && run.missing_rate>=0 && run.missing_rate<1,"reconstruction/missingness parameters");
@@ -568,28 +569,43 @@ void validate_run(const NativeCurveRun &run,const NamedCurveFactory &factory) {
   std::set<std::string> pairs;
   for(const auto &pair:card.comparisons)require(safe_name(pair.id) && pairs.insert(pair.id).second && pair.tier==DimensionTier::native && pair.left=="native" && (pair.right=="raw" || pair.right=="pca_only" || pair.right=="untrained_native"),"native-only explicit comparison contract");
 }
+const char *native_protocol(const NativeCurveRun &run) {
+  return run.development_only?"native-development-v1":"native-curve-v1";
+}
+const char *native_card_filename(const NativeCurveRun &run) {
+  return run.development_only?"native-development-card.json":"native-curve-card.json";
+}
 std::string card_json(const NativeCurveRun &run,const NamedCurveFactory &factory) {
   const auto &card=run.card;std::vector<std::string> tasks;for(const auto task:card.tasks)tasks.push_back(task_name(task));
-  std::ostringstream out;out << std::setprecision(17) << "{\"version\":1,\"protocol\":\"native-curve-v1\",\"policy_version\":\"1.2\",\"stage\":\"development\","
+  std::ostringstream out;out << std::setprecision(17) << "{\"version\":1,\"protocol\":" << quote(native_protocol(run)) << ",\"policy_version\":\"1.2\",\"stage\":\"development\","
       << "\"id\":" << quote(card.id) << ",\"source_fingerprint\":" << quote(run.source_fingerprint) << ",\"git_head\":" << quote(run.git_head) << ",\"git_dirty\":" << quote(run.git_dirty)
       << ",\"model_tag\":" << quote(run.model_tag) << ",\"trainer\":" << quote(factory.name) << ",\"trainer_recipe\":" << quote(factory.recipe)
       << ",\"shape\":{\"channels\":" << card.shape.channel_count << ",\"history\":" << card.shape.history_length << ",\"features\":" << card.shape.input_width << ",\"dtype\":\"float64\"},\"channel_ids\":" << numbers(card.channel_ids)
       << ",\"feature_units\":" << quote(card.feature_units) << ",\"sampling_interval\":" << card.sampling_interval << ",\"patch_length\":" << run.patch_length
       << ",\"train_pairs\":" << card.train_pairs << ",\"validation_pairs\":" << card.validation_pairs << ",\"test_pairs\":" << card.test_pairs
-      << ",\"masters\":" << numbers(card.seeds) << ",\"tasks\":" << strings(tasks) << ",\"threads\":" << card.threads << ",\"missing_rate\":" << run.missing_rate
-      << ",\"selection_task\":" << quote(task_name(run.selection_task)) << ",\"timing_milestones\":" << numbers(run.milestones) << ",\"sanity_milestones\":[0," << run.sanity_budget << ']'
+      << ",\"masters\":" << numbers(card.seeds) << ",\"tasks\":" << strings(tasks) << ",\"threads\":" << card.threads << ",\"missing_rate\":" << run.missing_rate;
+  if(run.development_only) {
+    out << ",\"development_only\":true,\"milestones\":" << numbers(run.milestones)
+        << ",\"selection_performed\":false,\"testing_generated\":false,\"stress_evaluated\":false";
+  } else {
+    out << ",\"selection_task\":" << quote(task_name(run.selection_task)) << ",\"timing_milestones\":" << numbers(run.milestones) << ",\"sanity_milestones\":[0," << run.sanity_budget << ']'
       << ",\"selection_policy\":\"mean native global ridge VALIDATION accuracy over masters, first declared repetition (ridge deterministic); identical within-cohort checkpoint support; unsupported entire budget excluded; positive budgets only; exact ties choose smaller\","
       << "\"fresh_test_namespace\":\"native-curve-v1/fresh-testing\",\"fresh_test_stream\":" << quote(std::to_string(run.fresh_test_stream))
-      << ",\"all_testing_after_durable_selection\":true,\"export_width\":" << run.export_width << ",\"post_encoder_pca\":false,"
+      << ",\"all_testing_after_durable_selection\":true";
+  }
+  out << ",\"export_width\":" << run.export_width << ",\"post_encoder_pca\":false,"
       << "\"raw_scaling\":\"once TRAIN observed float64 per channel/feature across history, scale floor1e-8; hidden values zero; flatten values+flags; support any observation\","
-      << "\"control_transform_fit_policy\":\"once per cohort: TRAIN outer population standardization; standalone raw PCA then probe own TRAIN normalization; immutable across checkpoints/test/stress\","
+      << "\"control_transform_fit_policy\":" << quote(run.development_only?
+          "once per cohort: TRAIN outer population standardization; standalone raw PCA then probe own TRAIN normalization; immutable across milestones":
+          "once per cohort: TRAIN outer population standardization; standalone raw PCA then probe own TRAIN normalization; immutable across checkpoints/test/stress") << ','
       << "\"native_fit_policy\":\"once per checkpoint: exact native export, TRAIN outer standardization then each probe own TRAIN normalization; no PCA\","
       << "\"point0_control\":\"actual saved initial checkpoint from same continuous training path and TRAIN-fitted scaler\","
       << "\"head_seed_policy\":\"stream_seed(declared repetition seed, actual probe width); equal-width PCA-only/native/untrained native paired; raw width separately declared\","
       << "\"ridge_penalty\":" << run.ridge_penalty << ",\"tiny_hidden\":" << run.tiny_hidden << ",\"tiny_steps\":" << run.tiny_steps << ",\"tiny_learning_rate\":" << run.tiny_learning_rate
       << ",\"bootstrap_replicates\":" << run.bootstrap_replicates << ",\"uncertainty\":\"95% source-group paired percentile intervals conditional on one fitted encoder/head; no across-master or head-repetition CI\","
-      << "\"reconstruction\":{\"query\":\"each complete original patch hidden once; observed cells only; >=2 visible observed patch groups\",\"units\":\"frozen TRAIN scaler standardized\",\"primary\":\"cell/channel/example hierarchical MAE\",\"secondary\":\"same hierarchy Huber\",\"huber_delta\":" << run.huber_delta << "},"
-      << "\"stress_sweep\":" << (run.stress_sweep?"true":"false") << ",\"repetitions\":[";
+      << "\"reconstruction\":{\"query\":\"each complete original patch hidden once; observed cells only; >=2 visible observed patch groups\",\"units\":\"frozen TRAIN scaler standardized\",\"primary\":\"cell/channel/example hierarchical MAE\",\"secondary\":\"same hierarchy Huber\",\"huber_delta\":" << run.huber_delta << "},";
+  if(!run.development_only)out << "\"stress_sweep\":" << (run.stress_sweep?"true":"false") << ',';
+  out << "\"repetitions\":[";
   for(size_t i=0;i<run.repetitions.size();++i){if(i)out << ',';out << "{\"id\":" << quote(run.repetitions[i].id) << ",\"probe_seed\":" << quote(std::to_string(run.repetitions[i].probe_seed)) << '}';}
   out << "],\"comparisons\":[";
   for(size_t i=0;i<card.comparisons.size();++i){if(i)out << ',';const auto &pair=card.comparisons[i];out << "{\"id\":" << quote(pair.id) << ",\"candidate\":" << quote(pair.left) << ",\"comparator\":" << quote(pair.right) << ",\"tier\":\"native\"}";}
@@ -605,7 +621,15 @@ void witness(Point &point,const Cohort &cohort,const NativeCurveRun &run) {
   for(const auto &result:point.results)verify_result(result,point.validation);
   const auto path=point.directory/"validation-reconstruction-witness.pt";reconstruction(path,cohort.development.validation,point.snapshot,run);
   compare_reconstruction(point.directory/"validation-reconstruction.pt",path);
-  write_text(point.directory/"witness-audit.json","{\"native_features_exact\":true,\"fitted_readouts_exact\":true,\"reconstruction_exact\":true,\"performed_after_all_training\":true,\"performed_before_all_testing\":true}");
+  if(run.development_only) {
+    same_surface(global_surface(point.snapshot,cohort.development.training.observed,run),point.training,"later training changed retained native TRAIN checkpoint features");
+    const auto training_path=point.directory/"training-reconstruction-witness.pt";
+    reconstruction(training_path,cohort.development.training,point.snapshot,run);
+    compare_reconstruction(point.directory/"training-reconstruction.pt",training_path);
+    write_text(point.directory/"witness-audit.json","{\"native_features_exact\":true,\"training_native_features_exact\":true,\"fitted_readouts_exact\":true,\"reconstruction_exact\":true,\"training_reconstruction_exact\":true,\"performed_after_all_training\":true,\"performed_before_development_complete\":true}");
+  } else {
+    write_text(point.directory/"witness-audit.json","{\"native_features_exact\":true,\"fitted_readouts_exact\":true,\"reconstruction_exact\":true,\"performed_after_all_training\":true,\"performed_before_all_testing\":true}");
+  }
 }
 std::string paired_json(const PairComparison &pair,const std::map<std::string,StressPredictions> &predictions,const ControlledDataset &testing,const NativeCurveRun &run,uint64_t seed) {
   const auto left=predictions.find(pair.left),right=predictions.find(pair.right);std::ostringstream out;
@@ -696,10 +720,10 @@ NativeCurveRun::NativeCurveRun() {
 void run_native_curve(const NativeCurveRun &run,const NamedCurveFactory &factory) {
   validate_run(run,factory);const ThreadsIsolation threads;const MeasurementIsolation ambient_rng;torch::set_num_threads(run.card.threads);
   const fs::path output(run.output_directory);require(!output.empty() && fs::create_directories(output),"output must be exclusively claimed as a new directory");
-  write_text(output/"native-curve-card.json",card_json(run,factory));
+  write_text(output/native_card_filename(run),card_json(run,factory));
   if(run.stress_sweep)write_text(output/"stress-card.json",fixed_readout_stress_card_json(run.card));
   std::vector<Cohort> cohorts;cohorts.reserve(run.card.seeds.size()*run.card.tasks.size());std::set<std::string> source_universe;
-  std::ostringstream validation;validation << "{\"protocol\":\"native-curve-v1\",\"policy_version\":\"1.2\",\"stage\":\"development\",\"card\":\"native-curve-card.json\",\"source_fingerprint\":" << quote(run.source_fingerprint) << ",\"points\":[";
+  std::ostringstream validation;validation << "{\"protocol\":" << quote(native_protocol(run)) << ",\"policy_version\":\"1.2\",\"stage\":\"development\",\"card\":" << quote(native_card_filename(run)) << ",\"source_fingerprint\":" << quote(run.source_fingerprint) << ",\"points\":[";
   bool first_point=true;
   for(const auto seed:run.card.seeds)for(const auto task:run.card.tasks) {
     Cohort cohort;cohort.seed=seed;cohort.task=task;
@@ -710,10 +734,10 @@ void run_native_curve(const NativeCurveRun &run,const NamedCurveFactory &factory
     save_split(cohort.directory/"controlled-training.pt",cohort.development.training);save_split(cohort.directory/"controlled-validation.pt",cohort.development.validation);
     write_text(cohort.directory/"development-manifest.json","{\"testing_generated\":false,\"training\":"+split_manifest(cohort.development.training,"training")+",\"validation\":"+split_manifest(cohort.development.validation,"validation")+'}');
     fit_controls(cohort,run);
-    const ProviderFitInput input{legal_clone(cohort.development.training.observed),run.card.shape,seed,cohort.development.training.source_ids,run.card.channel_ids,run.card.feature_units,"native-curve-v1/"+task_name(task),run.card.sampling_interval,(run.card.shape.history_length-1)*run.card.sampling_interval};
+    const ProviderFitInput input{legal_clone(cohort.development.training.observed),run.card.shape,seed,cohort.development.training.source_ids,run.card.channel_ids,run.card.feature_units,std::string(native_protocol(run))+"/"+task_name(task),run.card.sampling_interval,(run.card.shape.history_length-1)*run.card.sampling_interval};
     const auto trainer=factory.factory(input);require(bool(trainer.train_to) && bool(trainer.save_checkpoint) && bool(trainer.snapshot),"continuous trainer callbacks incomplete");
     write_text(cohort.directory/"trainer-audit.json",fields(trainer.audit_fields));
-    const auto budgets=task==run.selection_task?run.milestones:std::vector<int64_t>{0,run.sanity_budget};
+    const auto budgets=run.development_only || task==run.selection_task?run.milestones:std::vector<int64_t>{0,run.sanity_budget};
     for(const auto budget:budgets) {
       Point point;point.directory=cohort.directory/("milestone-"+std::to_string(budget));require(fs::create_directory(point.directory),"checkpoint directory exists");
       point.progress=trainer.train_to(budget);const MeasurementIsolation measurement;
@@ -752,6 +776,21 @@ void run_native_curve(const NativeCurveRun &run,const NamedCurveFactory &factory
     cohorts.push_back(std::move(cohort));
   }
   write_text(output/"validation-report.json",validation.str()+"]}");
+  if(run.development_only) {
+    size_t checked_points=0;
+    for(auto &cohort:cohorts) {
+      const MeasurementIsolation measurement;
+      verify_controls(cohort);
+      for(auto &[budget,point]:cohort.points) {
+        (void)budget;
+        witness(point,cohort,run);++checked_points;
+        verify_controls(cohort);
+      }
+    }
+    durable_selection(output/"development-complete.json","{\"protocol\":\"native-development-v1\",\"policy_version\":\"1.2\",\"stage\":\"development\",\"card\":\"native-development-card.json\",\"validation_report\":\"validation-report.json\",\"all_declared_milestones_complete\":true,\"all_retained_witnesses_exact\":true,\"controls_immutable\":true,\"selection_performed\":false,\"testing_generated\":false,\"stress_evaluated\":false,\"cohorts\":"+
+        std::to_string(cohorts.size())+",\"checked_points\":"+std::to_string(checked_points)+",\"milestones\":"+numbers(run.milestones)+",\"durability\":\"close and fsync file plus parent directory after all retained witness checks\",\"source_fingerprint\":"+quote(run.source_fingerprint)+'}');
+    return;
+  }
   std::optional<int64_t> selected;double best=-std::numeric_limits<double>::infinity();
   std::ostringstream candidates;candidates << '[';bool first_candidate=true;
   for(const auto budget:run.milestones) {

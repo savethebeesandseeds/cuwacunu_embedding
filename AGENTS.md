@@ -41,11 +41,23 @@ linear accuracy in both validation views. At 2048, mean TRAIN/VALIDATION MAE is
 0.035736/0.035845, while intact/deletion linear accuracy is 96.875%/95.3125%.
 This diagnostic accessed no TEST and did not change the fixed-512 disposition.
 RPB-v4 remains the active reference until an explicit decision.
-The next focused action is a separately frozen five-master paired v4/v6
-replication at equal 512 updates: 4404, 5505, 6606, 7707 and 8808. Keep native32,
-architecture, loss and classifier recipes fixed. Prepare the baseline's exact
-TRAIN/VALIDATION assets in a shared development-only phase before fresh paired
-TEST generation; preserve the independently initialized models and all outcomes.
+The completed [five-master replication](code/encoders/raw_patch_bottleneck_mae/CONTEXT_REPLICATION_ADVANCE.md)
+pairs fresh v4/v6 training at 512 updates on 4404/5505/6606/7707/8808. Mean linear
+gains are +1.71875 percentage points intact and +8.125 with additional 30%
+coordinate deletion, at equal 100% coverage. Mean TRAIN and VALIDATION
+reconstruction guards still fail. Independent archive audit v3 passed
+103,787,020 checks; failed v1/v2 reader attempts and their corrections are
+preserved. RPB-v4 remains active.
+The proposed next recipe is RPB-v7 — Global bottleneck with lighter context
+deletion: the same inference architecture with a fixed 0.15 training request
+rate at 512 updates. It is not implemented or measured. Assess only TRAIN and
+known VALIDATION under a separately frozen plan; never reuse this replication's
+TEST/stress for rate tuning. Preserve the v6 0.30 policy, exact replay and
+ordinary tagged-resume rejection. Save the measured milestone and its passed
+audit before production changes. The prospective
+[lighter-policy card](code/evaluation/cards/context_lighter_validation_v1.md)
+names the planned separate policy `rpb-training-context-deletion-015-v1`;
+it remains unimplemented and unmeasured.
 Older versions remain available for archived evidence, explicit comparisons,
 and compatibility tests. Do not routinely retrain all older architectures.
 Model tags identify designs; exact configurations, source revisions, datasets,

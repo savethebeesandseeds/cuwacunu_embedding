@@ -37,6 +37,9 @@ struct PairedPoolingRun {
   std::string protocol_id{"paired-pooling-v1"};
   std::string fresh_test_namespace{"paired-pooling-v1/fresh-testing"};
   uint64_t fresh_test_stream{0x7070763174657374ULL}; // ppv1test.
+  // Label-free TRAIN cohort namespace, independent of this comparison's TEST
+  // namespace. Nondefault values are explicitly frozen in the card/manifest.
+  std::string training_protocol_namespace{"native-curve-v1"};
 };
 
 using RetainedCurveSnapshotLoader = std::function<CurveSnapshot(

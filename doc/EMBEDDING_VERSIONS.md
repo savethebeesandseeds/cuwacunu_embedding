@@ -15,6 +15,14 @@ views. At 2048, mean TRAIN/VALIDATION MAE is 0.035736/0.035845, but intact/delet
 linear accuracy falls to 96.875%/95.3125%. This diagnostic accessed no TEST and
 made no promotion decision.
 
+The completed [five-master replication](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_REPLICATION_ADVANCE.md)
+measures fresh v4/v6 training at equal 512 updates. Mean linear gains are
++1.71875 percentage points intact and +8.125 under additional 30% coordinate
+deletion, with equal 100% coverage. Both mean TRAIN/VALIDATION reconstruction
+guards still fail; RPB-v4 remains active. Independent archive audit v3 passed
+103,787,020 checks. Failed v1/v2 reader attempts and their corrections remain
+preserved alongside the successful result.
+
 | Tag | Very short description | Status | Configuration template |
 | --- | --- | --- | --- |
 | MTF-v1 | Multiscale JEPA and reconstruction | Retained first encoder | [MTF default](../code/encoders/mtf_jepa_mae_vicreg/config/default.conf) |
@@ -24,6 +32,7 @@ made no promotion decision.
 | **RPB-v4** | **Learned global bottleneck** | **Active experimental version** | [Learned global](../code/encoders/raw_patch_bottleneck_mae/config/learned_global.conf) |
 | RPB-v5 | Direct patch global bottleneck | Advance rejected at fixed512, not promoted | [Direct patch global](../code/encoders/raw_patch_bottleneck_mae/config/learned_patch_global.conf) |
 | RPB-v6 | Global bottleneck with context deletion | Accuracy gains, reconstruction tradeoff; not promoted | [Context deletion card](../code/evaluation/cards/context_deletion_v1.md) |
+| RPB-v7 | Global bottleneck with lighter context deletion | Proposed; not implemented or measured | [Bounded next plan](../code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md) |
 
 The [machine-readable registry](embedding_versions.json) records the same mapping.
 Use only the tag in result table cells; place its short description in adjacent
@@ -43,6 +52,7 @@ differ:
 | RPB-v4 | 1 | 2 | Exact learned global vector | `learned_global` |
 | RPB-v5 | 1 | 3 | Exact learned global vector from original patch states | N/A |
 | RPB-v6 | 1 | 2 | Same exact learned global vector; context deletion during training | N/A |
+| RPB-v7 | 1 | 2 | Proposed same learned global vector; lighter training context deletion | N/A |
 
 With three channels, RPB-v1/v2 supply 96 signal numbers to reconstruction; their
 32-number global mean is a diagnostic export. RPB-v3-mean/v4 reconstruct solely
@@ -81,6 +91,14 @@ path. Record promotion and archival decisions explicitly. Preserve old source,
 configuration and checkpoint identities; labels are aliases rather than archive
 format migrations or Git release tags.
 
+RPB-v7 is a proposed training-view milestone, not a new pooling architecture or
+an implemented checkpoint policy. It would retain v4/v6's mode2/mixer1/native32
+inference and change only the extra training deletion request from 0.30 to 0.15.
+The prospective [lighter-policy card](../code/evaluation/cards/context_lighter_validation_v1.md)
+names the separate planned identity `rpb-training-context-deletion-015-v1`.
+It remains unimplemented and unmeasured; freeze its final recipe before any
+fitting. The existing v6 identity and exact replay must not be repurposed.
+
 RPB-v4 remains the active research reference; RPB-v5 is retained as a measured
 fixed512 result and a completed separately frozen TRAIN/VALIDATION-only
 continuation diagnostic at1024/2048. That follow-up did not reopen TEST/stress,
@@ -89,9 +107,10 @@ for this completed milestone and existing compatibility tests. Later advances
 compare against a named relevant checkpoint of RPB-v4, without automatically
 bringing every older design back into training.
 
-The next focused action is a separately frozen paired replication of RPB-v4
-and RPB-v6 at equal 512 updates on five fresh masters: 4404, 5505, 6606, 7707
-and 8808. Keep the native 32-number export, architecture, loss and classifier
-recipes fixed. A shared development-only phase prepares baseline TRAIN/VALIDATION
-assets before a new paired TEST namespace is opened. This is planned independent
-training replication, not a completed result or consumer acceptance.
+The next bounded plan is RPB-v7 at fixed 512 updates, using the same architecture,
+optimizer, loss, native32 and fixed heads with a 0.15 context-deletion request.
+Assess TRAIN and known VALIDATION first; the completed replication's TEST/stress
+must not be reused for tuning. Save the measured replication and its passed
+audit before production changes. Any subsequent quality confirmation needs a
+separate frozen plan and unopened held-out sources. No v7 result or consumer
+acceptance is claimed.

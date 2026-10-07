@@ -51,12 +51,14 @@ ev::NativeCurveRun configuration(const fs::path &output) {
   return run;
 }
 enum class Mode { ordinary,unsupported_global_last,unsupported_global_all,mutable_snapshot,dropped_prefix,nonfinite_reconstruction,
-                  lower_validation_late,intact_mismatch,mutable_reconstruction,missing_endpoint,unsupported_train_last };
+                  lower_validation_late,intact_mismatch,mutable_reconstruction,missing_endpoint,unsupported_train_last,
+                  unsupported_validation_all,mutable_middle_snapshot,mutable_middle_reconstruction };
 struct Audit {
   int factories{0},saves{0},snapshots{0},testing_calls{0};
   std::vector<int64_t> requests;
   std::vector<double> draws;
   torch::Tensor expected_rng;
+  std::string protocol_id;
 };
 using Audits=std::map<std::string,std::shared_ptr<Audit>>;
 struct State {ev::CurveProgress progress;std::shared_ptr<Audit> audit;};
@@ -64,11 +66,14 @@ ev::NamedCurveFactory factory(const std::string &variant,const ev::NativeCurveRu
                              const std::shared_ptr<Audits> &audits) {
   return {variant,"dummy continuous train-only frozen snapshot recipe",[variant,run,mode,audits](const ev::ProviderFitInput &fit) {
     const fs::path output(run.output_directory);
-    test::check(fs::exists(output/"native-curve-card.json") && !fs::exists(output/"selection.json"),
+    test::check(fs::exists(output/(run.development_only?"native-development-card.json":"native-curve-card.json")) && !fs::exists(output/"selection.json"),
                 "factory called without preregistered card or after test selection");
     ev::Task task=ev::Task::lag_sign;
+    const std::string protocol=run.development_only?"native-development-v1":"native-curve-v1";
+    bool matched=false;
     for(const auto candidate:run.card.tasks)
-      if(fit.protocol_id=="native-curve-v1/"+ev::task_name(candidate)) task=candidate;
+      if(fit.protocol_id==protocol+"/"+ev::task_name(candidate)){task=candidate;matched=true;}
+    test::check(matched,"fit metadata used the wrong training protocol namespace");
     auto expected=ev::make_controlled_development_protocol(task,run.card.shape,
         run.card.train_pairs,
         run.card.validation_pairs,fit.seed);
@@ -78,7 +83,7 @@ ev::NamedCurveFactory factory(const std::string &variant,const ev::NativeCurveRu
         torch::equal(fit.training_observations.feature_mask,expected.training.observed.feature_mask.slice(0,0,2*run.card.train_pairs)),
         "factory fit received another task, altered data or held-out observations");
     const auto audit_key=std::to_string(fit.seed)+"/"+ev::task_name(task);
-    auto audit=std::make_shared<Audit>();++audit->factories;
+    auto audit=std::make_shared<Audit>();++audit->factories;audit->protocol_id=fit.protocol_id;
     test::check(audits->emplace(audit_key,audit).second,"factory reinitialized a continuous path");
     const ev::ObservationScaler scaler(fit.training_observations);
     auto state=std::make_shared<State>();state->audit=audit;
@@ -124,7 +129,7 @@ ev::NamedCurveFactory factory(const std::string &variant,const ev::NativeCurveRu
       snapshot.features.surfaces={{"odd_global",{ev::SurfaceKind::global,"any semantic channel observed",{}}},
           {"odd_channels",{ev::SurfaceKind::channel_concatenation,"all semantic channels observed",run.card.channel_ids}}};
       snapshot.features.extract=[state,task,run,mode,budget,seed](const embedding::Batch &batch) {
-        const auto current=mode==Mode::mutable_snapshot?state->progress.completed:budget;
+        const auto current=mode==Mode::mutable_snapshot || (mode==Mode::mutable_middle_snapshot && budget==2)?state->progress.completed:budget;
         if(batch.data.size(0)==2*run.card.test_pairs) {
           ++state->audit->testing_calls;
           test::check(state->audit->requests.back()==(task==run.selection_task?run.milestones.back():run.sanity_budget),"TEST reached a path before its training finished");
@@ -149,6 +154,7 @@ ev::NamedCurveFactory factory(const std::string &variant,const ev::NativeCurveRu
         // Only a GLOBAL fit fails: a perfect concatenation diagnostic must not
         // rescue the primary budget, nor can a failed master be averaged away.
         if(mode==Mode::unsupported_global_all ||
+            (mode==Mode::unsupported_validation_all && batch.data.size(0)==2*run.card.validation_pairs) ||
             (mode==Mode::unsupported_global_last && current==4 && seed==run.card.seeds.back()) ||
             (mode==Mode::unsupported_train_last && current==4 && seed==run.card.seeds.back() && batch.data.size(0)==2*run.card.train_pairs))
           global_valid=torch::zeros_like(global_valid);
@@ -167,7 +173,8 @@ ev::NamedCurveFactory factory(const std::string &variant,const ev::NativeCurveRu
         const auto eligible=visible.reshape({B,C,K,-1}).any(-1).sum(-1).ge(2)
             .logical_and(batch.feature_mask.logical_and(hidden).flatten(2).any(2));
         const auto target=frozen.transform(batch).data;
-        auto prediction=torch::full_like(target,.1*(mode==Mode::mutable_reconstruction?state->progress.completed:budget));
+        const auto current=mode==Mode::mutable_reconstruction || (mode==Mode::mutable_middle_reconstruction && budget==2)?state->progress.completed:budget;
+        auto prediction=torch::full_like(target,.1*current);
         if(mode==Mode::nonfinite_reconstruction) prediction.fill_(std::numeric_limits<double>::quiet_NaN());
         batch.data.fill_(123456);batch.feature_mask.fill_(false);hidden.fill_(true);torch::rand({1});
         return ev::CurveReconstruction{prediction,target,eligible};
@@ -191,6 +198,9 @@ void ordinary(const fs::path &temporary) {
       selection.find("\"budget\":0")==std::string::npos && object(selection,"\"budget\":2").find("\"utility\":1")!=std::string::npos &&
       object(selection,"\"budget\":4").find("\"utility\":1")!=std::string::npos,"native ridge selection, smaller exact tie or zero exclusion changed");
   const auto card=read(output/"native-curve-card.json"),report=read(output/"report.json"),validation=read(output/"validation-report.json");
+  test::check(!run.development_only && card.find("\"protocol\":\"native-curve-v1\"")!=std::string::npos &&
+      card.find("development_only")==std::string::npos && !fs::exists(output/"development-complete.json") &&
+      !fs::exists(output/"native-development-card.json"),"default full-curve output acquired development-only schema");
   test::check(card.find("\"policy_version\":\"1.2\"")!=std::string::npos && card.find("\"post_encoder_pca\":false")!=std::string::npos &&
       report.find("\"fitted_readouts_reused\":true")!=std::string::npos && report.find("ridge_candidate_minus_comparator_grouped_interval")!=std::string::npos &&
       report.find("full_population_correctness")!=std::string::npos && validation.find("selected-testing")==std::string::npos,
@@ -300,11 +310,86 @@ void unsupported_fits(const fs::path &temporary) {
       tensor(directory/"milestone-2"/"rep-1"/"fit.pt","ridge_weights").size(0)==16,
       "standalone PCA failure disabled legal native selection/TEST or projected the native width");
 }
+void development_only(const fs::path &temporary) {
+  auto run=configuration(temporary/"development-only");run.development_only=true;run.card.test_pairs=0;run.stress_sweep=false;
+  // Neither a selection task nor a sanity budget is used by asset preparation.
+  run.selection_task=ev::Task::amplitude;run.sanity_budget=0;
+  const auto audits=std::make_shared<Audits>();
+  torch::manual_seed(34821);const auto generator=at::globalContext().defaultGenerator(at::Device(at::kCPU));
+  const auto rng=generator.get_state().clone();const auto threads=at::get_num_threads();
+  ev::run_native_curve(run,factory("rpb_v4",run,Mode::ordinary,audits));
+  test::check(torch::equal(generator.get_state(),rng) && at::get_num_threads()==threads,"development-only changed ambient RNG/threads");
+  const fs::path output(run.output_directory);
+  const auto card=read(output/"native-development-card.json"),validation=read(output/"validation-report.json"),completion=read(output/"development-complete.json");
+  test::check(card.find("\"protocol\":\"native-development-v1\"")!=std::string::npos &&
+      card.find("\"development_only\":true")!=std::string::npos && card.find("\"milestones\":[0,2,4]")!=std::string::npos &&
+      card.find("selection_policy")==std::string::npos && card.find("selection_task")==std::string::npos &&
+      card.find("fresh_test_namespace")==std::string::npos && card.find("fresh_test_stream")==std::string::npos &&
+      card.find("stress_sweep")==std::string::npos && validation.find("\"protocol\":\"native-development-v1\"")!=std::string::npos &&
+      validation.find("\"card\":\"native-development-card.json\"")!=std::string::npos,
+      "development card/report claimed a selection or TEST/stress protocol");
+  test::check(completion.find("\"checked_points\":12")!=std::string::npos &&
+      completion.find("\"all_retained_witnesses_exact\":true")!=std::string::npos &&
+      completion.find("\"selection_performed\":false")!=std::string::npos &&
+      completion.find("\"testing_generated\":false")!=std::string::npos && completion.find("fsync")!=std::string::npos,
+      "development completion omitted all-point witnesses or durable boundary");
+  for(const auto &name:{"selection.json","report.json","stress-card.json","stress-report.json","native-curve-card.json"})
+    test::check(!fs::exists(output/name),"development-only emitted a full-curve selection/TEST artifact");
+  for(const auto &entry:fs::recursive_directory_iterator(output)) {
+    const auto name=entry.path().filename().string();
+    test::check(name.find("testing")==std::string::npos && name.find("stress")==std::string::npos,
+        "development-only wrote a TEST/stress artifact");
+  }
+  for(const auto seed:run.card.seeds)for(const auto task:run.card.tasks) {
+    const auto audit=audits->at(std::to_string(seed)+"/"+ev::task_name(task));
+    test::check(audit->requests==run.milestones && audit->saves==3 && audit->snapshots==3 && audit->testing_calls==0 &&
+        audit->protocol_id=="native-development-v1/"+ev::task_name(task),"development task omitted milestones or used another fit namespace");
+    const auto cohort=output/("seed-"+std::to_string(seed)+"-"+ev::task_name(task));
+    test::check(read(cohort/"development-manifest.json").find("\"testing_generated\":false")!=std::string::npos,"development cohort includes TEST");
+    test::check(read(cohort/"controls"/"controls.json").find("\"observation_scaler_train_fits\":1")!=std::string::npos,"development controls did not retain fit-once assets");
+    for(const auto budget:run.milestones) {
+      const auto point=cohort/("milestone-"+std::to_string(budget));
+      test::check(tensor(point/"checkpoint.pt","completed").item<int64_t>()==budget,"development checkpoint budget changed");
+      for(const auto &split:{"training","validation"}) {
+        const auto prefix=std::string(split)+"-reconstruction";
+        for(const auto &key:{"standardized_prediction","standardized_target","target_mask","requested_observed_target_mask","visible_mask","trial_channel_eligible"})
+          test::check(torch::equal(tensor(point/(prefix+".pt"),key),tensor(point/(prefix+"-witness.pt"),key)),"development omitted an immutable TRAIN/VAL decoder witness");
+      }
+      test::check(read(point/"witness-audit.json").find("\"performed_before_development_complete\":true")!=std::string::npos,
+          "development completion preceded a retained point witness");
+      test::check(fs::exists(point/"rep-1"/"fit.pt"),"development native TRAIN fit missing");
+    }
+  }
+  rejects([&]{ev::run_native_curve(run,factory("rpb_v4",run,Mode::ordinary,std::make_shared<Audits>()));},"development-only overwrote output");
+  for(const auto &[name,mode]:std::vector<std::pair<std::string,Mode>>{{"middle-features",Mode::mutable_middle_snapshot},{"middle-decoder",Mode::mutable_middle_reconstruction}}) {
+    auto bad=run;bad.output_directory=(temporary/name).string();bad.card.tasks={ev::Task::lag_sign};bad.card.seeds={41};bad.repetitions={{"rep-1",2701}};
+    auto failed_audits=std::make_shared<Audits>();
+    rejects([&]{ev::run_native_curve(bad,factory("rpb_v4",bad,mode,failed_audits));},"development accepted a mutable intermediate snapshot");
+    test::check(!fs::exists(fs::path(bad.output_directory)/"development-complete.json") &&
+        !fs::exists(fs::path(bad.output_directory)/"selection.json"),"failed intermediate witness declared development complete");
+    test::check(failed_audits->at("41/lag_sign")->requests==run.milestones,"intermediate mutation test did not reach later training");
+  }
+  auto unsupported=run;unsupported.output_directory=(temporary/"development-unsupported-validation").string();
+  unsupported.card.tasks={ev::Task::lag_sign};unsupported.card.seeds={41};unsupported.repetitions={{"rep-1",2701}};
+  ev::run_native_curve(unsupported,factory("rpb_v4",unsupported,Mode::unsupported_validation_all,std::make_shared<Audits>()));
+  const fs::path unsupported_output(unsupported.output_directory);
+  test::check(fs::exists(unsupported_output/"development-complete.json") &&
+      !tensor(unsupported_output/"seed-41-lag_sign"/"milestone-4"/"native-validation.pt","valid").any().item<bool>() &&
+      fs::exists(unsupported_output/"seed-41-lag_sign"/"milestone-4"/"rep-1"/"fit.pt"),
+      "unsupported VALIDATION support blocked legal development asset preparation or discarded TRAIN fits");
+  for(const auto name:{"nonzero-test","enabled-stress"}) {
+    auto bad=run;bad.output_directory=(temporary/name).string();
+    if(std::string(name)=="nonzero-test")bad.card.test_pairs=1;else bad.stress_sweep=true;
+    const auto failed_audits=std::make_shared<Audits>();
+    rejects([&]{ev::run_native_curve(bad,factory("rpb_v4",bad,Mode::ordinary,failed_audits));},"development accepted TEST or stress access");
+    test::check(!fs::exists(bad.output_directory) && failed_audits->empty(),"invalid development boundary created output or invoked trainer");
+  }
+}
 } // namespace
 int main() {
   try {
     const auto directory=fs::temp_directory_path()/("embedding-native-curve-test-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
-    fs::create_directory(directory);ordinary(directory);failures(directory);validation_and_intact(directory);unsupported_fits(directory);
+    fs::create_directory(directory);ordinary(directory);failures(directory);validation_and_intact(directory);unsupported_fits(directory);development_only(directory);
     std::cout << "shared native curve tests passed; artifacts=" << directory << '\n';return 0;
   }catch(const std::exception &error){std::cerr << error.what() << '\n';return 1;}
 }

@@ -268,14 +268,23 @@ fitting on corruption. This diagnostic accessed no TEST or old stress payload,
 selected no checkpoint and made no promotion decision. The original fixed-512
 tradeoff and active RPB-v4 reference remain unchanged.
 
-## Next focused action: five independent paired masters
+## Completed replication: five independent paired masters
 
-Freeze a separate paired replication card for masters 4404, 5505, 6606, 7707
-and 8808 at equal 512 updates. Train fresh RPB-v4 and RPB-v6 on the same new
-TRAIN sources with paired complete initialization, scaler and original row,
-patch-mask and Torch streams. Change only the already frozen context policy;
-keep architecture, reconstruction loss, native32 and the classifier recipes.
-Preserve all five outcomes; do not replace a seed or choose a head after scoring.
+The [five-master replication](CONTEXT_REPLICATION_ADVANCE.md) is measured under
+the unchanged [context-replication-v1 card](../../evaluation/cards/context_replication_v1.md).
+Fresh RPB-v4/RPB-v6 training at 512 updates gives intact native linear means of
+94.0625%/95.78125% (+1.71875 percentage points) and additional 30% deletion means
+of 87.8125%/95.9375% (+8.125 points), with equal 100% coverage. Mean TRAIN/VALIDATION
+MAE is 0.067593/0.071309 for v4 versus 0.091179/0.092984 for v6; both declared
+reconstruction guards fail. RPB-v4 remains active. Independent archive audit v3
+passed 103,787,020 checks; preserve both failed reader attempts, their correction
+rationale and all five outcomes.
+
+The following records the completed procedure. Masters 4404, 5505, 6606, 7707
+and 8808 used the same new TRAIN sources within each pair, with complete
+initialization, scaler and original row, patch-mask and Torch streams paired.
+Only the existing context policy differed; architecture, reconstruction loss,
+native32 and classifier recipes stayed fixed.
 
 Use 128 TRAIN, 64 VALIDATION and 64 fresh TEST source pairs, batch size 8,
 C3/H32/F3 with patch length 8 and 10% natural missingness. Keep ridge penalty 1
@@ -290,5 +299,46 @@ frozen baseline assets and fresh v6 training, then durably records the complete
 comparison before generating a new common TEST namespace and corruption masks.
 Known VALIDATION cannot select a different replication budget. The question is
 whether the fixed-512 context benefit repeats across independent training,
-with reconstruction and cost reported alongside quality. This plan is not a
-completed result, a promotion decision or formal consumer confirmation.
+with reconstruction and cost reported alongside quality. The point-score gain
+repeats, but the full guard does not pass. Conditional source-group intervals
+are not across-master uncertainty, and this is not consumer confirmation.
+
+## Next bounded plan: proposed RPB-v7
+
+RPB-v7 — Global bottleneck with lighter context deletion — is proposed, not
+implemented or measured. Save the completed replication and its passed audit
+before changing production code. Its prospective
+[lighter-policy card](../../evaluation/cards/context_lighter_validation_v1.md)
+names `rpb-training-context-deletion-015-v1`; freeze the final recipe and input
+allowlist before fitting. Test one fixed extra training request rate of
+0.15 at 512 updates on the same mode2/mixer1/native32 architecture, optimizer,
+reconstruction loss and fixed head recipes. This is a training-view hypothesis,
+not another pooling architecture or a prediction that halving deletion succeeds.
+
+Freeze a separate TRAIN/known VALIDATION-only recipe. Pair the legal TRAIN
+observations, initialization, scaler, original row/query-mask/Torch streams and
+budgets with the named v4/v6 references. Preserve original O, A, targets Q=O&A,
+eligibility and hierarchical Huber denominators; reduce only independently
+requested context deletion E. Keep semantic-coordinate counters and repair
+only E to retain two originally visible groups. Requested 0.15 deletions can
+be nested within the 0.30 requests; repaired applied masks are not assumed nested
+under sparse support. Labels remain readout-only and all inference stays ordinary.
+
+Use the distinct planned policy identity, exact ratio/stream/repair/count companions and
+native32 checkpoint witnesses. Preserve the existing v6 0.30 recipe, exact
+replay and ordinary rejection of nonempty training-policy resume. The proposed
+first scope is fresh continuous training; it does not add augmented resume or
+silently switch an existing checkpoint's policy. Default paths must remain exact.
+
+Report fixed-query TRAIN/VALIDATION standardized MAE beside intact and fixed
+deletion-view native linear accuracy, coverage, every master and actual training
+cost. Keep ridge penalty 1 and tanh-16/Adam 0.01/100 updates with all declared
+head repetitions. Do not search rates, heads, budgets or losses. Inference from
+the completed traces motivates retaining more training context; it does not
+prove that deletion caused the reconstruction gap or that more training cannot
+help a different objective.
+
+Do not reopen or score the replication TEST/stress while choosing this recipe.
+Any later quality confirmation requires another prospective plan and unopened
+held-out sources. RPB-v4 stays active until the full declared evidence supports
+an explicit decision; no guard is waived or retrospective promotion made here.

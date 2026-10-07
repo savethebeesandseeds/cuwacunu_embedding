@@ -28,10 +28,10 @@ The [RPB-v5 comparison](PAIRED_POOLING_ADVANCE.md) and
 [optimization diagnostic](OPTIMIZATION_DIAGNOSTIC.md) are complete. Direct patch
 pooling did not improve the fixed-budget linear primaries; additional training
 improved reconstruction without improving mean linear validation accuracy.
-The audited candidate is **RPB-v6 — Global bottleneck with context deletion**.
+The measured candidate is **RPB-v6 — Global bottleneck with context deletion**.
 It keeps the RPB-v4 architecture and serves the same native32 vector, while
 training with fewer visible coordinates and unchanged reconstruction targets.
-Its [measured advance](CONTEXT_DELETION_ADVANCE.md) improves both linear accuracy
+Its original audited [measured advance](CONTEXT_DELETION_ADVANCE.md) improves both linear accuracy
 primaries with full coverage, but reconstruction worsens and promotion remains
 blocked by the declared guard. Its [separate card](../../evaluation/cards/context_deletion_v1.md)
 fixed the recipe before scoring. Policy-tagged checkpoints remain normal inference
@@ -45,10 +45,27 @@ the v4 fixed-512 reconstruction reference and preserves v6's 512-update linear
 accuracy in intact and fixed-deletion validation views. At 2048, mean
 TRAIN/VALIDATION MAE is 0.035736/0.035845, while linear accuracy falls to
 96.875% intact and 95.3125% with additional 30% deletion. No TEST was opened and
-RPB-v4 remains active. The next separately frozen comparison will pair fresh
-v4/v6 training at equal 512 updates on masters 4404, 5505, 6606, 7707 and 8808,
-with unchanged native32, heads, architecture and loss. Shared development-only
-baseline preparation precedes the fresh paired TEST phase.
+RPB-v4 remains active.
+
+The completed [five-master replication](CONTEXT_REPLICATION_ADVANCE.md) pairs
+fresh v4/v6 training at 512 updates on 4404/5505/6606/7707/8808. Mean linear gains
+are +1.71875 percentage points intact and +8.125 under additional 30% coordinate
+deletion, with equal 100% coverage. Mean TRAIN and VALIDATION reconstruction
+guards still fail. Independent archive audit v3 passed 103,787,020 checks;
+failed v1/v2 reader attempts and their corrections remain preserved. This
+repeats the accuracy/reconstruction tradeoff rather
+than promoting v6.
+
+**Proposed RPB-v7 — Global bottleneck with lighter context deletion** would keep
+the same mode2/mixer1/native32 architecture, optimizer, loss and heads while
+reducing the extra training request to 0.15 at 512 updates. It is not implemented
+or measured. The [next plan](NEXT_ADVANCE.md) permits TRAIN/known VALIDATION
+diagnosis only after the measured milestone and audit are saved. Do not reuse
+the replication's TEST/stress for rate tuning, change the v6 policy/replay or
+relax ordinary tagged-resume rejection. Its prospective
+[lighter-policy card](../../evaluation/cards/context_lighter_validation_v1.md)
+names `rpb-training-context-deletion-015-v1`; that policy is still planned,
+not implemented or measured.
 
 The [embedding evaluation policy](../../../doc/EMBEDDING_EVALUATION_POLICY.md)
 governs shared protocols, reporting and acceptance. The

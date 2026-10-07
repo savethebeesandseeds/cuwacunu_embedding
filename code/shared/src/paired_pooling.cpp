@@ -673,6 +673,7 @@ void validate_run(const PairedPoolingRun &run,const NamedCurveFactory &candidate
   const auto &recipe=run.recipe;const auto &card=recipe.card;const auto &shape=card.shape;
   require(safe_name(run.protocol_id) && run.fresh_test_namespace==run.protocol_id+"/fresh-testing" &&
       run.fresh_test_stream!=0,"paired protocol/fresh-testing namespace/stream contract");
+  require(safe_name(run.training_protocol_namespace),"unsafe or empty explicit training protocol namespace");
   require(card.version==2 && card.policy_version=="1.2" && card.stage=="development" && card.tasks==std::vector<Task>{Task::lag_sign},"lag-only policy1.2 development card required");
   require(shape.channel_count>=2 && shape.history_length>=8 && shape.input_width>0 && shape.dtype==torch::kFloat64 && shape.device.is_cpu() &&
       shape.channel_count<=std::numeric_limits<int64_t>::max()/shape.history_length && shape.channel_count*shape.history_length<=std::numeric_limits<int64_t>::max()/shape.input_width/2,"geometry/precision overflow");
@@ -715,8 +716,9 @@ EvaluationCard fixed_stress_card(const EvaluationCard &input) {
 std::string card_json(const PairedPoolingRun &run,const NamedCurveFactory &candidate) {
   const auto &r=run.recipe;const auto &c=r.card;std::ostringstream out;out << std::setprecision(17)
       << "{\"protocol\":" << quote(run.protocol_id) << ",\"policy_version\":\"1.2\",\"stage\":\"development\",\"reference_tag\":" << quote(run.reference_tag)
-      << ",\"candidate_tag\":" << quote(run.candidate_tag) << ",\"candidate_recipe\":" << quote(candidate.recipe)
-      << ",\"source_fingerprint\":" << quote(r.source_fingerprint) << ",\"git_head\":" << quote(r.git_head) << ",\"git_dirty\":" << quote(r.git_dirty)
+      << ",\"candidate_tag\":" << quote(run.candidate_tag) << ",\"candidate_recipe\":" << quote(candidate.recipe);
+  if(run.training_protocol_namespace!="native-curve-v1")out << ",\"training_protocol_namespace\":" << quote(run.training_protocol_namespace);
+  out << ",\"source_fingerprint\":" << quote(r.source_fingerprint) << ",\"git_head\":" << quote(r.git_head) << ",\"git_dirty\":" << quote(r.git_dirty)
       << ",\"masters\":" << numbers(c.seeds) << ",\"task\":\"lag_sign\",\"shape\":[" << c.shape.channel_count << ',' << c.shape.history_length << ',' << c.shape.input_width
       << "],\"channel_ids\":" << numbers(c.channel_ids) << ",\"feature_units\":" << quote(c.feature_units) << ",\"sampling_interval\":" << c.sampling_interval
       << ",\"train_pairs\":" << c.train_pairs << ",\"validation_pairs\":" << c.validation_pairs << ",\"test_pairs\":" << c.test_pairs << ",\"threads\":" << c.threads
@@ -923,7 +925,7 @@ void run_paired_pooling(const PairedPoolingRun &run,const NamedCurveFactory &can
     save_split(cohort.directory/"controlled-training.pt",cohort.training);save_split(cohort.directory/"controlled-validation.pt",cohort.validation);
     write_text(cohort.directory/"development-manifest.json","{\"testing_generated\":false,\"retained_training\":"+split_manifest(cohort.training,"training")+",\"retained_validation\":"+split_manifest(cohort.validation,"validation")+'}');
     cohort.metadata={legal_clone(cohort.training.observed),r.card.shape,retained.master_seed,cohort.training.source_ids,r.card.channel_ids,r.card.feature_units,
-        "native-curve-v1/lag_sign",r.card.sampling_interval,(r.card.shape.history_length-1)*r.card.sampling_interval};
+        run.training_protocol_namespace+"/lag_sign",r.card.sampling_interval,(r.card.shape.history_length-1)*r.card.sampling_interval};
     {
       const MeasurementIsolation measure;cohort.raw=FrozenRaw::load(retained.raw_scaler,r);
       const auto train_raw=cohort.raw.extract(cohort.training.observed),val_raw=cohort.raw.extract(cohort.validation.observed);
@@ -982,7 +984,8 @@ void run_paired_pooling(const PairedPoolingRun &run,const NamedCurveFactory &can
   write_text(output/"validation-report.json",validation.str()+"]}");guard.verify();
   // This fixed budget is not selected using reused validation or fresh TEST.
   // Close+fsync file and directory make the admission boundary durable.
-  durable_selection(output/"comparison-manifest.json","{\"protocol\":"+quote(run.protocol_id)+",\"policy_version\":\"1.2\",\"stage\":\"development\",\"completed_updates\":"+
+  const auto training_namespace=run.training_protocol_namespace=="native-curve-v1"?std::string{}:",\"training_protocol_namespace\":"+quote(run.training_protocol_namespace);
+  durable_selection(output/"comparison-manifest.json","{\"protocol\":"+quote(run.protocol_id)+training_namespace+",\"policy_version\":\"1.2\",\"stage\":\"development\",\"completed_updates\":"+
       std::to_string(run.completed_updates)+",\"budget_policy\":\"predeclared fixed positive budget, no validation search\",\"all_validation_complete\":true,\"all_retained_witnesses_exact\":true,\"all_testing_after_manifest\":true,\"fresh_test_stream\":"+
       quote(std::to_string(run.fresh_test_stream))+",\"validation_report\":\"validation-report.json\",\"input_manifest\":\"input-manifest.json\",\"source_fingerprint\":"+quote(r.source_fingerprint)+'}');
   std::ostringstream report,stress;report << "{\"protocol\":" << quote(run.protocol_id) << ",\"policy_version\":\"1.2\",\"stage\":\"development\",\"card\":\"paired-pooling-card.json\",\"comparison_manifest\":\"comparison-manifest.json\",\"source_fingerprint\":" << quote(r.source_fingerprint)

@@ -32,6 +32,27 @@ optimizer continuation stay in the encoder adapter; shared evaluation owns the
 view association, support, predictions and paired scores. It selects no checkpoint
 and accesses no TEST or historical stress payload.
 
+The completed [context replication](../encoders/raw_patch_bottleneck_mae/CONTEXT_REPLICATION_ADVANCE.md)
+uses [context-replication-v1](cards/context_replication_v1.md). Shared
+`native-development-v1` first prepares five fresh v4 TRAIN/VALIDATION references
+without TEST or selection, then the paired engine compares fresh v6 trajectories
+with those exact frozen assets before opening one new TEST namespace. Mean
+linear gains are +1.71875 percentage points intact and +8.125 under additional
+30% deletion, with equal 100% coverage; both mean TRAIN/VALIDATION reconstruction
+guards fail. RPB-v4 remains active. Independent archive audit v3 passed
+103,787,020 checks, with the failed v1/v2 reader attempts and correction rationale
+preserved.
+
+Proposed RPB-v7 — Global bottleneck with lighter context deletion — is a fixed
+0.15 training-policy option at 512 updates, not an implemented evaluator mode or
+a measured result. The prospective
+[lighter-policy card](cards/context_lighter_validation_v1.md) names the planned
+`rpb-training-context-deletion-015-v1` identity. The next diagnosis is TRAIN/known
+VALIDATION only; it must
+not reuse the replication TEST/stress for tuning. Encoder policy/optimizer logic
+stays in its adapter and shared evaluation retains the unchanged head recipes,
+support and scoring contracts. Historical cards and sources remain unchanged.
+
 ## Ownership
 
 | Location | Responsibility |

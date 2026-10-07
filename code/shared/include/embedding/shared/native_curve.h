@@ -27,6 +27,11 @@ struct NativeCurveRun {
   double tiny_learning_rate{0.01};
   uint64_t fresh_test_stream{0x6e63763174657374ULL}; // named ncv1test stream.
   bool stress_sweep{true};
+  // TRAIN/VALIDATION asset preparation only. Requires test_pairs==0 and
+  // stress_sweep==false; uses native-development-v1 and every task's declared
+  // milestones, checks every retained point, then durably records completion.
+  // No budget selection, TEST generation, or stress evaluation occurs.
+  bool development_only{false};
 };
 
 // Sole label-free continuous trainer; no encoder dependency in this driver.
@@ -40,6 +45,8 @@ struct NativeCurveRun {
 // selection precedes ALL fresh TEST generation, including sanity tasks. Selected
 // snapshots, reconstruction witnesses and fitted readouts are checked unchanged
 // after later training, then reused without test/stress fitting.
+// development_only instead returns after all TRAIN/VALIDATION assets and
+// immutable witnesses, before the selection phase.
 void run_native_curve(const NativeCurveRun &run,const NamedCurveFactory &factory);
 
 } // namespace embedding::evaluation
