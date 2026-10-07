@@ -13,8 +13,8 @@ namespace embedding::encoders::raw_patch_bottleneck_mae {
 embedding::evaluation::CurveTrainerFactory
 make_learning_curve_trainer(const Settings &settings);
 
-// Fresh continuous TRAIN only. Enabled is the fixed RPB-v6 .30 coordinate
-// context-deletion recipe on the unchanged mode2/mixer1/native32 architecture.
+// Fresh continuous TRAIN only. Enabled defaults to fixed RPB-v6 .30; explicit
+// coordinate15_v1 selects RPB-v7 .15 on the same mode2/mixer1/native32 architecture.
 // Checkpoints retain a policy tag; ordinary workflow resume must reject them.
 // No augmented resume API is exposed in this bounded experiment.
 embedding::evaluation::CurveTrainerFactory

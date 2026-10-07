@@ -118,7 +118,8 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
   checkpoint.dataset_id = state->training.dataset_id;
   checkpoint.scaler_fit_dataset_id = state->training.dataset_id;
   checkpoint.source_fingerprint = workflow_source_fingerprint();
-  if (state->context_options.enabled) checkpoint.training_policy_id = context_deletion::policy_id;
+  if (state->context_options.enabled)
+    checkpoint.training_policy_id = context_deletion::descriptor(state->context_options.recipe).policy_id;
   save_checkpoint(path, checkpoint, *state->optimizer);
   save_dataset(path + ".training-raw.pt", state->training);
   save_scaler(path + ".scaler.pt", state->scaler, state->settings.model,
@@ -139,7 +140,8 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
   audit.write("weights_changed", torch::tensor(report.weights_changed, torch::kBool), true);
   audit.write("finite_gradients", torch::tensor(report.finite_gradients, torch::kBool), true);
   if (state->context_options.enabled) {
-    audit.write("context_deletion_ratio_value", torch::tensor(context_deletion::ratio, torch::kFloat64), true);
+    audit.write("context_deletion_ratio_value",
+        torch::tensor(context_deletion::descriptor(state->context_options.recipe).ratio, torch::kFloat64), true);
     audit.write("context_deletion_stream_value", torch::tensor(static_cast<int64_t>(context_deletion::stream)), true);
     audit.write("context_requested_deleted_coordinates", torch::tensor(state->context_counts[0]), true);
     audit.write("context_actual_deleted_coordinates", torch::tensor(state->context_counts[1]), true);
@@ -165,7 +167,8 @@ ev::CurveSnapshot snapshot_point(const std::shared_ptr<CurveState> &state,
       checkpoint->attempted_steps == saved->second.first &&
       checkpoint->completed_steps == saved->second.second,
       "saved point settings, scaler, training identity or counters differ from the trainer");
-  require(checkpoint->training_policy_id == (state->context_options.enabled ? context_deletion::policy_id : ""),
+  require(checkpoint->training_policy_id == (state->context_options.enabled ?
+      context_deletion::descriptor(state->context_options.recipe).policy_id : ""),
       "saved training policy differs from the trainer");
   checkpoint->model->eval();
   for (auto &parameter : checkpoint->model->parameters()) parameter.set_requires_grad(false);
@@ -178,9 +181,11 @@ ev::CurveSnapshot snapshot_point(const std::shared_ptr<CurveState> &state,
   ev::CurveSnapshot snapshot;
   snapshot.features.provenance = frozen.provenance +
       "; exact saved continuous CUDA training point; no matched random provider surface";
-  if (state->context_options.enabled)
-    snapshot.features.provenance += "; model_tag=RPB-v6; training_policy=" + std::string(context_deletion::policy_id) +
-        "; inference remains ordinary mode2/mixer1/native32";
+  if (state->context_options.enabled) {
+    const auto &selected = context_deletion::descriptor(state->context_options.recipe);
+    snapshot.features.provenance += "; model_tag=" + std::string(selected.model_tag) +
+        "; training_policy=" + selected.policy_id + "; inference remains ordinary mode2/mixer1/native32";
+  }
   snapshot.features.audit_fields = frozen.audit_fields;
   for (auto field = snapshot.features.audit_fields.begin(); field != snapshot.features.audit_fields.end();) {
     if (field->first.rfind("curve_checkpoint_untrained_", 0) == 0)
@@ -203,16 +208,19 @@ ev::CurveSnapshot snapshot_point(const std::shared_ptr<CurveState> &state,
   snapshot.features.surfaces.emplace("curve_global", frozen.surfaces.at(base + "_global"));
   snapshot.features.surfaces.emplace("curve_channel_concatenation",
       frozen.surfaces.at(base + "_channel_concatenation"));
-  snapshot.features.extract = [frozen, base, enabled = state->context_options.enabled](const embedding::Batch &batch) {
+  snapshot.features.extract = [frozen, base, enabled = state->context_options.enabled,
+      recipe = state->context_options.recipe](const embedding::Batch &batch) {
     const auto all = frozen.extract(batch);
     ev::FeatureMap result;
     result.emplace("curve_global", all.at(base + "_global"));
     result.emplace("curve_channel_concatenation", all.at(base + "_channel_concatenation"));
-    if (enabled)
+    if (enabled) {
+      const auto &selected = context_deletion::descriptor(recipe);
       for (auto &[name, surface] : result) {
         (void)name;
-        surface.provenance += "; model_tag=RPB-v6; training_policy=" + std::string(context_deletion::policy_id);
+        surface.provenance += "; model_tag=" + std::string(selected.model_tag) + "; training_policy=" + selected.policy_id;
       }
+    }
     return result;
   };
   // Ordinary checkpoint, raw/scaler companions and producer audit were saved
@@ -251,6 +259,7 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings) {
 }
 
 ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, ContextDeletionOptions options) {
+  context_deletion::validate_options(options);
   validate_settings(settings);
   require(settings.model.device.is_cuda(), "learning-curve training requires an explicit CUDA device");
   require(torch::cuda::is_available(), "CUDA is unavailable; CPU fallback is not permitted");
@@ -338,9 +347,10 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
         {"trace_policy", "first_completed_update;every_log_every_updates;queried_milestone_endpoints_persist_as_cumulative_prefix"},
         {"sampling_policy", "with_replacement_counter_rows;sampled_rows_includes_no_update_attempts"}};
     if (options.enabled) {
-      state->audit.emplace("model_tag", "RPB-v6");
-      state->audit.emplace("training_policy_id", context_deletion::policy_id);
-      state->audit.emplace("context_deletion_ratio", "0.30");
+      const auto &selected = context_deletion::descriptor(options.recipe);
+      state->audit.emplace("model_tag", selected.model_tag);
+      state->audit.emplace("training_policy_id", selected.policy_id);
+      state->audit.emplace("context_deletion_ratio", selected.ratio_text);
       state->audit.emplace("context_deletion_stream", "0x6374782d64726f70");
       state->audit.emplace("context_deletion_rng_policy", context_deletion::rng_policy);
       state->audit.emplace("context_deletion_repair_policy", context_deletion::repair_policy);
@@ -385,7 +395,7 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
           ForwardOutput output;
           if (state->context_options.enabled) {
             const auto context = context_deletion::make_plan(mask, batch.channel_ids,
-                state->settings.model, state->settings.seed, attempt);
+                state->settings.model, state->settings.seed, attempt, state->context_options.recipe);
             const std::array<int64_t, 3> counts{context.requested_count, context.actual_count, context.restored_count};
             for (size_t i = 0; i < counts.size(); ++i) {
               require(state->context_counts[i] <= std::numeric_limits<int64_t>::max() - counts[i],

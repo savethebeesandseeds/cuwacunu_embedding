@@ -119,7 +119,7 @@ additional missingness. The exact untrained timing controls score 55.47% linear
 / 65.19% neural, showing a substantial training contribution. The procedure
 below records the completed protocol; historical compressed drivers stay intact.
 
-Create a separate native-only training/selection protocol before another curve.
+The separate native-only training/selection protocol supplies this curve.
 The historical global driver requires three variants, computes compressed tiers,
 and selects a budget with PCA12. Changing the displayed table cannot change that
 protocol. Leave its cards, executable semantics and archived results intact.
@@ -303,42 +303,55 @@ with reconstruction and cost reported alongside quality. The point-score gain
 repeats, but the full guard does not pass. Conditional source-group intervals
 are not across-master uncertainty, and this is not consumer confirmation.
 
-## Next bounded plan: proposed RPB-v7
+## Completed lighter-policy diagnostic: RPB-v7
 
-RPB-v7 — Global bottleneck with lighter context deletion — is proposed, not
-implemented or measured. Save the completed replication and its passed audit
-before changing production code. Its prospective
-[lighter-policy card](../../evaluation/cards/context_lighter_validation_v1.md)
-names `rpb-training-context-deletion-015-v1`; freeze the final recipe and input
-allowlist before fitting. Test one fixed extra training request rate of
-0.15 at 512 updates on the same mode2/mixer1/native32 architecture, optimizer,
-reconstruction loss and fixed head recipes. This is a training-view hypothesis,
-not another pooling architecture or a prediction that halving deletion succeeds.
+The [RPB-v7 record](CONTEXT_LIGHTER_VALIDATION_DIAGNOSTIC.md) completes the fixed
+0.15 request hypothesis at 512 updates on all five known TRAIN/VALIDATION
+masters under the frozen
+[lighter-policy card](../../evaluation/cards/context_lighter_validation_v1.md).
+The same mode2/mixer1/native32 architecture, optimizer, reconstruction targets,
+loss, streams and fixed heads remain in use. Five new candidate trajectories
+are paired with ten retained v4/v6 trajectories. Independent archive audit v3
+passed 67,097,380 checks; preserve the measured capsule and save its passed audit before any
+further production changes.
 
-Freeze a separate TRAIN/known VALIDATION-only recipe. Pair the legal TRAIN
-observations, initialization, scaler, original row/query-mask/Torch streams and
-budgets with the named v4/v6 references. Preserve original O, A, targets Q=O&A,
-eligibility and hierarchical Huber denominators; reduce only independently
-requested context deletion E. Keep semantic-coordinate counters and repair
-only E to retain two originally visible groups. Requested 0.15 deletions can
-be nested within the 0.30 requests; repaired applied masks are not assumed nested
-under sparse support. Labels remain readout-only and all inference stays ordinary.
+Mean intact/deletion native linear accuracy is 97.96875%/95.15625%, compared
+with v6's 95.3125%/93.90625%, at equal 100% coverage. Mean TRAIN/VALIDATION MAE
+improves over v6 to 0.081179/0.083630, but both guards against v4's
+0.067593/0.071309 fail. Every master's reconstruction remains worse than v4;
+neural means decline and master 8808 loses 5.46875 linear points under deletion.
+The joint target is unresolved and v4 remains active.
 
-Use the distinct planned policy identity, exact ratio/stream/repair/count companions and
-native32 checkpoint witnesses. Preserve the existing v6 0.30 recipe, exact
-replay and ordinary rejection of nonempty training-policy resume. The proposed
-first scope is fresh continuous training; it does not add augmented resume or
-silently switch an existing checkpoint's policy. Default paths must remain exact.
+The separate policy `rpb-training-context-deletion-015-v1` is implemented.
+CUDA admission passes actual gradients/weight changes, exact continuous
+2→4→6 continuation against uninterrupted 6, full initialization/scaler pairing,
+original query/support loss, semantic-coordinate repair and request nesting,
+snapshot immutability and unchanged disabled/v6 defaults. Expected recipe
+binding rejects cross-policy initialization and the v6-only replay rejects v7.
+Ordinary training still rejects tagged resume; serving applies no deletion.
+The exact initialization and ordinary feature/query references are checked
+before fitting. All 135 readout pipelines are supported and all 45 native
+fit/ordinary-prediction parity records pass.
 
-Report fixed-query TRAIN/VALIDATION standardized MAE beside intact and fixed
-deletion-view native linear accuracy, coverage, every master and actual training
-cost. Keep ridge penalty 1 and tanh-16/Adam 0.01/100 updates with all declared
-head repetitions. Do not search rates, heads, budgets or losses. Inference from
-the completed traces motivates retaining more training context; it does not
-prove that deletion caused the reconstruction gap or that more training cannot
-help a different objective.
+No TEST/stress, rate/budget search, checkpoint selection or promotion occurred.
+The new fixed VALIDATION deletion view is distinct from historical TEST/stress.
+Known development gains do not supply fresh held-out confirmation. The card
+and measured report remain frozen evidence, separate from the current next plan.
 
-Do not reopen or score the replication TEST/stress while choosing this recipe.
-Any later quality confirmation requires another prospective plan and unopened
-held-out sources. RPB-v4 stays active until the full declared evidence supports
-an explicit decision; no guard is waived or retrospective promotion made here.
+## Next bounded question: ordinary and deleted training views
+
+The evidence motivates one fixed balanced view schedule: 256 ordinary and
+256 deletion-0.30 attempts at the same 512 budget, preserving the architecture,
+Q/support/loss, data streams and heads. Ordinary views may anchor reconstruction;
+deleted views may preserve robustness. Equal expected deletion exposure does
+not make this equivalent to deleting 0.15 on every update. Neither success nor
+causation is established by the lighter-policy results.
+
+The [implementation plan](BALANCED_CONTEXT_IMPLEMENTATION_PLAN.md) is proposed
+and unimplemented. Freeze its exact absolute-attempt schedule, new policy
+identity, admitted source, permitted TRAIN/known VALIDATION roles and fixed
+decision guards before measuring it. Keep every seed, both heads, coverage,
+reconstruction and timers visible. Do not reopen historical TEST/stress or
+expand to a ratio, budget, head or loss grid. Subsequent quality confirmation
+requires its own prospective plan and unopened held-out sources. RPB-v4 stays
+active until full declared evidence supports an explicit decision.

@@ -26,9 +26,11 @@ standalone raw/PCA controls. It removes the prior requirement to make a
 compressed encoder tier primary. Historical version-1.1 cards/drivers retain
 their declared protocols and measurements. The new
 [shared archive readout](../code/evaluation/cards/archive_readout_v1.md) implements
-the validation-only native/raw/PCA comparison. The native-only training/selection
-runner remains an implementation task, recorded in the
-[RPB-v4 plan](../code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md).
+the validation-only native/raw/PCA comparison. The separate native-only
+training/selection runner is implemented in the
+[shared native curve](../code/shared/src/native_curve.cpp), with measured
+development evidence in the
+[RPB-v4 record](../code/encoders/raw_patch_bottleneck_mae/NATIVE_CURVE_ADVANCE.md).
 
 ## 1. Evidence layers and claim scope
 
@@ -220,8 +222,8 @@ tracks; historical cards retain their compressed primary tiers unchanged.
 For centered PCA require requested width no greater than input width, valid
 training rows minus one, and numerical rank. Mark unsupported compression rather
 than padding zero-rank components or silently changing widths. The current
-baseline widths 12/global and 36/concatenated, and RPB-MAE's proposed 32/global
-and 96/concatenated, are configuration examples, not universal policy constants.
+baseline widths 12/global and 36/concatenated, and RPB-MAE's native 32/global
+and historical 96/concatenated, are configuration examples, not universal policy constants.
 
 ## 7. Task validity, controls, and probes
 

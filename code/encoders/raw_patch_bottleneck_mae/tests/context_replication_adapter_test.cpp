@@ -97,6 +97,10 @@ void fresh_cuda_replication_initialization_contract() {
   const auto cpu_before = cpu_rng.get_state().clone(), gpu_before = gpu_rng.get_state().clone();
   const auto threads = at::get_num_threads();
   const auto audited = rpb::audit_context_replication_initialization(candidate0, reference, fit, 2);
+  check(rpb::audit_context_replication_initialization(candidate0, reference, fit,
+      rpb::ContextDeletionRecipe::coordinate30_v1, 2) == audited, "legacy audit is exact explicit30");
+  rejects([&] { rpb::audit_context_replication_initialization(candidate0, reference, fit,
+      rpb::ContextDeletionRecipe::coordinate15_v1, 2); }, "explicit15 gate rejects old30 checkpoint");
   check(torch::equal(cpu_before, cpu_rng.get_state()) && torch::equal(gpu_before, gpu_rng.get_state()) &&
       threads == at::get_num_threads(), "successful inspection preserves CPU/CUDA RNG and threads");
   check(audited.at("common_parameter_count") == "225805" && audited.at("all_parameters_exact_including_global_pool") == "true" &&

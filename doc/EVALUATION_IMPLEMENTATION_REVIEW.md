@@ -1,6 +1,6 @@
 # Evaluation separation and policy review
 
-Date: 2026-10-06
+Date: 2026-10-07
 
 The agreed [reporting standard](RESULTS_REPORTING_STANDARD.md) and
 [version registry](EMBEDDING_VERSIONS.md) designate RPB-v4 as active research.
@@ -17,7 +17,7 @@ gate tests passed; independent artifacts passed 70,619,069 checks. Selection
 precedes all fresh TEST generation, controls fit once, and checkpoint/readout
 assets are reused without TEST/stress fitting. The
 [next advance](../code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md) records
-the measured gaps and one planned encoder mechanism. This is development
+the measured gaps and completed fixed training-view diagnostics. This is development
 evidence; consumer acceptance contracts remain unimplemented.
 
 RPB-MAE is an encoder governed by the shared

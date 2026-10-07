@@ -56,16 +56,24 @@ failed v1/v2 reader attempts and their corrections remain preserved. This
 repeats the accuracy/reconstruction tradeoff rather
 than promoting v6.
 
-**Proposed RPB-v7 — Global bottleneck with lighter context deletion** would keep
-the same mode2/mixer1/native32 architecture, optimizer, loss and heads while
-reducing the extra training request to 0.15 at 512 updates. It is not implemented
-or measured. The [next plan](NEXT_ADVANCE.md) permits TRAIN/known VALIDATION
-diagnosis only after the measured milestone and audit are saved. Do not reuse
-the replication's TEST/stress for rate tuning, change the v6 policy/replay or
-relax ordinary tagged-resume rejection. Its prospective
-[lighter-policy card](../../evaluation/cards/context_lighter_validation_v1.md)
-names `rpb-training-context-deletion-015-v1`; that policy is still planned,
-not implemented or measured.
+**RPB-v7 — Global bottleneck with lighter context deletion** keeps the same
+mode2/mixer1/native32 architecture, optimizer, loss and heads while reducing the
+extra TRAIN request to 0.15 at 512 updates. The completed
+[five-master validation diagnostic](CONTEXT_LIGHTER_VALIDATION_DIAGNOSTIC.md)
+improves mean linear accuracy over v6 by 2.65625 points intact and 1.25 with
+additional deletion, at 100% coverage. Mean reconstruction improves over v6,
+but remains worse than v4 in every master. Neural means decline, and master
+8808 loses deletion accuracy. Both reconstruction guards fail; v7 is not
+promoted and v4 remains active. Independent archive audit v3 passed 67,097,380 checks.
+
+The frozen [lighter-policy card](../../evaluation/cards/context_lighter_validation_v1.md)
+and explicit `rpb-training-context-deletion-015-v1` identity govern these known
+TRAIN/VALIDATION results. The encoder owns the training recipe; shared evaluation
+owns fixed fits, views, support and scores. CUDA admission also passes exact
+live-trainer continuation across saved snapshots and unchanged v6 default/replay.
+No TEST/stress or checkpoint selection occurred. Save the measured milestone
+and passed audit before the next bounded training-view change in the
+[next plan](NEXT_ADVANCE.md).
 
 The [embedding evaluation policy](../../../doc/EMBEDDING_EVALUATION_POLICY.md)
 governs shared protocols, reporting and acceptance. The

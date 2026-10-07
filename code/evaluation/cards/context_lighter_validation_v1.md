@@ -1,8 +1,9 @@
 # Lighter context deletion validation v1 development card
 
 Protocol: `context-lighter-validation-v1`. Policy: 1.2. Stage: development.
-Status: draft prospective TRAIN/known-VALIDATION-only diagnostic; freeze the
-final card, instantiated plan, permitted input hashes and admission before fitting.
+Status: ready for the fixed TRAIN/known-VALIDATION-only diagnostic after source
+review. Freeze this card, instantiated plan, permitted input hashes and actual
+CUDA admission before fitting. The diagnostic remains unmeasured until completed.
 No TEST or old stress access, selection, consumer acceptance or automatic promotion.
 
 RPB-v7 is a bounded training-policy hypothesis: reduce the extra visible-context
@@ -18,8 +19,14 @@ all earlier cards keep their original bytes and disposition. RPB-v4 remains acti
 Use timing (`lag_sign`) only and the five known masters 4404, 5505, 6606, 7707
 and 8808. For each master reuse exactly 128 TRAIN source pairs (256 rows) and
 64 VALIDATION pairs (128 rows) from the completed new replication development
-cohort. Natural missingness stays 0.10. Do not regenerate a cohort, introduce
+cohort. Natural missingness stays 0.10. Do not replace a cohort, introduce
 a new master, change a label or mask, or discover another task or testing split.
+The existing development generator may replay these exact declared draws only
+after the permitted parent roles are bound. Before any candidate fit, require
+bitwise equality of observations, masks and labels plus exact source order for
+every master against both parent versions. The candidate fitting callback also
+checks its replayed legal TRAIN input against that identified cohort. A replay
+mismatch stops the run; it does not authorize another draw.
 Both opposite-label variants remain grouped within their original split.
 
 The RPB-v7 `NativeCurveRun` development phase retains ordinary points 0 and
@@ -119,7 +126,7 @@ complete typed/text companions declaring request rate 0.15. The existing
 RPB-v6 rate-0.30 policy ID `rpb-training-context-deletion-v1` and API remain
 unchanged. Do not relabel either policy or silently resume through ordinary
 training. Bind these identities in the instantiated plan and admission before
-execution; this draft does not authorize a second mechanism.
+execution; this card does not authorize a second mechanism.
 
 Requests apply only to original visible context V0=O&~A. Keep the existing
 training context stream `0x6374782d64726f70ULL` (decimal 7166485043407384432),
@@ -144,7 +151,7 @@ Ordinary frozen inference performs neither training deletion nor repair.
 ## One fixed additional-30% VALIDATION view
 
 View ID: `validation-dropout-030`. Request rate: 0.30.
-Proposed dedicated stream: `0x636c763164726f70ULL` (`clv1drop`), decimal
+Fixed dedicated stream: `0x636c763164726f70ULL` (`clv1drop`), decimal
 7164231061750312816. Namespace: `context-lighter-validation-v1`.
 The view seed is `stream_seed(master,stream)`; this namespace/stream is distinct
 from all earlier VALIDATION and TEST streams. Freeze it before view generation.
@@ -194,6 +201,13 @@ Keep the original assets untouched. Refit raw576 and standalone raw-PCA32
 transparently on the same original TRAIN cohort and freeze them for both views.
 Equal inputs/recipes must retain identical transforms and
 ordinary predictions across the disclosed repetitions.
+The new native refit parity matrix contains 45 head pairs (15 positive inputs
+times three repetitions). This count covers native parity records only;
+the separately disclosed raw/PCA head fits also remain in the full archive
+readout matrix. Record complete input and output manifests and finish only after
+all 10 candidate development points, 15 positive inputs, 45 native parity records
+and 60 version/view/repetition comparison records are complete. Each comparison
+record contains both heads, giving 120 paired head effects.
 
 Ridge penalty 1 is primary. The neural secondary is tanh with 16 hidden units,
 Adam learning rate 0.01 and 100 updates. Keep all three base seeds

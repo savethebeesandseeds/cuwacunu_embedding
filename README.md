@@ -38,6 +38,12 @@ did not improve the declared linear primaries. The audited
 improves intact and moderate-missingness timing accuracy by changing the training
 view while keeping RPB-v4's inference model. Reconstruction error worsens, so
 RPB-v4 stays active pending a focused diagnosis of that tradeoff.
+The completed [RPB-v7 lighter-deletion diagnostic](code/encoders/raw_patch_bottleneck_mae/CONTEXT_LIGHTER_VALIDATION_DIAGNOSTIC.md)
+improves five-master known-VALIDATION linear means over v6 at the same 512
+updates, with equal coverage, but both reconstruction guards against v4 fail.
+Neural means decline and one master loses deletion accuracy. It is not promoted;
+these new results access no TEST/stress. Independent archive audit v3 passed
+67,097,380 checks.
 Older designs remain available as archived references. See the
 [version registry](doc/EMBEDDING_VERSIONS.md),
 [results reporting standard](doc/RESULTS_REPORTING_STANDARD.md), and

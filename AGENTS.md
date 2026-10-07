@@ -48,24 +48,30 @@ coordinate deletion, at equal 100% coverage. Mean TRAIN and VALIDATION
 reconstruction guards still fail. Independent archive audit v3 passed
 103,787,020 checks; failed v1/v2 reader attempts and their corrections are
 preserved. RPB-v4 remains active.
-The proposed next recipe is RPB-v7 — Global bottleneck with lighter context
-deletion: the same inference architecture with a fixed 0.15 training request
-rate at 512 updates. It is not implemented or measured. Assess only TRAIN and
-known VALIDATION under a separately frozen plan; never reuse this replication's
-TEST/stress for rate tuning. Preserve the v6 0.30 policy, exact replay and
-ordinary tagged-resume rejection. Save the measured milestone and its passed
-audit before production changes. The prospective
-[lighter-policy card](code/evaluation/cards/context_lighter_validation_v1.md)
-names the planned separate policy `rpb-training-context-deletion-015-v1`;
-it remains unimplemented and unmeasured.
+RPB-v7 — Global bottleneck with lighter context deletion — is implemented and
+measured on five known TRAIN/VALIDATION masters at 512 updates under the frozen
+[lighter-policy card](code/evaluation/cards/context_lighter_validation_v1.md).
+Its separate policy is `rpb-training-context-deletion-015-v1`; inference is
+unchanged. The [diagnostic record](code/encoders/raw_patch_bottleneck_mae/CONTEXT_LIGHTER_VALIDATION_DIAGNOSTIC.md)
+reports linear means of 97.96875% intact and 95.15625% with additional 30%
+VALIDATION deletion, at 100% coverage. Both exceed paired v6 means, but neural
+means fall, master 8808 loses deletion accuracy and both mean reconstruction
+guards against v4 fail. Every master's v7 reconstruction exceeds its v4
+reference. No TEST/stress, selection or promotion occurred. Independent archive
+audit v3 passed 67,097,380 checks; save the measured milestone and its passed audit before
+further production changes. Preserve the exact v6 default/replay, explicit
+recipe binding, ordinary tagged-resume rejection and all historical artifacts.
+The next bounded question is a fixed ordinary/deleted training-view mixture,
+documented separately before implementation; do not search rates or budgets.
 Older versions remain available for archived evidence, explicit comparisons,
 and compatibility tests. Do not routinely retrain all older architectures.
 Model tags identify designs; exact configurations, source revisions, datasets,
 scalers, seeds, update counts, and checkpoint hashes identify trained instances.
 
 Preserve historical cards, checkpoints, reports, and their original protocol
-semantics. Existing drivers that select using compressed features require a
-separate native-only protocol before new results can follow this standard.
+semantics. Existing drivers that select using compressed features retain their
+original rules. The separately implemented native-only protocol governs new
+results under this standard.
 The [next advance plan](code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md)
 records that implementation boundary. Active research status does not change
 legacy loader defaults or assert consumer acceptance.

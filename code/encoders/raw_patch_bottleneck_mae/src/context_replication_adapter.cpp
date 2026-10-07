@@ -93,7 +93,8 @@ bool same_scaler(const FrozenScaler &a, const FrozenScaler &b) {
       torch::equal(a.channel_ids, b.channel_ids) && torch::equal(a.floor_applied, b.floor_applied);
 }
 std::map<std::string, std::string> audit_point(const std::string &path, const Checkpoint &checkpoint,
-                                            const ev::ProviderFitInput &fit, bool context) {
+                                            const ev::ProviderFitInput &fit, bool context,
+                                            ContextDeletionRecipe expected_recipe) {
   torch::serialize::InputArchive archive; archive.load_from(path + ".audit.pt", torch::kCPU);
   require(text(archive, "artifact_kind") == "rpb_learning_curve_training_audit_v1", "unknown fresh producer audit kind");
   std::map<std::string, std::string> fields;
@@ -135,8 +136,9 @@ std::map<std::string, std::string> audit_point(const std::string &path, const Ch
         "fresh positive reference lacks finite-gradient/changed-weight evidence");
   }
   if (context) {
-    require(text(archive, "model_tag") == "RPB-v6" && text(archive, "training_policy_id") == context_deletion::policy_id &&
-        text(archive, "context_deletion_ratio") == "0.30" &&
+    const auto &selected = context_deletion::descriptor(expected_recipe);
+    require(text(archive, "model_tag") == selected.model_tag && text(archive, "training_policy_id") == selected.policy_id &&
+        text(archive, "context_deletion_ratio") == selected.ratio_text &&
         text(archive, "context_deletion_stream") == "0x6374782d64726f70" &&
         text(archive, "context_deletion_rng_policy") == context_deletion::rng_policy &&
         text(archive, "context_deletion_repair_policy") == context_deletion::repair_policy &&
@@ -145,7 +147,7 @@ std::map<std::string, std::string> audit_point(const std::string &path, const Ch
             "cumulative-requested/actual/restored-coordinate-counts;eligible-forward-batches-only" &&
         text(archive, "context_deletion_resume_policy") ==
             "fresh-continuous-only;ordinary-workflow-resume-rejected;no-augmented-resume-API" &&
-        floating(archive, "context_deletion_ratio_value") == context_deletion::ratio &&
+        floating(archive, "context_deletion_ratio_value") == selected.ratio &&
         integer(archive, "context_deletion_stream_value") == static_cast<int64_t>(context_deletion::stream),
         "fresh candidate companion differs from the fixed context policy");
     for (const std::string name : {"context_requested_deleted_coordinates", "context_actual_deleted_coordinates",
@@ -163,14 +165,22 @@ std::map<std::string, std::string> audit_point(const std::string &path, const Ch
 
 std::map<std::string, std::string> audit_context_replication_initialization(const std::string &candidate_path,
     const ev::RetainedPoolingCohort &reference, const ev::ProviderFitInput &fit, int64_t expected_updates) {
+  return audit_context_replication_initialization(candidate_path, reference, fit,
+      ContextDeletionRecipe::coordinate30_v1, expected_updates);
+}
+
+std::map<std::string, std::string> audit_context_replication_initialization(const std::string &candidate_path,
+    const ev::RetainedPoolingCohort &reference, const ev::ProviderFitInput &fit,
+    ContextDeletionRecipe expected_recipe, int64_t expected_updates) {
   const RuntimeIsolation isolation;
+  const auto &selected = context_deletion::descriptor(expected_recipe);
   require(expected_updates > 0 && reference.master_seed == fit.seed, "fresh reference master or declared positive budget differs");
   const auto candidate = load_checkpoint(candidate_path, torch::kCPU);
   const auto initial = load_checkpoint(reference.reference_initial_checkpoint, torch::kCPU);
   const auto positive = load_checkpoint(reference.reference_checkpoint, torch::kCPU);
   for (const auto *checkpoint : {&candidate, &initial, &positive}) validate_training(*checkpoint, fit);
-  require(candidate.training_policy_id == context_deletion::policy_id && initial.training_policy_id.empty() &&
-      positive.training_policy_id.empty(), "fresh v6/v4 checkpoint policy tags differ");
+  require(candidate.training_policy_id == selected.policy_id && initial.training_policy_id.empty() &&
+      positive.training_policy_id.empty(), "fresh candidate/v4 checkpoint policy tags differ");
   require(candidate.attempted_steps == 0 && candidate.completed_steps == 0 &&
       initial.attempted_steps == 0 && initial.completed_steps == 0 &&
       positive.attempted_steps == expected_updates && positive.completed_steps == expected_updates,
@@ -200,15 +210,15 @@ std::map<std::string, std::string> audit_context_replication_initialization(cons
         buffer.value().scalar_type() == z[buffer.key()].scalar_type() &&
         torch::equal(buffer.value(), y[buffer.key()]) && torch::equal(buffer.value(), z[buffer.key()]),
         "fresh initialized or fixed reference buffer differs: " + buffer.key());
-  const auto candidate_fields = audit_point(candidate_path, candidate, fit, true);
-  const auto initial_fields = audit_point(reference.reference_initial_checkpoint, initial, fit, false);
-  const auto positive_fields = audit_point(reference.reference_checkpoint, positive, fit, false);
+  const auto candidate_fields = audit_point(candidate_path, candidate, fit, true, expected_recipe);
+  const auto initial_fields = audit_point(reference.reference_initial_checkpoint, initial, fit, false, expected_recipe);
+  const auto positive_fields = audit_point(reference.reference_checkpoint, positive, fit, false, expected_recipe);
   require(candidate_fields == initial_fields && initial_fields == positive_fields,
       "fresh paired source order or original initialization/row/mask/Torch streams differ");
   return {{"common_parameters_exact", "true"}, {"all_parameters_exact_including_global_pool", "true"},
       {"common_parameter_count", std::to_string(count)}, {"common_tensors", std::to_string(a.size())},
       {"all_buffers_exact", "true"}, {"scaler_exact", "true"}, {"training_dataset_exact", "true"},
-      {"counter_streams_exact", "true"}, {"training_policy_id", context_deletion::policy_id},
+      {"counter_streams_exact", "true"}, {"training_policy_id", selected.policy_id},
       {"training_policy_companion_exact", "true"}, {"context_deletion_stream", std::to_string(context_deletion::stream)},
       {"training_dataset_id", candidate.dataset_id}, {"schema_id", candidate.schema_id},
       {"preprocessing_id", candidate.scaler.identity()}, {"initialization_seed", candidate_fields.at("initialization_seed")},

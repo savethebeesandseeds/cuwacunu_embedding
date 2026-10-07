@@ -6,9 +6,13 @@
 
 namespace embedding::encoders::raw_patch_bottleneck_mae {
 
-// One bounded training recipe. The model architecture, configuration and
-// inference remain mode2/mixer1/native32; disabled means the historical loop.
-struct ContextDeletionOptions { bool enabled{false}; };
+// Two explicitly identified training recipes on unchanged mode2/mixer1/native32
+// inference. The old aggregate {true} retains the historical .30 recipe.
+enum class ContextDeletionRecipe { coordinate30_v1, coordinate15_v1 };
+struct ContextDeletionOptions {
+  bool enabled{false};
+  ContextDeletionRecipe recipe{ContextDeletionRecipe::coordinate30_v1};
+};
 
 namespace context_deletion {
 inline constexpr double ratio = .30;
@@ -21,6 +25,28 @@ inline constexpr const char *repair_policy =
 inline constexpr const char *visibility_policy =
     "V=(O&~A)&~E;E-subset-original-visible;repair-only-E;original-O-A-Q-eligibility-Huber-unchanged-v1";
 
+struct RecipeDescriptor {
+  double ratio;
+  const char *ratio_text, *policy_id, *model_tag;
+};
+
+inline const RecipeDescriptor &descriptor(ContextDeletionRecipe recipe) {
+  // The public constants above remain the immutable v6 .30 contract.
+  static constexpr RecipeDescriptor coordinate30{ratio, "0.30", policy_id, "RPB-v6"};
+  static constexpr RecipeDescriptor coordinate15{.15, "0.15", "rpb-training-context-deletion-015-v1", "RPB-v7"};
+  switch (recipe) {
+    case ContextDeletionRecipe::coordinate30_v1: return coordinate30;
+    case ContextDeletionRecipe::coordinate15_v1: return coordinate15;
+  }
+  TORCH_CHECK(false, "[rpb context deletion] unknown bounded context recipe");
+}
+
+inline void validate_options(const ContextDeletionOptions &options) {
+  (void)descriptor(options.recipe);
+  TORCH_CHECK(options.enabled || options.recipe == ContextDeletionRecipe::coordinate30_v1,
+              "[rpb context deletion] disabled context must retain the default .30 recipe selector");
+}
+
 struct Plan {
   torch::Tensor visible, deleted, requested_deleted; // Bool BCHF on original mask device.
   int64_t requested_count{0}, actual_count{0}, restored_count{0};
@@ -30,7 +56,9 @@ struct Plan {
 // fixed counter ordinal, even when unobserved or a query, so support does not
 // shift random draws. Physical channel storage order does not change E.
 inline Plan make_plan(const MaskPlan &original, const torch::Tensor &ids,
-                      const Config &config, int64_t seed, int64_t attempt) {
+                      const Config &config, int64_t seed, int64_t attempt,
+                      ContextDeletionRecipe recipe) {
+  const auto &selected = descriptor(recipe);
   TORCH_CHECK(seed >= 0 && attempt >= 0, "[rpb context deletion] nonnegative absolute counters required");
   const auto observed = original.visible.logical_or(original.target);
   const auto checked = mask_from_hidden(observed, original.hidden, config);
@@ -59,7 +87,7 @@ inline Plan make_plan(const MaskPlan &original, const torch::Tensor &ids,
         for (int64_t j = 0; j < PF; ++j) {
           const auto ordinal = static_cast<uint64_t>((b * C + rank) * H * F + k * PF + j);
           const double uniform = static_cast<double>(training_detail::mixed(base + ordinal) >> 11) * 0x1.0p-53;
-          requests[b][c][k][j] = support[b][c][k][j] && uniform < ratio;
+          requests[b][c][k][j] = support[b][c][k][j] && uniform < selected.ratio;
           requested_count += requests[b][c][k][j];
         }
       }
@@ -96,6 +124,12 @@ inline Plan make_plan(const MaskPlan &original, const torch::Tensor &ids,
   return {original.visible.logical_and(final_deleted.logical_not()), final_deleted,
       requested.reshape_as(original.visible).to(device), requested_count,
       requested_count - restored_count, restored_count};
+}
+
+// Public legacy signature stays exactly bound to the original .30 recipe.
+inline Plan make_plan(const MaskPlan &original, const torch::Tensor &ids,
+                      const Config &config, int64_t seed, int64_t attempt) {
+  return make_plan(original, ids, config, seed, attempt, ContextDeletionRecipe::coordinate30_v1);
 }
 
 // Targets never enter the encoder: only V with zeroed hidden storage is passed

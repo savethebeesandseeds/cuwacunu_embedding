@@ -640,3 +640,45 @@ test-rpb-context-replication: $(RPB_TEST_DIR)/context_replication_adapter_test
 
 evaluate-context-replication: $(CONTEXT_REPLICATION_BIN)
 	CONTEXT_REPLICATION_BIN="$(abspath $(CONTEXT_REPLICATION_BIN))" CONTEXT_REPLICATION_SOURCE_INPUTS="$(CONTEXT_REPLICATION_PROVENANCE_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-context-replication.sh
+
+# One lighter training recipe on known development sources; no TEST API.
+CONTEXT_LIGHTER_BIN := $(BUILD_DIR)/embedding_context_lighter_validation
+RPB_CONTEXT_LIGHTER_PAIR_GATE_OBJECT := $(RPB_OBJECT_DIR)/context_lighter_pair_gate.o
+RPB_CONTEXT_LIGHTER_RETAINED_OBJECT := $(RPB_OBJECT_DIR)/context_lighter_retained.o
+RPB_CONTEXT_LIGHTER_SERVING_GATE_OBJECT := $(RPB_OBJECT_DIR)/context_lighter_serving_gate.o
+CONTEXT_LIGHTER_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/context_replication_adapter.cpp $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(EVALUATION_ROOT)/src/context_lighter_validation_main.cpp $(EVALUATION_ROOT)/cards/context_lighter_validation_v1.md $(CODE_ROOT)/scripts/check-context-lighter-validation.sh $(CODE_ROOT)/scripts/evaluate-context-lighter-validation.sh)
+CONTEXT_LIGHTER_SOURCE_ID := $(shell sha256sum $(CONTEXT_LIGHTER_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
+CONTEXT_LIGHTER_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(CONTEXT_LIGHTER_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
+.PHONY: context-lighter-validation print-context-lighter-sources test-rpb-context-lighter evaluate-context-lighter-validation
+context-lighter-validation: $(CONTEXT_LIGHTER_BIN)
+
+print-context-lighter-sources:
+	@printf '%s\n' $(CONTEXT_LIGHTER_PROVENANCE_INPUTS)
+
+$(EVALUATION_OBJECT_DIR)/context_lighter_validation_main.o: $(EVALUATION_ROOT)/src/context_lighter_validation_main.cpp $(CONTEXT_LIGHTER_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(CONTEXT_LIGHTER_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_CONTEXT_LIGHTER_PAIR_GATE_OBJECT): $(RPB_ROOT)/src/context_replication_adapter.cpp $(CONTEXT_LIGHTER_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(CONTEXT_LIGHTER_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_CONTEXT_LIGHTER_RETAINED_OBJECT): $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(CONTEXT_LIGHTER_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(CONTEXT_LIGHTER_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_CONTEXT_LIGHTER_SERVING_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(CONTEXT_LIGHTER_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(CONTEXT_LIGHTER_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(CONTEXT_LIGHTER_BIN): $(EVALUATION_OBJECT_DIR)/context_lighter_validation_main.o $(RPB_CONTEXT_LIGHTER_PAIR_GATE_OBJECT) $(RPB_CONTEXT_LIGHTER_RETAINED_OBJECT) $(RPB_CONTEXT_LIGHTER_SERVING_GATE_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(RPB_TEST_DIR)/context_lighter_test: $(RPB_TEST_DIR)/context_lighter_test.o $(RPB_CONTEXT_LIGHTER_PAIR_GATE_OBJECT) $(RPB_CONTEXT_REPLAY_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(HARNESS_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-context-lighter: $(RPB_TEST_DIR)/context_lighter_test
+	$(RPB_TEST_DIR)/context_lighter_test
+
+evaluate-context-lighter-validation: $(CONTEXT_LIGHTER_BIN)
+	CONTEXT_LIGHTER_BIN="$(abspath $(CONTEXT_LIGHTER_BIN))" CONTEXT_LIGHTER_SOURCE_INPUTS="$(CONTEXT_LIGHTER_PROVENANCE_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-context-lighter-validation.sh

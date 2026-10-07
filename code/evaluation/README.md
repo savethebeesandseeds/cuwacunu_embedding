@@ -43,15 +43,36 @@ guards fail. RPB-v4 remains active. Independent archive audit v3 passed
 103,787,020 checks, with the failed v1/v2 reader attempts and correction rationale
 preserved.
 
-Proposed RPB-v7 — Global bottleneck with lighter context deletion — is a fixed
-0.15 training-policy option at 512 updates, not an implemented evaluator mode or
-a measured result. The prospective
-[lighter-policy card](cards/context_lighter_validation_v1.md) names the planned
-`rpb-training-context-deletion-015-v1` identity. The next diagnosis is TRAIN/known
-VALIDATION only; it must
-not reuse the replication TEST/stress for tuning. Encoder policy/optimizer logic
-stays in its adapter and shared evaluation retains the unchanged head recipes,
-support and scoring contracts. Historical cards and sources remain unchanged.
+The completed [RPB-v7 validation diagnostic](../encoders/raw_patch_bottleneck_mae/CONTEXT_LIGHTER_VALIDATION_DIAGNOSTIC.md)
+uses the frozen [lighter-policy card](cards/context_lighter_validation_v1.md)
+and separate `rpb-training-context-deletion-015-v1` encoder policy at 512 updates.
+Five new trajectories are compared with ten retained v4/v6 trajectories on known
+TRAIN/VALIDATION only. Native linear means improve over v6 on both views, but
+both reconstruction guards against v4 fail; neural means decline and a master
+loses deletion accuracy. V4 remains active. Independent archive audit v3 passed
+67,097,380 checks.
+
+The integration CLI pins 313 explicit parent TRAIN/VALIDATION roles and passes
+ordinary native32/raw/PCA-only exports to unchanged shared archive-readout fits.
+There are 45 newly fitted pipelines per method, each containing both heads;
+45 native fit/prediction parity checks pass against the named saved assets.
+Each TRAIN-fitted pipeline scores intact VALIDATION and one fixed new deletion
+view without refitting. Encoder policy, CUDA optimizer and checkpoint semantics
+stay in the encoder adapter; shared evaluation owns maps, heads, support,
+predictions and scores. No TEST/stress, checkpoint selection or promotion occurs.
+Historical cards and sources remain unchanged.
+
+The frozen v7 runner requires the named local parent capsule and never
+regenerates its historical TEST/stress. From the managed container at `/embedding`:
+
+```bash
+bash code/scripts/check-context-lighter-validation.sh
+bash code/scripts/task.sh rpb-paired-pooling evaluate-context-lighter-validation
+```
+
+The admission script owns its named task calls; run it directly rather than
+nesting it inside `task.sh`. The evaluation target freezes compiled source and
+admission evidence and allocates a unique capsule. It accepts no recipe overrides.
 
 ## Ownership
 
