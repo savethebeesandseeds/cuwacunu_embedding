@@ -355,12 +355,26 @@ V8 is not promoted, and RPB-v4 remains active. No TEST/stress, checkpoint select
 head tuning or post-encoder PCA occurred. Five new v8 trajectories use ten
 retained v4/v7 references; all five masters and both heads remain in the report.
 
+## Completed TRAIN objective diagnosis
+
+The [TRAIN-only diagnostic](TRAINING_OBJECTIVE_DIAGNOSTIC.md) examines fifteen
+retained v4/v7/v8 instances without encoder updates or head refits. The proposed
+weight1 all-pair residual-difference loss improves the local fixed-Ridge gradient
+direction on two v7 masters and worsens it on three. It fails the prospective
+five-master rule and will not be trained or tuned. Actual CUDA admission and
+independent saved-arithmetic audit v3 passed; the failed v2 reader and its
+cross-backend correction are preserved. The result does not establish a
+generalization gain or prove irreversible timing-information loss.
+
 ## Next focused action
 
-Stop this local schedule/rate/budget tuning sequence. Preserve v4 as the active
-reference and the v6/v7/v8 measured tradeoffs. The next encoder change needs a
-separate prospective plan addressing how the reconstruction objective shapes
-the native timing representation, using permitted TRAIN diagnostics to choose
-one hypothesis. Keep heads fixed and freeze the quality/coverage/reconstruction
-decision rule before a new run. Confirmation needs unopened held-out sources;
-historical TEST/stress must not become tuning data.
+Implement the separate [RPB-v9 native view agreement plan](NATIVE_VIEW_AGREEMENT_PLAN.md).
+Keep ordinary reconstruction as the anchor and align native32 embeddings of
+the same row under ordinary and extra-missingness views, with the fixed
+loss-only scale and variance safeguard. Freeze a separate quality card and
+exact legal TRAIN/known-VALIDATION role list before CUDA admission or data access.
+Compare five fresh fixed512 candidates with retained v4/v7 checkpoints and
+unchanged shared heads; keep the joint quality/coverage/reconstruction guard.
+Preserve v4 as active and all measured tradeoffs. Stop the mechanism if that
+guard fails, without rate, weight or budget rescue. Historical TEST/stress
+remain closed; any confirmation needs unopened held-out sources.

@@ -724,3 +724,39 @@ test-rpb-context-balanced: $(RPB_TEST_DIR)/context_balanced_test
 
 evaluate-context-balanced-validation: $(CONTEXT_BALANCED_BIN)
 	CONTEXT_BALANCED_BIN="$(abspath $(CONTEXT_BALANCED_BIN))" CONTEXT_BALANCED_SOURCE_INPUTS="$(CONTEXT_BALANCED_PROVENANCE_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-context-balanced-validation.sh
+
+# TRAIN-only frozen-weight diagnosis; no mixed-split evaluator or training driver.
+TRAINING_OBJECTIVE_BIN := $(BUILD_DIR)/embedding_training_objective_diagnostic
+RPB_TRAINING_OBJECTIVE_OBJECT := $(RPB_OBJECT_DIR)/training_objective_diagnostic.o
+TRAINING_OBJECTIVE_PROVENANCE_INPUTS := $(sort $(RPB_CORE_HEADERS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h $(RPB_ROOT)/src/workflow.cpp $(RPB_ROOT)/src/training_objective_diagnostic.cpp $(RPB_ROOT)/tests/training_objective_diagnostic_test.cpp $(RPB_ROOT)/tests/rpb_test_support.h $(wildcard $(CODE_ROOT)/shared/include/embedding/shared/*.h) $(CODE_ROOT)/shared/src/data.cpp $(EVALUATION_ROOT)/src/training_objective_diagnostic_main.cpp $(EVALUATION_ROOT)/cards/training_objective_diagnostic_v1.md $(CODE_ROOT)/scripts/prepare-training-objective-inputs.py $(CODE_ROOT)/scripts/check-training-objective-diagnostic.sh $(CODE_ROOT)/scripts/evaluate-training-objective-diagnostic.sh Makefile dependencies.lock)
+TRAINING_OBJECTIVE_SOURCE_ID := $(shell sha256sum $(TRAINING_OBJECTIVE_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
+TRAINING_OBJECTIVE_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(TRAINING_OBJECTIVE_SOURCE_ID)\"
+.PHONY: training-objective-diagnostic print-training-objective-sources test-rpb-training-objective-diagnostic evaluate-training-objective-diagnostic
+training-objective-diagnostic: $(TRAINING_OBJECTIVE_BIN)
+
+print-training-objective-sources:
+	@printf '%s\n' $(TRAINING_OBJECTIVE_PROVENANCE_INPUTS)
+
+$(EVALUATION_OBJECT_DIR)/training_objective_diagnostic_main.o: $(EVALUATION_ROOT)/src/training_objective_diagnostic_main.cpp $(TRAINING_OBJECTIVE_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(TRAINING_OBJECTIVE_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TRAINING_OBJECTIVE_OBJECT): $(RPB_ROOT)/src/training_objective_diagnostic.cpp $(TRAINING_OBJECTIVE_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(TRAINING_OBJECTIVE_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(TRAINING_OBJECTIVE_BIN): $(EVALUATION_OBJECT_DIR)/training_objective_diagnostic_main.o $(RPB_TRAINING_OBJECTIVE_OBJECT) $(RPB_WORKFLOW_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(RPB_TEST_DIR)/training_objective_diagnostic_test.o: $(RPB_ROOT)/tests/training_objective_diagnostic_test.cpp $(TRAINING_OBJECTIVE_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(TRAINING_OBJECTIVE_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/training_objective_diagnostic_test: $(RPB_TEST_DIR)/training_objective_diagnostic_test.o $(RPB_TRAINING_OBJECTIVE_OBJECT) $(RPB_WORKFLOW_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-training-objective-diagnostic: $(RPB_TEST_DIR)/training_objective_diagnostic_test
+	$(RPB_TEST_DIR)/training_objective_diagnostic_test
+
+evaluate-training-objective-diagnostic: $(TRAINING_OBJECTIVE_BIN)
+	TRAINING_OBJECTIVE_BIN="$(abspath $(TRAINING_OBJECTIVE_BIN))" TRAINING_OBJECTIVE_SOURCE_INPUTS="$(TRAINING_OBJECTIVE_PROVENANCE_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-training-objective-diagnostic.sh

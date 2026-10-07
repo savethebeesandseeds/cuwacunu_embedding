@@ -82,5 +82,12 @@ the repository root. Paper build commands above run from this `doc/` directory.
 
 The [balanced-view RPB-v8 diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_BALANCED_VALIDATION_DIAGNOSTIC.md)
 and [durable result summary](results/context_balanced_validation_v1.json) record
-the latest completed and independently audited TRAIN/known-VALIDATION comparison.
+the completed independently audited TRAIN/known-VALIDATION comparison.
 RPB-v4 remains active; no TEST/stress or promotion occurred.
+
+The subsequent [TRAIN objective diagnosis](../code/encoders/raw_patch_bottleneck_mae/TRAINING_OBJECTIVE_DIAGNOSTIC.md)
+and [durable diagnostic summary](results/training_objective_diagnostic_v1.json)
+reject the proposed all-pair residual-difference auxiliary under its prospective
+rule, with zero encoder updates and zero head refits. The independent saved-arithmetic
+audit passed. The [RPB-v9 plan](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_PLAN.md)
+defines the next native view agreement mechanism; it has no measured quality claim.

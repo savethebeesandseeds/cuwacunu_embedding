@@ -90,6 +90,21 @@ V8 is not promoted, and RPB-v4 remains active. No TEST/stress, checkpoint select
 head tuning or post-encoder PCA occurred. Five new v8 trajectories use ten
 retained v4/v7 references; all five masters and both heads remain in the report.
 
+The completed [TRAIN objective diagnostic](TRAINING_OBJECTIVE_DIAGNOSTIC.md)
+uses fifteen retained v4/v7/v8 instances, with zero encoder updates and zero
+head refits. An all-pair residual-difference loss helps the local fixed-Ridge
+gradient direction on two v7 masters and worsens it on three, failing its fixed
+rule. CUDA admission and independent saved-arithmetic audit passed; do not
+train or tune that auxiliary. These are TRAIN mechanism results, with no new
+quality score. The failed reader and its CPU/GPU correction remain recorded.
+
+**RPB-v9 — Global bottleneck with native view agreement** is the next prospective
+[mechanism](NATIVE_VIEW_AGREEMENT_PLAN.md). It keeps ordinary reconstruction
+and adds same-row agreement directly on the native32 output under an extra
+0.15 missing-data view, with a small variance safeguard. Inference and fixed
+shared heads stay the same. Its separate quality card and input boundary must
+be frozen before admission or data access; no quality gain is claimed yet.
+
 The [embedding evaluation policy](../../../doc/EMBEDDING_EVALUATION_POLICY.md)
 governs shared protocols, reporting and acceptance. The
 [architecture and evaluation specification](RPB_MAE_architecture_and_evaluation_spec.md)

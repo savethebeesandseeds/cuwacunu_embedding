@@ -44,6 +44,16 @@ updates, with equal coverage, but both reconstruction guards against v4 fail.
 Neural means decline and one master loses deletion accuracy. It is not promoted;
 these new results access no TEST/stress. Independent archive audit v3 passed
 67,097,380 checks.
+The completed [RPB-v8 balanced-view comparison](code/encoders/raw_patch_bottleneck_mae/CONTEXT_BALANCED_VALIDATION_DIAGNOSTIC.md)
+also fails the fixed quality/reconstruction guard. The new
+[TRAIN objective diagnosis](code/encoders/raw_patch_bottleneck_mae/TRAINING_OBJECTIVE_DIAGNOSTIC.md)
+rejects an extra all-pair reconstruction loss: it helps the local fixed-head
+gradient direction on two runs and worsens it on three. CUDA admission and
+independent saved-arithmetic audit passed; no encoder update or head refit
+occurred. Its next [bounded experiment](code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_PLAN.md)
+is RPB-v9: ordinary reconstruction plus native embedding agreement between
+two missing-data views of the same row. This is a prospective mechanism, with
+no measured quality claim yet.
 Older designs remain available as archived references. See the
 [version registry](doc/EMBEDDING_VERSIONS.md),
 [results reporting standard](doc/RESULTS_REPORTING_STANDARD.md), and

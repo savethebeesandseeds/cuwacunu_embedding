@@ -34,6 +34,7 @@ preserved alongside the successful result.
 | RPB-v6 | Global bottleneck with context deletion | Accuracy gains, reconstruction tradeoff; not promoted | [Context deletion card](../code/evaluation/cards/context_deletion_v1.md) |
 | RPB-v7 | Global bottleneck with lighter context deletion | Measured validation gains, unresolved reconstruction tradeoff; not promoted | [Lighter-policy diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_LIGHTER_VALIDATION_DIAGNOSTIC.md) |
 | RPB-v8 | Global bottleneck with balanced context views | Measured and audited; joint guard failed; not promoted | [Balanced-view diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_BALANCED_VALIDATION_DIAGNOSTIC.md) |
+| RPB-v9 | Global bottleneck with native view agreement | Planned; not admitted or measured | [Native view agreement plan](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_PLAN.md) |
 
 The [machine-readable registry](embedding_versions.json) records the same mapping.
 Use only the tag in result table cells; place its short description in adjacent
@@ -55,6 +56,7 @@ differ:
 | RPB-v6 | 1 | 2 | Same exact learned global vector; context deletion during training | N/A |
 | RPB-v7 | 1 | 2 | Same exact learned global vector; lighter training context deletion | N/A |
 | RPB-v8 | 1 | 2 | Same learned global vector; alternating ordinary/deleted training views | N/A |
+| RPB-v9 | 1 | 2 | Same learned global vector; ordinary reconstruction plus native view agreement | N/A |
 
 With three channels, RPB-v1/v2 supply 96 signal numbers to reconstruction; their
 32-number global mean is a diagnostic export. RPB-v3-mean/v4 reconstruct solely
@@ -131,5 +133,17 @@ retained v4/v7 references; all five masters and both heads remain in the report.
 
 The balanced-view implementation plan remains the prospective design record.
 This diagnostic completes its fixed question; stop local schedule/rate/budget
-tuning. Any next encoder mechanism or quality confirmation requires a separate
-prospective plan and unopened held-out sources where applicable.
+tuning. The subsequent [TRAIN objective diagnosis](../code/encoders/raw_patch_bottleneck_mae/TRAINING_OBJECTIVE_DIAGNOSTIC.md)
+rejects a weight1 all-pair residual-difference auxiliary: two v7 masters improve
+the local fixed-head gradient direction and three worsen it. No encoder update
+or head refit occurred; CUDA admission and independent saved-arithmetic audit
+passed. This is not a new quality score or model version.
+
+**RPB-v9 — Global bottleneck with native view agreement** is registered as a
+prospective mechanism in its [separate plan](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_PLAN.md).
+It retains the v4 inference architecture and ordinary reconstruction, adding
+same-row native32 agreement under extra 0.15 missingness and a variance safeguard.
+Its loss scale is TRAIN-fitted once and used only in the loss. No implementation
+admission or measurement is claimed yet. Freeze a separate quality card and
+legal input roles before either; future confirmation needs unopened held-out
+sources. RPB-v4 remains active and RPB-v8 remains the last measured candidate.

@@ -61,8 +61,21 @@ reference. No TEST/stress, selection or promotion occurred. Independent archive
 audit v3 passed 67,097,380 checks; save the measured milestone and its passed audit before
 further production changes. Preserve the exact v6 default/replay, explicit
 recipe binding, ordinary tagged-resume rejection and all historical artifacts.
-The next bounded question is a fixed ordinary/deleted training-view mixture,
-documented separately before implementation; do not search rates or budgets.
+The completed [RPB-v8 balanced-view diagnostic](code/encoders/raw_patch_bottleneck_mae/CONTEXT_BALANCED_VALIDATION_DIAGNOSTIC.md)
+fails the fixed joint guard; its independent audit passed 67,099,959 checks.
+The subsequent [TRAIN objective diagnostic](code/encoders/raw_patch_bottleneck_mae/TRAINING_OBJECTIVE_DIAGNOSTIC.md)
+uses fifteen saved instances with zero encoder updates and zero head refits.
+The proposed all-pair residual-difference loss improves the fixed-head gradient
+direction on two v7 masters and worsens it on three, failing its prospective rule.
+Do not train that auxiliary or tune its weights or pair subsets. Independent
+saved-arithmetic audit v3 passed 16,119,003 checks; the failed v2 reader and
+cross-backend correction are preserved. This is local TRAIN evidence, not a
+new accuracy result. Preserve the diagnostic sources, card and captured evidence.
+The next bounded mechanism is [RPB-v9 native view agreement](code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_PLAN.md):
+ordinary reconstruction plus same-row agreement on the exact native32 export
+under an extra 0.15 missing-data view. Keep its fixed coefficients and heads;
+freeze its separate quality card and legal input roles before admission/data
+access. No TEST/stress, rate/budget/weight search or automatic promotion.
 Older versions remain available for archived evidence, explicit comparisons,
 and compatibility tests. Do not routinely retrain all older architectures.
 Model tags identify designs; exact configurations, source revisions, datasets,
