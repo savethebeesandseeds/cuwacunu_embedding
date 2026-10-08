@@ -37,6 +37,9 @@ preserved alongside the successful result.
 | RPB-v9 | Global bottleneck with native view agreement | Measured and audited; severe fixed512 failure; not promoted | [Native view agreement diagnostic](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md) |
 
 The [machine-readable registry](embedding_versions.json) records the same mapping.
+`RPB-v4.alt-01` names the fresh v4 controls paired with `RPB-v7.alt-01` on
+masters9109/10210/11311/12412/13513. It is an instance-group alias for the
+unchanged v4 design, and does not rename or replace a historical checkpoint.
 Use only the tag in result table cells; place its short description in adjacent
 prose. The number identifies a design milestone; it is not a quality score or
 the checkpoint format version.
@@ -200,3 +203,11 @@ are unchanged by calibration; there is no new design tag or automatic promotion.
 V7 remains the working direction and v4 the active reference. The
 [current continuation](CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md)
 prescribes an all-master saved-TRAIN reliability diagnosis before further tuning.
+
+That [saved-TRAIN diagnosis](../code/encoders/raw_patch_bottleneck_mae/SAVED_NATIVE_RELIABILITY_DIAGNOSTIC.md)
+is complete and independently verified: v4/v7 alternative-group linear means
+94.92188%/94.45313%, neural means99.89583%/98.35938%, full coverage. The weak v7
+master is already weaker on TRAIN; mixed geometry/trace differences do not
+identify a common architecture defect. No encoder update, forward, head refit
+or held-out analysis occurs. The next step is one separately planned new-source
+amplitude-transfer check using frozen encoders and original timing scalers.

@@ -904,3 +904,38 @@ test-rpb-frozen-decoder-calibration: $(RPB_TEST_DIR)/frozen_decoder_calibration_
 
 evaluate-fresh-decoder-replication: $(FRESH_DECODER_REPLICATION_BIN)
 	FRESH_DECODER_REPLICATION_BIN="$(abspath $(FRESH_DECODER_REPLICATION_BIN))" FRESH_DECODER_REPLICATION_SOURCE_INPUTS="$(FRESH_DECODER_REPLICATION_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-fresh-decoder-replication.sh
+
+# Generic saved-TRAIN arithmetic; no encoder or fitted-head implementation links.
+SAVED_NATIVE_RELIABILITY_BIN := $(BUILD_DIR)/embedding_saved_feature_reliability
+SAVED_FEATURE_RELIABILITY_OBJECT := $(OBJECT_DIR)/shared/saved_feature_reliability.o
+SAVED_NATIVE_RELIABILITY_INPUTS := $(sort Makefile dependencies.lock $(CODE_ROOT)/shared/include/embedding/shared/types.h $(CODE_ROOT)/shared/include/embedding/shared/data.h $(CODE_ROOT)/shared/src/data.cpp $(CODE_ROOT)/shared/include/embedding/shared/saved_feature_reliability.h $(CODE_ROOT)/shared/src/saved_feature_reliability.cpp $(CODE_ROOT)/shared/tests/saved_feature_reliability_test.cpp $(CODE_ROOT)/shared/tests/shared_test_support.h $(EVALUATION_ROOT)/src/saved_feature_reliability_main.cpp $(EVALUATION_ROOT)/include/frozen_role_guard.h $(EVALUATION_ROOT)/tests/frozen_role_guard_test.cpp $(EVALUATION_ROOT)/cards/saved_native_reliability_v1.md $(RPB_ROOT)/FROZEN_NATIVE_RELIABILITY_PLAN.md $(CODE_ROOT)/scripts/check-saved-native-reliability.sh $(CODE_ROOT)/scripts/evaluate-saved-native-reliability.sh $(CODE_ROOT)/scripts/prepare-saved-native-reliability.py $(CODE_ROOT)/scripts/prepare-fresh-decoder-replication.py $(EVALUATION_ROOT)/src/fresh_decoder_replication_main.cpp $(CODE_ROOT)/shared/src/fixed_feature_readouts.cpp)
+SAVED_NATIVE_RELIABILITY_SOURCE_ID := $(shell sha256sum $(SAVED_NATIVE_RELIABILITY_INPUTS) | sha256sum | cut -d ' ' -f 1)
+SAVED_NATIVE_RELIABILITY_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(SAVED_NATIVE_RELIABILITY_SOURCE_ID)\"
+.PHONY: saved-native-reliability print-saved-native-reliability-sources test-saved-feature-reliability evaluate-saved-native-reliability
+saved-native-reliability: $(SAVED_NATIVE_RELIABILITY_BIN)
+print-saved-native-reliability-sources:
+	@printf '%s\n' $(SAVED_NATIVE_RELIABILITY_INPUTS)
+
+$(EVALUATION_OBJECT_DIR)/saved_feature_reliability_main.o: $(EVALUATION_ROOT)/src/saved_feature_reliability_main.cpp $(SAVED_NATIVE_RELIABILITY_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(SAVED_NATIVE_RELIABILITY_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(SAVED_FEATURE_RELIABILITY_OBJECT): $(CODE_ROOT)/shared/src/saved_feature_reliability.cpp $(CODE_ROOT)/shared/include/embedding/shared/saved_feature_reliability.h $(CODE_ROOT)/shared/include/embedding/shared/data.h
+	mkdir -p "$(@D)"
+	$(CXX) $(COMMON_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(SAVED_NATIVE_RELIABILITY_BIN): $(EVALUATION_OBJECT_DIR)/saved_feature_reliability_main.o $(SAVED_FEATURE_RELIABILITY_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(SHARED_TEST_DIR)/saved_feature_reliability_test.o: $(CODE_ROOT)/shared/tests/saved_feature_reliability_test.cpp $(SAVED_NATIVE_RELIABILITY_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(SAVED_NATIVE_RELIABILITY_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(SHARED_TEST_DIR)/saved_feature_reliability_test: $(SHARED_TEST_DIR)/saved_feature_reliability_test.o $(SAVED_FEATURE_RELIABILITY_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-saved-feature-reliability: $(SHARED_TEST_DIR)/saved_feature_reliability_test
+	$(SHARED_TEST_DIR)/saved_feature_reliability_test
+
+evaluate-saved-native-reliability: $(SAVED_NATIVE_RELIABILITY_BIN)
+	SAVED_NATIVE_RELIABILITY_BIN="$(abspath $(SAVED_NATIVE_RELIABILITY_BIN))" SAVED_NATIVE_RELIABILITY_SOURCE_INPUTS="$(SAVED_NATIVE_RELIABILITY_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-saved-native-reliability.sh

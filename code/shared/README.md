@@ -89,3 +89,12 @@ and supports a separately preregistered fixed budget with nested training-source
 prefixes and an independent validation stream. Protocol tests use dummy providers.
 The [RPB experiment record](../encoders/raw_patch_bottleneck_mae/GLOBAL_BOTTLENECK_ADVANCE.md)
 declares the current integration recipe and limits.
+
+`saved_feature_reliability.h/.cpp` analyzes explicitly supplied saved TRAIN
+features, normalizers, classifier weights/predictions and optimization traces.
+It replays fixed arithmetic, margins and source-paired geometry with no encoder,
+head fitting or PCA dependency. Geometry, dimensions, parameter/update counts
+and comparison identities are caller contracts. The separate protocol CLI
+owns its frozen85-role/card/admission bindings; a different encoder can reuse
+the tensor analysis through its own declared inputs. Run
+`test-saved-feature-reliability` through the managed container task runner.
