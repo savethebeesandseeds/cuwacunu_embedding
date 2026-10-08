@@ -20,6 +20,12 @@ size, device, encoder update budget, classifier recipes, and evaluation protocol
 Paired transformations are two examples from one source; three readout fits on
 one checkpoint are not three independently trained encoders.
 
+Also name the exact trained-instance bundle beside the table. For RPB-v7,
+`RPB-v7-reference` identifies the preserved original instances, while
+`RPB-v7-replication-01` identifies fresh retrainings of the same recipe. Different
+datasets/seeds are separate experiments; do not describe their scores as changes
+to the original saved weights or silently replace the frozen reference.
+
 Use one task per quality table. Do not average direction, level, amplitude, and
 timing into a single encoder score. Longer reports may put detailed per-run
 scores, uncertainty, and provenance in linked artifacts.

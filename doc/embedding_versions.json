@@ -4,6 +4,42 @@
   "last_updated_date": "2026-10-08",
   "active_research_tag": "RPB-v4",
   "working_encoder_tag": "RPB-v7",
+  "working_instance_bundle": "RPB-v7-reference",
+  "instance_bundles": [
+    {
+      "id": "RPB-v7-reference",
+      "encoder_tag": "RPB-v7",
+      "status": "frozen_working_reference_do_not_replace",
+      "description": "Original five saved v7 instances behind the earlier timing results",
+      "master_seeds": [4404, 5505, 6606, 7707, 8808],
+      "encoder_updates_each": 512,
+      "checkpoint_path_pattern": "output/runs/rpb-context-lighter-validation/lighter-validation-duyRU2/results/candidate-development/seed-{master}-lag_sign/milestone-512/checkpoint.pt",
+      "capsule": "output/runs/rpb-context-lighter-validation/lighter-validation-duyRU2",
+      "artifact_inventory_sha256": "d4b38150814d65b21712a6371348b76bbc0d539a60009152932d293557b45821",
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/CONTEXT_LIGHTER_VALIDATION_DIAGNOSTIC.md",
+      "intact_linear_accuracy_percent": 97.96875,
+      "intact_neural_accuracy_percent": 98.95833333333333,
+      "coverage_percent": 100,
+      "optional_frozen_decoder_capsule": "output/runs/rpb-v7-decoder-calibration/decoder-calibration-jXsW20",
+      "optional_decoder_inventory_sha256": "51400954bc2e9cae483de2e2a784e83f93482b02a888a3bdf95581d207967442",
+      "replacement_by_new_training": "forbidden; retain all original checkpoints, scalers and fitted readouts"
+    },
+    {
+      "id": "RPB-v7-replication-01",
+      "encoder_tag": "RPB-v7",
+      "status": "separate_replication_not_a_reference_replacement",
+      "description": "New v7 instances trained with the same recipe on different sources and seeds",
+      "master_seeds": [9109, 10210, 11311, 12412, 13513],
+      "encoder_updates_each": 512,
+      "checkpoint_path_pattern": "output/runs/rpb-fresh-decoder-replication/fresh-decoder-replication-4p9U4b/results/seed-{master}-lag_sign/v7/point-512/checkpoint.pt",
+      "capsule": "output/runs/rpb-fresh-decoder-replication/fresh-decoder-replication-4p9U4b",
+      "artifact_inventory_sha256": "a65901eb7f14d57152188a86297ed44a966b9858d84848e3ae7e5b047d083a90",
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/FRESH_DECODER_REPLICATION_DIAGNOSTIC.md",
+      "intact_linear_accuracy_percent": 92.96875,
+      "intact_neural_accuracy_percent": 95.26041666666667,
+      "coverage_percent": 100
+    }
+  ],
   "latest_completed_diagnostic": {
     "protocol": "fresh-decoder-replication-v1",
     "status": "completed_joint_guard_failed_recovery_passed_no_promotion",

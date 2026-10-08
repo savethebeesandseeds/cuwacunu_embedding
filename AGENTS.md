@@ -24,6 +24,15 @@ fixed across encoder comparisons; fit their weights separately on training data.
 
 ## Active research version
 
+The working saved v7 models are pinned as **RPB-v7-reference** in the version
+registry: masters4404/5505/6606/7707/8808 in the original lighter-policy capsule.
+Preserve their checkpoints, scalers, fitted readouts and reports. The newer
+**RPB-v7-replication-01** contains separately trained instances on different
+sources/seeds and does not replace this frozen reference. State the instance
+bundle beside any results table; do not describe replication scores as a decline
+of the original saved encoder. Any architecture, objective or training recipe
+change gets a new design tag and separate outputs, leaving v7-reference intact.
+
 RPB-v4, the learned global bottleneck, is the active experimental encoder.
 RPB-v5, the direct patch global bottleneck, failed the fixed512 comparison under
 paired-pooling-v1 and is not promoted. This rejects that measured advance, not

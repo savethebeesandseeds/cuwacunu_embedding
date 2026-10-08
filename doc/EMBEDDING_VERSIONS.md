@@ -82,6 +82,26 @@ earlier checkpoints. In particular, an omitted global mode still means mode 0.
 
 ## Design tags and trained instances
 
+The frozen working bundle is **RPB-v7-reference**: the five original saved
+instances on masters4404/5505/6606/7707/8808, with their original checkpoints,
+scalers and readouts. Their earlier intact timing VALIDATION means remain
+97.96875% linear and 98.95833% neural. Optional decoder-calibration assets live
+in a separate capsule and do not replace those checkpoints or encoder weights.
+
+**RPB-v7-replication-01** names the five separately trained instances on new
+sources/seeds9109/10210/11311/12412/13513. Their 92.96875%/95.26042% intact
+means are results of another experiment, not changed scores for the saved
+reference. The dataset and seeds differ, so these two result sets do not measure
+the effect of a code change on the same weights and evaluation population.
+These bundle names identify trained instances; both use the RPB-v7 design.
+The registry pins their separate paths and inventory hashes. Future tables must
+name the instance bundle in the surrounding prose as well as the design tag.
+
+Keep RPB-v7-reference frozen while developing candidates. Any change to its
+architecture, objective or training recipe requires a new design tag and new
+output paths. Repeating its unchanged recipe uses a separate instance-bundle
+identity and must never overwrite or silently replace the working reference.
+
 A tag names the encoder design or a frozen training-view milestone. A trained instance also records the exact
 resolved configuration/hash, source revision/fingerprint, exported surface,
 training dataset and scaler IDs, seed, completed updates, and checkpoint
