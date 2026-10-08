@@ -35,6 +35,7 @@ preserved alongside the successful result.
 | RPB-v7 | Global bottleneck with lighter context deletion | Measured validation gains, unresolved reconstruction tradeoff; not promoted | [Lighter-policy diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_LIGHTER_VALIDATION_DIAGNOSTIC.md) |
 | RPB-v8 | Global bottleneck with balanced context views | Measured and audited; joint guard failed; not promoted | [Balanced-view diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_BALANCED_VALIDATION_DIAGNOSTIC.md) |
 | RPB-v9 | Global bottleneck with native view agreement | Measured and audited; severe fixed512 failure; not promoted | [Native view agreement diagnostic](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md) |
+| RPB-v10 | Global bottleneck with earlier channel mixing | Planned bounded timing comparison; not measured | [Early-mixer card](../code/evaluation/cards/early_mixer_reliability_v1.md) |
 
 The [machine-readable registry](embedding_versions.json) records the same mapping.
 `RPB-v4.alt-01` names the fresh v4 controls paired with `RPB-v7.alt-01` on
@@ -211,3 +212,20 @@ master is already weaker on TRAIN; mixed geometry/trace differences do not
 identify a common architecture defect. No encoder update, forward, head refit
 or held-out analysis occurs. The next step is one separately planned new-source
 amplitude-transfer check using frozen encoders and original timing scalers.
+
+That [amplitude transfer check](../code/encoders/raw_patch_bottleneck_mae/FROZEN_AMPLITUDE_TRANSFER_DIAGNOSTIC.md)
+is now complete, with38,784,404 independent audit checks. Both trained groups
+preserve amplitude well; the intact untrained control already reaches99.375%
+linear accuracy. With extra30% deletion, v4.alt-01/v7.alt-01 linear means are
+96.875%/93.4375%, versus89.6875% untrained, with full coverage. These are new
+data and head fits on reused encoders, with zero encoder updates. They do not
+identify a timing mechanism or promote a model.
+
+**RPB-v10 — Global bottleneck with earlier channel mixing** is registered for
+the prospective [early-mixer comparison](../code/evaluation/cards/early_mixer_reliability_v1.md).
+Its existing aligned mixer acts before temporal blocks; independent local
+exports retain a separate unmixed pass. Native32, parameter count, objective,
+coordinate15 training policy and classifier recipes stay fixed. More compute
+is expected and must be measured. **RPB-v7.alt-02** is its fresh matched control
+group on masters19119/20220/21321/22422/23523. Both are planned, with no quality
+result yet; no existing saved group is replaced.

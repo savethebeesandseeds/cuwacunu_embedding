@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "embedding/encoders/raw_patch_bottleneck_mae/frozen_decoder_calibration.h"
+#include "embedding/encoders/raw_patch_bottleneck_mae/frozen_native_feature_adapter.h"
 #include "embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h"
 #include "embedding/encoders/raw_patch_bottleneck_mae/training_utils.h"
 #include "embedding/shared/data.h"
@@ -24,6 +25,14 @@
 #define FROZEN_DECODER_CALIBRATION_SOURCE_ID EVALUATION_SOURCE_ID
 #else
 #define FROZEN_DECODER_CALIBRATION_SOURCE_ID "unrecorded"
+#endif
+#endif
+
+#ifndef FROZEN_NATIVE_FEATURE_SOURCE_ID
+#ifdef EVALUATION_SOURCE_ID
+#define FROZEN_NATIVE_FEATURE_SOURCE_ID EVALUATION_SOURCE_ID
+#else
+#define FROZEN_NATIVE_FEATURE_SOURCE_ID "unrecorded"
 #endif
 #endif
 
@@ -190,6 +199,8 @@ std::shared_ptr<Parent> admit(const std::string &path, const ev::ProviderFitInpu
   auto &cp = out->checkpoint; const auto &c = cp.settings.model;
   require(cp.training_policy_id == selected.parent_policy && cp.completed_steps == updates && cp.attempted_steps == updates,
       "exact declared unskipped parent policy/counters required");
+  require(cp.settings.batch_size > 0 && updates <= std::numeric_limits<int64_t>::max() / cp.settings.batch_size,
+      "parent sampled-row counter arithmetic overflow");
   require(c.channel_count == 3 && c.history_length == 32 && c.input_width == 3 && c.patch_length == 8 &&
       c.encoder_width == 64 && c.export_width == 32 && c.num_layers == 3 && c.num_heads == 4 && c.feedforward_width == 256 &&
       c.channel_mixer_layers == 1 && c.global_bottleneck_mode == 2 && c.decoder_hidden_width == 128 && c.dropout == 0 &&
@@ -271,6 +282,20 @@ Named native_witness(const std::shared_ptr<Parent> &parent) {
   require(normalized.data.is_cuda() && output.z_contextual_global.is_cuda(), "native witness must execute on CUDA");
   return {{"global", cpu(output.z_contextual_global)}, {"contextual", cpu(output.z_contextual)},
       {"local", cpu(output.z_local)}, {"channel_valid", cpu(output.channel_valid_mask)}, {"sample_valid", cpu(output.sample_valid_mask)}};
+}
+ev::FeatureMap cuda_native_features(const std::shared_ptr<Parent> &parent,
+    const ev::ProviderFitInput &metadata, const embedding::Batch &batch,
+    const std::string &provenance) {
+  const RuntimeIsolation callback_isolation; at::set_num_threads(1);
+  torch::NoGradGuard no_grad;
+  auto &checkpoint = parent->checkpoint;
+  const auto input = checkpoint.scaler.transform(
+      raw_input(batch, checkpoint.settings.model, metadata), checkpoint.settings.model);
+  const auto output = checkpoint.model->encode(input);
+  require(input.data.is_cuda() && output.z_contextual_global.is_cuda(),
+      "native inference must execute CUDA");
+  return ev::FeatureMap{{"curve_global", {cpu(output.z_contextual_global), cpu(output.sample_valid_mask), provenance}},
+      {"curve_channel_concatenation", {cpu(output.z_contextual.flatten(1)), cpu(output.channel_valid_mask.all(1)), provenance}}};
 }
 void save_exclusive(const std::string &path, torch::serialize::OutputArchive &archive) {
   require(!fs::exists(path) && !fs::is_symlink(fs::symlink_status(path)), "refusing artifact replacement: " + path);
@@ -402,13 +427,7 @@ ev::CurveSnapshot snapshot_from_parent(const std::shared_ptr<Parent> &parent, co
       "every declared channel observed-valid; contextual vectors in declared physical order", fit.channel_ids});
   auto metadata = fit; metadata.training_observations = {}; metadata.training_source_ids.clear();
   snapshot.features.extract = [parent, metadata, provenance = snapshot.features.provenance](const embedding::Batch &batch) {
-    const RuntimeIsolation callback_isolation; at::set_num_threads(1); torch::NoGradGuard no_grad;
-    auto &checkpoint = parent->checkpoint;
-    const auto input = checkpoint.scaler.transform(raw_input(batch, checkpoint.settings.model, metadata), checkpoint.settings.model);
-    const auto output = checkpoint.model->encode(input);
-    require(input.data.is_cuda() && output.z_contextual_global.is_cuda(), "native inference must execute CUDA");
-    return ev::FeatureMap{{"curve_global", {cpu(output.z_contextual_global), cpu(output.sample_valid_mask), provenance}},
-      {"curve_channel_concatenation", {cpu(output.z_contextual.flatten(1)), cpu(output.channel_valid_mask.all(1)), provenance}}};
+    return cuda_native_features(parent, metadata, batch, provenance);
   };
   snapshot.reconstruct = [parent, metadata](const embedding::Batch &batch, const torch::Tensor &hidden) {
     const RuntimeIsolation callback_isolation; at::set_num_threads(1); torch::NoGradGuard no_grad;
@@ -641,6 +660,99 @@ ev::CurveSnapshot make_fresh_initial_snapshot(const std::string &path, FrozenDec
       {"snapshot_policy", "fresh_exact_point0;all_inference_CUDA;no_calibration_optimizer_or_refit"}};
   return snapshot_from_parent(parent, fit, fields, std::string(selected.model_tag) +
       " exact fresh untrained native32 encoder; CUDA inference; no fit or calibration");
+}
+
+ev::FeatureProvider make_frozen_native_feature_provider(const FrozenNativeFeatureOptions &options,
+    const ev::ProviderFitInput &fit) {
+  const auto valid_source = [](const std::string &source) {
+    return source.size() == 64 &&
+        source.find_first_not_of("0123456789abcdef") == std::string::npos;
+  };
+  // Reject unspecified selectors before opening any checkpoint or changing RNG.
+  const auto binding = fresh_binding(options.parent_policy);
+  require(options.expected_parent_updates >= 0 && !options.parent_checkpoint_path.empty() &&
+      valid_source(options.expected_parent_core_source_fingerprint) &&
+      valid_source(options.expected_training_producer_source_fingerprint),
+      "explicit original budget/checkpoint/core/training producer pins required");
+  require(fit.training_observations.data.defined() && fit.training_observations.feature_mask.defined() &&
+      fit.training_observations.data.device().is_cpu() && fit.training_observations.data.scalar_type() == torch::kFloat64 &&
+      fit.training_observations.feature_mask.device().is_cpu() && fit.training_observations.feature_mask.scalar_type() == torch::kBool,
+      "original timing TRAIN requires CPU Float64 observations and bool support");
+  const RuntimeIsolation isolation; at::set_num_threads(1);
+  const auto parent = admit(options.parent_checkpoint_path, fit,
+      options.expected_parent_updates, binding, options.expected_parent_updates == 0);
+  const auto &cp = parent->checkpoint;
+  require(cp.source_fingerprint == options.expected_parent_core_source_fingerprint &&
+      parent->audit.at("core_writer_source_fingerprint") == options.expected_parent_core_source_fingerprint &&
+      parent->audit.at("training_producer_source_fingerprint") == options.expected_training_producer_source_fingerprint,
+      "explicit original producer scopes differ from the admitted parent");
+  int64_t parameter_count = 0;
+  for (const auto &p : cp.model->parameters()) {
+    require(p.is_cuda() && !p.requires_grad() && torch::isfinite(p).all().item<bool>(),
+        "frozen encoder requires finite CUDA parameters without gradients");
+    parameter_count += p.numel();
+  }
+  require(parameter_count == 225805, "exact 225805-parameter frozen architecture required");
+  for (const auto &b : cp.model->buffers())
+    require(b.is_cuda() && torch::isfinite(b).all().item<bool>(), "finite CUDA buffers required");
+  const auto encoder_before = parameters(cp.model, false), decoder_before = parameters(cp.model, true);
+  const auto buffers_before = buffers(cp.model);
+  const auto scaler_before = cp.scaler.identity();
+  const auto immutable = [parent, encoder_before, decoder_before, buffers_before, scaler_before]() {
+    require(same(parameters(parent->checkpoint.model, false), encoder_before) &&
+        same(parameters(parent->checkpoint.model, true), decoder_before) &&
+        same(buffers(parent->checkpoint.model), buffers_before) &&
+        parent->checkpoint.scaler.identity() == scaler_before,
+        "frozen model parameters/buffers/scaler changed during extraction");
+    verify_bindings(parent->path, parent->bindings);
+  };
+  const auto &selected = identity(binding);
+  ev::FeatureProvider provider;
+  provider.provenance = std::string(selected.model_tag) +
+      "; original timing-protocol checkpoint; frozen native32 CUDA encode; no fitting or updates";
+  provider.audit_fields = {{"protocol_id", kFrozenNativeFeatureProtocol},
+      {"original_training_protocol_id", selected.fit_protocol}, {"model_tag", selected.model_tag},
+      {"training_policy_id", selected.parent_policy}, {"parent_checkpoint_path", parent->path},
+      {"parent_writer_source_fingerprint", cp.source_fingerprint},
+      {"parent_training_producer_source_fingerprint", parent->audit.at("training_producer_source_fingerprint")},
+      {"snapshot_loader_source_fingerprint", FROZEN_NATIVE_FEATURE_SOURCE_ID},
+      {"source_fingerprint_scope", "parent=original_core_writer_and_training_producer;extractor=new_frozen_native_feature_loader"},
+      {"original_encoder_attempted", std::to_string(cp.attempted_steps)},
+      {"original_encoder_completed", std::to_string(cp.completed_steps)},
+      {"encoder_updates", "0"}, {"decoder_updates", "0"}, {"head_refits", "0"},
+      {"no_optimizer_created", "true"}, {"inference_device", cp.settings.model.device.str()},
+      {"parameter_count", std::to_string(parameter_count)}, {"training_dataset_id", cp.dataset_id},
+      {"training_schema_id", cp.schema_id}, {"preprocessing_id", cp.scaler.identity()},
+      {"fit_source_manifest", source_manifest(fit.training_source_ids)},
+      {"fit_source_manifest_id", parent->audit.at("fit_source_manifest_id")},
+      {"initialization_seed", parent->audit.at("initialization_seed")},
+      {"actual_training_seed", parent->audit.at("actual_training_seed")},
+      {"feature_units", fit.feature_units}, {"snapshot_policy", "bare_parent_only;CUDA_eval_no_grad;original_timing_scaler;no_optimizer_no_decoder_state_no_refit"}};
+  for (const auto &[suffix, content] : parent->bindings)
+    provider.audit_fields["parent_content_id" + suffix] = content;
+  provider.surfaces.emplace("curve_global", ev::SurfaceDescription{
+      ev::SurfaceKind::global, "at least one observed channel", {}});
+  auto metadata = fit; metadata.training_observations = {}; metadata.training_source_ids.clear();
+  provider.extract = [parent, metadata, immutable, provenance = provider.provenance](const embedding::Batch &batch) {
+    const RuntimeIsolation callback_isolation; at::set_num_threads(1);
+    immutable();
+    const auto all = cuda_native_features(parent, metadata, batch, provenance);
+    const auto &surface = all.at("curve_global");
+    require(surface.values.scalar_type() == torch::kFloat32 && surface.values.device().is_cpu() &&
+        surface.valid.scalar_type() == torch::kBool && surface.valid.device().is_cpu() &&
+        surface.values.sizes() == torch::IntArrayRef({batch.data.size(0), 32}) &&
+        torch::isfinite(surface.values).all().item<bool>(), "finite CPU Float32 native32 CUDA evidence required");
+    immutable();
+    return ev::FeatureMap{{"curve_global", surface}};
+  };
+  provider.save_assets = [fields = provider.audit_fields, immutable](const std::string &directory) {
+    const RuntimeIsolation callback_isolation; immutable();
+    torch::serialize::OutputArchive audit; write_text(audit, "artifact_kind", kFrozenNativeFeatureArtifact);
+    for (const auto &[name, value] : fields) write_text(audit, name, value);
+    save_exclusive((fs::path(directory) / kFrozenNativeFeatureAuditFile).string(), audit);
+    immutable();
+  };
+  immutable(); return provider;
 }
 
 } // namespace embedding::encoders::raw_patch_bottleneck_mae

@@ -30,3 +30,26 @@ records all five pairs and preserved engineering failures. The weak fresh v7
 run already has weaker TRAIN accessibility; mixed geometry/trace differences
 do not identify a consistent architecture defect. Next is one separately frozen
 new-source amplitude-transfer check with existing encoders/scalers on CUDA.
+
+Second milestone complete at approximately01:45 Dubai under the frozen
+[amplitude card](../code/evaluation/cards/frozen_amplitude_transfer_v1.md).
+The [diagnostic](../code/encoders/raw_patch_bottleneck_mae/FROZEN_AMPLITUDE_TRANSFER_DIAGNOSTIC.md)
+and [durable summary](results/frozen_amplitude_transfer_v1.json) retain all five
+new cohorts, six methods and both views. Independent saved-arithmetic audit
+passed38,784,404 checks; report metadata QA passed15,147 comparisons. All methods
+have full coverage. Intact amplitude linear means are99.375% untrained,
+99.21875% v4.alt-01 and98.59375% v7.alt-01; extra-deletion means are89.6875%,
+96.875% and93.4375%. Training receives no intact amplitude-gain claim. No new
+encoder/decoder updates, old classifier reuse, CPU model forward, TEST or stress.
+
+The next bounded experiment is
+[early-mixer-reliability-v1](../code/evaluation/cards/early_mixer_reliability_v1.md):
+RPB-v10 moves aligned channel mixing before temporal blocks, compared with fresh
+RPB-v7.alt-02 on five new timing cohorts. Both retain native32,225,805 parameters,
+512 CUDA updates at batch8 and unchanged classifiers. Two distinct untrained
+controls and a separate amplitude transfer task expose architecture and training
+contributions. The ordinary original-patch query measures timing reconstruction;
+there is no extra decoder optimization. Source/admission/reader gates precede
+quality generation. Earlier mixing adds an unmixed temporal pass for independent
+local exports, so added computation is measured. No result or promotion exists
+for these planned groups yet.

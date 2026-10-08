@@ -939,3 +939,50 @@ test-saved-feature-reliability: $(SHARED_TEST_DIR)/saved_feature_reliability_tes
 
 evaluate-saved-native-reliability: $(SAVED_NATIVE_RELIABILITY_BIN)
 	SAVED_NATIVE_RELIABILITY_BIN="$(abspath $(SAVED_NATIVE_RELIABILITY_BIN))" SAVED_NATIVE_RELIABILITY_SOURCE_INPUTS="$(SAVED_NATIVE_RELIABILITY_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-saved-native-reliability.sh
+
+# Frozen encoder transfer: a separate backend object binds the new extractor
+# identity without changing legacy binary/object scopes or quality protocols.
+FROZEN_AMPLITUDE_TRANSFER_BIN := $(BUILD_DIR)/embedding_frozen_amplitude_transfer
+FROZEN_NATIVE_FEATURE_OBJECT := $(RPB_OBJECT_DIR)/frozen_native_feature_adapter.o
+FROZEN_AMPLITUDE_TRANSFER_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/frozen_decoder_calibration.cpp $(RPB_ROOT)/src/decoder_calibration.cpp $(RPB_ROOT)/tests/frozen_native_feature_adapter_test.cpp $(RPB_ROOT)/tests/frozen_decoder_calibration_test.cpp $(RPB_ROOT)/tests/rpb_test_support.h $(CODE_ROOT)/shared/tests/shared_test_support.h $(CODE_ROOT)/shared/tests/fixed_feature_readouts_test.cpp $(EVALUATION_ROOT)/src/frozen_amplitude_transfer_main.cpp $(EVALUATION_ROOT)/src/fresh_decoder_replication_main.cpp $(EVALUATION_ROOT)/include/frozen_role_guard.h $(EVALUATION_ROOT)/tests/frozen_role_guard_test.cpp $(EVALUATION_ROOT)/cards/frozen_amplitude_transfer_v1.md $(CODE_ROOT)/scripts/check-frozen-amplitude-transfer.sh $(CODE_ROOT)/scripts/evaluate-frozen-amplitude-transfer.sh $(CODE_ROOT)/scripts/prepare-frozen-amplitude-transfer.py $(CODE_ROOT)/scripts/prepare-fresh-decoder-replication.py)
+FROZEN_AMPLITUDE_TRANSFER_SOURCE_ID := $(shell sha256sum $(FROZEN_AMPLITUDE_TRANSFER_INPUTS) | sha256sum | cut -d ' ' -f 1)
+FROZEN_AMPLITUDE_TRANSFER_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(FROZEN_AMPLITUDE_TRANSFER_SOURCE_ID)\" -DFROZEN_NATIVE_FEATURE_SOURCE_ID=\"$(FROZEN_AMPLITUDE_TRANSFER_SOURCE_ID)\" -DFROZEN_DECODER_CALIBRATION_SOURCE_ID=\"$(FROZEN_AMPLITUDE_TRANSFER_SOURCE_ID)\"
+.PHONY: frozen-amplitude-transfer print-frozen-amplitude-transfer-sources test-rpb-frozen-native-feature test-frozen-amplitude-legacy evaluate-frozen-amplitude-transfer
+frozen-amplitude-transfer: $(FROZEN_AMPLITUDE_TRANSFER_BIN)
+print-frozen-amplitude-transfer-sources:
+	@printf '%s\n' $(FROZEN_AMPLITUDE_TRANSFER_INPUTS)
+
+$(EVALUATION_OBJECT_DIR)/frozen_amplitude_transfer_main.o: $(EVALUATION_ROOT)/src/frozen_amplitude_transfer_main.cpp $(FROZEN_AMPLITUDE_TRANSFER_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(FROZEN_AMPLITUDE_TRANSFER_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(FROZEN_NATIVE_FEATURE_OBJECT): $(RPB_ROOT)/src/frozen_decoder_calibration.cpp $(FROZEN_AMPLITUDE_TRANSFER_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(FROZEN_AMPLITUDE_TRANSFER_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(FROZEN_AMPLITUDE_TRANSFER_BIN): $(EVALUATION_OBJECT_DIR)/frozen_amplitude_transfer_main.o $(FROZEN_NATIVE_FEATURE_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS) $(FIXED_FEATURE_READOUTS_OBJECT)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(RPB_TEST_DIR)/frozen_native_feature_adapter_test.o: $(RPB_ROOT)/tests/frozen_native_feature_adapter_test.cpp $(FROZEN_AMPLITUDE_TRANSFER_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(FROZEN_AMPLITUDE_TRANSFER_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/frozen_native_feature_adapter_test: $(RPB_TEST_DIR)/frozen_native_feature_adapter_test.o $(FROZEN_NATIVE_FEATURE_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(HARNESS_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-frozen-native-feature: $(RPB_TEST_DIR)/frozen_native_feature_adapter_test
+	$(RPB_TEST_DIR)/frozen_native_feature_adapter_test
+
+# Execute the existing legacy test source against the new shared backend.
+$(RPB_TEST_DIR)/frozen_amplitude_legacy_test.o: $(RPB_ROOT)/tests/frozen_decoder_calibration_test.cpp $(FROZEN_AMPLITUDE_TRANSFER_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(FROZEN_AMPLITUDE_TRANSFER_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/frozen_amplitude_legacy_test: $(RPB_TEST_DIR)/frozen_amplitude_legacy_test.o $(FROZEN_NATIVE_FEATURE_OBJECT) $(RPB_DECODER_CALIBRATION_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(HARNESS_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-frozen-amplitude-legacy: $(RPB_TEST_DIR)/frozen_amplitude_legacy_test
+	$(RPB_TEST_DIR)/frozen_amplitude_legacy_test
+
+evaluate-frozen-amplitude-transfer: $(FROZEN_AMPLITUDE_TRANSFER_BIN)
+	FROZEN_AMPLITUDE_TRANSFER_BIN="$(abspath $(FROZEN_AMPLITUDE_TRANSFER_BIN))" FROZEN_AMPLITUDE_TRANSFER_SOURCE_INPUTS="$(FROZEN_AMPLITUDE_TRANSFER_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-frozen-amplitude-transfer.sh

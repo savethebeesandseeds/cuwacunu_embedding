@@ -397,3 +397,27 @@ Build the shared fixture independently with
 The fresh runner records encoder training, decoder loops, feature/query inference
 and the CPU readout loop separately. Decoder loop timing includes evidence
 capture, so it is descriptive elapsed time rather than a pure GPU cost benchmark.
+
+## Frozen native transfer
+
+The [frozen amplitude card](cards/frozen_amplitude_transfer_v1.md) evaluates
+new amplitude cohorts using retained timing-trained encoders and new fixed
+classifiers. The encoder-owned `make_frozen_native_feature_provider` returns
+only the shared `FeatureProvider`: strict checkpoint/scaler admission and CUDA
+native32 extraction stay in the encoder; task generation, raw/PCA controls,
+heads, views and scoring stay here. It exposes no training or reconstruction
+callback. Native features receive no PCA and original timing scalers remain fixed.
+
+The [completed diagnostic](../encoders/raw_patch_bottleneck_mae/FROZEN_AMPLITUDE_TRANSFER_DIAGNOSTIC.md)
+passed independent saved-arithmetic verification. Original TRAIN exports were
+checked exactly on CUDA before any new amplitude generation. Required exports
+are saved once for shared CPU readout arithmetic; no CPU encoder executes.
+
+```bash
+bash code/scripts/check-frozen-amplitude-transfer.sh
+bash code/scripts/task.sh rpb-paired-pooling evaluate-frozen-amplitude-transfer
+```
+
+Each measurement uses an exclusive source/admission/card/reader-bound capsule.
+The sealed reader and parent role matrix are required local evidence; this
+runner does not silently regenerate or replace historical parents.
