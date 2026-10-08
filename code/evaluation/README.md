@@ -336,3 +336,25 @@ track; reconstruction evidence does not establish frozen-feature usefulness.
 Architecture-specific correctness tests stay with each encoder. The refactor
 changes the development protocol to v2; earlier v1 reports retain their original
 measurements and interpretation.
+## V7 decoder-only calibration diagnostic
+
+The separate frozen [card](cards/v7_decoder_calibration_v1.md) asks whether the
+existing decoder can recover ordinary reconstruction from unchanged retained
+RPB-v7 embeddings. Encoder/scaler fitting stays in the encoder module; this
+driver owns the closed85 input roles and shared fixed-query scoring. There are
+zero classifier fits, new encoder updates, TEST accesses or checkpoint choices.
+
+Inside the existing managed GPU container:
+
+```bash
+bash code/scripts/check-v7-decoder-calibration.sh
+bash code/scripts/task.sh rpb-paired-pooling evaluate-v7-decoder-calibration
+```
+
+Admission uses new synthetic correctness fixtures. Measurement starts from the
+five exact saved v7@512 instances and completes 128 fresh decoder-only updates.
+All model inference and optimization use CUDA; saved-arithmetic auditing uses
+CPU. Typed decoder assets compose with their immutable parents and preserve
+original encoder512 and additional decoder128 counters separately. They are
+not ordinary checkpoints. The encoder retains the RPB-v7 tag; classification
+results are reused only with exact unchanged encoder/native-output witnesses.

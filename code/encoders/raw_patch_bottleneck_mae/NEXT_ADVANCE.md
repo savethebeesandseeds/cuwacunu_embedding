@@ -1,8 +1,9 @@
 # RPB v4 evaluation and development plan
 
-Date: 2026-10-07
+Date: 2026-10-08
 
-Advance **RPB-v4 — Learned global bottleneck**, using its native 32-number
+Continue from **RPB-v7 — Global bottleneck with lighter context deletion**,
+keeping **RPB-v4 — Learned global bottleneck** as the active reference. Use native 32-number
 embedding and fixed classifier heads. PCA is a standalone raw-data baseline.
 Older encoder designs remain archived references and compatibility inputs;
 routine research does not retrain every historical variant.
@@ -374,11 +375,27 @@ failed all six numeric guards and produced severe reconstruction instability.
 RPB-v4 remains active. Stop this mechanism; do not search its coefficients,
 rate or budget, and preserve all five runs including master4404.
 
-Follow [tomorrow's continuation note](../../../doc/CONTINUATION_2026-10-08.md):
-start with the saved TRAIN calibration scales and per-update loss components,
-identify when the reconstruction path degrades, and distinguish numerical scale
-or gradient-allocation problems from an inadequate representation objective.
-This is a diagnosis of saved evidence, not another training experiment or a
-post-hoc rescue. Before executing a new analysis beyond the completed audit,
-freeze its exact TRAIN-only input roles and diagnostic question. Propose a new
-bounded mechanism only after that diagnosis. Historical TEST/stress remain closed.
+The separately frozen [saved-TRAIN scale lesson](NATIVE_VIEW_LOSS_SCALE_TRAIN_DIAGNOSTIC.md)
+is complete: no scale floor activated, and agreement grew later in every run.
+Its scalar traces do not identify objective-specific gradients or establish cause.
+The original dated [continuation note](../../../doc/CONTINUATION_2026-10-08.md)
+remains the historical pre-diagnosis record.
+
+The [v7 decoder calibration](V7_DECODER_CALIBRATION_DIAGNOSTIC.md) then froze all
+214,277 non-decoder parameters and trained the existing 11,528-parameter decoder
+for 128 updates on CUDA. Mean TRAIN/known-VALIDATION MAE fell from
+0.081179/0.083630 to 0.054039/0.056989. Every master is below its paired v4
+fixed512 error. Exact encoder/native/scaler invariants and the independent
+25,450,287-check saved-arithmetic audit passed. Classification is cached and
+unchanged; there were zero new encoder updates or head fits. This demonstrates
+decoder recoverability on these cohorts, with no new embedding tag or promotion.
+
+Next, prepare one fresh-source replication of this two-phase recipe, using five
+new TRAIN/VALIDATION cohorts and fixed heads. Give both v4 and v7 the same 128
+decoder-calibration updates after 512 encoder updates. This checks whether the
+result transfers and separates decoder adaptation from the extra training
+budget. Freeze its new card before generation, run each encoder once on CUDA,
+reuse saved features and heads after decoder calibration, and keep TEST/stress
+closed. Current decoder admission is intentionally v7-only; a separate explicit
+v4 admission path must be tested before that comparison. Follow the new
+[continuation direction](../../../doc/CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md).

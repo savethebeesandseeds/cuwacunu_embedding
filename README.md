@@ -55,8 +55,16 @@ is implemented and independently audited. Its native view agreement loss fails
 all six numeric guards: mean linear accuracy is 59.21875% intact and 57.03125%
 under extra deletion, with severe reconstruction degradation and one especially
 unstable run. Stop this frozen mechanism; RPB-v4 remains active. The
-[continuation note](doc/CONTINUATION_2026-10-08.md) records tomorrow's diagnosis,
-saved evidence and execution boundaries. No further training is scheduled.
+[original continuation note](doc/CONTINUATION_2026-10-08.md) records the pre-diagnosis
+state. The [saved-TRAIN scale lesson](code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_LOSS_SCALE_TRAIN_DIAGNOSTIC.md)
+and [v7 decoder calibration](code/encoders/raw_patch_bottleneck_mae/V7_DECODER_CALIBRATION_DIAGNOSTIC.md)
+are now complete. Training only the existing decoder for 128 CUDA updates reduces
+v7 mean TRAIN/known-VALIDATION MAE to 0.054039/0.056989, with exact unchanged
+encoder/native outputs and zero head fits. Every run beats its paired v4
+reconstruction reference; independent arithmetic audit passed. V7 is the working
+starting point, v4 remains the active reference, and no new embedding tag or
+promotion follows this diagnosis. The [next continuation](doc/CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
+defines a fresh-source replication with equal decoder training for v4/v7.
 Older designs remain available as archived references. See the
 [version registry](doc/EMBEDDING_VERSIONS.md),
 [results reporting standard](doc/RESULTS_REPORTING_STANDARD.md), and

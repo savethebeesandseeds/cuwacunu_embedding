@@ -811,3 +811,45 @@ test-rpb-native-view-agreement: $(RPB_TEST_DIR)/native_view_agreement_test
 
 evaluate-native-view-agreement-validation: $(NATIVE_VIEW_AGREEMENT_VALIDATION_BIN)
 	NATIVE_VIEW_AGREEMENT_VALIDATION_BIN="$(abspath $(NATIVE_VIEW_AGREEMENT_VALIDATION_BIN))" NATIVE_VIEW_AGREEMENT_VALIDATION_SOURCE_INPUTS="$(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-native-view-agreement-validation.sh
+
+# Frozen v7 encoder, bounded decoder-only diagnosis; no readout fits or TEST.
+V7_DECODER_CALIBRATION_BIN := $(BUILD_DIR)/embedding_v7_decoder_calibration
+RPB_DECODER_CALIBRATION_OBJECT := $(RPB_OBJECT_DIR)/decoder_calibration.o
+V7_DECODER_CALIBRATION_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/decoder_calibration.cpp $(RPB_ROOT)/tests/decoder_calibration_test.cpp $(RPB_ROOT)/tests/rpb_test_support.h $(CODE_ROOT)/shared/tests/shared_test_support.h $(EVALUATION_ROOT)/src/v7_decoder_calibration_main.cpp $(EVALUATION_ROOT)/include/frozen_role_guard.h $(EVALUATION_ROOT)/tests/frozen_role_guard_test.cpp $(EVALUATION_ROOT)/cards/v7_decoder_calibration_v1.md $(CODE_ROOT)/scripts/check-v7-decoder-calibration.sh $(CODE_ROOT)/scripts/evaluate-v7-decoder-calibration.sh $(CODE_ROOT)/scripts/prepare-v7-decoder-inputs.py)
+V7_DECODER_CALIBRATION_SOURCE_ID := $(shell sha256sum $(V7_DECODER_CALIBRATION_INPUTS) | sha256sum | cut -d ' ' -f 1)
+V7_DECODER_CALIBRATION_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(V7_DECODER_CALIBRATION_SOURCE_ID)\" -DDECODER_CALIBRATION_SOURCE_ID=\"$(V7_DECODER_CALIBRATION_SOURCE_ID)\"
+.PHONY: v7-decoder-calibration print-v7-decoder-calibration-sources test-rpb-decoder-calibration test-frozen-role-guard evaluate-v7-decoder-calibration
+v7-decoder-calibration: $(V7_DECODER_CALIBRATION_BIN)
+print-v7-decoder-calibration-sources:
+	@printf '%s\n' $(V7_DECODER_CALIBRATION_INPUTS)
+
+$(EVALUATION_OBJECT_DIR)/v7_decoder_calibration_main.o: $(EVALUATION_ROOT)/src/v7_decoder_calibration_main.cpp $(V7_DECODER_CALIBRATION_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(V7_DECODER_CALIBRATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_DECODER_CALIBRATION_OBJECT): $(RPB_ROOT)/src/decoder_calibration.cpp $(V7_DECODER_CALIBRATION_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(V7_DECODER_CALIBRATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(V7_DECODER_CALIBRATION_BIN): $(EVALUATION_OBJECT_DIR)/v7_decoder_calibration_main.o $(RPB_DECODER_CALIBRATION_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(RPB_WORKFLOW_OBJECT) $(EVALUATION_COMMON_OBJECTS)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(RPB_TEST_DIR)/decoder_calibration_test.o: $(RPB_ROOT)/tests/decoder_calibration_test.cpp $(V7_DECODER_CALIBRATION_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(V7_DECODER_CALIBRATION_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/decoder_calibration_test: $(RPB_TEST_DIR)/decoder_calibration_test.o $(RPB_DECODER_CALIBRATION_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(HARNESS_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-decoder-calibration: $(RPB_TEST_DIR)/decoder_calibration_test
+	$(RPB_TEST_DIR)/decoder_calibration_test
+
+$(EVALUATION_OBJECT_DIR)/frozen_role_guard_test: $(EVALUATION_ROOT)/tests/frozen_role_guard_test.cpp $(EVALUATION_ROOT)/include/frozen_role_guard.h
+	mkdir -p "$(@D)"
+	$(CXX) -std=c++20 -O1 -Wall -Wextra -I$(EVALUATION_ROOT)/include $< -o $@
+
+test-frozen-role-guard: $(EVALUATION_OBJECT_DIR)/frozen_role_guard_test
+	$(EVALUATION_OBJECT_DIR)/frozen_role_guard_test
+
+evaluate-v7-decoder-calibration: $(V7_DECODER_CALIBRATION_BIN)
+	V7_DECODER_CALIBRATION_BIN="$(abspath $(V7_DECODER_CALIBRATION_BIN))" V7_DECODER_CALIBRATION_SOURCE_INPUTS="$(V7_DECODER_CALIBRATION_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-v7-decoder-calibration.sh

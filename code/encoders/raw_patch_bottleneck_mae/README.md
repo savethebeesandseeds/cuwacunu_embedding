@@ -108,7 +108,17 @@ TRAIN/VALIDATION MAE is 29.194490 / 29.371655. One run is especially unstable,
 and the other four also reconstruct much worse than v4. RPB-v4 remains active.
 The [prospective plan](NATIVE_VIEW_AGREEMENT_PLAN.md) and quality card remain the
 frozen design record. Stop this mechanism without weight/rate/budget rescue.
-See [tomorrow's continuation](../../../doc/CONTINUATION_2026-10-08.md).
+The original [continuation](../../../doc/CONTINUATION_2026-10-08.md) is preserved.
+Its [saved-TRAIN scale diagnosis](NATIVE_VIEW_LOSS_SCALE_TRAIN_DIAGNOSTIC.md) is
+complete, with no scale-floor hits and later agreement growth in all five runs.
+
+Current work continues from RPB-v7. The [decoder-calibration diagnosis](V7_DECODER_CALIBRATION_DIAGNOSTIC.md)
+freezes its encoder/scaler and trains only the existing decoder for 128 CUDA
+updates. Mean TRAIN/known-VALIDATION MAE is 0.054039/0.056989, below each paired
+v4 reference, with exact unchanged native32 outputs. Cached classification is
+retained without refits. Actual CUDA admission and independent arithmetic audit
+passed. This creates no new embedding tag or promotion. See the [new continuation](../../../doc/CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
+for fresh-source replication with equal decoder budgets.
 
 The [embedding evaluation policy](../../../doc/EMBEDDING_EVALUATION_POLICY.md)
 governs shared protocols, reporting and acceptance. The

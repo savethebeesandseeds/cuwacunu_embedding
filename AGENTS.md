@@ -77,9 +77,22 @@ intact / 57.03125% under extra deletion; mean TRAIN/VALIDATION MAE is
 29.194490 / 29.371655, including one especially unstable run. Actual CUDA
 admission and independent audit passed 74,721,050 checks. Stop this frozen
 mechanism without coefficient/rate/budget rescue. RPB-v4 remains active;
-v9 is the last measured candidate. Follow the [continuation note](doc/CONTINUATION_2026-10-08.md)
-to inspect saved TRAIN loss-scale/component evidence before proposing another
-mechanism. No TEST/stress or automatic promotion.
+v9 is the last measured embedding candidate. The original
+[continuation note](doc/CONTINUATION_2026-10-08.md) prescribed the saved TRAIN
+loss-scale/component diagnosis, now complete as recorded below. No TEST/stress
+or automatic promotion.
+The user's current working direction is RPB-v7, with
+RPB-v4 retained as the active reference. The separate
+[saved-TRAIN v9 scale lesson](code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_LOSS_SCALE_TRAIN_DIAGNOSTIC.md)
+and [v7 decoder calibration](code/encoders/raw_patch_bottleneck_mae/V7_DECODER_CALIBRATION_DIAGNOSTIC.md)
+are complete. Decoder-only 128 on five frozen v7@512 instances gives mean
+TRAIN/known-VALIDATION MAE 0.054039/0.056989; all five beat their own v4 reference.
+Encoder/native/scaler exactness and independent saved-arithmetic audit passed.
+No classification refits, new embedding tag, TEST/stress or promotion occurred.
+Use the [new continuation direction](doc/CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
+for a fresh-source, equal-decoder-budget v4/v7 replication. The original dated
+continuation note remains historical.
+
 Older versions remain available for archived evidence, explicit comparisons,
 and compatibility tests. Do not routinely retrain all older architectures.
 Model tags identify designs; exact configurations, source revisions, datasets,

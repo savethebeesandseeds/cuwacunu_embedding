@@ -24,8 +24,11 @@ fills the missing controls without retraining the encoder or opening TEST inputs
 The separate [completed native curve](../code/encoders/raw_patch_bottleneck_mae/NATIVE_CURVE_ADVANCE.md)
 trains fresh RPB-v4 instances on verified CUDA, selects 512 updates on native
 linear VALIDATION, and reports fresh synthetic TEST plus fixed-readout stress.
-It introduces no post-encoder PCA or classifier tuning. Phase 3 is the next
-encoder mechanism experiment, as recorded in the advance plan.
+It introduces no post-encoder PCA or classifier tuning. Current work continues
+from RPB-v7. Its separate [decoder calibration](../code/encoders/raw_patch_bottleneck_mae/V7_DECODER_CALIBRATION_DIAGNOSTIC.md)
+improves reconstruction with an exact unchanged encoder and cached quality.
+The [new continuation](CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
+defines a fresh-source replication with equal decoder budgets for v4/v7.
 
 `representation-encoder.pdf` is the one-page outreach brief. Editable sources are
 `representation-encoder.tex` and `references.bib`.

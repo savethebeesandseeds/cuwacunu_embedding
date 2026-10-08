@@ -151,4 +151,17 @@ reconstruct substantially worse than v4. Actual CUDA admission and independent
 audit passed 74,721,050 checks, establishing the recorded computations rather
 than useful optimization. Stop this recipe without coefficient/rate/budget
 rescue. RPB-v4 remains active; RPB-v9 is the last measured candidate.
-The [continuation note](CONTINUATION_2026-10-08.md) defines tomorrow's diagnosis.
+The [original continuation note](CONTINUATION_2026-10-08.md) records the pre-diagnosis state.
+
+Current work continues from RPB-v7. Its separate
+[decoder calibration](../code/encoders/raw_patch_bottleneck_mae/V7_DECODER_CALIBRATION_DIAGNOSTIC.md)
+freezes all encoder parameters, buffers and scaler, then optimizes only its
+existing decoder for 128 CUDA updates. Mean TRAIN/known-VALIDATION MAE is
+0.054039/0.056989; every run is below its paired v4 fixed512 reference.
+Independent arithmetic audit and exact native32 invariants passed. Classification
+scores are reused without fitting. This leaves the RPB-v7 embedding unchanged,
+creates no new design tag, and does not revise historical fixed512 dispositions
+or promote it. RPB-v4 remains the active reference. The new
+[continuation direction](CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
+defines fresh-source, equal-decoder-budget replication; the original dated note
+and reports remain historical.
