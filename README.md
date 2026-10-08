@@ -63,8 +63,20 @@ v7 mean TRAIN/known-VALIDATION MAE to 0.054039/0.056989, with exact unchanged
 encoder/native outputs and zero head fits. Every run beats its paired v4
 reconstruction reference; independent arithmetic audit passed. V7 is the working
 starting point, v4 remains the active reference, and no new embedding tag or
-promotion follows this diagnosis. The [next continuation](doc/CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
-defines a fresh-source replication with equal decoder training for v4/v7.
+promotion follows this diagnosis. Its dated
+[continuation](doc/CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
+preserves that prospective plan.
+The completed [fresh equal-budget replication](code/encoders/raw_patch_bottleneck_mae/FRESH_DECODER_REPLICATION_DIAGNOSTIC.md)
+trains five new paired v4/v7 instances once on CUDA. V7/v4 linear VALIDATION
+means are 92.96875%/92.34375% intact and 89.84375%/82.03125% with additional
+30% coordinate deletion, all at 100% coverage. V7's intact gain is uncertain,
+its worst intact run falls to 80.46875%, and the joint guard fails. Decoder128
+improves v7 MAE to 0.056375/0.059200, but equal-budget v4 is lower at
+0.053609/0.056835. Independent saved-evidence audit passed 67,932,331 checks;
+there is no TEST/stress access or promotion. Keep v7 as the working direction,
+v4 as the active reference, and follow the
+[current continuation](doc/CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md)
+to diagnose saved TRAIN representation reliability before another training change.
 Older designs remain available as archived references. See the
 [version registry](doc/EMBEDDING_VERSIONS.md),
 [results reporting standard](doc/RESULTS_REPORTING_STANDARD.md), and

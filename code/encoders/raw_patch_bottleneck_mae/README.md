@@ -117,8 +117,23 @@ freezes its encoder/scaler and trains only the existing decoder for 128 CUDA
 updates. Mean TRAIN/known-VALIDATION MAE is 0.054039/0.056989, below each paired
 v4 reference, with exact unchanged native32 outputs. Cached classification is
 retained without refits. Actual CUDA admission and independent arithmetic audit
-passed. This creates no new embedding tag or promotion. See the [new continuation](../../../doc/CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
-for fresh-source replication with equal decoder budgets.
+passed. This creates no new embedding tag or promotion. Its
+[dated continuation](../../../doc/CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
+preserves the prospective equal-budget plan.
+
+The completed [fresh v4/v7 replication](FRESH_DECODER_REPLICATION_DIAGNOSTIC.md)
+uses five new paired TRAIN/VALIDATION cohorts, encoder512 and frozen decoder128
+for both policies. V7/v4 linear means are 92.96875%/92.34375% intact and
+89.84375%/82.03125% under extra deletion, with 100% coverage. V7's intact
+worst-master score is lower and its intact mean effect interval crosses zero.
+The equal-decoder MAE guards also fail, although recovery against pre-calibration
+v4 passes. Independent saved-evidence audit passed 67,932,331 checks. Native
+exports remain exact across calibration; classification fits and scores are
+reused afterward. No new tag, TEST/stress access or promotion. The
+[current continuation](../../../doc/CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md)
+focuses on saved TRAIN reliability across all ten instances before changing
+training. Generalized frozen-decoder calibration stays in this encoder; the new
+tensor-only fixed-head evaluator stays in shared code.
 
 The [embedding evaluation policy](../../../doc/EMBEDDING_EVALUATION_POLICY.md)
 governs shared protocols, reporting and acceptance. The

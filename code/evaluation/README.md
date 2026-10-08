@@ -358,3 +358,42 @@ CPU. Typed decoder assets compose with their immutable parents and preserve
 original encoder512 and additional decoder128 counters separately. They are
 not ordinary checkpoints. The encoder retains the RPB-v7 tag; classification
 results are reused only with exact unchanged encoder/native-output witnesses.
+
+## Fresh equal-budget decoder replication
+
+The frozen [fresh decoder card](cards/fresh_decoder_replication_v1.md) compares
+RPB-v4 and RPB-v7 on five new TRAIN/VALIDATION source cohorts. Both receive 512
+encoder updates and then 128 updates of their existing decoder with the encoder,
+buffers and scaler frozen. The encoder module owns both typed calibration paths;
+this driver owns the prospective recipe, paired sources, fixed queries and
+composition. Its input allowlist contains no historical quality payloads.
+
+From the existing managed GPU container at `/embedding`:
+
+```bash
+bash code/scripts/check-fresh-decoder-replication.sh
+bash code/scripts/task.sh rpb-paired-pooling evaluate-fresh-decoder-replication
+```
+
+Admission checks both parent policies on actual CUDA and the shared fixed-head
+fixtures before quality generation. The runner freezes the card, exact source
+inventory, binary and admission evidence, then allocates a new capsule. There
+are no recipe overrides, TEST/stress inputs or automatic promotion.
+
+`fixed_feature_readouts` accepts supplied TRAIN and two VALIDATION feature
+tensors, labels and source groups without importing an encoder. It owns the
+unchanged ridge/tanh-16 recipes, TRAIN-only normalization, fitted assets,
+predictions, support and grouped intervals. Raw/PCA-only controls are prepared
+once per cohort by the driver. PCA is never applied to native encoder features.
+Its optional paired comparison currently recognizes the card's `native_v4` and
+`native_v7` names. Other supplied feature methods still receive the same generic
+fits and scores; future paired cards must declare their comparison explicitly.
+Both validation views reuse one TRAIN fit. Decoder calibration also reuses those
+fits and scores only after exact CUDA feature equality is established; it does
+not run another classifier fit or CPU encoder forward.
+
+Build the shared fixture independently with
+`bash code/scripts/task.sh rpb-paired-pooling test-fixed-feature-readouts`.
+The fresh runner records encoder training, decoder loops, feature/query inference
+and the CPU readout loop separately. Decoder loop timing includes evidence
+capture, so it is descriptive elapsed time rather than a pure GPU cost benchmark.

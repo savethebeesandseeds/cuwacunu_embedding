@@ -132,15 +132,35 @@ Architecture-independent code and tests live under `code/shared/`. The evaluator
 registry, CLI and protocol cards live under `code/evaluation/`; exact model state,
 preprocessing and extraction stay in each encoder's evaluation adapter.
 
-The baseline chat owns its encoder and measured evaluation results. Shared code,
-the Makefile, common evaluation, setup/runners and repository documentation
-affect every encoder; coordinate those changes between active chats. During a
-structural refactor, pause source edits and builds until the validating session
-hands the paths back. Already-built jobs can continue using their private inputs
-and output destinations.
+When multiple chats work concurrently, agree on ownership of encoder source
+and measured results. Shared code, the Makefile, common evaluation, setup/runners
+and repository documentation affect every encoder; coordinate those changes
+between active chats. During a structural refactor, pause source edits and builds
+until the validating session hands the paths back. Already-built jobs can
+continue using their private inputs and output destinations. As of 2026-10-08,
+the other project chat is stopped, so the active chat can complete shared changes.
 
 All sessions share the same container's CPU, memory and GPU capacity. Keep build
 parallelism modest while another session compiles, and coordinate GPU runs when
 their combined memory requirements are unknown. The existing container
 definition, pinned packages and library bundle remain the authoritative
 environment; no additional container is needed for named build sessions.
+
+## Fresh decoder replication
+
+Use the existing managed GPU container and the named `rpb-paired-pooling` build
+session for the frozen fresh-source v4/v7 comparison:
+
+```powershell
+.\container.ps1 -Action exec -Command @('bash', 'code/scripts/check-fresh-decoder-replication.sh')
+.\container.ps1 -Action exec -Command @('bash', 'code/scripts/task.sh', 'rpb-paired-pooling', 'evaluate-fresh-decoder-replication')
+```
+
+The admission script owns its task calls; do not nest it inside `task.sh`.
+Quality generation requires matching source/card/binary hashes and a passed
+actual-CUDA admission. Every invocation creates a new output capsule, with no
+historical quality inputs or recipe overrides. Inspect and reuse completed
+saved evidence for reporting instead of running this command to repeat scores.
+Encoder/decoder optimization and needed model inference use CUDA. Fixed heads,
+raw PCA and saved-arithmetic verification run separately on CPU in this same
+container. See the [evaluation instructions](../code/evaluation/README.md).

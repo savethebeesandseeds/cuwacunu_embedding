@@ -390,12 +390,28 @@ fixed512 error. Exact encoder/native/scaler invariants and the independent
 unchanged; there were zero new encoder updates or head fits. This demonstrates
 decoder recoverability on these cohorts, with no new embedding tag or promotion.
 
-Next, prepare one fresh-source replication of this two-phase recipe, using five
-new TRAIN/VALIDATION cohorts and fixed heads. Give both v4 and v7 the same 128
-decoder-calibration updates after 512 encoder updates. This checks whether the
-result transfers and separates decoder adaptation from the extra training
-budget. Freeze its new card before generation, run each encoder once on CUDA,
-reuse saved features and heads after decoder calibration, and keep TEST/stress
-closed. Current decoder admission is intentionally v7-only; a separate explicit
-v4 admission path must be tested before that comparison. Follow the new
-[continuation direction](../../../doc/CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md).
+The separately frozen [fresh equal-budget replication](FRESH_DECODER_REPLICATION_DIAGNOSTIC.md)
+is now complete. Both v4 and v7 received encoder512 and decoder128 on five new
+cohorts after explicit actual-CUDA admission for both policies. Linear means
+favor v7 by 0.625 percentage points intact and 7.8125 under additional deletion,
+but the intact paired-master interval crosses zero and v7's worst intact score
+falls to 80.46875%. Mean post-calibration TRAIN/VALIDATION MAE is
+0.056375/0.059200 for v7 versus 0.053609/0.056835 for equal-budget v4. Recovery
+passes against v4 before calibration; equal-budget guards and the intact
+worst-master guard fail. Independent saved-evidence audit passed 67,932,331
+checks. Exact frozen features justify reusing classification after calibration.
+There was no TEST/stress access, promotion or new tag. The
+[earlier continuation](../../../doc/CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
+remains the historical prospective record.
+
+Next, follow the [saved-TRAIN reliability plan](FROZEN_NATIVE_RELIABILITY_PLAN.md)
+and [current continuation](../../../doc/CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md).
+Compare all five paired v4/v7 TRAIN exports and retained fixed-head margins,
+within-source separation, feature variation and encoder training traces before
+proposing another change. Master12412 is already weaker on TRAIN as well as
+VALIDATION; this cannot be described only as a held-out generalization failure.
+The diagnosis is descriptive: zero model updates, head refits, new quality
+generation or held-out analysis payloads. Keep failed and successful runs in the
+same table. Stop decoder/rate/budget/head tuning; retain v7 as working direction
+and v4 as reference. Only a concrete supported hypothesis should lead to a new
+prospective encoder-training comparison.

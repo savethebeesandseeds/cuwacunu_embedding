@@ -162,6 +162,20 @@ Independent arithmetic audit and exact native32 invariants passed. Classificatio
 scores are reused without fitting. This leaves the RPB-v7 embedding unchanged,
 creates no new design tag, and does not revise historical fixed512 dispositions
 or promote it. RPB-v4 remains the active reference. The new
-[continuation direction](CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
-defines fresh-source, equal-decoder-budget replication; the original dated note
-and reports remain historical.
+[dated continuation](CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
+defines the prospective fresh-source replication; dated notes and reports remain
+historical.
+
+The completed [fresh equal-budget replication](../code/encoders/raw_patch_bottleneck_mae/FRESH_DECODER_REPLICATION_DIAGNOSTIC.md)
+compares five new paired v4/v7 instances at encoder512 plus frozen decoder128.
+V7/v4 intact linear means are 92.96875%/92.34375%, while additional-deletion
+means are 89.84375%/82.03125%, all at 100% coverage. The intact effect interval
+crosses zero, and v7's worst intact run is 80.46875% versus v4's 89.0625%.
+Post-calibration v7 TRAIN/VALIDATION MAE is 0.056375/0.059200; v4 is lower at
+0.053609/0.056835 with the same decoder budget. Recovery versus v4 before
+calibration passes, but the joint development guard fails three of six numeric
+conditions. Independent audit passed 67,932,331 checks. Encoder/native outputs
+are unchanged by calibration; there is no new design tag or automatic promotion.
+V7 remains the working direction and v4 the active reference. The
+[current continuation](CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md)
+prescribes an all-master saved-TRAIN reliability diagnosis before further tuning.

@@ -89,9 +89,23 @@ are complete. Decoder-only 128 on five frozen v7@512 instances gives mean
 TRAIN/known-VALIDATION MAE 0.054039/0.056989; all five beat their own v4 reference.
 Encoder/native/scaler exactness and independent saved-arithmetic audit passed.
 No classification refits, new embedding tag, TEST/stress or promotion occurred.
-Use the [new continuation direction](doc/CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
-for a fresh-source, equal-decoder-budget v4/v7 replication. The original dated
-continuation note remains historical.
+The [dated continuation](doc/CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
+preserves the prospective equal-budget replication plan. That
+[fresh replication](code/encoders/raw_patch_bottleneck_mae/FRESH_DECODER_REPLICATION_DIAGNOSTIC.md)
+is now complete on masters9109/10210/11311/12412/13513. V7/v4 intact linear
+means are 92.96875%/92.34375%; extra-deletion means are 89.84375%/82.03125%,
+all at 100% coverage. The intact effect interval crosses zero and v7's
+worst intact score is lower. Recovery versus pre-calibration v4 passes, but both
+equal-decoder reconstruction guards fail; the joint guard fails three of six
+numeric conditions. Independent saved-evidence audit passed 67,932,331 checks.
+No TEST/stress, selection, promotion or new tag occurred. Preserve the fresh
+card, measured sources, all five pairs, failed admission fixture evidence and
+sealed passed audit. Do not rewrite them to improve a result. Continue from v7
+with v4 as reference under the
+[current continuation](doc/CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md):
+first diagnose saved TRAIN representation reliability across all ten instances,
+with no encoder/decoder updates, head refits or VALIDATION/TEST/stress analysis
+inputs. Do not tune the heads, deletion rate, decoder budget or v9 coefficients.
 
 Older versions remain available for archived evidence, explicit comparisons,
 and compatibility tests. Do not routinely retrain all older architectures.
