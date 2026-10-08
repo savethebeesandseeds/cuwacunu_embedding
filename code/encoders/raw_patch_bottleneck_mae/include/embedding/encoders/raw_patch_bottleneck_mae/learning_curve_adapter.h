@@ -19,6 +19,9 @@ make_learning_curve_trainer(const Settings &settings);
 // odd attempts use the original .30 deletion. Ineligible attempts abort this recipe.
 // Checkpoints retain a policy tag; ordinary workflow resume must reject them.
 // No augmented resume API is exposed in this bounded experiment.
+// Placement1 is additionally bound to the new early-mixer timing protocol and
+// carries RPB-v10 architecture provenance; its historical snapshot callback
+// rejects placement1. Use make_early_mixer_trainer for CUDA-only snapshots.
 embedding::evaluation::CurveTrainerFactory
 make_learning_curve_trainer(const Settings &settings, ContextDeletionOptions options);
 

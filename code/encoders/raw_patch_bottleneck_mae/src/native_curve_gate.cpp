@@ -141,6 +141,8 @@ void cpu_export_parity(const ev::CurveSnapshot &snapshot, const std::string &pat
 
 std::string run_native_curve_cuda_gate(const Settings &settings, const std::string &output_directory) {
   validate_settings(settings);
+  require(settings.model.channel_mixer_placement == 0,
+      "historical native curve gate rejects early channel mixer placement");
   require(settings.model.device.is_cuda() && torch::cuda::is_available(), "explicit CUDA required; no CPU fallback");
   require(settings.model.channel_mixer_layers == 1 &&
           (settings.model.global_bottleneck_mode == 2 || settings.model.global_bottleneck_mode == 3)

@@ -101,6 +101,8 @@ Input protocol_input(const embedding::Batch &batch, const Config &config, const 
   validate_input(out, config); return out;
 }
 void fixed_architecture(const Config &c) {
+  require(c.channel_mixer_placement == 0,
+      "historical native view agreement rejects early channel mixer placement");
   require(c.global_bottleneck_mode == 2 && c.channel_mixer_layers == 1 && c.channel_count == 3 &&
       c.history_length == 32 && c.input_width == 3 && c.patch_length == 8 && c.encoder_width == 64 &&
       c.export_width == 32 && c.num_layers == 3 && c.num_heads == 4 && c.feedforward_width == 256 &&

@@ -213,6 +213,13 @@ std::string run_fixed_feature_readouts(const FixedFeatureReadoutRun &run) {
     methods.push_back({method.name, std::move(training), std::move(intact), std::move(deleted),
         method.inputs_train_prepared, method.preparation_unsupported_reason});
   }
+  const bool explicit_pair = !run.comparison_reference.empty() || !run.comparison_candidate.empty();
+  require(!explicit_pair || (safe(run.comparison_reference) && safe(run.comparison_candidate) &&
+      run.comparison_reference != run.comparison_candidate && names.count(run.comparison_reference) &&
+      names.count(run.comparison_candidate)), "explicit comparison requires two distinct declared methods");
+  const std::string reference = explicit_pair ? run.comparison_reference : "native_v4";
+  const std::string candidate = explicit_pair ? run.comparison_candidate : "native_v7";
+  const std::string pair_id = candidate + "_minus_" + reference;
   const fs::path output(run.output_directory);
   require(!output.empty() && !fs::exists(output) && fs::create_directories(output), "new exclusive readout directory required");
   const Isolation isolation;
@@ -276,17 +283,17 @@ std::string run_fixed_feature_readouts(const FixedFeatureReadoutRun &run) {
         ",\"ridge_fits\":"+std::to_string(reason.empty() ? 3 : 0)+",\"tiny_fits\":"+std::to_string(reason.empty() ? 3 : 0)+",\"validation_fits\":0}");
   }
   json << "],\"pairs\":["; bool first_pair = true;
-  if (names.count("native_v4") && names.count("native_v7")) for (size_t r = 0; r < repetitions.size(); ++r) for (size_t view : {size_t(1), size_t(2)}) {
+  if (names.count(reference) && names.count(candidate)) for (size_t r = 0; r < repetitions.size(); ++r) for (size_t view : {size_t(1), size_t(2)}) {
     if (!first_pair) json << ',';
     first_pair = false;
     const auto id = "rep-"+std::to_string(repetitions[r]);
     const std::string view_name = view == 1 ? "validation_intact" : "validation_deleted";
-    const auto &left = results["native_v7"][r], &right = results["native_v4"][r];
-    json << "{\"id\":\"native_v7_minus_native_v4\",\"repetition\":" << quote(id) << ",\"view\":" << quote(view_name);
+    const auto &left = results[candidate][r], &right = results[reference][r];
+    json << "{\"id\":" << quote(pair_id) << ",\"repetition\":" << quote(id) << ",\"view\":" << quote(view_name);
     if (!left.measured || !right.measured) json << ",\"status\":\"unsupported_fit\",\"reason\":\"one declared method has no TRAIN-fitted readout\"}";
     else {
       const auto &a = left.predictions[view], &b = right.predictions[view]; const auto common = a.valid.logical_and(b.valid);
-      const auto seed = stream_seed(run.master_seed, named("native_v7_minus_native_v4/"+id+"/"+view_name));
+      const auto seed = stream_seed(run.master_seed, named(pair_id+"/"+id+"/"+view_name));
       json << ",\"status\":" << quote(common.any().item<bool>() ? "measured" : "unsupported_zero_common")
           << ",\"common_population\":" << population(common, val_truth, run.validation_source_ids)
           << ",\"bootstrap_seed_decimal\":" << quote(std::to_string(seed))

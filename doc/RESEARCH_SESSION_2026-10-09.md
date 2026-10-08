@@ -53,3 +53,23 @@ there is no extra decoder optimization. Source/admission/reader gates precede
 quality generation. Earlier mixing adds an unmixed temporal pass for independent
 local exports, so added computation is measured. No result or promotion exists
 for these planned groups yet.
+
+Third milestone completed at approximately 02:51 Dubai. The fresh
+[early-mixer diagnostic](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_RELIABILITY_DIAGNOSTIC.md)
+passed 96,352,345 independent checks and 1,215 CPU archive decodes. Timing
+linear means improve from 94.375% to 95.78125% intact and from 90.625% to
+94.21875% with additional deletion. Worst-cohort timing also improves, but two
+cohorts worsen and amplitude deletion accuracy declines. Reconstruction means
+improve slightly while three individual cohorts worsen. V10 stays experimental;
+there is no promotion, TEST, head tuning or post-encoder PCA. All ten fresh
+encoders trained once on CUDA; 210 pipelines/420 heads fit once. Byte checks
+preserve all 1,710 original V7 and calibration files unchanged.
+
+Next is the separately frozen
+[paired learning curve](../code/evaluation/cards/early_mixer_learning_curve_v1.md):
+fresh RPB-v7.alt-03 and RPB-v10.alt-01 on masters 30130/31231/32332/33433/34534.
+Each live optimizer saves 0/512/1024/2048 without reload or altered sampling,
+loss, deletion policy or heads. Timing is scored at every positive budget;
+amplitude uses only initial and final points. Controls fit once per task/cohort,
+and each quality feature/query is extracted once after training. The design
+tests repeatability and optimization progress without selecting the best point.

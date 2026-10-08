@@ -301,6 +301,7 @@ Settings parse_settings(const std::string &text) {
       MODEL_INTS(PARSE_MODEL_INT)
 #undef PARSE_MODEL_INT
       if(key=="global_bottleneck_mode"){settings.model.global_bottleneck_mode=integer(value);continue;}
+      if(key=="channel_mixer_placement"){settings.model.channel_mixer_placement=integer(value);continue;}
 #define PARSE_MODEL_DOUBLE(name) if(key==#name){settings.model.name=real(value);continue;}
       MODEL_DOUBLES(PARSE_MODEL_DOUBLE)
 #undef PARSE_MODEL_DOUBLE
@@ -336,6 +337,9 @@ std::string settings_text(const Settings &settings) {
   // and its content/configuration identity byte-for-byte unchanged.
   if(settings.model.global_bottleneck_mode>0)
     out<<"global_bottleneck_mode="<<settings.model.global_bottleneck_mode<<'\n';
+  // Placement zero is the historical path; preserve its canonical text/IDs.
+  if(settings.model.channel_mixer_placement>0)
+    out<<"channel_mixer_placement="<<settings.model.channel_mixer_placement<<'\n';
 #define WRITE_RUN(name) out<<#name "="<<settings.name<<'\n';
   RUN_INTS(WRITE_RUN)
   RUN_DOUBLES(WRITE_RUN)
@@ -433,6 +437,10 @@ void save_checkpoint(const std::string &path,const Checkpoint &checkpoint,torch:
   torch::serialize::OutputArchive archive,weights,state,scaler;
   envelope(archive,"rpb_training_checkpoint_v1");
   write_text(archive,"output_semantics",output_semantics(checkpoint.settings.model));
+  if(checkpoint.settings.model.channel_mixer_placement>0) {
+    archive.write("channel_mixer_placement",torch::tensor(checkpoint.settings.model.channel_mixer_placement),true);
+    write_text(archive,"architecture_id",architecture_id(checkpoint.settings.model));
+  }
   if(checkpoint.settings.model.global_bottleneck_mode>0) {
     archive.write("global_bottleneck_mode",torch::tensor(checkpoint.settings.model.global_bottleneck_mode),true);
     write_text(archive,"reconstruction_export_semantics",reconstruction_output_semantics(checkpoint.settings.model));
@@ -462,6 +470,15 @@ Checkpoint load_checkpoint(const std::string &path,const torch::Device &device) 
   const auto text=read_text(archive,"settings");Fingerprint hash;hash.text(text);
   require(read_text(archive,"configuration_id")==hash.id("rpb-config-fnv1a-v1"),"checkpoint config identity mismatch");
   Checkpoint checkpoint;checkpoint.settings=parse_settings(text);checkpoint.settings.model.device=device;
+  torch::Tensor placement_tag,architecture_tag;
+  const bool has_placement=archive.try_read("channel_mixer_placement",placement_tag,true);
+  const bool has_architecture=archive.try_read("architecture_id",architecture_tag,true);
+  // Validate new architecture metadata before constructing or loading a model.
+  require(checkpoint.settings.model.channel_mixer_placement==0 ? (!has_placement && !has_architecture) :
+      (has_placement && placement_tag.scalar_type()==torch::kInt64 && placement_tag.dim()==0 &&
+       placement_tag.item<int64_t>()==checkpoint.settings.model.channel_mixer_placement &&
+       has_architecture && tensor_text(architecture_tag)==architecture_id(checkpoint.settings.model)),
+      "checkpoint channel mixer placement/architecture metadata mismatch");
   require(read_text(archive,"output_semantics")==output_semantics(checkpoint.settings.model),
       "checkpoint output semantics mismatch");
   torch::Tensor global_mode_tag,reconstruction_tag;
@@ -531,11 +548,15 @@ int run_cli(int argc,char **argv) {
     Checkpoint checkpoint;
     if(!resume.empty()) {
       checkpoint=load_checkpoint(resume,device_from(optional(args,"--device","cpu")));
+      require(checkpoint.settings.model.channel_mixer_placement==0,
+          "ordinary train/resume rejects early mixer placement; use its matching training adapter");
       require(checkpoint.training_policy_id.empty(),
           "ordinary train cannot resume this saved training policy; use its matching training adapter: "+checkpoint.training_policy_id);
     }
     else checkpoint.settings=args.count("--config")?read_settings(args.at("--config")):default_settings();
     auto &settings=checkpoint.settings;
+    require(settings.model.channel_mixer_placement==0,
+        "ordinary train/resume rejects early mixer placement; use its matching training adapter");
     if(args.count("--device"))settings.model.device=device_from(args.at("--device"));
     if(args.count("--steps"))settings.steps=integer(args.at("--steps"));
     if(args.count("--attempt-limit"))settings.attempt_limit=integer(args.at("--attempt-limit"));
@@ -623,6 +644,10 @@ int run_cli(int argc,char **argv) {
     }
     torch::serialize::OutputArchive archive;envelope(archive,"rpb_embedding_export_v1");
     write_text(archive,"output_semantics",output_semantics(checkpoint.settings.model));write_text(archive,"schema_id",dataset.schema_id);
+    if(checkpoint.settings.model.channel_mixer_placement>0) {
+      archive.write("channel_mixer_placement",torch::tensor(checkpoint.settings.model.channel_mixer_placement),true);
+      write_text(archive,"architecture_id",architecture_id(checkpoint.settings.model));
+    }
     if(checkpoint.settings.model.global_bottleneck_mode>0) {
       archive.write("global_bottleneck_mode",torch::tensor(checkpoint.settings.model.global_bottleneck_mode),true);
       write_text(archive,"reconstruction_export_semantics",reconstruction_output_semantics(checkpoint.settings.model));

@@ -37,6 +37,8 @@ std::string source_manifest(const std::vector<std::string> &ids) {
 }
 void validate_training(const Checkpoint &checkpoint,const ev::ProviderFitInput &fit) {
   const auto &config=checkpoint.settings.model;
+  require(config.channel_mixer_placement==0,
+      "historical context deletion admission rejects early channel mixer placement");
   require(config.global_bottleneck_mode==2 && config.channel_mixer_layers==1 && config.export_width==32 &&
       fit.shape.dtype==torch::kFloat64 && fit.shape.device.is_cpu() &&
       fit.shape.channel_count==config.channel_count && fit.shape.history_length==config.history_length &&

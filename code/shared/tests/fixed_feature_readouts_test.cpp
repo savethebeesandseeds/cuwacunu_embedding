@@ -159,6 +159,32 @@ void suite(const fs::path &root) {
           test::check(torch::equal(tensor(left/(view+"-predictions.pt"),key),tensor(right/(view+"-predictions.pt"),key)),
               "held-out labels influenced fitted prediction: " + method + '/' + view + '/' + key);
     }
+  auto generic = fixture(root/"generic-pair");
+  for (auto &method : generic.methods) {
+    if (method.name == "native_v4") method.name = "reference";
+    if (method.name == "native_v7") method.name = "candidate";
+  }
+  generic.comparison_reference = "reference"; generic.comparison_candidate = "candidate";
+  const auto generic_report = ev::run_fixed_feature_readouts(generic); runtime.unchanged();
+  test::check(generic_report.find("\"id\":\"candidate_minus_reference\"") != std::string::npos &&
+      generic_report.find("native_v7_minus_native_v4") == std::string::npos,
+      "generic comparison retains an encoder-specific pair name");
+  for (const auto &names : std::vector<std::pair<std::string,std::string>>{{"native_v4","reference"},{"native_v7","candidate"}})
+    for (const std::string rep : {"rep-2701","rep-2802","rep-2903"}) {
+      const auto left = root/"ordinary"/names.first/rep, right = root/"generic-pair"/names.second/rep;
+      equal_fit(left/"fit.pt",right/"fit.pt");
+      for (const std::string view : {"training","validation-intact","validation-deleted"})
+        for (const std::string key : {"ridge","tiny_secondary","valid","probe_input_features","ridge_logits","tiny_hidden_preactivation","tiny_logits"})
+          test::check(torch::equal(tensor(left/(view+"-predictions.pt"),key),tensor(right/(view+"-predictions.pt"),key)),
+              "generic pair naming changed fit/prediction arithmetic");
+    }
+  auto missing_pair = fixture(root/"missing-pair"); missing_pair.comparison_reference = "native_v4";
+  rejects([&]{ ev::run_fixed_feature_readouts(missing_pair); },"one-sided comparison admitted");
+  test::check(!fs::exists(root/"missing-pair"),"invalid pair created output before validation");
+  missing_pair.comparison_candidate = "missing";
+  rejects([&]{ ev::run_fixed_feature_readouts(missing_pair); },"undeclared comparison admitted");
+  missing_pair.comparison_candidate = "native_v4";
+  rejects([&]{ ev::run_fixed_feature_readouts(missing_pair); },"self comparison admitted");
   rejects([&]{ ev::run_fixed_feature_readouts(run); },"existing result directory replaced");
   auto invalid = fixture(root/"leakage"); invalid.validation_source_ids[7] = invalid.training_source_ids[0];
   rejects([&]{ ev::run_fixed_feature_readouts(invalid); },"source leakage admitted");

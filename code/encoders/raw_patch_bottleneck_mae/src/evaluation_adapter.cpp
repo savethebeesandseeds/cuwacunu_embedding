@@ -130,6 +130,8 @@ ev::FeatureProviderFactory make_evaluation_provider(const EvaluationOptions &opt
       if(options.pretraining_updates>0)active.steps=options.pretraining_updates;
     }
     validate_settings(active);
+    require(active.model.channel_mixer_placement==0,
+        "historical CPU evaluation adapter rejects early channel mixer placement");
     require(!options.require_channel_mixer || active.model.channel_mixer_layers>0,
         "the channel-mixer registration requires an enabled mixer configuration/checkpoint");
     require(active.model.channel_count==fit.shape.channel_count &&

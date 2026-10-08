@@ -72,6 +72,16 @@ struct ModelImpl : torch::nn::Module {
       auto lookup_positions = patches.positions.clamp_min(0);
       auto h = projected + positions(lookup_positions) + channels(patches.channel_indices).unsqueeze(1);
       h = torch::where(patches.valid.unsqueeze(-1), h, torch::zeros_like(h));
+      // Retain the original ordinary temporal path for independent local
+      // diagnostics. The early contextual path uses the same registered blocks,
+      // with ordinary autograd on both passes and no new parameters or RNG.
+      torch::Tensor early_contextual;
+      if (config_.channel_mixer_placement == 1) {
+        early_contextual = mix_aligned_channels(h, patches, B);
+        for (auto &block : blocks) early_contextual = block(early_contextual, patches.valid);
+        early_contextual = torch::where(patches.valid.unsqueeze(-1), final_norm(early_contextual),
+                                         torch::zeros_like(early_contextual));
+      }
       for (auto &block : blocks) h = block(h, patches.valid);
       h = torch::where(patches.valid.unsqueeze(-1), final_norm(h), torch::zeros_like(h));
       if (config_.global_bottleneck_mode == 3)
@@ -83,7 +93,8 @@ struct ModelImpl : torch::nn::Module {
       auto z = export_projection(pooled);
       local = local.index_copy(0, patches.row_indices, z);
       if (config_.channel_mixer_layers > 0) {
-        auto mixed = mix_aligned_channels(h, patches, B);
+        auto mixed = config_.channel_mixer_placement == 1 ? early_contextual :
+                                                           mix_aligned_channels(h, patches, B);
         if (config_.global_bottleneck_mode == 3)
           contextual_patch_global = learned_patch_global(mixed, patches, B, input.channel_ids);
         auto contextual_scores = pool_score(torch::tanh(mixed)).squeeze(-1) +

@@ -66,6 +66,8 @@ double floating(torch::serialize::InputArchive &archive, const std::string &name
 }
 void validate_training(const Checkpoint &checkpoint, const ev::ProviderFitInput &fit) {
   const auto &config = checkpoint.settings.model;
+  require(config.channel_mixer_placement == 0,
+      "historical context replication admission rejects early channel mixer placement");
   require(fit.protocol_id == protocol && config.global_bottleneck_mode == 2 &&
       config.channel_mixer_layers == 1 && config.export_width == 32 &&
       fit.shape.dtype == torch::kFloat64 && fit.shape.device.is_cpu() &&

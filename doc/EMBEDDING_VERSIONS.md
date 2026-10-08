@@ -221,11 +221,23 @@ linear accuracy. With extra30% deletion, v4.alt-01/v7.alt-01 linear means are
 data and head fits on reused encoders, with zero encoder updates. They do not
 identify a timing mechanism or promote a model.
 
-**RPB-v10 — Global bottleneck with earlier channel mixing** is registered for
-the prospective [early-mixer comparison](../code/evaluation/cards/early_mixer_reliability_v1.md).
+**RPB-v10 — Global bottleneck with earlier channel mixing** is measured in the
+[early-mixer comparison](../code/evaluation/cards/early_mixer_reliability_v1.md).
 Its existing aligned mixer acts before temporal blocks; independent local
 exports retain a separate unmixed pass. Native32, parameter count, objective,
 coordinate15 training policy and classifier recipes stay fixed. More compute
-is expected and must be measured. **RPB-v7.alt-02** is its fresh matched control
-group on masters19119/20220/21321/22422/23523. Both are planned, with no quality
-result yet; no existing saved group is replaced.
+is measured separately. **RPB-v7.alt-02** is its fresh matched control
+group on masters19119/20220/21321/22422/23523. The independently verified
+[diagnostic](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_RELIABILITY_DIAGNOSTIC.md)
+reports timing linear means 94.375%/95.78125% intact and 90.625%/94.21875%
+with additional deletion, late/early respectively. Early mixing improves the
+worst timing cohort but two cohorts worsen; amplitude deletion accuracy also
+declines. Mean TRAIN/VALIDATION MAE is 0.071024/0.073853 for v10 versus
+0.072575/0.074894 for the matched late group. Audit passed 96,352,345 checks.
+V10 remains experimental without promotion; no existing group is replaced.
+
+The next separately frozen [paired learning curve](../code/evaluation/cards/early_mixer_learning_curve_v1.md)
+uses fresh **RPB-v7.alt-03** and **RPB-v10.alt-01** groups. Each continuous
+optimizer saves 0/512/1024/2048 points on five new timing cohorts. Classifier
+recipes remain fixed; amplitude transfer is measured only at the final point
+and initial controls. These groups are planned and have no measured result yet.

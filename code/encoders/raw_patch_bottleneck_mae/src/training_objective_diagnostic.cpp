@@ -346,6 +346,8 @@ void validate_policy(torch::serialize::InputArchive &audit, const TrainingObject
 Cohort admit(const TrainingObjectiveDiagnosticInstance &instance) {
   Cohort out; auto checkpoint_cpu = load_checkpoint(instance.checkpoint_path, torch::kCPU);
   const auto &c = checkpoint_cpu.settings.model;
+  require(c.channel_mixer_placement == 0,
+      "historical training objective diagnostic rejects early channel mixer placement");
   require(c.global_bottleneck_mode == 2 && c.channel_mixer_layers == 1 && c.channel_count == 3 && c.history_length == 32 &&
       c.input_width == 3 && c.patch_length == 8 && c.encoder_width == 64 && c.export_width == 32 && c.dropout == 0 &&
       c.huber_delta == 1 && c.num_layers==3 && c.num_heads==4 && c.feedforward_width==256 && c.decoder_hidden_width==128 &&

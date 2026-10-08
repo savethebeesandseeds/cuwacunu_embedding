@@ -197,6 +197,8 @@ std::shared_ptr<Parent> admit(const std::string &path, const ev::ProviderFitInpu
   auto out = std::make_shared<Parent>(); out->path = path_key(path); out->bindings = parent_bindings(out->path);
   out->checkpoint = load_checkpoint(out->path, torch::kCUDA);
   auto &cp = out->checkpoint; const auto &c = cp.settings.model;
+  require(c.channel_mixer_placement == 0,
+      "historical/fresh v4/v7 parent admission rejects early mixer placement");
   require(cp.training_policy_id == selected.parent_policy && cp.completed_steps == updates && cp.attempted_steps == updates,
       "exact declared unskipped parent policy/counters required");
   require(cp.settings.batch_size > 0 && updates <= std::numeric_limits<int64_t>::max() / cp.settings.batch_size,

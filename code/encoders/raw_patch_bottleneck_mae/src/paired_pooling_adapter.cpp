@@ -71,6 +71,8 @@ bool specific_pool(const std::string &name) {
 ev::CurveSnapshot make_retained_curve_snapshot(const std::string &path,const ev::ProviderFitInput &fit) {
   const RngIsolation isolation;
   auto checkpoint=std::make_shared<Checkpoint>(load_checkpoint(path,torch::kCUDA));
+  require(checkpoint->settings.model.channel_mixer_placement==0,
+      "historical retained pooling adapter rejects early channel mixer placement");
   require(checkpoint->settings.model.global_bottleneck_mode==2 &&
       checkpoint->settings.model.channel_mixer_layers==1 && checkpoint->settings.model.export_width==32,
       "retained reference must be the native RPB-v4 global bottleneck");

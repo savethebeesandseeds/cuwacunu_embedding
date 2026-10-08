@@ -10,8 +10,16 @@ namespace embedding::encoders::raw_patch_bottleneck_mae {
 
 inline constexpr const char *kEncoderId = "raw_patch_bottleneck_mae_v1";
 inline constexpr const char *kOutputSemantics = "local_observed_global_equal_valid_v1";
+inline constexpr const char *kEarlyMixerArchitectureId = "aligned-mixer-before-temporal-v1";
+inline constexpr const char *kLateMixerArchitectureId = "aligned-mixer-after-temporal-v1";
+
+inline const char *architecture_id(const Config &config) {
+  return config.channel_mixer_placement == 1 ? kEarlyMixerArchitectureId : kLateMixerArchitectureId;
+}
 
 inline const char *output_semantics(const Config &config) {
+  if (config.channel_mixer_placement == 1)
+    return "local_observed_contextual_pretemporal_aligned_global_semantic_mlp_bottleneck_v1";
   if (config.global_bottleneck_mode == 3)
     return config.channel_mixer_layers > 0 ?
         "local_diagnostic_observed_contextual_aligned_patch_state_global_semantic_mlp_bottleneck_v1" :
@@ -29,6 +37,8 @@ inline const char *output_semantics(const Config &config) {
 }
 
 inline const char *reconstruction_output_semantics(const Config &config) {
+  if (config.channel_mixer_placement == 1)
+    return "exact_pretemporal_contextual_observed_global_semantic_mlp_export_v1";
   if (config.global_bottleneck_mode == 3)
     return config.channel_mixer_layers > 0 ?
         "exact_contextual_observed_patch_state_global_semantic_mlp_export_v1" :
@@ -46,6 +56,8 @@ inline const char *reconstruction_output_semantics(const Config &config) {
 }
 
 inline const char *global_readout_description(const Config &config, bool contextual) {
+  if (config.channel_mixer_placement == 1 && contextual)
+    return "at least one channel has visible observations; original-patch-aligned projected states mix across channels before temporal blocks; semantic-ordered contextual vectors and support bits through the learned global MLP";
   if (config.global_bottleneck_mode == 3)
     return contextual ?
         "at least one visible patch; semantic-channel-ordered original-patch-aligned contextual W states and slot-visible bits through a learned global MLP before diagnostic D compression" :

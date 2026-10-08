@@ -147,6 +147,9 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
   const auto report = progress_report(state);
   audit.write("weights_changed", torch::tensor(report.weights_changed, torch::kBool), true);
   audit.write("finite_gradients", torch::tensor(report.finite_gradients, torch::kBool), true);
+  if (state->audit.count("architecture_id"))
+    audit.write("channel_mixer_placement_value",
+        torch::tensor(state->settings.model.channel_mixer_placement, torch::kInt64), true);
   if (state->context_options.enabled) {
     audit.write("context_deletion_ratio_value",
         torch::tensor(context_deletion::descriptor(state->context_options.recipe).ratio, torch::kFloat64), true);
@@ -169,6 +172,8 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
 
 ev::CurveSnapshot snapshot_point(const std::shared_ptr<CurveState> &state,
                                 const std::string &path) {
+  require(state->settings.model.channel_mixer_placement == 0,
+      "early mixer snapshots require the protocol-bound CUDA adapter; historical CPU serving is forbidden");
   require(!state->balanced_failed, "balanced policy previously aborted; snapshots are forbidden");
   const auto saved = state->saved.find(path_key(path));
   require(saved != state->saved.end(), "snapshot requires a point saved by this trainer");
@@ -288,6 +293,11 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
       settings.model.channel_mixer_layers == 1 && settings.model.export_width == 32),
       "context deletion requires the unchanged mode2/mixer1/native32 architecture");
   return [settings, options](const ev::ProviderFitInput &fit) {
+    const bool early_protocol = fit.protocol_id == "early-mixer-reliability-v1/lag_sign" ||
+        fit.protocol_id == "early-mixer-reliability-engineering-v1/lag_sign";
+    require(settings.model.channel_mixer_placement == 0 ||
+        (early_protocol && options.enabled && options.recipe == ContextDeletionRecipe::coordinate15_v1),
+        "early placement requires the separately bound coordinate15 protocol");
     require(fit.shape.channel_count == settings.model.channel_count &&
         fit.shape.history_length == settings.model.history_length &&
         fit.shape.input_width == settings.model.input_width,
@@ -369,7 +379,7 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
         {"sampling_policy", "with_replacement_counter_rows;sampled_rows_includes_no_update_attempts"}};
     if (options.enabled) {
       const auto &selected = context_deletion::descriptor(options.recipe);
-      state->audit.emplace("model_tag", selected.model_tag);
+      state->audit.emplace("model_tag", settings.model.channel_mixer_placement == 1 ? "RPB-v10" : selected.model_tag);
       state->audit.emplace("training_policy_id", selected.policy_id);
       state->audit.emplace("context_deletion_ratio", selected.ratio_text);
       state->audit.emplace("context_deletion_stream", "0x6374782d64726f70");
@@ -384,6 +394,10 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
         state->audit.emplace("context_deletion_branch_count_policy", context_deletion::balanced_branch_count_policy);
         state->audit.emplace("context_deletion_skip_policy", context_deletion::balanced_skip_policy);
       }
+    }
+    if (early_protocol) {
+      state->audit.emplace("channel_mixer_placement", std::to_string(settings.model.channel_mixer_placement));
+      state->audit.emplace("architecture_id", architecture_id(settings.model));
     }
 
     ev::CurveTrainer trainer;

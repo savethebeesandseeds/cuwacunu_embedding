@@ -986,3 +986,54 @@ test-frozen-amplitude-legacy: $(RPB_TEST_DIR)/frozen_amplitude_legacy_test
 
 evaluate-frozen-amplitude-transfer: $(FROZEN_AMPLITUDE_TRANSFER_BIN)
 	FROZEN_AMPLITUDE_TRANSFER_BIN="$(abspath $(FROZEN_AMPLITUDE_TRANSFER_BIN))" FROZEN_AMPLITUDE_TRANSFER_SOURCE_INPUTS="$(FROZEN_AMPLITUDE_TRANSFER_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-frozen-amplitude-transfer.sh
+
+# Fresh matched early-mixer timing experiment. Historical targets and source
+# scopes remain separate; snapshots never construct a CPU encoder provider.
+EARLY_MIXER_RELIABILITY_BIN := $(BUILD_DIR)/embedding_early_mixer_reliability
+EARLY_MIXER_ADAPTER_OBJECT := $(RPB_OBJECT_DIR)/early_mixer_adapter.o
+EARLY_MIXER_LEGACY_FROZEN_OBJECT := $(RPB_OBJECT_DIR)/early_mixer_legacy_frozen.o
+EARLY_MIXER_RELIABILITY_INPUTS := $(sort $(RPB_PROVENANCE_INPUTS) $(EVALUATION_PROVENANCE_INPUTS) $(NATIVE_CURVE_PROVENANCE_INPUTS) $(PAIRED_POOLING_PROVENANCE_INPUTS) $(ARCHIVE_READOUT_PROVENANCE_INPUTS) $(V7_DECODER_CALIBRATION_INPUTS) $(FRESH_DECODER_REPLICATION_INPUTS) $(wildcard $(RPB_ROOT)/src/*.cpp) $(RPB_ROOT)/tests/early_mixer_model_test.cpp $(RPB_ROOT)/tests/early_mixer_adapter_test.cpp $(RPB_ROOT)/tests/rpb_test_support.h $(CODE_ROOT)/shared/tests/shared_test_support.h $(CODE_ROOT)/shared/tests/fixed_feature_readouts_test.cpp $(EVALUATION_ROOT)/src/early_mixer_reliability_main.cpp $(EVALUATION_ROOT)/include/frozen_role_guard.h $(EVALUATION_ROOT)/tests/frozen_role_guard_test.cpp $(EVALUATION_ROOT)/cards/early_mixer_reliability_v1.md $(CODE_ROOT)/scripts/check-early-mixer-reliability.sh $(CODE_ROOT)/scripts/evaluate-early-mixer-reliability.sh $(CODE_ROOT)/scripts/prepare-early-mixer-reliability.py $(CODE_ROOT)/scripts/prepare-fresh-decoder-replication.py)
+EARLY_MIXER_RELIABILITY_SOURCE_ID := $(shell sha256sum $(EARLY_MIXER_RELIABILITY_INPUTS) | sha256sum | cut -d ' ' -f 1)
+EARLY_MIXER_RELIABILITY_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(EARLY_MIXER_RELIABILITY_SOURCE_ID)\" -DEARLY_MIXER_ADAPTER_SOURCE_ID=\"$(EARLY_MIXER_RELIABILITY_SOURCE_ID)\"
+.PHONY: early-mixer-reliability print-early-mixer-reliability-sources test-rpb-early-mixer-model test-rpb-early-mixer-adapter evaluate-early-mixer-reliability
+early-mixer-reliability: $(EARLY_MIXER_RELIABILITY_BIN)
+print-early-mixer-reliability-sources:
+	@printf '%s\n' $(EARLY_MIXER_RELIABILITY_INPUTS)
+
+$(EVALUATION_OBJECT_DIR)/early_mixer_reliability_main.o: $(EVALUATION_ROOT)/src/early_mixer_reliability_main.cpp $(EARLY_MIXER_RELIABILITY_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(EARLY_MIXER_RELIABILITY_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(EARLY_MIXER_ADAPTER_OBJECT): $(RPB_ROOT)/src/early_mixer_adapter.cpp $(EARLY_MIXER_RELIABILITY_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(EARLY_MIXER_RELIABILITY_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(EARLY_MIXER_LEGACY_FROZEN_OBJECT): $(RPB_ROOT)/src/frozen_decoder_calibration.cpp $(EARLY_MIXER_RELIABILITY_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(EARLY_MIXER_RELIABILITY_CPPFLAGS) -DFROZEN_DECODER_CALIBRATION_SOURCE_ID=\"$(EARLY_MIXER_RELIABILITY_SOURCE_ID)\" -DFROZEN_NATIVE_FEATURE_SOURCE_ID=\"$(EARLY_MIXER_RELIABILITY_SOURCE_ID)\" $(CXXFLAGS) -c $< -o $@
+
+$(EARLY_MIXER_RELIABILITY_BIN): $(EVALUATION_OBJECT_DIR)/early_mixer_reliability_main.o $(EARLY_MIXER_ADAPTER_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS) $(FIXED_FEATURE_READOUTS_OBJECT)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(RPB_TEST_DIR)/early_mixer_model_test.o: $(RPB_ROOT)/tests/early_mixer_model_test.cpp $(EARLY_MIXER_RELIABILITY_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/early_mixer_model_test: $(RPB_TEST_DIR)/early_mixer_model_test.o $(RPB_WORKFLOW_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-early-mixer-model: $(RPB_TEST_DIR)/early_mixer_model_test
+	$(RPB_TEST_DIR)/early_mixer_model_test
+
+$(RPB_TEST_DIR)/early_mixer_adapter_test.o: $(RPB_ROOT)/tests/early_mixer_adapter_test.cpp $(EARLY_MIXER_RELIABILITY_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(EARLY_MIXER_RELIABILITY_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/early_mixer_adapter_test: $(RPB_TEST_DIR)/early_mixer_adapter_test.o $(EARLY_MIXER_ADAPTER_OBJECT) $(EARLY_MIXER_LEGACY_FROZEN_OBJECT) $(RPB_DECODER_CALIBRATION_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(HARNESS_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-early-mixer-adapter: $(RPB_TEST_DIR)/early_mixer_adapter_test
+	$(RPB_TEST_DIR)/early_mixer_adapter_test
+
+evaluate-early-mixer-reliability: $(EARLY_MIXER_RELIABILITY_BIN)
+	@EARLY_MIXER_RELIABILITY_BIN="$(abspath $(EARLY_MIXER_RELIABILITY_BIN))" EARLY_MIXER_RELIABILITY_SOURCE_INPUTS="$(EARLY_MIXER_RELIABILITY_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-early-mixer-reliability.sh

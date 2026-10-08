@@ -14,6 +14,9 @@ struct Config {
   int64_t channel_count{3}, history_length{32}, input_width{3}, patch_length{8};
   int64_t encoder_width{64}, export_width{32}, num_layers{3}, num_heads{4};
   int64_t channel_mixer_layers{0}; // 0 preserves the independent-channel encoder.
+  // 0 keeps the original post-temporal mixer. 1 mixes aligned projected states
+  // before temporal encoding and retains a separate independent local pass.
+  int64_t channel_mixer_placement{0};
   // 0: per-channel decoder; 1: mean global; 2: learned channel-summary global;
   // 3: learned original-patch-state global, before channel-summary compression.
   int64_t global_bottleneck_mode{0};
@@ -42,6 +45,11 @@ inline void validate_config(const Config &c) {
               "[rpb-mae] channel_mixer_layers must be nonnegative");
   TORCH_CHECK(c.global_bottleneck_mode >= 0 && c.global_bottleneck_mode <= 3,
               "[rpb-mae] global_bottleneck_mode must be 0, 1, 2 or 3");
+  TORCH_CHECK(c.channel_mixer_placement == 0 || c.channel_mixer_placement == 1,
+              "[rpb-mae] channel_mixer_placement must be 0 or 1");
+  TORCH_CHECK(c.channel_mixer_placement == 0 ||
+                  (c.global_bottleneck_mode == 2 && c.channel_mixer_layers == 1 && c.dropout == 0),
+              "[rpb-mae] early mixer requires mode2/mixer1/dropout0");
   TORCH_CHECK(c.history_length % c.patch_length == 0,
               "[rpb-mae] history must be divisible by patch length");
   if (c.global_bottleneck_mode == 3) {

@@ -27,8 +27,18 @@ linear VALIDATION, and reports fresh synthetic TEST plus fixed-readout stress.
 It introduces no post-encoder PCA or classifier tuning. Current work continues
 from RPB-v7. Its separate [decoder calibration](../code/encoders/raw_patch_bottleneck_mae/V7_DECODER_CALIBRATION_DIAGNOSTIC.md)
 improves reconstruction with an exact unchanged encoder and cached quality.
-The [new continuation](CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
-defines a fresh-source replication with equal decoder budgets for v4/v7.
+The [dated continuation](CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
+preserves that prospective replication plan; the fresh-source replication and
+subsequent saved-TRAIN diagnosis are now complete. Current work is recorded in
+the [9 October research journal](RESEARCH_SESSION_2026-10-09.md). The completed
+[frozen amplitude check](../code/encoders/raw_patch_bottleneck_mae/FROZEN_AMPLITUDE_TRANSFER_DIAGNOSTIC.md)
+uses new data and heads with retained encoders. The separately frozen
+[early-mixer comparison](../code/evaluation/cards/early_mixer_reliability_v1.md)
+implements RPB-v10 against fresh RPB-v7.alt-02. Its
+[verified result](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_RELIABILITY_DIAGNOSTIC.md)
+improves mean and worst-cohort timing accuracy with mixed cohort and amplitude
+tradeoffs. The next [paired learning curve](../code/evaluation/cards/early_mixer_learning_curve_v1.md)
+uses fresh v7.alt-03/v10.alt-01 groups and retains every 512/1024/2048 point.
 
 `representation-encoder.pdf` is the one-page outreach brief. Editable sources are
 `representation-encoder.tex` and `references.bib`.

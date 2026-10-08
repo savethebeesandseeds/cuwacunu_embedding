@@ -412,6 +412,8 @@ ev::CurveTrainerFactory make_context_replay_trainer(const ContextReplayOptions &
   // Canonical settings text records "cuda" without an index. The producer's
   // device witness retains an explicit index when one was used originally.
   settings.model.device = torch::Device(audit.fields.at("training_device"));
+  require(settings.model.channel_mixer_placement == 0 && parent.settings.model.channel_mixer_placement == 0,
+      "historical context replay rejects early channel mixer placement");
   require(settings_text(cpu_settings) == settings_text(parent.settings) && settings.model.device.is_cuda() &&
       settings.model.global_bottleneck_mode == 2 && settings.model.channel_mixer_layers == 1 && settings.model.export_width == 32 &&
       parent.training_policy_id == context_deletion::policy_id && parent.completed_steps == options.expected_replay_updates &&

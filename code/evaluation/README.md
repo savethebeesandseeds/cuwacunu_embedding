@@ -385,9 +385,12 @@ tensors, labels and source groups without importing an encoder. It owns the
 unchanged ridge/tanh-16 recipes, TRAIN-only normalization, fitted assets,
 predictions, support and grouped intervals. Raw/PCA-only controls are prepared
 once per cohort by the driver. PCA is never applied to native encoder features.
-Its optional paired comparison currently recognizes the card's `native_v4` and
-`native_v7` names. Other supplied feature methods still receive the same generic
-fits and scores; future paired cards must declare their comparison explicitly.
+Its optional paired comparison preserves the historical `native_v4` and
+`native_v7` default. New cards can set explicit `comparison_reference` and
+`comparison_candidate` method names, with the same common-support arithmetic
+and fixed recipe. Other supplied feature methods receive the same generic
+fits and scores. A source fixture verifies that naming a pair differently
+cannot change its fitted tensors or predictions.
 Both validation views reuse one TRAIN fit. Decoder calibration also reuses those
 fits and scores only after exact CUDA feature equality is established; it does
 not run another classifier fit or CPU encoder forward.
@@ -421,3 +424,25 @@ bash code/scripts/task.sh rpb-paired-pooling evaluate-frozen-amplitude-transfer
 Each measurement uses an exclusive source/admission/card/reader-bound capsule.
 The sealed reader and parent role matrix are required local evidence; this
 runner does not silently regenerate or replace historical parents.
+
+## Early channel mixing
+
+The [early-mixer card](cards/early_mixer_reliability_v1.md) composes encoder-owned
+continuous CUDA trainers and immutable snapshots with the same shared readouts.
+It compares fresh RPB-v7.alt-02 and RPB-v10, both native32, at512 updates.
+Two initial controls distinguish the different information paths before training.
+Timing reconstruction uses each original decoder; amplitude uses separate head
+data with the timing TRAIN scaler. The
+[verified diagnostic](../encoders/raw_patch_bottleneck_mae/EARLY_MIXER_RELIABILITY_DIAGNOSTIC.md)
+reports better timing means and worst cohorts with cohort and transfer tradeoffs.
+
+```bash
+bash code/scripts/check-early-mixer-reliability.sh
+bash code/scripts/task.sh rpb-paired-pooling evaluate-early-mixer-reliability
+```
+
+The source-bound admission and sealed independent reader must precede quality
+generation. Saved features serve both views and every head; independent CPU
+verification runs no encoder. The next separately frozen
+[learning-curve card](cards/early_mixer_learning_curve_v1.md) uses fresh groups
+at512/1024/2048, with no change to classifier recipes or existing saved groups.

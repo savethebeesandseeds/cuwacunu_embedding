@@ -24,6 +24,25 @@ and the validation chronology below retain their original recipes. Mode-0
 loader/configuration defaults remain compatible, and this research designation
 does not assert consumer acceptance.
 
+The [current research journal](../../../doc/RESEARCH_SESSION_2026-10-09.md)
+tracks the working RPB-v7 direction and preserved original five-instance group.
+The completed [amplitude transfer diagnostic](FROZEN_AMPLITUDE_TRANSFER_DIAGNOSTIC.md)
+uses unchanged v4.alt-01/v7.alt-01 encoders, original timing scalers and new
+amplitude classifiers. A feature-only CUDA adapter exposes the shared evaluation
+contract without retraining or reconstruction callbacks. The prospective
+[RPB-v10 card](../../evaluation/cards/early_mixer_reliability_v1.md) moves the
+existing aligned mixer before temporal blocks while retaining an independent
+local path, native32 and all225,805 parameters. It compares a separate fresh
+RPB-v7.alt-02 group at the same training budget. New checkpoints carry an explicit
+architecture identity; ordinary defaults and historical loaders remain intact.
+The [verified diagnostic](EARLY_MIXER_RELIABILITY_DIAGNOSTIC.md) improves mean
+and worst-cohort timing accuracy, but two timing cohorts and amplitude deletion
+accuracy worsen. V10 remains experimental. The separately frozen
+[paired learning curve](../../evaluation/cards/early_mixer_learning_curve_v1.md)
+uses fresh v7.alt-03/v10.alt-01 groups at 512/1024/2048 updates with unchanged
+heads and one feature/query export per needed surface. Existing saved groups
+remain unchanged.
+
 The [RPB-v5 comparison](PAIRED_POOLING_ADVANCE.md) and
 [optimization diagnostic](OPTIMIZATION_DIAGNOSTIC.md) are complete. Direct patch
 pooling did not improve the fixed-budget linear primaries; additional training
