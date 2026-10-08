@@ -20,9 +20,10 @@ size, device, encoder update budget, classifier recipes, and evaluation protocol
 Paired transformations are two examples from one source; three readout fits on
 one checkpoint are not three independently trained encoders.
 
-Also name the exact trained-instance bundle beside the table. For RPB-v7,
-`RPB-v7-reference` identifies the preserved original instances, while
-`RPB-v7-replication-01` identifies fresh retrainings of the same recipe. Different
+Use simple registered labels to distinguish trained run groups. For RPB-v7,
+`RPB-v7` identifies the preserved original instances, while
+`RPB-v7.alt-01` identifies fresh retrainings of the same recipe. Use those labels
+in comparisons, keeping descriptions beside the table. Different
 datasets/seeds are separate experiments; do not describe their scores as changes
 to the original saved weights or silently replace the frozen reference.
 
@@ -32,7 +33,8 @@ scores, uncertainty, and provenance in linked artifacts.
 
 ## Quality table
 
-Use only the registered model tag in encoder rows. Place its short embedding
+Use only the registered model label in encoder rows, including `.alt-NN` when
+comparing a separate run group. Place its short embedding
 description in prose immediately above or below the table.
 
 | Method | Size | Linear head % | Neural head % | Coverage % |

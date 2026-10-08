@@ -13,7 +13,8 @@ The main quality table uses Method, Size, Linear head %, Neural head %, and
 Coverage %. The training table uses Encoder, Updates, Train error, Validation
 error, and GPU training seconds. Identify the task, split sizes, batch size,
 device, repetitions, head recipes, checkpoint budget, and evidence stage.
-Use only the model tag in encoder table cells. Put short embedding descriptions
+Use only the registered model label in encoder table cells, including an
+alternative suffix such as `RPB-v7.alt-01` when applicable. Put short embedding descriptions
 in prose immediately beside the table, rather than inside its cells.
 Do not average different tasks into an unspecified encoder accuracy.
 
@@ -24,14 +25,14 @@ fixed across encoder comparisons; fit their weights separately on training data.
 
 ## Active research version
 
-The working saved v7 models are pinned as **RPB-v7-reference** in the version
+The working saved v7 models are pinned as **RPB-v7** in the version
 registry: masters4404/5505/6606/7707/8808 in the original lighter-policy capsule.
 Preserve their checkpoints, scalers, fitted readouts and reports. The newer
-**RPB-v7-replication-01** contains separately trained instances on different
-sources/seeds and does not replace this frozen reference. State the instance
-bundle beside any results table; do not describe replication scores as a decline
+**RPB-v7.alt-01** contains separately trained instances on different
+sources/seeds and does not replace this frozen reference. Use these short labels
+when comparing the groups; do not describe replication scores as a decline
 of the original saved encoder. Any architecture, objective or training recipe
-change gets a new design tag and separate outputs, leaving v7-reference intact.
+change gets a new design tag and separate outputs, leaving the original v7 intact.
 
 RPB-v4, the learned global bottleneck, is the active experimental encoder.
 RPB-v5, the direct patch global bottleneck, failed the fixed512 comparison under

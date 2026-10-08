@@ -4,10 +4,10 @@
   "last_updated_date": "2026-10-08",
   "active_research_tag": "RPB-v4",
   "working_encoder_tag": "RPB-v7",
-  "working_instance_bundle": "RPB-v7-reference",
+  "working_instance_bundle": "RPB-v7",
   "instance_bundles": [
     {
-      "id": "RPB-v7-reference",
+      "id": "RPB-v7",
       "encoder_tag": "RPB-v7",
       "status": "frozen_working_reference_do_not_replace",
       "description": "Original five saved v7 instances behind the earlier timing results",
@@ -25,7 +25,7 @@
       "replacement_by_new_training": "forbidden; retain all original checkpoints, scalers and fitted readouts"
     },
     {
-      "id": "RPB-v7-replication-01",
+      "id": "RPB-v7.alt-01",
       "encoder_tag": "RPB-v7",
       "status": "separate_replication_not_a_reference_replacement",
       "description": "New v7 instances trained with the same recipe on different sources and seeds",
