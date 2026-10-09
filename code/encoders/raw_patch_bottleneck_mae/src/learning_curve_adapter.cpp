@@ -78,6 +78,7 @@ struct CurveState {
   std::array<int64_t, 2> branch_counts{0, 0}; // Balanced ordinary, deletion attempts.
   std::map<std::string, std::array<int64_t, 2>> saved_branch_counts;
   bool balanced_failed{false};
+  bool continuation_witness{false};
   std::map<std::string, std::string> audit;
   uint64_t initialization_seed{0};
 };
@@ -103,6 +104,92 @@ void write_text(torch::serialize::OutputArchive &archive, const std::string &key
   archive.write(key, embedding::archive::text_tensor(text), true);
 }
 
+torch::Tensor cpu_state(const torch::Tensor &value) {
+  return value.detach().to(torch::kCPU).contiguous().clone();
+}
+
+void write_named_state(torch::serialize::OutputArchive &archive, const std::string &key,
+                       const std::map<std::string, torch::Tensor> &values) {
+  torch::serialize::OutputArchive group;
+  group.write("count", torch::tensor(static_cast<int64_t>(values.size())), true);
+  int64_t index = 0;
+  for (const auto &[name, value] : values) {
+    torch::serialize::OutputArchive entry;
+    write_text(entry, "parameter_name", name);
+    entry.write("value", cpu_state(value), true);
+    group.write("tensor_" + std::to_string(index++), entry);
+  }
+  archive.write(key, group);
+}
+
+void save_continuation_state(const std::shared_ptr<CurveState> &state, const std::string &path) {
+  require(state->progress.attempted == state->progress.completed &&
+      state->progress.sampled_rows == state->progress.completed * state->settings.batch_size &&
+      state->progress.losses.size() == static_cast<size_t>(state->progress.completed),
+      "curve live-state witness requires the complete unskipped per-attempt trace");
+  torch::serialize::OutputArchive archive;
+  write_text(archive, "artifact_kind", kLearningCurveContinuationArtifact);
+  for (const auto &[key, value] : state->audit) write_text(archive, key, value);
+  write_text(archive, "fit_source_manifest", source_manifest(state->fit.training_source_ids));
+  write_text(archive, "checkpoint_path", path_key(path));
+  write_text(archive, "state_capture_policy",
+      "live_named_CUDA_parameter_state_to_CPU;no_model_forward;no_optimizer_reload_or_step");
+  archive.write("attempted_steps", torch::tensor(state->progress.attempted), true);
+  archive.write("completed_steps", torch::tensor(state->progress.completed), true);
+  archive.write("sampled_rows", torch::tensor(state->progress.sampled_rows), true);
+  archive.write("channel_mixer_placement_value", torch::tensor(state->settings.model.channel_mixer_placement), true);
+  archive.write("training_seconds", torch::tensor(state->progress.training_seconds, torch::kFloat64), true);
+  archive.write("context_requested_deleted_coordinates", torch::tensor(state->context_counts[0]), true);
+  archive.write("context_actual_deleted_coordinates", torch::tensor(state->context_counts[1]), true);
+  archive.write("context_restored_coordinates", torch::tensor(state->context_counts[2]), true);
+  std::vector<int64_t> counters;
+  std::vector<double> losses;
+  for (const auto &point : state->progress.losses) {
+    counters.insert(counters.end(), {point.attempted, point.completed, point.target_cells});
+    losses.insert(losses.end(), {point.loss, point.gradient_norm});
+  }
+  archive.write("loss_trace_counters", torch::tensor(counters, torch::kInt64).reshape({-1, 3}), true);
+  archive.write("loss_trace_values", torch::tensor(losses, torch::kFloat64).reshape({-1, 2}), true);
+  std::map<std::string, torch::Tensor> parameters, buffers;
+  for (const auto &entry : state->model->named_parameters()) parameters.emplace(entry.key(), entry.value());
+  for (const auto &entry : state->model->named_buffers()) buffers.emplace(entry.key(), entry.value());
+  write_named_state(archive, "model_parameters", parameters);
+  write_named_state(archive, "model_buffers", buffers);
+  torch::serialize::OutputArchive scaler;
+  state->scaler.save(scaler); archive.write("scaler", scaler);
+  torch::serialize::OutputArchive optimizer;
+  optimizer.write("parameter_count", torch::tensor(static_cast<int64_t>(parameters.size())), true);
+  optimizer.write("active_state_count", torch::tensor(static_cast<int64_t>(state->optimizer->state().size())), true);
+  int64_t index = 0, active = 0;
+  for (const auto &[name, parameter] : parameters) {
+    torch::serialize::OutputArchive entry;
+    write_text(entry, "parameter_name", name);
+    entry.write("parameter_shape", torch::tensor(parameter.sizes().vec(), torch::kInt64), true);
+    const auto found = state->optimizer->state().find(parameter.unsafeGetTensorImpl());
+    const bool has_state = found != state->optimizer->state().end();
+    entry.write("has_state", torch::tensor(has_state, torch::kBool), true);
+    if (has_state) {
+      const auto *value = dynamic_cast<const torch::optim::AdamWParamState *>(found->second.get());
+      require(value && value->step() > 0 && value->step() <= state->progress.completed &&
+          value->exp_avg().is_cuda() && value->exp_avg_sq().is_cuda() &&
+          value->exp_avg().scalar_type() == parameter.scalar_type() &&
+          value->exp_avg_sq().scalar_type() == parameter.scalar_type() &&
+          value->exp_avg().sizes() == parameter.sizes() && value->exp_avg_sq().sizes() == parameter.sizes() &&
+          torch::isfinite(value->exp_avg()).all().item<bool>() &&
+          torch::isfinite(value->exp_avg_sq()).all().item<bool>(), "invalid live named CUDA AdamW state");
+      entry.write("step", torch::tensor(value->step(), torch::kInt64), true);
+      entry.write("exp_avg", cpu_state(value->exp_avg()), true);
+      entry.write("exp_avg_sq", cpu_state(value->exp_avg_sq()), true);
+      ++active;
+    }
+    optimizer.write("parameter_" + std::to_string(index++), entry);
+  }
+  require(active == static_cast<int64_t>(state->optimizer->state().size()),
+      "AdamW state must associate with exactly one named model parameter");
+  archive.write("optimizer_state", optimizer);
+  embedding::archive::save_archive(path + kLearningCurveContinuationSuffix, archive);
+}
+
 void save_point(const std::shared_ptr<CurveState> &state, const std::string &path) {
   require(!state->balanced_failed, "balanced policy previously aborted; saving is forbidden");
   const bool balanced = state->context_options.enabled && context_deletion::is_balanced(state->context_options.recipe);
@@ -110,8 +197,9 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
       state->branch_counts[0] == state->progress.attempted / 2 + state->progress.attempted % 2 &&
       state->branch_counts[1] == state->progress.attempted / 2), "balanced absolute branch counters differ");
   const auto key = path_key(path);
-  const std::vector<std::string> outputs{path, path + ".training-raw.pt",
+  std::vector<std::string> outputs{path, path + ".training-raw.pt",
       path + ".scaler.pt", path + ".audit.pt"};
+  if (state->continuation_witness) outputs.push_back(path + kLearningCurveContinuationSuffix);
   for (const auto &output : outputs) {
     require(!fs::exists(output) && !fs::is_symlink(fs::symlink_status(output)),
         "refusing to replace an existing point artifact: " + output);
@@ -165,6 +253,7 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
     }
   }
   embedding::archive::save_archive(path + ".audit.pt", audit);
+  if (state->continuation_witness) save_continuation_state(state, path);
   state->saved.emplace(key, std::make_pair(checkpoint.attempted_steps, checkpoint.completed_steps));
   if (state->context_options.enabled) state->saved_context_counts.emplace(key, state->context_counts);
   if (balanced) state->saved_branch_counts.emplace(key, state->branch_counts);
@@ -172,6 +261,8 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
 
 ev::CurveSnapshot snapshot_point(const std::shared_ptr<CurveState> &state,
                                 const std::string &path) {
+  require(!state->continuation_witness,
+      "curve snapshots require the protocol-bound CUDA adapter; historical CPU serving is forbidden");
   require(state->settings.model.channel_mixer_placement == 0,
       "early mixer snapshots require the protocol-bound CUDA adapter; historical CPU serving is forbidden");
   require(!state->balanced_failed, "balanced policy previously aborted; snapshots are forbidden");
@@ -285,6 +376,11 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings) {
 }
 
 ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, ContextDeletionOptions options) {
+  return make_learning_curve_trainer(settings, options, LearningCurveStateWitnessOptions{});
+}
+
+ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, ContextDeletionOptions options,
+    LearningCurveStateWitnessOptions state_witness) {
   context_deletion::validate_options(options);
   validate_settings(settings);
   require(settings.model.device.is_cuda(), "learning-curve training requires an explicit CUDA device");
@@ -292,9 +388,14 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
   require(!options.enabled || (settings.model.global_bottleneck_mode == 2 &&
       settings.model.channel_mixer_layers == 1 && settings.model.export_width == 32),
       "context deletion requires the unchanged mode2/mixer1/native32 architecture");
-  return [settings, options](const ev::ProviderFitInput &fit) {
+  return [settings, options, state_witness](const ev::ProviderFitInput &fit) {
+    const bool curve_protocol = fit.protocol_id == "early-mixer-learning-curve-v1/lag_sign" ||
+        fit.protocol_id == "early-mixer-learning-curve-engineering-v1/lag_sign";
     const bool early_protocol = fit.protocol_id == "early-mixer-reliability-v1/lag_sign" ||
-        fit.protocol_id == "early-mixer-reliability-engineering-v1/lag_sign";
+        fit.protocol_id == "early-mixer-reliability-engineering-v1/lag_sign" || curve_protocol;
+    require(!state_witness.enabled || (curve_protocol && options.enabled &&
+        options.recipe == ContextDeletionRecipe::coordinate15_v1 && settings.log_every == 1),
+        "live continuation witness requires the separately bound coordinate15 curve and complete trace");
     require(settings.model.channel_mixer_placement == 0 ||
         (early_protocol && options.enabled && options.recipe == ContextDeletionRecipe::coordinate15_v1),
         "early placement requires the separately bound coordinate15 protocol");
@@ -328,6 +429,7 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
     auto state = std::make_shared<CurveState>();
     state->settings = settings;
     state->context_options = options;
+    state->continuation_witness = state_witness.enabled;
     state->settings.seed = static_cast<int64_t>(fit.seed & 0x7fffffffffffffffULL);
     state->fit = fit;
     state->fit.training_observations.data = fit.training_observations.data.detach().clone();
@@ -399,6 +501,12 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
       state->audit.emplace("channel_mixer_placement", std::to_string(settings.model.channel_mixer_placement));
       state->audit.emplace("architecture_id", architecture_id(settings.model));
     }
+    if (state_witness.enabled) {
+      state->audit.emplace("continuation_state_artifact_kind", kLearningCurveContinuationArtifact);
+      state->audit.emplace("continuation_state_suffix", kLearningCurveContinuationSuffix);
+      state->audit.emplace("continuation_state_policy", "live_named_CPU_model_buffers_scaler_AdamW_and_complete_trace_v1");
+      state->audit.emplace("curve_skip_policy", "abort_ineligible_attempt;no_skipped_update_prefix_permitted");
+    }
 
     ev::CurveTrainer trainer;
     trainer.audit_fields = state->audit;
@@ -434,6 +542,10 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
           ++state->progress.attempted;
           state->progress.sampled_rows += state->settings.batch_size;
           if (!mask.eligible_channels.any().item<bool>()) {
+            if (state->continuation_witness) {
+              state->balanced_failed = true;
+              require(false, "curve policy aborts an ineligible original masking attempt before update");
+            }
             if (balanced) {
               state->balanced_failed = true;
               require(false, "balanced policy aborts an ineligible original masking attempt before update");

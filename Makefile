@@ -3,7 +3,8 @@ CODE_ROOT := code
 ENCODER_ROOT := $(CODE_ROOT)/encoders/mtf_jepa_mae_vicreg
 BUILD_DIR ?= /opt/cuwacunu_embedding/build/baseline
 OBJECT_DIR := $(BUILD_DIR)/code
-LIBTORCH ?= $(CURDIR)/.external/libtorch
+LIBTORCH ?= /opt/cuwacunu_embedding/libtorch
+SDK_PROVENANCE_INPUTS := setup.sh $(CODE_ROOT)/scripts/install-libtorch.py dependencies.lock
 REFERENCE_DIR ?= $(CURDIR)/.build/reference
 RUN_ROOT ?= $(CURDIR)/output/runs/baseline
 BIN := $(BUILD_DIR)/embedding
@@ -113,13 +114,13 @@ EVALUATION_BIN ?= $(BUILD_DIR)/embedding_evaluate
 HARNESS_BIN ?= $(BUILD_DIR)/feature_harness
 
 RPB_CORE_HEADERS := $(filter-out $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/native_curve_gate.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/paired_pooling_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/optimization_diagnostic_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_replay_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_replication_adapter.h,$(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/*.h))
-RPB_PROVENANCE_INPUTS := $(sort $(RPB_CORE_HEADERS) $(RPB_ROOT)/src/workflow.cpp $(RPB_ROOT)/src/main.cpp $(wildcard $(RPB_ROOT)/config/*.conf) $(CODE_ROOT)/shared/include/embedding/shared/data.h $(CODE_ROOT)/shared/include/embedding/shared/types.h $(CODE_ROOT)/shared/include/embedding/shared/tensor_ops.h $(CODE_ROOT)/shared/src/data.cpp Makefile dependencies.lock)
+RPB_PROVENANCE_INPUTS := $(sort $(RPB_CORE_HEADERS) $(RPB_ROOT)/src/workflow.cpp $(RPB_ROOT)/src/main.cpp $(wildcard $(RPB_ROOT)/config/*.conf) $(CODE_ROOT)/shared/include/embedding/shared/data.h $(CODE_ROOT)/shared/include/embedding/shared/types.h $(CODE_ROOT)/shared/include/embedding/shared/tensor_ops.h $(CODE_ROOT)/shared/src/data.cpp Makefile $(SDK_PROVENANCE_INPUTS))
 RPB_SOURCE_ID := $(shell sha256sum $(RPB_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 SOURCE_GIT_HEAD := $(shell git -c safe.directory=$(CURDIR) rev-parse HEAD 2>/dev/null || printf unrecorded)
 SOURCE_GIT_DIRTY := $(shell if source_status=$$(git -c safe.directory=$(CURDIR) status --porcelain 2>/dev/null); then if test -n "$$source_status"; then printf dirty; else printf clean; fi; else printf unrecorded; fi)
 RPB_CPPFLAGS := -I$(RPB_ROOT)/include -I$(RPB_ROOT)/tests $(COMMON_CPPFLAGS) -DRPB_SOURCE_ID=\"$(RPB_SOURCE_ID)\" -DRPB_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DRPB_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
 
-MINIMUM_PROVENANCE_INPUTS := $(sort $(wildcard $(CODE_ROOT)/shared/include/embedding/shared/*.h $(CODE_ROOT)/shared/src/*.cpp $(ENCODER_ROOT)/include/embedding/encoders/mtf_jepa_mae_vicreg/*.h $(ENCODER_ROOT)/src/*.cpp $(ENCODER_ROOT)/config/*.conf $(EVALUATION_ROOT)/src/*.cpp $(EVALUATION_ROOT)/include/*.h) Makefile dependencies.lock)
+MINIMUM_PROVENANCE_INPUTS := $(sort $(wildcard $(CODE_ROOT)/shared/include/embedding/shared/*.h $(CODE_ROOT)/shared/src/*.cpp $(ENCODER_ROOT)/include/embedding/encoders/mtf_jepa_mae_vicreg/*.h $(ENCODER_ROOT)/src/*.cpp $(ENCODER_ROOT)/config/*.conf $(EVALUATION_ROOT)/src/*.cpp $(EVALUATION_ROOT)/include/*.h) Makefile $(SDK_PROVENANCE_INPUTS))
 EVALUATION_PROVENANCE_INPUTS := $(sort $(MINIMUM_PROVENANCE_INPUTS) $(RPB_PROVENANCE_INPUTS) $(RPB_ROOT)/src/evaluation_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/src/reconstruction_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/src/learning_curve_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h $(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h))
 MINIMUM_SOURCE_ID := $(shell sha256sum $(MINIMUM_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 EVALUATION_SOURCE_ID := $(shell sha256sum $(EVALUATION_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
@@ -1037,3 +1038,39 @@ test-rpb-early-mixer-adapter: $(RPB_TEST_DIR)/early_mixer_adapter_test
 
 evaluate-early-mixer-reliability: $(EARLY_MIXER_RELIABILITY_BIN)
 	@EARLY_MIXER_RELIABILITY_BIN="$(abspath $(EARLY_MIXER_RELIABILITY_BIN))" EARLY_MIXER_RELIABILITY_SOURCE_INPUTS="$(EARLY_MIXER_RELIABILITY_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-early-mixer-reliability.sh
+
+# Fresh continuous training curves keep their own source identity and adapter
+# object. The closure includes every scope linked by the binary and admission.
+EARLY_MIXER_LEARNING_CURVE_BIN := $(BUILD_DIR)/embedding_early_mixer_learning_curve
+EARLY_MIXER_CURVE_ADAPTER_OBJECT := $(RPB_OBJECT_DIR)/early_mixer_curve_adapter.o
+EARLY_MIXER_LEARNING_CURVE_INPUTS := $(sort $(EARLY_MIXER_RELIABILITY_INPUTS) $(RPB_ROOT)/tests/early_mixer_curve_adapter_test.cpp $(EVALUATION_ROOT)/src/early_mixer_learning_curve_main.cpp $(EVALUATION_ROOT)/cards/early_mixer_learning_curve_v1.md $(CODE_ROOT)/scripts/check-early-mixer-learning-curve.sh $(CODE_ROOT)/scripts/evaluate-early-mixer-learning-curve.sh $(CODE_ROOT)/scripts/prepare-early-mixer-learning-curve.py)
+EARLY_MIXER_LEARNING_CURVE_SOURCE_ID := $(shell sha256sum $(EARLY_MIXER_LEARNING_CURVE_INPUTS) | sha256sum | cut -d ' ' -f 1)
+EARLY_MIXER_LEARNING_CURVE_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(EARLY_MIXER_LEARNING_CURVE_SOURCE_ID)\" -DEARLY_MIXER_ADAPTER_SOURCE_ID=\"$(EARLY_MIXER_LEARNING_CURVE_SOURCE_ID)\"
+.PHONY: early-mixer-learning-curve print-early-mixer-learning-curve-sources test-rpb-early-mixer-curve-adapter evaluate-early-mixer-learning-curve
+early-mixer-learning-curve: $(EARLY_MIXER_LEARNING_CURVE_BIN)
+print-early-mixer-learning-curve-sources:
+	@printf '%s\n' $(EARLY_MIXER_LEARNING_CURVE_INPUTS)
+
+$(EVALUATION_OBJECT_DIR)/early_mixer_learning_curve_main.o: $(EVALUATION_ROOT)/src/early_mixer_learning_curve_main.cpp $(EARLY_MIXER_LEARNING_CURVE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(EARLY_MIXER_LEARNING_CURVE_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(EARLY_MIXER_CURVE_ADAPTER_OBJECT): $(RPB_ROOT)/src/early_mixer_adapter.cpp $(EARLY_MIXER_LEARNING_CURVE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(EARLY_MIXER_LEARNING_CURVE_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(EARLY_MIXER_LEARNING_CURVE_BIN): $(EVALUATION_OBJECT_DIR)/early_mixer_learning_curve_main.o $(EARLY_MIXER_CURVE_ADAPTER_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS) $(FIXED_FEATURE_READOUTS_OBJECT)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(RPB_TEST_DIR)/early_mixer_curve_adapter_test.o: $(RPB_ROOT)/tests/early_mixer_curve_adapter_test.cpp $(EARLY_MIXER_LEARNING_CURVE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(EARLY_MIXER_LEARNING_CURVE_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/early_mixer_curve_adapter_test: $(RPB_TEST_DIR)/early_mixer_curve_adapter_test.o $(EARLY_MIXER_CURVE_ADAPTER_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(HARNESS_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-early-mixer-curve-adapter: $(RPB_TEST_DIR)/early_mixer_curve_adapter_test
+	$(RPB_TEST_DIR)/early_mixer_curve_adapter_test
+
+evaluate-early-mixer-learning-curve: $(EARLY_MIXER_LEARNING_CURVE_BIN)
+	@EARLY_MIXER_LEARNING_CURVE_BIN="$(abspath $(EARLY_MIXER_LEARNING_CURVE_BIN))" EARLY_MIXER_LEARNING_CURVE_SOURCE_INPUTS="$(EARLY_MIXER_LEARNING_CURVE_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-early-mixer-learning-curve.sh

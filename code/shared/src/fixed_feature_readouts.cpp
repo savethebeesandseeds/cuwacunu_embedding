@@ -203,7 +203,8 @@ std::string run_fixed_feature_readouts(const FixedFeatureReadoutRun &run) {
   std::vector<FixedFeatureMethod> methods;
   for (const auto &method : run.methods) {
     require(safe(method.name) && names.insert(method.name).second, "unsafe/duplicate method name");
-    require(!method.inputs_train_prepared || method.name == "pca_only", "only raw PCA components may bypass the outer normalizer");
+    require(!method.inputs_train_prepared || method.name == "pca_only" || method.name == "raw",
+        "only caller-normalized raw values or raw PCA components may bypass the outer normalizer");
     auto training = cloned(method.training), intact = cloned(method.validation_intact), deleted = cloned(method.validation_deleted);
     require(training.values.size(0) == run.training_labels.size(0) && intact.values.size(0) == run.validation_labels.size(0) &&
         deleted.values.size(0) == intact.values.size(0) && training.values.size(1) == intact.values.size(1) &&
@@ -214,12 +215,16 @@ std::string run_fixed_feature_readouts(const FixedFeatureReadoutRun &run) {
         method.inputs_train_prepared, method.preparation_unsupported_reason});
   }
   const bool explicit_pair = !run.comparison_reference.empty() || !run.comparison_candidate.empty();
-  require(!explicit_pair || (safe(run.comparison_reference) && safe(run.comparison_candidate) &&
-      run.comparison_reference != run.comparison_candidate && names.count(run.comparison_reference) &&
-      names.count(run.comparison_candidate)), "explicit comparison requires two distinct declared methods");
-  const std::string reference = explicit_pair ? run.comparison_reference : "native_v4";
-  const std::string candidate = explicit_pair ? run.comparison_candidate : "native_v7";
-  const std::string pair_id = candidate + "_minus_" + reference;
+  require(run.comparisons.empty() || !explicit_pair, "multiple comparisons cannot also declare a single pair");
+  auto comparisons = run.comparisons;
+  if (comparisons.empty()) comparisons.push_back({explicit_pair ? run.comparison_reference : "native_v4",
+      explicit_pair ? run.comparison_candidate : "native_v7"});
+  std::set<std::string> comparison_ids;
+  if (explicit_pair || !run.comparisons.empty()) for (const auto &pair : comparisons) {
+    require(safe(pair.reference) && safe(pair.candidate) && pair.reference != pair.candidate &&
+        names.count(pair.reference) && names.count(pair.candidate), "explicit comparison requires two distinct declared methods");
+    require(comparison_ids.insert(pair.candidate + "_minus_" + pair.reference).second, "duplicate explicit comparison ID");
+  }
   const fs::path output(run.output_directory);
   require(!output.empty() && !fs::exists(output) && fs::create_directories(output), "new exclusive readout directory required");
   const Isolation isolation;
@@ -283,22 +288,26 @@ std::string run_fixed_feature_readouts(const FixedFeatureReadoutRun &run) {
         ",\"ridge_fits\":"+std::to_string(reason.empty() ? 3 : 0)+",\"tiny_fits\":"+std::to_string(reason.empty() ? 3 : 0)+",\"validation_fits\":0}");
   }
   json << "],\"pairs\":["; bool first_pair = true;
-  if (names.count(reference) && names.count(candidate)) for (size_t r = 0; r < repetitions.size(); ++r) for (size_t view : {size_t(1), size_t(2)}) {
-    if (!first_pair) json << ',';
-    first_pair = false;
-    const auto id = "rep-"+std::to_string(repetitions[r]);
-    const std::string view_name = view == 1 ? "validation_intact" : "validation_deleted";
-    const auto &left = results[candidate][r], &right = results[reference][r];
-    json << "{\"id\":" << quote(pair_id) << ",\"repetition\":" << quote(id) << ",\"view\":" << quote(view_name);
-    if (!left.measured || !right.measured) json << ",\"status\":\"unsupported_fit\",\"reason\":\"one declared method has no TRAIN-fitted readout\"}";
-    else {
-      const auto &a = left.predictions[view], &b = right.predictions[view]; const auto common = a.valid.logical_and(b.valid);
-      const auto seed = stream_seed(run.master_seed, named(pair_id+"/"+id+"/"+view_name));
-      json << ",\"status\":" << quote(common.any().item<bool>() ? "measured" : "unsupported_zero_common")
-          << ",\"common_population\":" << population(common, val_truth, run.validation_source_ids)
-          << ",\"bootstrap_seed_decimal\":" << quote(std::to_string(seed))
-          << ",\"ridge\":" << interval_json(grouped_accuracy_interval(a.ridge, val_truth, common, run.validation_source_ids, seed, bootstrap_replicates, b.ridge))
-          << ",\"tiny_secondary\":" << interval_json(grouped_accuracy_interval(a.tiny, val_truth, common, run.validation_source_ids, seed, bootstrap_replicates, b.tiny)) << '}';
+  for (const auto &pair : comparisons) {
+    const auto &reference = pair.reference, &candidate = pair.candidate;
+    const std::string pair_id = candidate + "_minus_" + reference;
+    if (names.count(reference) && names.count(candidate)) for (size_t r = 0; r < repetitions.size(); ++r) for (size_t view : {size_t(1), size_t(2)}) {
+      if (!first_pair) json << ',';
+      first_pair = false;
+      const auto id = "rep-"+std::to_string(repetitions[r]);
+      const std::string view_name = view == 1 ? "validation_intact" : "validation_deleted";
+      const auto &left = results[candidate][r], &right = results[reference][r];
+      json << "{\"id\":" << quote(pair_id) << ",\"repetition\":" << quote(id) << ",\"view\":" << quote(view_name);
+      if (!left.measured || !right.measured) json << ",\"status\":\"unsupported_fit\",\"reason\":\"one declared method has no TRAIN-fitted readout\"}";
+      else {
+        const auto &a = left.predictions[view], &b = right.predictions[view]; const auto common = a.valid.logical_and(b.valid);
+        const auto seed = stream_seed(run.master_seed, named(pair_id+"/"+id+"/"+view_name));
+        json << ",\"status\":" << quote(common.any().item<bool>() ? "measured" : "unsupported_zero_common")
+            << ",\"common_population\":" << population(common, val_truth, run.validation_source_ids)
+            << ",\"bootstrap_seed_decimal\":" << quote(std::to_string(seed))
+            << ",\"ridge\":" << interval_json(grouped_accuracy_interval(a.ridge, val_truth, common, run.validation_source_ids, seed, bootstrap_replicates, b.ridge))
+            << ",\"tiny_secondary\":" << interval_json(grouped_accuracy_interval(a.tiny, val_truth, common, run.validation_source_ids, seed, bootstrap_replicates, b.tiny)) << '}';
+      }
     }
   }
   json << "],\"fit_counts\":{\"outer_train_normalizer_fits\":" << outer_fits << ",\"ridge_fits\":" << head_fits

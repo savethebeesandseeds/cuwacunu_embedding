@@ -10,14 +10,8 @@ source /etc/os-release
 }
 [[ $EUID -eq 0 ]] || { echo 'Run setup.sh as root inside the container.' >&2; exit 1; }
 [[ $# -eq 0 ]] || { echo 'Usage: bash setup.sh (dependency installation only)' >&2; exit 1; }
-torch_root="$PWD/.external/libtorch"
-[[ -f "$torch_root/include/torch/csrc/api/include/torch/torch.h" ]] || {
-  echo 'Stage the LibTorch bundle in .external/libtorch first; see README.md.' >&2; exit 1;
-}
-[[ "$(cat "$torch_root/build-version")" == '2.6.0+cu124' ]] || {
-  echo 'Expected LibTorch 2.6.0+cu124 (C++11 ABI) bundle.' >&2; exit 1;
-}
-grep -q -- '-D_GLIBCXX_USE_CXX11_ABI=1' "$torch_root/share/cmake/Torch/TorchConfig.cmake"
+[[ -f /.dockerenv ]] || { echo 'Run setup.sh in the managed container.' >&2; exit 1; }
+torch_root=/opt/cuwacunu_embedding/libtorch
 export DEBIAN_FRONTEND=noninteractive
 apt=(apt-get -o Acquire::Retries=3 -o Acquire::https::Timeout=30 -o Acquire::http::Timeout=30)
 setup_state=/opt/cuwacunu_embedding/setup
@@ -39,6 +33,10 @@ fi
 mapfile -t packages < dependencies.lock
 "${apt[@]}" install -y --no-install-recommends "${packages[@]}"
 
+# Copy the existing pinned Linux input into the container filesystem. The
+# installer verifies every source/destination file and preserves any conflict.
+python3 -B code/scripts/install-libtorch.py
+
 sed -i 's/^[[:space:]]*#[[:space:]]*en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen en_US.UTF-8
 update-locale --reset LANG=en_US.UTF-8
@@ -53,8 +51,8 @@ case ":$PATH:" in
   *) export PATH="/usr/local/cuda-12.4/bin:$PATH" ;;
 esac
 case "${LD_LIBRARY_PATH:-}" in
-  /embedding/.external/libtorch/lib:/usr/local/cuda-12.4/lib64*) ;;
-  *) export LD_LIBRARY_PATH="/embedding/.external/libtorch/lib:/usr/local/cuda-12.4/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" ;;
+  /opt/cuwacunu_embedding/libtorch/lib:/usr/local/cuda-12.4/lib64*) ;;
+  *) export LD_LIBRARY_PATH="/opt/cuwacunu_embedding/libtorch/lib:/usr/local/cuda-12.4/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" ;;
 esac
 EOF
 profile_line='source /etc/profile.d/embedding.sh'

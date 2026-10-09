@@ -35,7 +35,8 @@ preserved alongside the successful result.
 | RPB-v7 | Global bottleneck with lighter context deletion | Measured validation gains, unresolved reconstruction tradeoff; not promoted | [Lighter-policy diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_LIGHTER_VALIDATION_DIAGNOSTIC.md) |
 | RPB-v8 | Global bottleneck with balanced context views | Measured and audited; joint guard failed; not promoted | [Balanced-view diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_BALANCED_VALIDATION_DIAGNOSTIC.md) |
 | RPB-v9 | Global bottleneck with native view agreement | Measured and audited; severe fixed512 failure; not promoted | [Native view agreement diagnostic](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md) |
-| RPB-v10 | Global bottleneck with earlier channel mixing | Planned bounded timing comparison; not measured | [Early-mixer card](../code/evaluation/cards/early_mixer_reliability_v1.md) |
+| RPB-v10 | Global bottleneck with earlier channel mixing | Measured at 512 and in a continuous 2048-update comparison; experimental, not promoted | [Learning-curve diagnostic](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md) |
+| RPB-v11 | Early mixer with matched-target TRAIN gain | Planned; no card or measured result yet | [Next advance](../code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md) |
 
 The [machine-readable registry](embedding_versions.json) records the same mapping.
 `RPB-v4.alt-01` names the fresh v4 controls paired with `RPB-v7.alt-01` on
@@ -175,7 +176,7 @@ All six numeric guards fail: mean native linear accuracy is 59.21875% intact /
 reconstruct substantially worse than v4. Actual CUDA admission and independent
 audit passed 74,721,050 checks, establishing the recorded computations rather
 than useful optimization. Stop this recipe without coefficient/rate/budget
-rescue. RPB-v4 remains active; RPB-v9 is the last measured candidate.
+rescue. RPB-v4 remains active; this RPB-v9 mechanism remains stopped.
 The [original continuation note](CONTINUATION_2026-10-08.md) records the pre-diagnosis state.
 
 Current work continues from RPB-v7. Its separate
@@ -236,8 +237,28 @@ declines. Mean TRAIN/VALIDATION MAE is 0.071024/0.073853 for v10 versus
 0.072575/0.074894 for the matched late group. Audit passed 96,352,345 checks.
 V10 remains experimental without promotion; no existing group is replaced.
 
-The next separately frozen [paired learning curve](../code/evaluation/cards/early_mixer_learning_curve_v1.md)
-uses fresh **RPB-v7.alt-03** and **RPB-v10.alt-01** groups. Each continuous
-optimizer saves 0/512/1024/2048 points on five new timing cohorts. Classifier
-recipes remain fixed; amplitude transfer is measured only at the final point
-and initial controls. These groups are planned and have no measured result yet.
+The [paired learning curve](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md)
+is complete for fresh **RPB-v7.alt-03** and **RPB-v10.alt-01** groups. Each live
+AdamW controller retains 0/512/1024/2048 points on all five timing cohorts.
+Late/early intact linear means are 94.84375%/92.5% at 512,
+93.28125%/94.375% at 1024 and 92.1875%/92.65625% at 2048. Additional-deletion
+means are 89.375%/92.1875%, 87.1875%/92.96875% and 87.8125%/91.71875%,
+respectively. Coverage is 100%. Both groups reconstruct more accurately with
+longer training, without monotone timing classification improvement. At 2048,
+late/early TRAIN MAE is 0.036205/0.036075 and VALIDATION MAE is
+0.037305/0.036304. Final amplitude intact/deletion linear means are
+99.84375%/97.65625% late and 97.5%/92.1875% early.
+
+The independent audit passed 141,317,815 checks and 1,675 CPU archive decodes.
+All 40 retained points, 270 pipelines/540 heads, 180 native exports and 60 query
+writers are preserved in capsule FDv5b0. Fixed controls fit once per task/cohort;
+quality exports occur once after continuation. Earlier fixed-512 evidence and
+the original v7 group remain unchanged. No best-point selection, TEST/stress or
+promotion occurred; v4 remains active.
+
+The planned next comparison is **RPB-v10.alt-02** against **RPB-v11**, using the
+same early architecture at fixed 512 with one TRAIN-only matched-target gain
+drawn log-uniformly over 0.5–2. Timing masters are
+41140/42241/43342/44443/45544 and amplitude masters are
+46645/47746/48847/49948/51049. Half-mixer exploration is skipped. This is a
+planned direction with no frozen card or measured result yet.

@@ -11,13 +11,18 @@ namespace embedding::evaluation {
 struct FixedFeatureMethod {
   std::string name;
   FeatureSurface training, validation_intact, validation_deleted;
-  // True only for caller-prepared TRAIN-normalized raw PCA components. The
-  // caller persists that raw normalizer/PCA. The fixed probe still fits its own
-  // TRAIN normalizer; this helper never instantiates PCA or an encoder.
+  // True only for caller-prepared TRAIN-normalized raw values or raw PCA
+  // components. The caller persists the shared raw normalizer/PCA. The fixed
+  // probe still fits its own TRAIN normalizer; this helper never instantiates
+  // PCA or an encoder.
   bool inputs_train_prepared{false};
   // Optional caller-owned preprocessing failure (e.g. raw PCA rank bound).
   // Preserve declared-width surfaces/coverage; fit neither head in this case.
   std::string preparation_unsupported_reason;
+};
+
+struct FixedFeatureComparison {
+  std::string reference, candidate;
 };
 
 struct FixedFeatureReadoutRun {
@@ -29,6 +34,9 @@ struct FixedFeatureReadoutRun {
   // Optional explicit pair, scored as candidate minus reference. Both must
   // name distinct declared methods. Empty keeps the historical v7/v4 default.
   std::string comparison_reference, comparison_candidate;
+  // Multiple explicit pairs reuse the same fitted heads and predictions.
+  // Incompatible with the single-pair fields; empty preserves their behavior.
+  std::vector<FixedFeatureComparison> comparisons;
 };
 
 // Fixed recipe: outer TRAIN FeatureNormalizer (unless already prepared), then

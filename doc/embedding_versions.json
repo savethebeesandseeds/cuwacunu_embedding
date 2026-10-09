@@ -11,7 +11,13 @@
       "encoder_tag": "RPB-v7",
       "status": "frozen_working_reference_do_not_replace",
       "description": "Original five saved v7 instances behind the earlier timing results",
-      "master_seeds": [4404, 5505, 6606, 7707, 8808],
+      "master_seeds": [
+        4404,
+        5505,
+        6606,
+        7707,
+        8808
+      ],
       "encoder_updates_each": 512,
       "checkpoint_path_pattern": "output/runs/rpb-context-lighter-validation/lighter-validation-duyRU2/results/candidate-development/seed-{master}-lag_sign/milestone-512/checkpoint.pt",
       "capsule": "output/runs/rpb-context-lighter-validation/lighter-validation-duyRU2",
@@ -29,7 +35,13 @@
       "encoder_tag": "RPB-v4",
       "status": "matched_fresh_reference_not_a_historical_replacement",
       "description": "Fresh v4 controls paired with the v7 alternative group",
-      "master_seeds": [9109, 10210, 11311, 12412, 13513],
+      "master_seeds": [
+        9109,
+        10210,
+        11311,
+        12412,
+        13513
+      ],
       "encoder_updates_each": 512,
       "checkpoint_path_pattern": "output/runs/rpb-fresh-decoder-replication/fresh-decoder-replication-4p9U4b/results/seed-{master}-lag_sign/v4/point-512/checkpoint.pt",
       "capsule": "output/runs/rpb-fresh-decoder-replication/fresh-decoder-replication-4p9U4b",
@@ -44,7 +56,13 @@
       "encoder_tag": "RPB-v7",
       "status": "separate_replication_not_a_reference_replacement",
       "description": "New v7 instances trained with the same recipe on different sources and seeds",
-      "master_seeds": [9109, 10210, 11311, 12412, 13513],
+      "master_seeds": [
+        9109,
+        10210,
+        11311,
+        12412,
+        13513
+      ],
       "encoder_updates_each": 512,
       "checkpoint_path_pattern": "output/runs/rpb-fresh-decoder-replication/fresh-decoder-replication-4p9U4b/results/seed-{master}-lag_sign/v7/point-512/checkpoint.pt",
       "capsule": "output/runs/rpb-fresh-decoder-replication/fresh-decoder-replication-4p9U4b",
@@ -59,7 +77,13 @@
       "encoder_tag": "RPB-v7",
       "status": "measured_matched_fresh_control_no_reference_replacement",
       "description": "Fresh late-mixing v7 controls for the early-mixer comparison",
-      "master_seeds": [19119, 20220, 21321, 22422, 23523],
+      "master_seeds": [
+        19119,
+        20220,
+        21321,
+        22422,
+        23523
+      ],
       "encoder_updates_each": 512,
       "checkpoint_path_pattern": "output/runs/rpb-early-mixer-reliability/early-mixer-reliability-b6DsL0/results/seed-{master}-lag_sign/late/point-512/checkpoint.pt",
       "capsule": "output/runs/rpb-early-mixer-reliability/early-mixer-reliability-b6DsL0",
@@ -77,7 +101,13 @@
       "encoder_tag": "RPB-v10",
       "status": "measured_experimental_no_promotion",
       "description": "First five early-mixing v10 instances paired with v7.alt-02",
-      "master_seeds": [19119, 20220, 21321, 22422, 23523],
+      "master_seeds": [
+        19119,
+        20220,
+        21321,
+        22422,
+        23523
+      ],
       "encoder_updates_each": 512,
       "checkpoint_path_pattern": "output/runs/rpb-early-mixer-reliability/early-mixer-reliability-b6DsL0/results/seed-{master}-lag_sign/early/point-512/checkpoint.pt",
       "capsule": "output/runs/rpb-early-mixer-reliability/early-mixer-reliability-b6DsL0",
@@ -93,70 +123,530 @@
     {
       "id": "RPB-v7.alt-03",
       "encoder_tag": "RPB-v7",
-      "status": "planned_not_measured",
+      "status": "measured_continuous_learning_curve_no_reference_replacement",
       "description": "Fresh late-mixing group for the continuous longer-budget comparison",
-      "master_seeds": [30130, 31231, 32332, 33433, 34534],
-      "planned_completed_updates": [0, 512, 1024, 2048],
+      "master_seeds": [
+        30130,
+        31231,
+        32332,
+        33433,
+        34534
+      ],
+      "planned_completed_updates": [
+        0,
+        512,
+        1024,
+        2048
+      ],
       "planned_card": "code/evaluation/cards/early_mixer_learning_curve_v1.md",
       "planned_card_sha256": "869d1a113ed8b6493295632555d69700a279f34e85b01754459761abcc7c4a98",
-      "existing_groups_replaced": false
+      "existing_groups_replaced": false,
+      "encoder_updates_each": 2048,
+      "retained_completed_updates": [
+        0,
+        512,
+        1024,
+        2048
+      ],
+      "checkpoint_path_pattern": "output/runs/rpb-early-mixer-learning-curve/early-mixer-learning-curve-FDv5b0/results/seed-{master}-lag_sign/late/point-{budget}/checkpoint.pt",
+      "capsule": "output/runs/rpb-early-mixer-learning-curve/early-mixer-learning-curve-FDv5b0",
+      "artifact_inventory_sha256": "b153296974bb15d03d181c455f67a79b486d980631ebc2484e5c6ffe5b345d85",
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md",
+      "durable_summary": "doc/results/early_mixer_learning_curve_v1.json",
+      "measured_record_sha256": "3fa32d02bdf92dc084a5a1c78a9d06c1d3412abaf11935195d740fc079833372",
+      "durable_summary_sha256": "2f661e1d74d5f13d9b3851149c05e119844d3085075dac78cfa1eb57a5f3409f",
+      "quality_by_budget": [
+        {
+          "task": "lag_sign",
+          "budget": 512,
+          "view": "validation_intact",
+          "late_linear_percent": 94.84375,
+          "late_neural_percent": 98.33333333333333,
+          "late_worst_linear_percent": 91.40625,
+          "coverage_percent": 100.0
+        },
+        {
+          "task": "lag_sign",
+          "budget": 512,
+          "view": "validation_deleted",
+          "late_linear_percent": 89.375,
+          "late_neural_percent": 92.91666666666667,
+          "late_worst_linear_percent": 85.15625,
+          "coverage_percent": 100.0
+        },
+        {
+          "task": "lag_sign",
+          "budget": 1024,
+          "view": "validation_intact",
+          "late_linear_percent": 93.28125,
+          "late_neural_percent": 98.95833333333334,
+          "late_worst_linear_percent": 82.8125,
+          "coverage_percent": 100.0
+        },
+        {
+          "task": "lag_sign",
+          "budget": 1024,
+          "view": "validation_deleted",
+          "late_linear_percent": 87.1875,
+          "late_neural_percent": 94.53125,
+          "late_worst_linear_percent": 80.46875,
+          "coverage_percent": 100.0
+        },
+        {
+          "task": "lag_sign",
+          "budget": 2048,
+          "view": "validation_intact",
+          "late_linear_percent": 92.1875,
+          "late_neural_percent": 98.07291666666667,
+          "late_worst_linear_percent": 78.125,
+          "coverage_percent": 100.0
+        },
+        {
+          "task": "lag_sign",
+          "budget": 2048,
+          "view": "validation_deleted",
+          "late_linear_percent": 87.8125,
+          "late_neural_percent": 93.85416666666667,
+          "late_worst_linear_percent": 73.4375,
+          "coverage_percent": 100.0
+        },
+        {
+          "task": "amplitude",
+          "budget": 2048,
+          "view": "validation_intact",
+          "late_linear_percent": 99.84375,
+          "late_neural_percent": 99.375,
+          "late_worst_linear_percent": 99.21875,
+          "coverage_percent": 100.0
+        },
+        {
+          "task": "amplitude",
+          "budget": 2048,
+          "view": "validation_deleted",
+          "late_linear_percent": 97.65625,
+          "late_neural_percent": 94.16666666666667,
+          "late_worst_linear_percent": 94.53125,
+          "coverage_percent": 100.0
+        }
+      ],
+      "training_by_budget": [
+        {
+          "instance_bundle": "RPB-v7.alt-03",
+          "updates": 512,
+          "train_standardized_mae": 0.06742729793673133,
+          "validation_standardized_mae": 0.06874694524778582,
+          "cumulative_update_loop_seconds": 13.6834431706,
+          "interval_update_loop_seconds": 13.6834431706
+        },
+        {
+          "instance_bundle": "RPB-v7.alt-03",
+          "updates": 1024,
+          "train_standardized_mae": 0.05689297742025752,
+          "validation_standardized_mae": 0.058220360923722306,
+          "cumulative_update_loop_seconds": 27.2216438364,
+          "interval_update_loop_seconds": 13.5382006658
+        },
+        {
+          "instance_bundle": "RPB-v7.alt-03",
+          "updates": 2048,
+          "train_standardized_mae": 0.03620451122786698,
+          "validation_standardized_mae": 0.03730539146238403,
+          "cumulative_update_loop_seconds": 54.1306847286,
+          "interval_update_loop_seconds": 26.9090408922
+        }
+      ]
     },
     {
       "id": "RPB-v10.alt-01",
       "encoder_tag": "RPB-v10",
-      "status": "planned_not_measured",
+      "status": "measured_continuous_learning_curve_no_reference_replacement",
       "description": "Fresh early-mixing group for the continuous longer-budget comparison",
-      "master_seeds": [30130, 31231, 32332, 33433, 34534],
-      "planned_completed_updates": [0, 512, 1024, 2048],
+      "master_seeds": [
+        30130,
+        31231,
+        32332,
+        33433,
+        34534
+      ],
+      "planned_completed_updates": [
+        0,
+        512,
+        1024,
+        2048
+      ],
       "planned_card": "code/evaluation/cards/early_mixer_learning_curve_v1.md",
       "planned_card_sha256": "869d1a113ed8b6493295632555d69700a279f34e85b01754459761abcc7c4a98",
+      "existing_groups_replaced": false,
+      "encoder_updates_each": 2048,
+      "retained_completed_updates": [
+        0,
+        512,
+        1024,
+        2048
+      ],
+      "checkpoint_path_pattern": "output/runs/rpb-early-mixer-learning-curve/early-mixer-learning-curve-FDv5b0/results/seed-{master}-lag_sign/early/point-{budget}/checkpoint.pt",
+      "capsule": "output/runs/rpb-early-mixer-learning-curve/early-mixer-learning-curve-FDv5b0",
+      "artifact_inventory_sha256": "b153296974bb15d03d181c455f67a79b486d980631ebc2484e5c6ffe5b345d85",
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md",
+      "durable_summary": "doc/results/early_mixer_learning_curve_v1.json",
+      "measured_record_sha256": "3fa32d02bdf92dc084a5a1c78a9d06c1d3412abaf11935195d740fc079833372",
+      "durable_summary_sha256": "2f661e1d74d5f13d9b3851149c05e119844d3085075dac78cfa1eb57a5f3409f",
+      "quality_by_budget": [
+        {
+          "task": "lag_sign",
+          "budget": 512,
+          "view": "validation_intact",
+          "early_linear_percent": 92.5,
+          "early_neural_percent": 98.95833333333334,
+          "early_worst_linear_percent": 83.59375,
+          "coverage_percent": 100.0
+        },
+        {
+          "task": "lag_sign",
+          "budget": 512,
+          "view": "validation_deleted",
+          "early_linear_percent": 92.1875,
+          "early_neural_percent": 96.51041666666667,
+          "early_worst_linear_percent": 85.15625,
+          "coverage_percent": 100.0
+        },
+        {
+          "task": "lag_sign",
+          "budget": 1024,
+          "view": "validation_intact",
+          "early_linear_percent": 94.375,
+          "early_neural_percent": 98.75,
+          "early_worst_linear_percent": 91.40625,
+          "coverage_percent": 100.0
+        },
+        {
+          "task": "lag_sign",
+          "budget": 1024,
+          "view": "validation_deleted",
+          "early_linear_percent": 92.96875,
+          "early_neural_percent": 96.45833333333333,
+          "early_worst_linear_percent": 89.0625,
+          "coverage_percent": 100.0
+        },
+        {
+          "task": "lag_sign",
+          "budget": 2048,
+          "view": "validation_intact",
+          "early_linear_percent": 92.65625,
+          "early_neural_percent": 98.02083333333333,
+          "early_worst_linear_percent": 82.8125,
+          "coverage_percent": 100.0
+        },
+        {
+          "task": "lag_sign",
+          "budget": 2048,
+          "view": "validation_deleted",
+          "early_linear_percent": 91.71875,
+          "early_neural_percent": 95.3125,
+          "early_worst_linear_percent": 80.46875,
+          "coverage_percent": 100.0
+        },
+        {
+          "task": "amplitude",
+          "budget": 2048,
+          "view": "validation_intact",
+          "early_linear_percent": 97.5,
+          "early_neural_percent": 97.55208333333333,
+          "early_worst_linear_percent": 91.40625,
+          "coverage_percent": 100.0
+        },
+        {
+          "task": "amplitude",
+          "budget": 2048,
+          "view": "validation_deleted",
+          "early_linear_percent": 92.1875,
+          "early_neural_percent": 90.0,
+          "early_worst_linear_percent": 78.90625,
+          "coverage_percent": 100.0
+        }
+      ],
+      "training_by_budget": [
+        {
+          "instance_bundle": "RPB-v10.alt-01",
+          "updates": 512,
+          "train_standardized_mae": 0.06845693612359596,
+          "validation_standardized_mae": 0.06951204900296724,
+          "cumulative_update_loop_seconds": 14.211625775600002,
+          "interval_update_loop_seconds": 14.211625775600002
+        },
+        {
+          "instance_bundle": "RPB-v10.alt-01",
+          "updates": 1024,
+          "train_standardized_mae": 0.059983574002810715,
+          "validation_standardized_mae": 0.061028930434478934,
+          "cumulative_update_loop_seconds": 28.4012478058,
+          "interval_update_loop_seconds": 14.189622030200002
+        },
+        {
+          "instance_bundle": "RPB-v10.alt-01",
+          "updates": 2048,
+          "train_standardized_mae": 0.036075301637501986,
+          "validation_standardized_mae": 0.03630395834882287,
+          "cumulative_update_loop_seconds": 56.9401723726,
+          "interval_update_loop_seconds": 28.5389245668
+        }
+      ]
+    },
+    {
+      "id": "RPB-v10.alt-02",
+      "encoder_tag": "RPB-v10",
+      "status": "planned_not_measured_no_card_yet",
+      "description": "Fresh matched early-mixer control for the prospective TRAIN gain comparison",
+      "master_seeds": [
+        41140,
+        42241,
+        43342,
+        44443,
+        45544
+      ],
+      "planned_encoder_updates_each": 512,
+      "existing_groups_replaced": false
+    },
+    {
+      "id": "RPB-v11",
+      "encoder_tag": "RPB-v11",
+      "status": "planned_not_measured_no_card_yet",
+      "description": "Prospective matched-target TRAIN gain on the unchanged early-mixer architecture",
+      "master_seeds": [
+        41140,
+        42241,
+        43342,
+        44443,
+        45544
+      ],
+      "planned_encoder_updates_each": 512,
       "existing_groups_replaced": false
     }
   ],
   "latest_completed_diagnostic": {
-    "protocol": "early-mixer-reliability-v1",
+    "protocol": "early-mixer-learning-curve-v1",
     "status": "completed_independently_verified_experimental_no_promotion",
-    "instance_bundles": ["RPB-v7.alt-02", "RPB-v10"],
-    "timing_master_seeds": [19119, 20220, 21321, 22422, 23523],
-    "amplitude_data_master_seeds": [24624, 25725, 26826, 27927, 29028],
+    "instance_bundles": [
+      "RPB-v7.alt-03",
+      "RPB-v10.alt-01"
+    ],
+    "timing_master_seeds": [
+      30130,
+      31231,
+      32332,
+      33433,
+      34534
+    ],
+    "amplitude_data_master_seeds": [
+      35635,
+      36736,
+      37837,
+      38938,
+      40039
+    ],
     "encoder_trajectories": 10,
-    "encoder_updates_each": 512,
+    "encoder_updates_each": 2048,
+    "retained_completed_updates": [
+      0,
+      512,
+      1024,
+      2048
+    ],
+    "retained_points": 40,
+    "sampled_rows": 163840,
     "extra_decoder_calibration_updates": 0,
-    "new_head_pipelines": 210,
-    "new_individual_heads": 420,
+    "new_head_pipelines": 270,
+    "new_individual_heads": 540,
+    "full_native_export_calls": 180,
+    "fixed_query_writer_calls": 60,
+    "necessary_query_forwards": 240,
     "coverage_percent": 100,
-    "late_timing_intact_linear_percent": 94.375,
-    "early_timing_intact_linear_percent": 95.78125,
-    "late_timing_deleted_linear_percent": 90.625,
-    "early_timing_deleted_linear_percent": 94.21875,
-    "late_timing_worst_intact_linear_percent": 85.9375,
-    "early_timing_worst_intact_linear_percent": 90.625,
-    "late_timing_worst_deleted_linear_percent": 78.125,
-    "early_timing_worst_deleted_linear_percent": 86.71875,
-    "measured_record": "code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_RELIABILITY_DIAGNOSTIC.md",
-    "durable_summary": "doc/results/early_mixer_reliability_v1.json",
-    "measured_record_sha256": "d5157ee0026ae054a6a82e1709f3a130e04728cd1a0614387780a59162e9e49f",
-    "durable_summary_sha256": "8a5c36a9a09c08e8be1b1b93863793d611b99bfc28d74abc545a6014309c711d",
-    "source_fingerprint": "583ee5362d73b689910c8700fea748f2092506856489f37961e50e9e0bdfb006",
-    "core_source_fingerprint": "c089cd5f64191ae9c5eebd71276f56b3272f7313061542f98503a55edf89564b",
-    "training_producer_source_fingerprint": "f6986052d0b3f5eaf6fa6792fc35920ae35baac9d5f36a8db44a1da50c1b541a",
-    "artifact_inventory_sha256": "426a1c17288f6b2781d25ca6c5ea94af7f1bb8f041bcc07a9a5412b92e1d50f5",
-    "measured_capsule": "output/runs/rpb-early-mixer-reliability/early-mixer-reliability-b6DsL0",
-    "audit_checks": 96352345,
-    "audit_validation_sha256": "e07931e860bec3c719bb377a7b76454d6b13c331b89c7fa1cf3c13062c710ccd",
-    "audit_reader_sha256": "9d68892a664c019fb158dc8f58c9a1a6192b7aa5161ac33cee0cdcdcf8f172fa",
-    "decision_scope": "promising timing means and worst cohorts; two timing cohorts worsen, amplitude deletion accuracy declines, and three reconstruction cohorts worsen; no promotion",
+    "quality_by_budget": [
+      {
+        "task": "lag_sign",
+        "budget": 512,
+        "view": "validation_intact",
+        "late_linear_percent": 94.84375,
+        "early_linear_percent": 92.5,
+        "late_neural_percent": 98.33333333333333,
+        "early_neural_percent": 98.95833333333334,
+        "late_worst_linear_percent": 91.40625,
+        "early_worst_linear_percent": 83.59375,
+        "coverage_percent": 100.0
+      },
+      {
+        "task": "lag_sign",
+        "budget": 512,
+        "view": "validation_deleted",
+        "late_linear_percent": 89.375,
+        "early_linear_percent": 92.1875,
+        "late_neural_percent": 92.91666666666667,
+        "early_neural_percent": 96.51041666666667,
+        "late_worst_linear_percent": 85.15625,
+        "early_worst_linear_percent": 85.15625,
+        "coverage_percent": 100.0
+      },
+      {
+        "task": "lag_sign",
+        "budget": 1024,
+        "view": "validation_intact",
+        "late_linear_percent": 93.28125,
+        "early_linear_percent": 94.375,
+        "late_neural_percent": 98.95833333333334,
+        "early_neural_percent": 98.75,
+        "late_worst_linear_percent": 82.8125,
+        "early_worst_linear_percent": 91.40625,
+        "coverage_percent": 100.0
+      },
+      {
+        "task": "lag_sign",
+        "budget": 1024,
+        "view": "validation_deleted",
+        "late_linear_percent": 87.1875,
+        "early_linear_percent": 92.96875,
+        "late_neural_percent": 94.53125,
+        "early_neural_percent": 96.45833333333333,
+        "late_worst_linear_percent": 80.46875,
+        "early_worst_linear_percent": 89.0625,
+        "coverage_percent": 100.0
+      },
+      {
+        "task": "lag_sign",
+        "budget": 2048,
+        "view": "validation_intact",
+        "late_linear_percent": 92.1875,
+        "early_linear_percent": 92.65625,
+        "late_neural_percent": 98.07291666666667,
+        "early_neural_percent": 98.02083333333333,
+        "late_worst_linear_percent": 78.125,
+        "early_worst_linear_percent": 82.8125,
+        "coverage_percent": 100.0
+      },
+      {
+        "task": "lag_sign",
+        "budget": 2048,
+        "view": "validation_deleted",
+        "late_linear_percent": 87.8125,
+        "early_linear_percent": 91.71875,
+        "late_neural_percent": 93.85416666666667,
+        "early_neural_percent": 95.3125,
+        "late_worst_linear_percent": 73.4375,
+        "early_worst_linear_percent": 80.46875,
+        "coverage_percent": 100.0
+      },
+      {
+        "task": "amplitude",
+        "budget": 2048,
+        "view": "validation_intact",
+        "late_linear_percent": 99.84375,
+        "early_linear_percent": 97.5,
+        "late_neural_percent": 99.375,
+        "early_neural_percent": 97.55208333333333,
+        "late_worst_linear_percent": 99.21875,
+        "early_worst_linear_percent": 91.40625,
+        "coverage_percent": 100.0
+      },
+      {
+        "task": "amplitude",
+        "budget": 2048,
+        "view": "validation_deleted",
+        "late_linear_percent": 97.65625,
+        "early_linear_percent": 92.1875,
+        "late_neural_percent": 94.16666666666667,
+        "early_neural_percent": 90.0,
+        "late_worst_linear_percent": 94.53125,
+        "early_worst_linear_percent": 78.90625,
+        "coverage_percent": 100.0
+      }
+    ],
+    "training_by_budget": [
+      {
+        "instance_bundle": "RPB-v7.alt-03",
+        "updates": 512,
+        "train_standardized_mae": 0.06742729793673133,
+        "validation_standardized_mae": 0.06874694524778582,
+        "cumulative_update_loop_seconds": 13.6834431706,
+        "interval_update_loop_seconds": 13.6834431706
+      },
+      {
+        "instance_bundle": "RPB-v10.alt-01",
+        "updates": 512,
+        "train_standardized_mae": 0.06845693612359596,
+        "validation_standardized_mae": 0.06951204900296724,
+        "cumulative_update_loop_seconds": 14.211625775600002,
+        "interval_update_loop_seconds": 14.211625775600002
+      },
+      {
+        "instance_bundle": "RPB-v7.alt-03",
+        "updates": 1024,
+        "train_standardized_mae": 0.05689297742025752,
+        "validation_standardized_mae": 0.058220360923722306,
+        "cumulative_update_loop_seconds": 27.2216438364,
+        "interval_update_loop_seconds": 13.5382006658
+      },
+      {
+        "instance_bundle": "RPB-v10.alt-01",
+        "updates": 1024,
+        "train_standardized_mae": 0.059983574002810715,
+        "validation_standardized_mae": 0.061028930434478934,
+        "cumulative_update_loop_seconds": 28.4012478058,
+        "interval_update_loop_seconds": 14.189622030200002
+      },
+      {
+        "instance_bundle": "RPB-v7.alt-03",
+        "updates": 2048,
+        "train_standardized_mae": 0.03620451122786698,
+        "validation_standardized_mae": 0.03730539146238403,
+        "cumulative_update_loop_seconds": 54.1306847286,
+        "interval_update_loop_seconds": 26.9090408922
+      },
+      {
+        "instance_bundle": "RPB-v10.alt-01",
+        "updates": 2048,
+        "train_standardized_mae": 0.036075301637501986,
+        "validation_standardized_mae": 0.03630395834882287,
+        "cumulative_update_loop_seconds": 56.9401723726,
+        "interval_update_loop_seconds": 28.5389245668
+      }
+    ],
+    "measured_record": "code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md",
+    "durable_summary": "doc/results/early_mixer_learning_curve_v1.json",
+    "measured_record_sha256": "3fa32d02bdf92dc084a5a1c78a9d06c1d3412abaf11935195d740fc079833372",
+    "durable_summary_sha256": "2f661e1d74d5f13d9b3851149c05e119844d3085075dac78cfa1eb57a5f3409f",
+    "card": "code/evaluation/cards/early_mixer_learning_curve_v1.md",
+    "card_sha256": "869d1a113ed8b6493295632555d69700a279f34e85b01754459761abcc7c4a98",
+    "source_fingerprint": "7bfda3c2d56716dc7d40c8835fb9f64f1df117969cd4603de3bfa846eb9632f8",
+    "core_source_fingerprint": "d7f59a497992150cb6c3bbe554081d1282f54f2973d6b1e14753e670d9de68bf",
+    "training_producer_source_fingerprint": "23719d39c1c145ce8f454501b37bb66d38d6b57be2cdc7be0fa7c03aed10fa10",
+    "artifact_inventory_sha256": "b153296974bb15d03d181c455f67a79b486d980631ebc2484e5c6ffe5b345d85",
+    "measured_capsule": "output/runs/rpb-early-mixer-learning-curve/early-mixer-learning-curve-FDv5b0",
+    "audit_checks": 141317815,
+    "audit_archive_decodes": 1675,
+    "audit_elapsed_seconds": 548.2862866810028,
+    "audit_validation_sha256": "4bcd70194986a0207abcd2e721b6e5bac5cfa62c6b22bf47106d86a09858ebbe",
+    "audit_reader_sha256": "6eec9d5f2b73a3e70b907a6d3df3d10ee509f11850e201b8d640f927b7b242e9",
     "testing_accessed": false,
     "stress_accessed": false,
+    "selection": false,
     "promotion": false,
     "existing_groups_replaced": false,
-    "next_direction": "fresh paired continuous learning curve at512/1024/2048, RPB-v7.alt-03 versus RPB-v10.alt-01"
+    "decision_scope": "both groups reconstruct more accurately with longer training, without monotone timing classification improvement; early deletion advantage accompanies an amplitude-transfer tradeoff; all budgets retained, none selected",
+    "next_direction": "one prospective TRAIN-only matched-target log-uniform gain 0.5–2 comparison at fixed512 using the same early architecture and a fresh matched control; skip half-mixer"
   },
   "frozen_amplitude_transfer_diagnostic": {
     "protocol": "frozen-amplitude-transfer-v1",
     "status": "completed_independently_verified_no_promotion",
-    "instance_bundles": ["RPB-v4.alt-01", "RPB-v7.alt-01"],
-    "new_data_master_seeds": [14614, 15715, 16816, 17917, 19018],
+    "instance_bundles": [
+      "RPB-v4.alt-01",
+      "RPB-v7.alt-01"
+    ],
+    "new_data_master_seeds": [
+      14614,
+      15715,
+      16816,
+      17917,
+      19018
+    ],
     "new_encoder_updates": 0,
     "new_decoder_updates": 0,
     "new_head_pipelines": 90,
@@ -189,8 +679,20 @@
     "card_sha256": "a4c3aa956a28e97d39f4b9c181c46b4d7cf5125b27516a5a5a1043b7745718f0",
     "reference_instance_bundle": "RPB-v7.alt-02",
     "candidate_tag": "RPB-v10",
-    "timing_master_seeds": [19119, 20220, 21321, 22422, 23523],
-    "amplitude_data_master_seeds": [24624, 25725, 26826, 27927, 29028],
+    "timing_master_seeds": [
+      19119,
+      20220,
+      21321,
+      22422,
+      23523
+    ],
+    "amplitude_data_master_seeds": [
+      24624,
+      25725,
+      26826,
+      27927,
+      29028
+    ],
     "encoder_trajectories": 10,
     "encoder_updates_each": 512,
     "batch_size": 8,
@@ -203,13 +705,33 @@
   },
   "planned_early_mixer_learning_curve": {
     "protocol": "early-mixer-learning-curve-v1",
-    "status": "planned_not_measured",
+    "status": "completed_independently_verified_no_selection_or_promotion",
     "card": "code/evaluation/cards/early_mixer_learning_curve_v1.md",
     "card_sha256": "869d1a113ed8b6493295632555d69700a279f34e85b01754459761abcc7c4a98",
-    "instance_bundles": ["RPB-v7.alt-03", "RPB-v10.alt-01"],
-    "timing_master_seeds": [30130, 31231, 32332, 33433, 34534],
-    "amplitude_data_master_seeds": [35635, 36736, 37837, 38938, 40039],
-    "retained_points": [0, 512, 1024, 2048],
+    "instance_bundles": [
+      "RPB-v7.alt-03",
+      "RPB-v10.alt-01"
+    ],
+    "timing_master_seeds": [
+      30130,
+      31231,
+      32332,
+      33433,
+      34534
+    ],
+    "amplitude_data_master_seeds": [
+      35635,
+      36736,
+      37837,
+      38938,
+      40039
+    ],
+    "retained_points": [
+      0,
+      512,
+      1024,
+      2048
+    ],
     "encoder_trajectories": 10,
     "completed_updates_each": 2048,
     "attempt_limit_each": 4096,
@@ -220,18 +742,39 @@
     "planned_full_native_exports": 180,
     "planned_timing_query_evaluation_calls": 60,
     "planned_query_CUDA_forwards": 240,
-    "amplitude_positive_points": [2048],
+    "amplitude_positive_points": [
+      2048
+    ],
     "testing_accessed": false,
     "stress_accessed": false,
     "selection": false,
     "promotion": false,
-    "existing_groups_replaced": false
+    "existing_groups_replaced": false,
+    "measured_record": "code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md",
+    "durable_summary": "doc/results/early_mixer_learning_curve_v1.json",
+    "measured_record_sha256": "3fa32d02bdf92dc084a5a1c78a9d06c1d3412abaf11935195d740fc079833372",
+    "durable_summary_sha256": "2f661e1d74d5f13d9b3851149c05e119844d3085075dac78cfa1eb57a5f3409f",
+    "measured_capsule": "output/runs/rpb-early-mixer-learning-curve/early-mixer-learning-curve-FDv5b0",
+    "artifact_inventory_sha256": "b153296974bb15d03d181c455f67a79b486d980631ebc2484e5c6ffe5b345d85",
+    "audit_checks": 141317815,
+    "audit_archive_decodes": 1675,
+    "audit_validation_sha256": "4bcd70194986a0207abcd2e721b6e5bac5cfa62c6b22bf47106d86a09858ebbe",
+    "audit_reader_sha256": "6eec9d5f2b73a3e70b907a6d3df3d10ee509f11850e201b8d640f927b7b242e9"
   },
   "saved_native_reliability_diagnostic": {
     "protocol": "saved-native-reliability-v1",
     "status": "passed_saved_TRAIN_arithmetic_inconclusive_for_architecture_selection",
-    "instance_bundles": ["RPB-v4.alt-01", "RPB-v7.alt-01"],
-    "master_seeds": [9109, 10210, 11311, 12412, 13513],
+    "instance_bundles": [
+      "RPB-v4.alt-01",
+      "RPB-v7.alt-01"
+    ],
+    "master_seeds": [
+      9109,
+      10210,
+      11311,
+      12412,
+      13513
+    ],
     "new_encoder_updates": 0,
     "new_decoder_updates": 0,
     "head_refits": 0,
@@ -261,8 +804,17 @@
   "fresh_decoder_replication_diagnostic": {
     "protocol": "fresh-decoder-replication-v1",
     "status": "completed_joint_guard_failed_recovery_passed_no_promotion",
-    "encoder_tags": ["RPB-v4", "RPB-v7"],
-    "master_seeds": [9109, 10210, 11311, 12412, 13513],
+    "encoder_tags": [
+      "RPB-v4",
+      "RPB-v7"
+    ],
+    "master_seeds": [
+      9109,
+      10210,
+      11311,
+      12412,
+      13513
+    ],
     "new_encoder_trajectories": 10,
     "encoder_updates_each": 512,
     "decoder_updates_each": 128,
@@ -338,7 +890,7 @@
   },
   "bounded_candidate_tag": "RPB-v9",
   "bounded_candidate_status": "completed_failed_fixed512_development",
-  "last_measured_candidate_tag": "RPB-v9",
+  "last_measured_candidate_tag": "RPB-v10",
   "training_objective_diagnostic": {
     "protocol": "training-objective-diagnostic-v1",
     "status": "completed_null_auxiliary_rejected",
@@ -706,9 +1258,317 @@
       "audit_checks": 96352345,
       "measured_capsule": "output/runs/rpb-early-mixer-reliability/early-mixer-reliability-b6DsL0",
       "artifact_inventory_sha256": "426a1c17288f6b2781d25ca6c5ea94af7f1bb8f041bcc07a9a5412b92e1d50f5",
-      "next_focused_action": "fresh paired continuous learning curve under its separate frozen card",
+      "next_focused_action": "one prospective TRAIN-only matched-target log-uniform gain 0.5–2 comparison at fixed512 using the same early architecture and a fresh matched control; skip half-mixer",
       "promotion": false,
-      "existing_groups_replaced": false
+      "existing_groups_replaced": false,
+      "additional_measured_protocols": [
+        "early-mixer-learning-curve-v1"
+      ],
+      "continuous_learning_curve_record": "code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md"
+    },
+    {
+      "tag": "RPB-v11",
+      "encoder": "raw_patch_bottleneck_mae",
+      "description": "Early mixer with prospective matched-target TRAIN gain",
+      "status": "planned_not_measured_no_card_yet",
+      "architecture_id": "aligned-mixer-before-temporal-v1",
+      "native_global_width": 32,
+      "parameter_count_at_C3_H32_F3": 225805,
+      "planned_encoder_updates_each": 512,
+      "comparison_instance_bundle": "RPB-v10.alt-02",
+      "promotion": false
     }
-  ]
+  ],
+  "early_mixer_fixed512_diagnostic": {
+    "protocol": "early-mixer-reliability-v1",
+    "status": "completed_independently_verified_experimental_no_promotion",
+    "instance_bundles": [
+      "RPB-v7.alt-02",
+      "RPB-v10"
+    ],
+    "timing_master_seeds": [
+      19119,
+      20220,
+      21321,
+      22422,
+      23523
+    ],
+    "amplitude_data_master_seeds": [
+      24624,
+      25725,
+      26826,
+      27927,
+      29028
+    ],
+    "encoder_trajectories": 10,
+    "encoder_updates_each": 512,
+    "extra_decoder_calibration_updates": 0,
+    "new_head_pipelines": 210,
+    "new_individual_heads": 420,
+    "coverage_percent": 100,
+    "late_timing_intact_linear_percent": 94.375,
+    "early_timing_intact_linear_percent": 95.78125,
+    "late_timing_deleted_linear_percent": 90.625,
+    "early_timing_deleted_linear_percent": 94.21875,
+    "late_timing_worst_intact_linear_percent": 85.9375,
+    "early_timing_worst_intact_linear_percent": 90.625,
+    "late_timing_worst_deleted_linear_percent": 78.125,
+    "early_timing_worst_deleted_linear_percent": 86.71875,
+    "measured_record": "code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_RELIABILITY_DIAGNOSTIC.md",
+    "durable_summary": "doc/results/early_mixer_reliability_v1.json",
+    "measured_record_sha256": "d5157ee0026ae054a6a82e1709f3a130e04728cd1a0614387780a59162e9e49f",
+    "durable_summary_sha256": "8a5c36a9a09c08e8be1b1b93863793d611b99bfc28d74abc545a6014309c711d",
+    "source_fingerprint": "583ee5362d73b689910c8700fea748f2092506856489f37961e50e9e0bdfb006",
+    "core_source_fingerprint": "c089cd5f64191ae9c5eebd71276f56b3272f7313061542f98503a55edf89564b",
+    "training_producer_source_fingerprint": "f6986052d0b3f5eaf6fa6792fc35920ae35baac9d5f36a8db44a1da50c1b541a",
+    "artifact_inventory_sha256": "426a1c17288f6b2781d25ca6c5ea94af7f1bb8f041bcc07a9a5412b92e1d50f5",
+    "measured_capsule": "output/runs/rpb-early-mixer-reliability/early-mixer-reliability-b6DsL0",
+    "audit_checks": 96352345,
+    "audit_validation_sha256": "e07931e860bec3c719bb377a7b76454d6b13c331b89c7fa1cf3c13062c710ccd",
+    "audit_reader_sha256": "9d68892a664c019fb158dc8f58c9a1a6192b7aa5161ac33cee0cdcdcf8f172fa",
+    "decision_scope": "promising timing means and worst cohorts; two timing cohorts worsen, amplitude deletion accuracy declines, and three reconstruction cohorts worsen; no promotion",
+    "testing_accessed": false,
+    "stress_accessed": false,
+    "promotion": false,
+    "existing_groups_replaced": false,
+    "next_direction": "fresh paired continuous learning curve at512/1024/2048, RPB-v7.alt-03 versus RPB-v10.alt-01"
+  },
+  "early_mixer_learning_curve_diagnostic": {
+    "protocol": "early-mixer-learning-curve-v1",
+    "status": "completed_independently_verified_experimental_no_promotion",
+    "instance_bundles": [
+      "RPB-v7.alt-03",
+      "RPB-v10.alt-01"
+    ],
+    "timing_master_seeds": [
+      30130,
+      31231,
+      32332,
+      33433,
+      34534
+    ],
+    "amplitude_data_master_seeds": [
+      35635,
+      36736,
+      37837,
+      38938,
+      40039
+    ],
+    "encoder_trajectories": 10,
+    "encoder_updates_each": 2048,
+    "retained_completed_updates": [
+      0,
+      512,
+      1024,
+      2048
+    ],
+    "retained_points": 40,
+    "sampled_rows": 163840,
+    "extra_decoder_calibration_updates": 0,
+    "new_head_pipelines": 270,
+    "new_individual_heads": 540,
+    "full_native_export_calls": 180,
+    "fixed_query_writer_calls": 60,
+    "necessary_query_forwards": 240,
+    "coverage_percent": 100,
+    "quality_by_budget": [
+      {
+        "task": "lag_sign",
+        "budget": 512,
+        "view": "validation_intact",
+        "late_linear_percent": 94.84375,
+        "early_linear_percent": 92.5,
+        "late_neural_percent": 98.33333333333333,
+        "early_neural_percent": 98.95833333333334,
+        "late_worst_linear_percent": 91.40625,
+        "early_worst_linear_percent": 83.59375,
+        "coverage_percent": 100.0
+      },
+      {
+        "task": "lag_sign",
+        "budget": 512,
+        "view": "validation_deleted",
+        "late_linear_percent": 89.375,
+        "early_linear_percent": 92.1875,
+        "late_neural_percent": 92.91666666666667,
+        "early_neural_percent": 96.51041666666667,
+        "late_worst_linear_percent": 85.15625,
+        "early_worst_linear_percent": 85.15625,
+        "coverage_percent": 100.0
+      },
+      {
+        "task": "lag_sign",
+        "budget": 1024,
+        "view": "validation_intact",
+        "late_linear_percent": 93.28125,
+        "early_linear_percent": 94.375,
+        "late_neural_percent": 98.95833333333334,
+        "early_neural_percent": 98.75,
+        "late_worst_linear_percent": 82.8125,
+        "early_worst_linear_percent": 91.40625,
+        "coverage_percent": 100.0
+      },
+      {
+        "task": "lag_sign",
+        "budget": 1024,
+        "view": "validation_deleted",
+        "late_linear_percent": 87.1875,
+        "early_linear_percent": 92.96875,
+        "late_neural_percent": 94.53125,
+        "early_neural_percent": 96.45833333333333,
+        "late_worst_linear_percent": 80.46875,
+        "early_worst_linear_percent": 89.0625,
+        "coverage_percent": 100.0
+      },
+      {
+        "task": "lag_sign",
+        "budget": 2048,
+        "view": "validation_intact",
+        "late_linear_percent": 92.1875,
+        "early_linear_percent": 92.65625,
+        "late_neural_percent": 98.07291666666667,
+        "early_neural_percent": 98.02083333333333,
+        "late_worst_linear_percent": 78.125,
+        "early_worst_linear_percent": 82.8125,
+        "coverage_percent": 100.0
+      },
+      {
+        "task": "lag_sign",
+        "budget": 2048,
+        "view": "validation_deleted",
+        "late_linear_percent": 87.8125,
+        "early_linear_percent": 91.71875,
+        "late_neural_percent": 93.85416666666667,
+        "early_neural_percent": 95.3125,
+        "late_worst_linear_percent": 73.4375,
+        "early_worst_linear_percent": 80.46875,
+        "coverage_percent": 100.0
+      },
+      {
+        "task": "amplitude",
+        "budget": 2048,
+        "view": "validation_intact",
+        "late_linear_percent": 99.84375,
+        "early_linear_percent": 97.5,
+        "late_neural_percent": 99.375,
+        "early_neural_percent": 97.55208333333333,
+        "late_worst_linear_percent": 99.21875,
+        "early_worst_linear_percent": 91.40625,
+        "coverage_percent": 100.0
+      },
+      {
+        "task": "amplitude",
+        "budget": 2048,
+        "view": "validation_deleted",
+        "late_linear_percent": 97.65625,
+        "early_linear_percent": 92.1875,
+        "late_neural_percent": 94.16666666666667,
+        "early_neural_percent": 90.0,
+        "late_worst_linear_percent": 94.53125,
+        "early_worst_linear_percent": 78.90625,
+        "coverage_percent": 100.0
+      }
+    ],
+    "training_by_budget": [
+      {
+        "instance_bundle": "RPB-v7.alt-03",
+        "updates": 512,
+        "train_standardized_mae": 0.06742729793673133,
+        "validation_standardized_mae": 0.06874694524778582,
+        "cumulative_update_loop_seconds": 13.6834431706,
+        "interval_update_loop_seconds": 13.6834431706
+      },
+      {
+        "instance_bundle": "RPB-v10.alt-01",
+        "updates": 512,
+        "train_standardized_mae": 0.06845693612359596,
+        "validation_standardized_mae": 0.06951204900296724,
+        "cumulative_update_loop_seconds": 14.211625775600002,
+        "interval_update_loop_seconds": 14.211625775600002
+      },
+      {
+        "instance_bundle": "RPB-v7.alt-03",
+        "updates": 1024,
+        "train_standardized_mae": 0.05689297742025752,
+        "validation_standardized_mae": 0.058220360923722306,
+        "cumulative_update_loop_seconds": 27.2216438364,
+        "interval_update_loop_seconds": 13.5382006658
+      },
+      {
+        "instance_bundle": "RPB-v10.alt-01",
+        "updates": 1024,
+        "train_standardized_mae": 0.059983574002810715,
+        "validation_standardized_mae": 0.061028930434478934,
+        "cumulative_update_loop_seconds": 28.4012478058,
+        "interval_update_loop_seconds": 14.189622030200002
+      },
+      {
+        "instance_bundle": "RPB-v7.alt-03",
+        "updates": 2048,
+        "train_standardized_mae": 0.03620451122786698,
+        "validation_standardized_mae": 0.03730539146238403,
+        "cumulative_update_loop_seconds": 54.1306847286,
+        "interval_update_loop_seconds": 26.9090408922
+      },
+      {
+        "instance_bundle": "RPB-v10.alt-01",
+        "updates": 2048,
+        "train_standardized_mae": 0.036075301637501986,
+        "validation_standardized_mae": 0.03630395834882287,
+        "cumulative_update_loop_seconds": 56.9401723726,
+        "interval_update_loop_seconds": 28.5389245668
+      }
+    ],
+    "measured_record": "code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md",
+    "durable_summary": "doc/results/early_mixer_learning_curve_v1.json",
+    "measured_record_sha256": "3fa32d02bdf92dc084a5a1c78a9d06c1d3412abaf11935195d740fc079833372",
+    "durable_summary_sha256": "2f661e1d74d5f13d9b3851149c05e119844d3085075dac78cfa1eb57a5f3409f",
+    "card": "code/evaluation/cards/early_mixer_learning_curve_v1.md",
+    "card_sha256": "869d1a113ed8b6493295632555d69700a279f34e85b01754459761abcc7c4a98",
+    "source_fingerprint": "7bfda3c2d56716dc7d40c8835fb9f64f1df117969cd4603de3bfa846eb9632f8",
+    "core_source_fingerprint": "d7f59a497992150cb6c3bbe554081d1282f54f2973d6b1e14753e670d9de68bf",
+    "training_producer_source_fingerprint": "23719d39c1c145ce8f454501b37bb66d38d6b57be2cdc7be0fa7c03aed10fa10",
+    "artifact_inventory_sha256": "b153296974bb15d03d181c455f67a79b486d980631ebc2484e5c6ffe5b345d85",
+    "measured_capsule": "output/runs/rpb-early-mixer-learning-curve/early-mixer-learning-curve-FDv5b0",
+    "audit_checks": 141317815,
+    "audit_archive_decodes": 1675,
+    "audit_elapsed_seconds": 548.2862866810028,
+    "audit_validation_sha256": "4bcd70194986a0207abcd2e721b6e5bac5cfa62c6b22bf47106d86a09858ebbe",
+    "audit_reader_sha256": "6eec9d5f2b73a3e70b907a6d3df3d10ee509f11850e201b8d640f927b7b242e9",
+    "testing_accessed": false,
+    "stress_accessed": false,
+    "selection": false,
+    "promotion": false,
+    "existing_groups_replaced": false,
+    "decision_scope": "both groups reconstruct more accurately with longer training, without monotone timing classification improvement; early deletion advantage accompanies an amplitude-transfer tradeoff; all budgets retained, none selected",
+    "next_direction": "one prospective TRAIN-only matched-target log-uniform gain 0.5–2 comparison at fixed512 using the same early architecture and a fresh matched control; skip half-mixer"
+  },
+  "planned_matched_target_gain": {
+    "status": "planned_not_measured_no_card_yet",
+    "reference_instance_bundle": "RPB-v10.alt-02",
+    "candidate_tag": "RPB-v11",
+    "timing_master_seeds": [
+      41140,
+      42241,
+      43342,
+      44443,
+      45544
+    ],
+    "amplitude_data_master_seeds": [
+      46645,
+      47746,
+      48847,
+      49948,
+      51049
+    ],
+    "encoder_updates_each": 512,
+    "batch_size": 8,
+    "architecture": "same early mixer and native32 as RPB-v10",
+    "augmentation": "TRAIN-only matched-target gain, log-uniform 0.5–2; detailed recipe awaits frozen prospective card",
+    "quality_oracle_access_before_freeze": false,
+    "testing_accessed": false,
+    "stress_accessed": false,
+    "promotion": false,
+    "half_mixer": false
+  }
 }

@@ -1,6 +1,6 @@
 # RPB v4 evaluation and development plan
 
-Date: 2026-10-08
+Date: 2026-10-09
 
 Continue from **RPB-v7 — Global bottleneck with lighter context deletion**,
 keeping **RPB-v4 — Learned global bottleneck** as the active reference. Use native 32-number
@@ -11,6 +11,27 @@ routine research does not retrain every historical variant.
 Use [the reporting standard](../../../doc/RESULTS_REPORTING_STANDARD.md) and
 [the version registry](../../../doc/EMBEDDING_VERSIONS.md). Shared evaluation
 stays separate from encoder training and decoding.
+
+## Current completed milestone and next direction
+
+The [continuous learning-curve diagnostic](EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md)
+is complete for RPB-v7.alt-03 and RPB-v10.alt-01. All five paired live controllers
+retain 0/512/1024/2048, with unchanged native32, coordinate15 policy, batch8 and
+heads. Longer training improves both groups' reconstruction without monotone
+timing classification benefit. At 2048, late/early intact linear means are
+92.1875%/92.65625% and additional-deletion means are 87.8125%/91.71875%, with
+100% coverage. Final amplitude quality favors the late group. All eight standard
+quality panels, budget-specific training tables and conditional intervals are
+in the linked report. No budget is selected and neither group is promoted.
+
+Skip the half-mixer variation. The next planned comparison keeps the same early
+architecture and fixed 512 training: RPB-v10.alt-02 is the new matched control;
+RPB-v11 adds one TRAIN-only matched-target gain drawn log-uniformly over 0.5–2.
+Use timing masters 41140/42241/43342/44443/45544 and amplitude masters
+46645/47746/48847/49948/51049. The exact recipe needs its own prospective card
+and source/admission/reader gates before generation. These labels and seeds are
+planned, with no measured result or frozen card yet. Preserve original RPB-v7,
+the active RPB-v4 reference, every earlier group and every retained curve point.
 
 ## Completed milestone
 
@@ -367,7 +388,7 @@ independent saved-arithmetic audit v3 passed; the failed v2 reader and its
 cross-backend correction are preserved. The result does not establish a
 generalization gain or prove irreversible timing-information loss.
 
-## Next focused action
+## Earlier focused actions
 
 The [RPB-v9 comparison](NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md) is complete.
 Actual CUDA admission and independent archive audit passed, but the fixed recipe
@@ -404,14 +425,14 @@ There was no TEST/stress access, promotion or new tag. The
 [earlier continuation](../../../doc/CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
 remains the historical prospective record.
 
-Next, follow the [saved-TRAIN reliability plan](FROZEN_NATIVE_RELIABILITY_PLAN.md)
-and [current continuation](../../../doc/CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md).
-Compare all five paired v4/v7 TRAIN exports and retained fixed-head margins,
-within-source separation, feature variation and encoder training traces before
-proposing another change. Master12412 is already weaker on TRAIN as well as
-VALIDATION; this cannot be described only as a held-out generalization failure.
-The diagnosis is descriptive: zero model updates, head refits, new quality
-generation or held-out analysis payloads. Keep failed and successful runs in the
-same table. Stop decoder/rate/budget/head tuning; retain v7 as working direction
-and v4 as reference. Only a concrete supported hypothesis should lead to a new
-prospective encoder-training comparison.
+The [saved-TRAIN reliability diagnosis](SAVED_NATIVE_RELIABILITY_DIAGNOSTIC.md)
+completed the earlier [plan](FROZEN_NATIVE_RELIABILITY_PLAN.md) and
+[dated continuation](../../../doc/CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md).
+It compares every paired v4/v7 TRAIN export, retained fixed-head margins,
+within-source separation, feature variation and encoder training trace.
+Master12412 is already weaker on TRAIN as well as VALIDATION; this cannot be
+described only as a held-out generalization failure. Mixed geometry does not
+identify a common architecture defect. The diagnosis is descriptive, with zero
+model updates, head refits, new quality generation or held-out analysis payloads.
+The later amplitude and early-mixer milestones are preserved separately; the
+current planned direction appears at the top of this document.

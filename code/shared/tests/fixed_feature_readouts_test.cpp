@@ -68,16 +68,16 @@ ev::FixedFeatureReadoutRun fixture(const fs::path &path) {
   run.methods = {
       {"native_v4", {torch::zeros_like(train), train_valid.clone(), "dummy constant TRAIN"},
        {torch::zeros_like(x), intact_valid.clone(), "dummy constant intact"},
-       {torch::zeros_like(x), deleted_valid.clone(), "dummy constant deleted"}},
+       {torch::zeros_like(x), deleted_valid.clone(), "dummy constant deleted"}, false, {}},
       {"native_v7", {train.clone(), train_valid.clone(), "dummy linear TRAIN"},
        {x.clone(), intact_valid.clone(), "dummy linear intact"},
-       {x.clone(), deleted_valid.clone(), "dummy linear deleted"}},
+       {x.clone(), deleted_valid.clone(), "dummy linear deleted"}, false, {}},
       {"pca_only", {train.clone(), train_valid.clone(), "caller-prepared dummy components TRAIN"},
        {x.clone(), intact_valid.clone(), "caller-prepared dummy intact"},
-       {x.clone(), deleted_valid.clone(), "caller-prepared dummy deleted"}, true},
+       {x.clone(), deleted_valid.clone(), "caller-prepared dummy deleted"}, true, {}},
       {"unsupported", {train.clone(), torch::zeros({8}, torch::kBool), "dummy no TRAIN support"},
        {x.clone(), intact_valid.clone(), "dummy intact"},
-       {x.clone(), deleted_valid.clone(), "dummy deleted"}}};
+       {x.clone(), deleted_valid.clone(), "dummy deleted"}, false, {}}};
   return run;
 }
 void equal_fit(const fs::path &a, const fs::path &b) {
@@ -178,6 +178,60 @@ void suite(const fs::path &root) {
           test::check(torch::equal(tensor(left/(view+"-predictions.pt"),key),tensor(right/(view+"-predictions.pt"),key)),
               "generic pair naming changed fit/prediction arithmetic");
     }
+  auto multiple = fixture(root/"multiple-pairs");
+  multiple.comparisons = {{"native_v4","native_v7"},{"native_v4","pca_only"},{"pca_only","native_v7"}};
+  const auto multiple_report = ev::run_fixed_feature_readouts(multiple); runtime.unchanged();
+  test::check(multiple_report.find("\"ridge_fits\":9,\"tiny_fits\":9,\"validation_fits\":0") != std::string::npos,
+      "multiple comparisons redundantly fitted heads");
+  for (const std::string id : {"native_v7_minus_native_v4","pca_only_minus_native_v4","native_v7_minus_pca_only"}) {
+    size_t position = 0, count = 0;
+    while ((position = multiple_report.find("\"id\":\""+id+"\"", position)) != std::string::npos) { ++count; ++position; }
+    test::check(count == 6, "each pair must retain three repetitions and both views");
+  }
+  for (const std::string method : {"native_v4","native_v7","pca_only"})
+    for (const std::string rep : {"rep-2701","rep-2802","rep-2903"}) {
+      const auto left = root/"ordinary"/method/rep, right = root/"multiple-pairs"/method/rep;
+      equal_fit(left/"fit.pt",right/"fit.pt");
+      for (const std::string view : {"training","validation-intact","validation-deleted"})
+        for (const std::string key : {"ridge","tiny_secondary","valid","probe_input_features","ridge_logits","tiny_hidden_preactivation","tiny_logits"})
+          test::check(torch::equal(tensor(left/(view+"-predictions.pt"),key),tensor(right/(view+"-predictions.pt"),key)),
+              "adding comparisons changed a fitted prediction");
+    }
+  auto bad_multiple = fixture(root/"bad-multiple");
+  bad_multiple.comparisons = {{"native_v4","native_v7"},{"native_v4","native_v7"}};
+  rejects([&]{ ev::run_fixed_feature_readouts(bad_multiple); },"duplicate multiple pair admitted");
+  bad_multiple.comparisons[1] = {"native_v4","missing"};
+  rejects([&]{ ev::run_fixed_feature_readouts(bad_multiple); },"undeclared multiple pair admitted");
+  bad_multiple.comparisons[1] = {"native_v4","native_v4"};
+  rejects([&]{ ev::run_fixed_feature_readouts(bad_multiple); },"self multiple pair admitted");
+  bad_multiple.comparisons.resize(1); bad_multiple.comparison_candidate = "native_v7";
+  rejects([&]{ ev::run_fixed_feature_readouts(bad_multiple); },"mixed single/multiple fields admitted");
+  test::check(!fs::exists(root/"bad-multiple"),"invalid multiple pair created output before validation");
+
+  auto raw_unprepared = fixture(root/"raw-unprepared"); raw_unprepared.methods[1].name = "raw";
+  ev::run_fixed_feature_readouts(raw_unprepared); runtime.unchanged();
+  auto raw_prepared = fixture(root/"raw-prepared"); raw_prepared.methods[1].name = "raw";
+  auto &raw = raw_prepared.methods[1];
+  const ev::FeatureNormalizer shared_raw_outer(raw.training);
+  raw.training = shared_raw_outer.transform(raw.training);
+  raw.validation_intact = shared_raw_outer.transform(raw.validation_intact);
+  raw.validation_deleted = shared_raw_outer.transform(raw.validation_deleted);
+  raw.inputs_train_prepared = true;
+  ev::run_fixed_feature_readouts(raw_prepared); runtime.unchanged();
+  for (const std::string rep : {"rep-2701","rep-2802","rep-2903"}) {
+    const auto left = root/"raw-unprepared/raw"/rep, right = root/"raw-prepared/raw"/rep;
+    test::check(!tensor(right/"fit.pt","outer_normalizer_applied").item<bool>() &&
+        tensor(right/"fit.pt","outer_fitted_rows").item<int64_t>() == 0,
+        "caller-normalized raw redundantly fitted an outer map");
+    for (const std::string key : {"fitted_rows","ridge_mean","ridge_scale","ridge_weights","ridge_intercept",
+        "tiny_mean","tiny_scale","tiny_w1","tiny_b1","tiny_w2","tiny_b2","actual_probe_seed_decimal"})
+      test::check(torch::equal(tensor(left/"fit.pt",key),tensor(right/"fit.pt",key)),
+          "sharing the raw outer map changed a fitted probe");
+    for (const std::string view : {"training","validation-intact","validation-deleted"})
+      for (const std::string key : {"ridge","tiny_secondary","valid","probe_input_features","ridge_logits","tiny_hidden_preactivation","tiny_logits"})
+        test::check(torch::equal(tensor(left/(view+"-predictions.pt"),key),tensor(right/(view+"-predictions.pt"),key)),
+            "sharing the raw outer map changed a prediction");
+  }
   auto missing_pair = fixture(root/"missing-pair"); missing_pair.comparison_reference = "native_v4";
   rejects([&]{ ev::run_fixed_feature_readouts(missing_pair); },"one-sided comparison admitted");
   test::check(!fs::exists(root/"missing-pair"),"invalid pair created output before validation");

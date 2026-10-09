@@ -7,6 +7,13 @@
 
 namespace embedding::encoders::raw_patch_bottleneck_mae {
 
+inline constexpr const char *kLearningCurveContinuationSuffix = ".continuation.pt";
+inline constexpr const char *kLearningCurveContinuationArtifact =
+    "rpb_early_mixer_curve_continuation_state_v1";
+struct LearningCurveStateWitnessOptions {
+  bool enabled{false};
+};
+
 // Captures resolved CUDA settings once. The label-free fit callback clones only
 // permitted training observations and fits one frozen scaler. Completed budgets
 // are absolute; optimizer state and attempted counter streams are continuous.
@@ -24,5 +31,12 @@ make_learning_curve_trainer(const Settings &settings);
 // rejects placement1. Use make_early_mixer_trainer for CUDA-only snapshots.
 embedding::evaluation::CurveTrainerFactory
 make_learning_curve_trainer(const Settings &settings, ContextDeletionOptions options);
+
+// Additive live-state witness for the separately bound early-mixer curve only.
+// Old overloads keep this disabled and preserve their saved artifact schemas.
+// No optimizer is constructed or reloaded when capturing the witness.
+embedding::evaluation::CurveTrainerFactory make_learning_curve_trainer(
+    const Settings &settings, ContextDeletionOptions options,
+    LearningCurveStateWitnessOptions state_witness);
 
 } // namespace embedding::encoders::raw_patch_bottleneck_mae

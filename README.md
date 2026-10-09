@@ -75,8 +75,18 @@ improves v7 MAE to 0.056375/0.059200, but equal-budget v4 is lower at
 0.053609/0.056835. Independent saved-evidence audit passed 67,932,331 checks;
 there is no TEST/stress access or promotion. Keep v7 as the working direction,
 v4 as the active reference, and follow the
-[current continuation](doc/CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md)
-to diagnose saved TRAIN representation reliability before another training change.
+[dated continuation](doc/CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md).
+Its saved-TRAIN reliability diagnosis and subsequent amplitude and early-mixer
+comparisons are complete. The latest
+[continuous learning curve](code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md)
+retains every 0/512/1024/2048 point for fresh RPB-v7.alt-03/RPB-v10.alt-01 pairs.
+Both reconstruct more accurately with longer training, without monotone timing
+classification benefit. At 2048, late/early intact linear means are
+92.1875%/92.65625% and additional-deletion means are 87.8125%/91.71875%, with
+full coverage. Independent audit passed 141,317,815 checks. There is no
+best-point selection, TEST/stress or promotion. The next planned direction is
+one TRAIN-only matched-target gain comparison at fixed 512 on the same early
+architecture, with a new matched control; its card and results are not yet frozen.
 Older designs remain available as archived references. See the
 [version registry](doc/EMBEDDING_VERSIONS.md),
 [results reporting standard](doc/RESULTS_REPORTING_STANDARD.md), and
@@ -126,7 +136,8 @@ tasks. Source files and GPU capacity are shared. Generated data, reports,
 checkpoints and exports persist under `output/runs/<session>`; smoke and
 evaluation runners create a fresh subdirectory for each invocation. Existing
 `.build`, `.external` and `output` contents are retained. `.external/libtorch` is
-the shared staged Linux library input, and `.build/reference` is the optional
+the staged transfer input; the installed SDK and runtime live inside the
+container at `/opt/cuwacunu_embedding/libtorch`. `.build/reference` is the optional
 read-only extraction-audit input. See [environment coordination](doc/ENVIRONMENT.md) for details.
 
 Choose the model with an explicit Make target; session names only select build
@@ -148,7 +159,14 @@ directory. RPB prepare/train/embed has no evaluator dependency. Existing `all`,
 
 The independent LibTorch `2.6.0+cu124` C++11 ABI bundle is staged in
 `.external/libtorch`; it was copied from the existing local bundle. To transfer
-this project, also stage that same Linux bundle at this path before setup. It
+this project, also stage that same Linux bundle at this path before setup.
+After installing the pinned Python dependency, setup copies and verifies every
+file into `/opt/cuwacunu_embedding/libtorch`. Builds and runtime loading use
+that container filesystem copy. The installer reuses a verified complete copy
+and preserves conflicting or partial destinations for inspection. Completion
+evidence lives under `/opt/cuwacunu_embedding/setup/sdk-*`. For an already
+configured container, run `python3 -B code/scripts/install-libtorch.py` there
+to install or verify just this bundle. The staged input stays unchanged. It
 includes the CUDA/cuDNN runtime libraries used by the model. The system CUDA
 toolkit and cuDNN packages additionally provide `nvcc` and development tools.
 Bundled LibTorch libraries take precedence over system

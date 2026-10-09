@@ -11,10 +11,16 @@ inline constexpr const char *kEarlyMixerFixtureFitProtocol =
     "early-mixer-reliability-engineering-v1/lag_sign";
 inline constexpr const char *kEarlyMixerSnapshotArtifact = "rpb_early_mixer_cuda_snapshot_v1";
 inline constexpr const char *kEarlyMixerSnapshotAuditFile = "early-mixer-snapshot-audit.pt";
+inline constexpr const char *kEarlyMixerCurveProtocol = "early-mixer-learning-curve-v1";
+inline constexpr const char *kEarlyMixerCurveFitProtocol = "early-mixer-learning-curve-v1/lag_sign";
+inline constexpr const char *kEarlyMixerCurveFixtureFitProtocol =
+    "early-mixer-learning-curve-engineering-v1/lag_sign";
+inline constexpr const char *kEarlyMixerCurveSnapshotArtifact = "rpb_early_mixer_curve_cuda_snapshot_v1";
 
 // The quality scope admits only point0/512. Artificial CUDA engineering fixtures
-// have a different namespace and explicitly admit only point0/2/4.
-enum class EarlyMixerScope { quality, engineering };
+// have a different namespace and explicitly admit only point0/2/4. Separate curve
+// scopes admit quality0/512/1024/2048 and engineering0/1/2/4 respectively.
+enum class EarlyMixerScope { quality, engineering, curve_quality, curve_engineering };
 
 struct EarlyMixerSnapshotOptions {
   std::string checkpoint_path;
@@ -31,6 +37,14 @@ struct EarlyMixerSnapshotOptions {
 // path; no historical CPU feature provider is constructed.
 embedding::evaluation::CurveTrainerFactory make_early_mixer_trainer(
     const Settings &settings, EarlyMixerScope scope = EarlyMixerScope::quality);
+
+// A separate fresh continuous curve. Quality saves point0/512/1024/2048 under
+// a fixed2048 ceiling and4096 attempt cap; engineering saves0/1/2/4 with a4 or8
+// ceiling to prove horizon independence. Each saved point additionally includes
+// an exact LIVE CPU continuation-state companion; no quality inference occurs
+// while writing it. No reload/resume or scaler refit is exposed.
+embedding::evaluation::CurveTrainerFactory make_early_mixer_curve_trainer(
+    const Settings &settings, bool engineering = false);
 
 // Exact original label-free timing TRAIN/scaler/source binding. Native features
 // and ordinary original-Q reconstruction execute on one independently loaded,

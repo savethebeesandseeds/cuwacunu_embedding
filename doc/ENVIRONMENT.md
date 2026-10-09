@@ -65,8 +65,9 @@ jobs separate inputs/output destinations as well.
 | `/opt/cuwacunu_embedding/build/<session>/code` | Objects, dependency files and test binaries following the source layout |
 | `/opt/cuwacunu_embedding/build/<session>/tmp` | Temporary files for task processes and C++ tests |
 | `/opt/cuwacunu_embedding/setup` | Future installer downloads and package inventory |
+| `/opt/cuwacunu_embedding/libtorch` | Verified pinned Linux SDK and runtime inside the container |
 | `/embedding/output/runs/<session>` | Persisted smoke and evaluation results in the project bind mount |
-| `/embedding/.external/libtorch` | Existing shared staged Linux LibTorch input |
+| `/embedding/.external/libtorch` | Preserved Linux bundle transfer input; setup copies it into the container |
 | `/embedding/.build/reference` | Existing reference header for the optional extraction audit |
 
 Smoke and evaluation runners allocate a new directory for each invocation and
@@ -81,7 +82,15 @@ container survive a normal stop/start; removing or replacing the container would
 remove its writable-layer build state. Container removal is a separate action.
 
 The Makefile accepts `BUILD_DIR`, `LIBTORCH`, `REFERENCE_DIR` and `RUN_ROOT` for
-explicit environments. The task runner fixes its own build and run paths so
+explicit environments. `LIBTORCH` defaults to `/opt/cuwacunu_embedding/libtorch`;
+an override must also identify a container filesystem or named-volume SDK,
+following the container-only development rule. `setup.sh` installs the pinned
+Python dependency before invoking `code/scripts/install-libtorch.py`, which
+verifies the staged bundle, copies it into an exclusive destination and records
+every file hash under a fresh `setup/sdk-*` directory. An existing complete copy
+is verified and reused; a partial or conflicting destination is preserved and
+rejected. No container, volume or host bundle is removed or replaced.
+The task runner fixes its own build and run paths so
 they match the session lock. Binaries use the selected LibTorch directory as
 their runtime library path. Shell scripts and the Makefile have LF checkout
 rules in `.gitattributes`.

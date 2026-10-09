@@ -29,7 +29,7 @@ tracks the working RPB-v7 direction and preserved original five-instance group.
 The completed [amplitude transfer diagnostic](FROZEN_AMPLITUDE_TRANSFER_DIAGNOSTIC.md)
 uses unchanged v4.alt-01/v7.alt-01 encoders, original timing scalers and new
 amplitude classifiers. A feature-only CUDA adapter exposes the shared evaluation
-contract without retraining or reconstruction callbacks. The prospective
+contract without retraining or reconstruction callbacks. The frozen
 [RPB-v10 card](../../evaluation/cards/early_mixer_reliability_v1.md) moves the
 existing aligned mixer before temporal blocks while retaining an independent
 local path, native32 and all225,805 parameters. It compares a separate fresh
@@ -37,11 +37,21 @@ RPB-v7.alt-02 group at the same training budget. New checkpoints carry an explic
 architecture identity; ordinary defaults and historical loaders remain intact.
 The [verified diagnostic](EARLY_MIXER_RELIABILITY_DIAGNOSTIC.md) improves mean
 and worst-cohort timing accuracy, but two timing cohorts and amplitude deletion
-accuracy worsen. V10 remains experimental. The separately frozen
-[paired learning curve](../../evaluation/cards/early_mixer_learning_curve_v1.md)
-uses fresh v7.alt-03/v10.alt-01 groups at 512/1024/2048 updates with unchanged
-heads and one feature/query export per needed surface. Existing saved groups
-remain unchanged.
+accuracy worsen. V10 remains experimental. The completed
+[paired learning curve](EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md) uses fresh
+RPB-v7.alt-03/RPB-v10.alt-01 groups, retaining every 0/512/1024/2048 point.
+At 2048, late/early timing linear means are 92.1875%/92.65625% intact and
+87.8125%/91.71875% under additional deletion, all at 100% coverage. Reconstruction
+improves in both groups as training continues, but timing classification does
+not improve monotonically; early mixing also loses amplitude-transfer quality.
+The audit passed 141,317,815 checks. Fixed heads, one-time quality exports and
+all five pairs remain preserved, with no best-point selection or promotion.
+Existing saved groups remain unchanged.
+
+The [next direction](NEXT_ADVANCE.md) is a planned fixed 512 comparison of the
+same early architecture: RPB-v10.alt-02 versus RPB-v11 with one TRAIN-only
+matched-target gain over 0.5–2, drawn log-uniformly. No result or frozen card is
+claimed for that comparison; half-mixer exploration is skipped.
 
 The [RPB-v5 comparison](PAIRED_POOLING_ADVANCE.md) and
 [optimization diagnostic](OPTIMIZATION_DIAGNOSTIC.md) are complete. Direct patch

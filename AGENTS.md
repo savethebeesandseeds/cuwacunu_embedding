@@ -87,10 +87,19 @@ intact / 57.03125% under extra deletion; mean TRAIN/VALIDATION MAE is
 29.194490 / 29.371655, including one especially unstable run. Actual CUDA
 admission and independent audit passed 74,721,050 checks. Stop this frozen
 mechanism without coefficient/rate/budget rescue. RPB-v4 remains active;
-v9 is the last measured embedding candidate. The original
+this v9 mechanism remains stopped. The original
 [continuation note](doc/CONTINUATION_2026-10-08.md) prescribed the saved TRAIN
 loss-scale/component diagnosis, now complete as recorded below. No TEST/stress
 or automatic promotion.
+The latest completed [early-mixer learning curve](code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md)
+measures fresh RPB-v7.alt-03/RPB-v10.alt-01 through continuous 2048, retaining
+0/512/1024/2048. Both reconstruct more accurately without monotone timing
+classification improvement. Audit passed 141,317,815 checks; no best-point
+selection or promotion occurred. Preserve the original v7 and active v4.
+The [current next direction](code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md)
+is a planned TRAIN-only matched-target gain at fixed 512 on the same early
+architecture, RPB-v10.alt-02 versus RPB-v11. It has no measured result or frozen
+card yet; do not treat planned groups as replacement evidence.
 The user's current working direction is RPB-v7, with
 RPB-v4 retained as the active reference. The separate
 [saved-TRAIN v9 scale lesson](code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_LOSS_SCALE_TRAIN_DIAGNOSTIC.md)
