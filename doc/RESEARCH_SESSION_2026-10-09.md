@@ -310,3 +310,98 @@ implemented variable-period/delay generator and analytic data-only fixtures.
 Harder encoder scores remain unmeasured. Keep both late-v7 and compact early-v10
 for its separately frozen fixed512 comparison; preserve original v7, formal v4,
 all prior capsules/curve points and stopped gain/pooled mechanisms.
+
+## TEMPO-3 structured harder timing comparison
+
+The single-task `structured-hard-timing-comparison-v2` completed once on fresh
+masters 75272/76373/77474/78575/79676, adding RPB-v7.alt-05/RPB-v10.alt-05 without
+changing any earlier design or trained instance. Dataset TEMPO-3 is timing,
+designed complexity **4/5**: period U[10,24), delay U[.25,1), positive gains,
+constant offsets, unrelated third-channel period and 3-tick channel gaps.
+That ordinal level was assigned before measurement and is not derived from scores.
+
+The exact generator stayed unchanged after the first data-only admission.
+Its same-feature analytic rule failed deleted coverage on engineering seeds
+80383/81484: 950/1,024 and 900/1,024 valid, with every supported row correct.
+No encoder or head was fitted. The failed v1 card, receipt, JSON and Markdown
+remain exact. A separately specified cross-feature rule used fresh 82585/83686
+seeds and the same support/accuracy gates; deleted support was 1,020/1,024 and
+1,024/1,024, every supported row correct. The mean deleted coverage was
+99.8046875%. The [information diagnostic](STRUCTURED_HARD_TIMING_INFORMATION_DIAGNOSTIC.md)
+keeps both attempts separate; it is not a paired estimate of an improvement.
+
+The model comparison retained the original .15 deletion training policy,
+225,805 parameters, native 32, batch 8, fixed 512 and head repetitions 2701/2802/
+2903. All ten CUDA trajectories completed without skips, saving 20 initial/final
+states and 40,960 sampled rows. There were 105 readout pipelines/210 individual
+heads, 60 unique native exports, 20 query writers/80 required masked forwards,
+and 15 separate zero-fit analytic arrays. Both initial controls were kept.
+The truthful old implementation namespace remains in the four old checkpoint
+companions; a fifth protocol binding identifies each new harder-data cohort.
+
+Intact late/early linear means are 55.46875%/52.8125%, with neural means
+54.6354167%/54.8958333%. Extra30% deletion gives 54.21875%/53.75% linear and
+54.0104167%/54.3229167% neural, all at 100% coverage. All five pairs remain in
+the [full report](../code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_DIAGNOSTIC.md);
+early improves one intact and two deleted linear pairs. Mean TRAIN/VALIDATION
+MAE is 0.649343053/0.689378047 late and 0.644282301/0.682958230 early. Synchronized
+training-loop means are 15.876681932s/16.789327191s, including CPU trace capture
+and excluding checkpoint writing. Ordinary joint decoder training occurred;
+extra decoder-only calibration was zero. Other reported timings are named
+mixed transfer, verification and I/O scopes, not pure GPU kernel costs.
+
+Raw/PCA fixed-head scores are also near chance. The observed-only analytic
+rule solves every TRAIN/intact/deleted row in the actual five quality cohorts
+at 100% coverage. This establishes an accessible cue in legal observations,
+not sufficiency of the served 32 features or a particular information-loss cause.
+Neither architecture is promoted. Fresh harder-data instances do not replace
+or damage original saved v7; formal v4 remains the reference and gainv11/
+pooledv12 remain stopped.
+
+The initial engineering compile failure renamed an ambiguous archive-writing
+helper before the fresh successful CUDA admission; no quality was generated
+on the failure. After quality completed, the first reader-release attempt
+stopped at inventory-name ordering before any archive read or audit. The narrow
+metadata correction uses path-component ordering for capsule inventories while
+retaining string ordering for source manifests. Full reversal restores the
+captured prequality reader; all numerical functions/modules remain unchanged.
+The sole actual saved-arithmetic audit passed **52,934,423 checks / 715 archive
+decodes** in 307.101958641s, with no model forward, encoder/head/PCA fits, ordinary
+CUDA checkpoint-body decode or historical/TEST/stress payload access.
+
+Capsule xrZMAS inventory SHA:
+`9bd9efe7c1e6c536ba57970c8db4f5549f3a06480a2407ab8d2d5ff38efc08aa`.
+Enclosing180-file SOURCE SHA:
+`9cd4af69f71b1cdc0368987185aa836040d349ec7936b2ef6b11e1838c2b6eb8`.
+Passed audit SHA:
+`cf79abdca511f22778622d2b08e62b74b592c10618d1090ea2bd53eefd84539c`.
+Reader SHA:
+`5a77eee23619d7efbc71dcb086680508b9f54f68fb761a39bfeb5aeabd2b9819`.
+Durable report SHA:
+`d5715fa734e5c5685d0b6eb1252e9987f9730a715817f761d9507f297a554d86`;
+[durable JSON](results/structured_hard_timing_comparison_v2.json) SHA:
+`1f5641212ce329a449073822a98d0db5c7e99a818532dfdca857bc78b9e17cd4`.
+
+The source-frozen direct formatter read five bound metadata roles once.
+Independent emitted metadata QA passed 1,416 checks; the exact report/JSON were
+copied once to durable destinations, preserving all seven admitted inputs.
+During report formatting/QA/copying no tensors, models, heads, PCA, bootstrap
+or audit were executed. The registry preserves all 13 previous design objects,
+13 previous instance objects and 24 historical top-level objects, adding only
+the alt-05 groups/new diagnostic/latest pointer. The new registry training rows
+omit duplicated per-master traces; full traces remain in the exact durable JSON.
+The machine dataset registry,180 captured producer source files, old capsules,
+original v7 and earlier reports remain unchanged. Portable disabled readers and
+report tools sit outside the compiled closure. All builds/runs used the same
+managed container and internal pinned SDK.
+
+The [current continuation](CONTINUATION_2026-10-09_AFTER_STRUCTURED_HARD_TIMING.md)
+proposes a saved-TRAIN diagnostic before more architecture changes. Compare
+fixed-head TRAIN accuracy/margins with audited held-out metadata, then check
+relative timing in each saved query bank's 8-tick patch against identically
+restricted target support. Four query banks use distinct masked contexts;
+they are not a single full-original-context embedding. Poor reconstructed
+timing would diagnose the reconstruction path, not prove encoder information
+loss; strong timing would show multi-context encoder/decoder accessibility,
+not served 32 sufficiency. Freeze that card/input matrix first; use no new
+encoder updates, head refits or PCA and keep TEMPO-3 and heads fixed.

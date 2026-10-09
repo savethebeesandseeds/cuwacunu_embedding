@@ -4,3 +4,11 @@ Makefile text eol=lf
 # Keep Linux C++ sources consistent when staged from Windows.
 *.cpp text eol=lf
 *.h text eol=lf
+# Preserve the exact SOURCE and report bytes pinned by the TEMPO-3 evidence.
+code/evaluation/protocols/structured_hard_timing_v1/** text eol=lf
+code/evaluation/tools/structured_hard_timing_v1/** text eol=lf
+code/evaluation/cards/structured_hard_timing_comparison_v*.md text eol=lf
+code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_DIAGNOSTIC.md text eol=lf
+doc/dataset_registry.json text eol=lf
+doc/results/structured_hard_timing_*.json text eol=lf
+doc/STRUCTURED_HARD_TIMING*.md text eol=lf

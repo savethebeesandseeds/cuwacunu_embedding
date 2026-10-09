@@ -14,26 +14,40 @@ stays separate from encoder training and decoding.
 
 ## Current completed milestone and next direction
 
-The [fresh early/late confirmation](EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md) is
-complete at fixed512 for RPB-v7.alt-04/RPB-v10.alt-04. Timing Ridge means rise
-94.21875%→95% intact and88.28125%→92.8125% deleted, with100% coverage. Worst
-scores fall84.375%→80.46875% and78.125%→75%; three paired cohorts improve and
-two worsen in both views. Master65262 falls96.875%→80.46875% intact and
-97.65625%→75% deleted. Mean TRAIN/VALIDATION MAE improves, while amplitude
-deletion Ridge falls97.65625%→96.875%. Retain every cohort and all four panels;
-these tradeoffs do not promote compact early-v10.
+The [TEMPO-3 comparison](STRUCTURED_HARD_TIMING_DIAGNOSTIC.md) completed once
+and passed its independent audit. This is structured harder timing at designed
+complexity4/5, with unchanged native32, .15/B8/fixed512 and heads. Fresh late
+RPB-v7.alt-05 and early RPB-v10.alt-05 have intact linear means55.47%/52.81%
+and deleted means54.22%/53.75%, all at100% coverage. Neural means are54.64%/54.90%
+and54.01%/54.32%. Raw fixed heads also stay near chance. The observed-only
+cross-feature analytic timing rule solves every saved quality row, so this is
+not evidence that the legal observations lack usable timing. Neither group is
+promoted, and these fresh cohorts do not replace or damage original saved v7.
 
-The next bounded measurement is the separately specified
-[variable-delay timing benchmark](../../../doc/HARDER_TIMING_BENCHMARK_PLAN.md),
-keeping late-v7 and compact early-v10, native32, .15/B8/fixed512 and unchanged
-heads. Its reusable generator and analytic data-only fixtures are implemented;
-no harder encoder scores exist yet. Its comparison card, cohort/source closure,
-reader and CUDA admission still need to be frozen before generation. Keep original-difficulty evidence as the
-anchor. More difficult data supplies headroom without resolving retraining
-variation or authorizing head, width, gain or budget tuning. See the
-[current continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_EARLY_MIXER_CONFIRMATION.md).
+The next proposed bounded action is a saved-TRAIN diagnosis, under a new
+prospective card and closed input roles before execution. Compare fixed-head
+TRAIN accuracy/margins with already audited held-out metadata. Then check
+relative timing in saved reconstruction query outputs against their saved
+targets, using only legal triplets within each bank's8-tick patch and the same
+support restriction for both. The four query banks use different masked
+contexts; they are not a single full-context embedding. Poor reconstructed
+timing against strong targets would identify a reconstruction-path limitation,
+not encoder information loss. Strong reconstructed timing would establish
+multi-context encoder/decoder accessibility, not sufficiency of the served32
+numbers. Keep all five cohorts, source pairs and invalid rows. Use no encoder
+updates, head refits or PCA; freeze TEMPO-3 and the heads before further
+architecture, gain, width or budget changes. See the
+[current continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_STRUCTURED_HARD_TIMING.md).
 
 ## Earlier completed milestones
+
+The [fresh early/late confirmation](EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
+remains a separate TEMPO-1/AMP-1 fixed512 record for RPB-v7.alt-04/RPB-v10.alt-04.
+Timing Ridge means rise94.21875%→95% intact and88.28125%→92.8125% deleted, but
+worst scores fall84.375%→80.46875% and78.125%→75%. Three pairs improve and two
+worsen in both views; master65262 loses strongly. Its better mean reconstruction
+and worse amplitude deletion score did not promote compact early-v10. Preserve
+that record rather than comparing fresh harder cohorts as a decline of its weights.
 
 The [continuous learning-curve diagnostic](EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md)
 is complete for RPB-v7.alt-03 and RPB-v10.alt-01. All five paired live controllers

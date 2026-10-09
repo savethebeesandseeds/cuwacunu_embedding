@@ -6,14 +6,18 @@ global and per-channel embeddings and trains without the parent project's runtim
 DSL, registries, graph orchestration, forecasting, trading, or interface components.
 
 The original saved **RPB-v7** bundle remains protected, and **RPB-v4** remains
-the formal reference. The fresh fixed512 **RPB-v7.alt-04 / RPB-v10.alt-04**
-[confirmation](code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
-improves early-v10 timing means and mean reconstruction, but both worst-cohort
-timing scores fall; three paired cohorts improve and two worsen. Compact v10
-remains unpromoted. Matched-target gain **RPB-v11** and wider pooled **RPB-v12**
-remain stopped. The [current continuation](doc/CONTINUATION_2026-10-09_AFTER_EARLY_MIXER_CONFIRMATION.md)
-retains these tradeoffs and the separate [harder timing benchmark](doc/HARDER_TIMING_BENCHMARK_PLAN.md),
-whose data-only fixtures pass but encoder quality is not yet measured.
+the formal reference. The latest [TEMPO-3 comparison](code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_DIAGNOSTIC.md)
+measures fresh **RPB-v7.alt-05 / RPB-v10.alt-05** on structured harder timing,
+designed complexity **4/5**. At fixed 512 updates, intact linear means are
+55.47% / 52.81% and extra-deletion means are 54.22% / 53.75%, all at 100%
+coverage. Raw data with the fixed heads also scores near chance, while the
+observed-only analytic timing rule solves these saved cohorts. This does not
+establish whether the served representation, fixed head or optimization limits
+access to that cue. Neither model is promoted; gain **RPB-v11** and pooled width
+**RPB-v12** remain stopped. The
+[current continuation](doc/CONTINUATION_2026-10-09_AFTER_STRUCTURED_HARD_TIMING.md)
+proposes a saved-TRAIN fit/margin and bank-specific reconstruction diagnosis,
+with no new model, head or PCA fitting.
 
 The retained baseline uses multiscale time descriptors and windowed frequency
 magnitudes, a shared token encoder, JEPA context/target masking and latent

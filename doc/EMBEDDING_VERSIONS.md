@@ -1,12 +1,16 @@
 # Embedding version registry
 
-Latest completed: [fresh early/late confirmation](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
-and [durable JSON](results/early_mixer_confirmation_v1.json) add separate
-RPB-v7.alt-04/RPB-v10.alt-04 groups at512. Early-v10 improves timing means and
-mean original-query reconstruction but lowers both worst-cohort scores; three
-cohorts improve and two worsen. No promotion or historical replacement follows.
-The [current continuation](CONTINUATION_2026-10-09_AFTER_EARLY_MIXER_CONFIRMATION.md)
-retains all four panels and the separately engineered harder timing next step.
+Latest completed: the [TEMPO-3 comparison](../code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_DIAGNOSTIC.md)
+and [durable JSON](results/structured_hard_timing_comparison_v2.json) add fresh
+RPB-v7.alt-05/RPB-v10.alt-05 instance groups at512 on structured harder timing,
+designed complexity4/5. Intact linear means are55.47%/52.81%; extra30% deletion
+gives54.22%/53.75%, all at100% coverage. Raw fixed-head scores also remain near
+chance. The observed-only analytic rule solves the saved cohorts, but this does
+not identify a learned-path failure mechanism. No promotion or historical
+replacement follows. The [current continuation](CONTINUATION_2026-10-09_AFTER_STRUCTURED_HARD_TIMING.md)
+proposes a bounded saved-TRAIN diagnosis before new architecture or head changes.
+Earlier [confirmation](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
+evidence, including both worst-cohort regressions, remains unchanged.
 
 RPB-v4 is the active research reference. RPB-v5's claimed advance failed the
 fixed512 comparison. Retained versions provide historical evidence and compatible

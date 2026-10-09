@@ -1,8 +1,11 @@
 # Embedding results reporting standard
 
-Standard version: 1.0
+Standard version: 1.1
 
 Agreed: 2026-10-06
+
+Dataset naming/legend extension: 2026-10-09. Applies to new reports; preserve
+historical frozen reports, cards and source captures.
 
 Report what the encoder contributes through fixed classifier heads. Show task
 performance separately from reconstruction progress and training cost. Use
@@ -30,6 +33,53 @@ to the original saved weights or silently replace the frozen reference.
 Use one task per quality table. Do not average direction, level, amplitude, and
 timing into a single encoder score. Longer reports may put detailed per-run
 scores, uncertainty, and provenance in linked artifacts.
+
+## Dataset names and table legends
+
+Use the stable dataset codename and short recipe in
+[the dataset registry](DATASET_REGISTRY.md). Dataset identity is separate from
+encoder identity, run seeds, split sizes, classifier budgets and evidence stage.
+`TEMPO-*` names lag-sign timing recipes only; amplitude uses its own `AMP-*`
+family. Do not call every synthetic task TEMPO.
+
+Put a compact dataset legend immediately beside **every new result table**,
+including quality, training, per-cohort, uncertainty, diagnostic and cost tables.
+Repeat the legend for each table rather than relying on an earlier section:
+
+> Dataset: **TEMPO-1** · timing · **complexity 1/5** · fixed period16, delay2.
+
+> Dataset: **AMP-1** · amplitude · **complexity 1/5** · paired0.5×/2× sine.
+
+> Dataset: **TEMPO-3** · timing · **complexity 4/5** · variable delay,
+> gains/offsets and 3-tick channel gaps.
+
+Include the scored view, for example intact VALIDATION or extra30% coordinate
+deletion, beside the legend. For a timing-trained encoder evaluated on amplitude,
+say `Fit: TEMPO-1; score: AMP-1`, with both numeric levels. A cost table spanning
+tasks must list every relevant dataset in its legend; do not invent one combined
+complexity. Split/source counts, head recipes and budgets remain explicit nearby.
+
+Complexity is an **ordinal designed challenge level**, fixed before measurement.
+It is neither a mathematically measured quantity nor derived from accuracy,
+observability, coverage, audit checks, TEST access or compute. Level4 is not
+twice level2, and levels across different task families do not establish equal
+intrinsic difficulty. Keep analytic task-information checks separately labelled.
+Never relabel a frozen dataset because scores are high or low. A changed signal
+recipe gets a new dataset identity and prospective specification.
+
+For one dataset, retain the standard five quality/training columns below and
+identify the dataset in its legend. Add a **Dataset** column only when rows from
+multiple datasets appear in one table. Continue to keep different tasks in
+separate quality tables. If comparing several timing recipes together, list each
+codename/level/short recipe in the adjacent legend; show its codename in each row.
+Do not add a complexity column to routine single-dataset tables.
+
+New durable JSON records should carry `dataset_id`, `task`, `recipe_id`,
+`designed_complexity_level`, `complexity_scale_max` (5), and `view` for each
+table/panel, plus distinct fitting/scoring dataset identities for transfer.
+Keep the exact generator source, prospective card, source-group/split IDs and
+dataset artifact hashes in provenance. The codename is a readable handle for
+that fixed recipe, not a substitute for these identities.
 
 ## Quality table
 

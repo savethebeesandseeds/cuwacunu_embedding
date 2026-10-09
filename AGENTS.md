@@ -18,6 +18,17 @@ alternative suffix such as `RPB-v7.alt-01` when applicable. Put short embedding 
 in prose immediately beside the table, rather than inside its cells.
 Do not average different tasks into an unspecified encoder accuracy.
 
+Every new results table needs an adjacent dataset legend with its codename,
+short signal recipe and numeric designed complexity, using the
+[dataset registry](doc/DATASET_REGISTRY.md). TEMPO-1 is original fixed timing1/5,
+TEMPO-2 is variable-delay timing2/5, TEMPO-3 is structured-hard timing4/5
+(variable delays, gains/offsets and 3-tick channel gaps), and AMP-1 is separate
+amplitude1/5. Levels are ordinal design
+labels, not mathematical measurements or accuracy-derived rankings. State the
+view/split and keep head/update budgets independent. Add a Dataset column only
+when a table mixes datasets; otherwise retain the standard five columns.
+These rules apply prospectively; preserve all frozen historical reports/cards.
+
 Evaluate native encoder exports without PCA afterward. PCA is permitted as a
 standalone raw-data baseline labelled exactly "PCA only — no encoder".
 Keep classifier architectures, training budgets, and declared seed policies
@@ -25,15 +36,21 @@ fixed across encoder comparisons; fit their weights separately on training data.
 
 ## Active research version
 
-Latest completed evidence is the fresh fixed512
-[early/late confirmation](code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
-for RPB-v7.alt-04/RPB-v10.alt-04. Early mixing improves timing means and mean
-reconstruction, but worsens both worst-cohort scores; retain all three improving
-and two worsening pairs, especially master65262. Neither group is promoted.
-The [current continuation](doc/CONTINUATION_2026-10-09_AFTER_EARLY_MIXER_CONFIRMATION.md)
-links the separate harder timing benchmark, whose data-only generator checks
-are complete while harder encoder performance is unmeasured. Preserve the
-original saved v7 and formal v4 reference; gainv11 and pooledv12 stay stopped.
+Latest completed evidence is the fixed512
+[TEMPO-3 comparison](code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_DIAGNOSTIC.md)
+for fresh RPB-v7.alt-05/RPB-v10.alt-05: structured harder timing, designed
+complexity4/5, near-chance fixed-head scores and 100% coverage. Raw fixed-head
+scores are also near chance; the legal-observation analytic rule solves all
+saved quality cohorts. Do not infer encoder information loss from accuracy alone.
+Neither group is promoted. The [current continuation](doc/CONTINUATION_2026-10-09_AFTER_STRUCTURED_HARD_TIMING.md)
+proposes a separately specified saved-TRAIN diagnosis: fixed-head fit/margins and
+relative timing within each saved reconstruction query bank's8-tick patch.
+These four banks use different masked contexts; they are not one full-context
+embedding. The diagnostic remains prospective and unmeasured; freeze its card
+and saved-evidence roles before execution.
+Preserve original saved v7 and formal v4; gainv11 and pooledv12 stay stopped.
+The earlier [confirmation](code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
+retains both worst-cohort regressions, including master65262, without promotion.
 
 The working saved v7 models are pinned as **RPB-v7** in the version
 registry: masters 4404/5505/6606/7707/8808 in the original lighter-policy capsule.
@@ -143,7 +160,7 @@ sealed passed audit. Do not rewrite them to improve a result. The
 prescribed saved TRAIN reliability analysis across all ten instances, with no
 encoder/decoder updates, head refits or held-out analysis inputs. That diagnosis
 and the subsequent milestones are complete; the current next action is recorded
-in the fresh confirmation continuation above. Do not tune the heads, deletion rate,
+in the TEMPO-3 continuation above. Do not tune the heads, deletion rate,
 decoder budget or stopped v9 coefficients.
 
 Older versions remain available for archived evidence, explicit comparisons,

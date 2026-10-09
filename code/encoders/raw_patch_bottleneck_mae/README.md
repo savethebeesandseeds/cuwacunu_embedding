@@ -7,15 +7,16 @@ served embedding. The baseline API, executable, archive reader and checkpoint
 format remain separate.
 
 The original saved **RPB-v7** bundle remains protected, and **RPB-v4** remains
-the formal reference. The fresh fixed512 **RPB-v7.alt-04 / RPB-v10.alt-04**
-[confirmation](EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md) improves early-v10 timing
-means and mean reconstruction, but both worst-cohort timing scores fall; three
-paired cohorts improve and two worsen. Compact v10 remains unpromoted.
-Matched-target gain **RPB-v11** and wider pooled **RPB-v12** remain stopped.
-The [current continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_EARLY_MIXER_CONFIRMATION.md)
-retains these tradeoffs and the separately engineered
-[harder timing benchmark](../../../doc/HARDER_TIMING_BENCHMARK_PLAN.md).
-Its data-only fixtures pass; harder encoder quality remains unmeasured.
+the formal reference. The latest [TEMPO-3 comparison](STRUCTURED_HARD_TIMING_DIAGNOSTIC.md)
+measures fresh **RPB-v7.alt-05 / RPB-v10.alt-05** on structured harder timing,
+designed complexity **4/5**. Intact linear means are 55.47% / 52.81%; extra
+30% deletion gives 54.22% / 53.75%, with 100% coverage. Fixed heads on raw data
+also remain near chance; the observed-only analytic timing rule solves the saved
+cohorts. These measurements do not damage or replace original saved models,
+and neither architecture is promoted. Gain **RPB-v11** and wider pooled
+**RPB-v12** remain stopped. The [current continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_STRUCTURED_HARD_TIMING.md)
+proposes saved-TRAIN fit/margin and bank-specific reconstruction diagnosis
+before further architecture or head changes.
 
 **Active research: RPB-v4 — Learned global bottleneck**, through
 [learned_global.conf](config/learned_global.conf). Its native 32-number global

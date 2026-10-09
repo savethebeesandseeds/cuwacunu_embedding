@@ -3,6 +3,13 @@
 For container setup, named task sessions and coordination, see
 [the development environment](ENVIRONMENT.md).
 
+Latest completed work is the [TEMPO-3 harder timing comparison](../code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_DIAGNOSTIC.md),
+designed complexity4/5, with fresh fixed512 late/early groups. Fixed-head scores
+are near chance despite recoverable legal-observation timing; no model is
+promoted. The [current continuation](CONTINUATION_2026-10-09_AFTER_STRUCTURED_HARD_TIMING.md)
+proposes a saved-TRAIN diagnosis with no new model/head/PCA fitting. Earlier
+milestones below remain historical evidence.
+
 The [embedding evaluation policy](EMBEDDING_EVALUATION_POLICY.md) is the shared
 reference for evaluating any encoder, separating correctness, optimization,
 representation evidence, and acceptance decisions.
@@ -38,8 +45,8 @@ implements RPB-v10 against fresh RPB-v7.alt-02. Its
 [verified result](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_RELIABILITY_DIAGNOSTIC.md)
 improves mean and worst-cohort timing accuracy with mixed cohort and amplitude
 tradeoffs. The completed [paired learning curve](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md)
-retains every 0/512/1024/2048 point. The latest [matched-target gain diagnostic](../code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md)
-fails all six numeric guards and is stopped. The [end-window continuation](CONTINUATION_2026-10-09_AFTER_MATCHED_TARGET_GAIN.md)
+retains every 0/512/1024/2048 point. The completed [matched-target gain diagnostic](../code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md)
+fails all six numeric guards and is stopped. The [historical end-window continuation](CONTINUATION_2026-10-09_AFTER_MATCHED_TARGET_GAIN.md)
 records protected evidence and the engineering-first next direction.
 
 `representation-encoder.pdf` is the one-page outreach brief. Editable sources are
