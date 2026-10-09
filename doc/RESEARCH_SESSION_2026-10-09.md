@@ -1,5 +1,12 @@
 # RPB research session, 9 October 2026
 
+Latest subsequent user-authorized follow-up:
+[fresh fixed512 early/late confirmation](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
+is complete. Both timing means and mean MAE improve, but both worst-cohort
+scores fall; compact early-v10 remains unpromoted. The
+[current continuation](CONTINUATION_2026-10-09_AFTER_EARLY_MIXER_CONFIRMATION.md)
+retains every pair and the separately engineered harder timing next step.
+
 Authorized work window: approximately 00:05–08:05 Asia/Dubai
 (8 October20:05 through 9 October04:05 UTC). The working direction is RPB-v7;
 the original five saved instances and all historical evidence remain frozen.
@@ -236,3 +243,70 @@ Both original inventory identities remain exact. Proof SHA is
 There were zero tensor decodes, payload mutations, model/head executions or
 original roles used for quality analysis. This closes preservation verification
 without repeating encoder inference, fitting or an archive audit.
+
+Subsequent explicit user-authorized follow-up completed the fresh original-
+difficulty confirmation for RPB-v7.alt-04/RPB-v10.alt-04 on timing masters
+64161/65262/66363/67464/68565 and amplitude masters
+69666/70767/71868/72969/74070. Late/early timing Ridge means are
+94.21875%/95% intact and 88.28125%/92.8125% deleted, all at 100% coverage.
+Both mean reconstruction guards pass, but worst scores fall 84.375%→80.46875%
+and 78.125%→75%. Three cohorts improve and two worsen in both views;
+master65262 loses 16.40625/22.65625 percentage points. Amplitude intact Ridge
+ties at 99.84375%; deletion falls 97.65625%→96.875%. The full four panels,
+all seven methods, fixed head repetitions and every cohort remain saved.
+There is no promotion or best-point selection.
+
+Each of ten CUDA trajectories retains 0/512 and completes 512 joint
+encoder/decoder updates at batch8, native32 and the unchanged .15 policy.
+Mean TRAIN/VALIDATION original-query MAE is 0.077806255/0.080484228 late and
+0.073898432/0.075583393 early. Update-loop means are 15.832232/16.602317s,
+including CPU trace capture and excluding checkpoint writing, quality inference
+and CPU heads/bootstrap work; pure kernel cost is unmeasured. There are
+210 pipelines/420 heads, 120 distinct native exports, 20 query writers/80
+masked CUDA forwards and 40,960 sampled row exposures. The external confirmation
+namespace and truthful unchanged reliability implementation namespace are
+separately bound by the new fifth companion and dual snapshot audits.
+
+Failed admission FXJe90 is preserved. Its only repair replaced two nonexistent
+checkpoint-with-optimizer test calls with the authoritative optimizer loader;
+production training/serving/card math did not change and that attempt generated
+no quality. The successful incremental admission72hqzF reused three inherited
+objects. Original audit v3 stopped at SOURCE provenance after 18,502 checks and
+zero archive decodes. The additive v4 compiler-evidence adjunct binds exact
+unchanged source subsets, preserved prior compile commands and current
+link/runtime evidence while leaving every base numerical function and tolerance
+unchanged. No capsule edit or quality rerun occurred. Its structured limits
+explicitly decline a fresh-current inherited-compilation claim and carry
+external SOURCE before/after preservation.
+
+The final independent audit passed 96,153,106 checks/1,255 CPU archives in
+780.0044506200065s. Deep emission metadata QA passed 286,641 comparisons; a
+separate byte-only compatibility copy retained the sole original emission.
+The unchanged reviewed saver copied the exact report/JSON once, reproduced
+every metadata field and Markdown, and preserved all eight admitted inputs.
+No tensor/model/head/PCA/bootstrap/audit rerun occurred in reporting.
+
+Capsule uJ1Ack inventory SHA:
+`d7f6db6dccad050eec984196d28e99b2cc1091c537edf40049ce2be117454846`.
+Enclosing SOURCE SHA:
+`fa1cbd0e67b4ce6226d6d3a0c5c5c39a71298764e64158dfdbc50decad7e1f12`.
+Passed audit SHA:
+`63826de216aff8a09b26b203d10fb9020fc08208276eec27347c9570e839957e`.
+Exact [report](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
+SHA is `d72b31decfb2a3545779b842f88da9303f7c6bd39c2a103cfa20da298a188ae6`;
+[JSON](results/early_mixer_confirmation_v1.json) SHA is
+`62b810c857148dd99bb44ab9d12e7db8c9708ff65f16d44a3d1b3c8354df7611`.
+Actual composite reader979601d1, base6ba1100b and evidence2084b926 identities
+are retained in the durable JSON. All 13 previous version objects, 11 previous
+instance objects and 19 historical top-level registry objects remain unchanged;
+only the two fresh aliases and their new diagnostic are appended.
+
+Portable reader/codec/report tools, exact adjunct SOURCE copies and future
+five-source cache-safe admission wrapper remain outside the frozen182 producer
+closure. The wrapper has only syntax/artificial argument-forwarding verification,
+with durable proof11040dee; no actual future cached admission has run. The
+separate [harder timing plan](HARDER_TIMING_BENCHMARK_PLAN.md) now has an
+implemented variable-period/delay generator and analytic data-only fixtures.
+Harder encoder scores remain unmeasured. Keep both late-v7 and compact early-v10
+for its separately frozen fixed512 comparison; preserve original v7, formal v4,
+all prior capsules/curve points and stopped gain/pooled mechanisms.

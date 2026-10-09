@@ -1167,3 +1167,40 @@ test-rpb-pooled-context-adapter: $(RPB_TEST_DIR)/pooled_context_adapter_test
 
 evaluate-pooled-context: $(POOLED_CONTEXT_BIN)
 	@POOLED_CONTEXT_BIN="$(abspath $(POOLED_CONTEXT_BIN))" POOLED_CONTEXT_SOURCE_INPUTS="$(POOLED_CONTEXT_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-pooled-context.sh
+
+# A fresh unchanged early/late confirmation delegates the existing reliability
+# adapter under its truthful implementation namespace. The new wrapper/source
+# identity binds the external cohort and fifth checkpoint companion separately.
+EARLY_MIXER_CONFIRMATION_BIN := $(BUILD_DIR)/embedding_early_mixer_confirmation
+EARLY_MIXER_CONFIRMATION_ADAPTER_OBJECT := $(RPB_OBJECT_DIR)/early_mixer_confirmation_adapter.o
+EARLY_MIXER_CONFIRMATION_INPUTS := $(sort $(POOLED_CONTEXT_INPUTS) $(SDK_PROVENANCE_INPUTS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/early_mixer_confirmation_adapter.h $(RPB_ROOT)/src/early_mixer_confirmation_adapter.cpp $(RPB_ROOT)/tests/early_mixer_confirmation_adapter_test.cpp $(EVALUATION_ROOT)/src/early_mixer_confirmation_main.cpp $(EVALUATION_ROOT)/cards/early_mixer_confirmation_v1.md $(CODE_ROOT)/scripts/prepare-early-mixer-confirmation.py $(CODE_ROOT)/scripts/check-early-mixer-confirmation.sh $(CODE_ROOT)/scripts/evaluate-early-mixer-confirmation.sh)
+EARLY_MIXER_CONFIRMATION_SOURCE_ID := $(shell sha256sum $(EARLY_MIXER_CONFIRMATION_INPUTS) | sha256sum | cut -d ' ' -f 1)
+EARLY_MIXER_CONFIRMATION_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(EARLY_MIXER_CONFIRMATION_SOURCE_ID)\" -DEARLY_MIXER_CONFIRMATION_ADAPTER_SOURCE_ID=\"$(EARLY_MIXER_CONFIRMATION_SOURCE_ID)\"
+.PHONY: early-mixer-confirmation print-early-mixer-confirmation-sources test-rpb-early-mixer-confirmation-adapter evaluate-early-mixer-confirmation
+early-mixer-confirmation: $(EARLY_MIXER_CONFIRMATION_BIN)
+print-early-mixer-confirmation-sources:
+	@printf '%s\n' $(EARLY_MIXER_CONFIRMATION_INPUTS)
+
+$(EVALUATION_OBJECT_DIR)/early_mixer_confirmation_main.o: $(EVALUATION_ROOT)/src/early_mixer_confirmation_main.cpp $(EARLY_MIXER_CONFIRMATION_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(EARLY_MIXER_CONFIRMATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(EARLY_MIXER_CONFIRMATION_ADAPTER_OBJECT): $(RPB_ROOT)/src/early_mixer_confirmation_adapter.cpp $(EARLY_MIXER_CONFIRMATION_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(EARLY_MIXER_CONFIRMATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(EARLY_MIXER_CONFIRMATION_BIN): $(EVALUATION_OBJECT_DIR)/early_mixer_confirmation_main.o $(EARLY_MIXER_CONFIRMATION_ADAPTER_OBJECT) $(EARLY_MIXER_ADAPTER_OBJECT) $(RPB_TRAINING_SOURCE_GAIN_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS) $(FIXED_FEATURE_READOUTS_OBJECT)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(RPB_TEST_DIR)/early_mixer_confirmation_adapter_test.o: $(RPB_ROOT)/tests/early_mixer_confirmation_adapter_test.cpp $(EARLY_MIXER_CONFIRMATION_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(EARLY_MIXER_CONFIRMATION_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/early_mixer_confirmation_adapter_test: $(RPB_TEST_DIR)/early_mixer_confirmation_adapter_test.o $(EARLY_MIXER_CONFIRMATION_ADAPTER_OBJECT) $(EARLY_MIXER_ADAPTER_OBJECT) $(RPB_TRAINING_SOURCE_GAIN_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(HARNESS_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-early-mixer-confirmation-adapter: $(RPB_TEST_DIR)/early_mixer_confirmation_adapter_test
+	$(RPB_TEST_DIR)/early_mixer_confirmation_adapter_test
+
+evaluate-early-mixer-confirmation: $(EARLY_MIXER_CONFIRMATION_BIN)
+	@EARLY_MIXER_CONFIRMATION_BIN="$(abspath $(EARLY_MIXER_CONFIRMATION_BIN))" EARLY_MIXER_CONFIRMATION_SOURCE_INPUTS="$(EARLY_MIXER_CONFIRMATION_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-early-mixer-confirmation.sh

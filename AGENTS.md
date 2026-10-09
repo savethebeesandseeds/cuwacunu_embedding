@@ -25,6 +25,16 @@ fixed across encoder comparisons; fit their weights separately on training data.
 
 ## Active research version
 
+Latest completed evidence is the fresh fixed512
+[early/late confirmation](code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
+for RPB-v7.alt-04/RPB-v10.alt-04. Early mixing improves timing means and mean
+reconstruction, but worsens both worst-cohort scores; retain all three improving
+and two worsening pairs, especially master65262. Neither group is promoted.
+The [current continuation](doc/CONTINUATION_2026-10-09_AFTER_EARLY_MIXER_CONFIRMATION.md)
+links the separate harder timing benchmark, whose data-only generator checks
+are complete while harder encoder performance is unmeasured. Preserve the
+original saved v7 and formal v4 reference; gainv11 and pooledv12 stay stopped.
+
 The working saved v7 models are pinned as **RPB-v7** in the version
 registry: masters 4404/5505/6606/7707/8808 in the original lighter-policy capsule.
 Preserve their checkpoints, scalers, fitted readouts and reports. The newer
@@ -105,10 +115,10 @@ fail and all five cohorts lose timing Ridge in both views; both mean MAE guards
 and coverage pass. The sole archive audit passed 96,170,207 checks. Stop wider
 pooled width and gain without rate/budget/head rescue. Compact early v10 remains
 an investigation candidate, not a promoted reference. The [next direction](code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md)
-is one fresh fixed512 confirmation against late v7 under a separately frozen
-prospective card. Preserve every group and curve point, original working v7 and
-active v4. The [current continuation](doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
-records the exact evidence and container-only gates.
+was the fresh fixed512 confirmation against late v7, now completed as linked
+above. Preserve every group and curve point, original working v7 and active v4.
+The [historical pooled continuation](doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
+records that decision and its container-only gates.
 The user's current working direction is RPB-v7, with
 RPB-v4 retained as the active reference. The separate
 [saved-TRAIN v9 scale lesson](code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_LOSS_SCALE_TRAIN_DIAGNOSTIC.md)
@@ -133,7 +143,7 @@ sealed passed audit. Do not rewrite them to improve a result. The
 prescribed saved TRAIN reliability analysis across all ten instances, with no
 encoder/decoder updates, head refits or held-out analysis inputs. That diagnosis
 and the subsequent milestones are complete; the current next action is recorded
-in the pooled-context continuation above. Do not tune the heads, deletion rate,
+in the fresh confirmation continuation above. Do not tune the heads, deletion rate,
 decoder budget or stopped v9 coefficients.
 
 Older versions remain available for archived evidence, explicit comparisons,

@@ -6,11 +6,14 @@ global and per-channel embeddings and trains without the parent project's runtim
 DSL, registries, graph orchestration, forecasting, trading, or interface components.
 
 The original saved **RPB-v7** bundle remains protected, and **RPB-v4** remains
-the formal reference. Compact early **RPB-v10** is the unpromoted candidate for
-one fresh fixed512 confirmation against late v7. Matched-target gain **RPB-v11**
-and wider pooled **RPB-v12** are stopped after their audited comparisons. The
-[current continuation](doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
-records the exact evidence, preserved groups and next bounded action.
+the formal reference. The fresh fixed512 **RPB-v7.alt-04 / RPB-v10.alt-04**
+[confirmation](code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
+improves early-v10 timing means and mean reconstruction, but both worst-cohort
+timing scores fall; three paired cohorts improve and two worsen. Compact v10
+remains unpromoted. Matched-target gain **RPB-v11** and wider pooled **RPB-v12**
+remain stopped. The [current continuation](doc/CONTINUATION_2026-10-09_AFTER_EARLY_MIXER_CONFIRMATION.md)
+retains these tradeoffs and the separate [harder timing benchmark](doc/HARDER_TIMING_BENCHMARK_PLAN.md),
+whose data-only fixtures pass but encoder quality is not yet measured.
 
 The retained baseline uses multiscale time descriptors and windowed frequency
 magnitudes, a shared token encoder, JEPA context/target masking and latent
@@ -103,10 +106,11 @@ views: compact/pooled means are 98.28125%/90.9375% intact and
 97.03125%/83.125% deleted, with full coverage. All four timing numeric guards
 fail; both mean MAE guards pass. Its sole audit passed 96,170,207 checks.
 Stop pooled width and gain without a head/rate/budget rescue. Keep compact early
-v10 as an investigation candidate; the next action is one fresh fixed512
-confirmation against late v7 under a separate prospective card, with no new
-result or promotion claimed. Preserve original v7 and active v4. Follow the
-[current continuation](doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md).
+v10 as an investigation candidate. The fresh fixed512 confirmation selected by
+this milestone is now complete as linked above; it made no promotion. Preserve
+original v7 and active v4. The
+[historical pooled continuation](doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
+retains that decision.
 The [portable source tools](code/evaluation/tools/pooled_context_v1/README.md)
 stage a fresh blocked reader from a clean checkout inside the managed container.
 Older designs remain available as archived references. See the

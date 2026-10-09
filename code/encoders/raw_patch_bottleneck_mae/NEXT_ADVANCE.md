@@ -14,6 +14,27 @@ stays separate from encoder training and decoding.
 
 ## Current completed milestone and next direction
 
+The [fresh early/late confirmation](EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md) is
+complete at fixed512 for RPB-v7.alt-04/RPB-v10.alt-04. Timing Ridge means rise
+94.21875%→95% intact and88.28125%→92.8125% deleted, with100% coverage. Worst
+scores fall84.375%→80.46875% and78.125%→75%; three paired cohorts improve and
+two worsen in both views. Master65262 falls96.875%→80.46875% intact and
+97.65625%→75% deleted. Mean TRAIN/VALIDATION MAE improves, while amplitude
+deletion Ridge falls97.65625%→96.875%. Retain every cohort and all four panels;
+these tradeoffs do not promote compact early-v10.
+
+The next bounded measurement is the separately specified
+[variable-delay timing benchmark](../../../doc/HARDER_TIMING_BENCHMARK_PLAN.md),
+keeping late-v7 and compact early-v10, native32, .15/B8/fixed512 and unchanged
+heads. Its reusable generator and analytic data-only fixtures are implemented;
+no harder encoder scores exist yet. Its comparison card, cohort/source closure,
+reader and CUDA admission still need to be frozen before generation. Keep original-difficulty evidence as the
+anchor. More difficult data supplies headroom without resolving retraining
+variation or authorizing head, width, gain or budget tuning. See the
+[current continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_EARLY_MIXER_CONFIRMATION.md).
+
+## Earlier completed milestones
+
 The [continuous learning-curve diagnostic](EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md)
 is complete for RPB-v7.alt-03 and RPB-v10.alt-01. All five paired live controllers
 retain 0/512/1024/2048, with unchanged native32, coordinate15 policy, batch8 and
@@ -42,14 +63,11 @@ causal defect to the compact projection from these results. The four full
 seven-method task/view panels, separate initial controls and all cohort details
 are preserved. Stop pooled width and gain without tuning heads, rates or budgets.
 
-Skip half-mixer and further width variations. The next bounded action is one
-fresh fixed512 confirmation of compact early v10 against late v7, under a
-separate prospective card and matched new sources. Keep the original .15 view,
-native32, batch8 and fixed heads. Retain every declared cohort; do not choose a
-best curve point or rescue the comparison after observing scores. No new card,
-confirmation result or additional tag is created by this navigation update.
-Preserve original RPB-v7, active RPB-v4, every earlier group and every retained
-curve point. See the [current continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md).
+Skip half-mixer and further width variations. The pooled milestone selected the
+fresh fixed512 confirmation now completed above. Preserve original RPB-v7,
+active RPB-v4, every earlier group and every retained curve point. The
+[historical pooled continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
+preserves that prospective decision.
 
 ## Completed milestone
 

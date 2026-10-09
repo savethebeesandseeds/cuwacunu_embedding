@@ -7,11 +7,15 @@ served embedding. The baseline API, executable, archive reader and checkpoint
 format remain separate.
 
 The original saved **RPB-v7** bundle remains protected, and **RPB-v4** remains
-the formal reference. Compact early **RPB-v10** is the unpromoted candidate for
-one fresh fixed512 confirmation against late v7. Matched-target gain **RPB-v11**
-and wider pooled **RPB-v12** are stopped after their audited comparisons. The
-[current continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
-records the exact evidence, preserved groups and next bounded action.
+the formal reference. The fresh fixed512 **RPB-v7.alt-04 / RPB-v10.alt-04**
+[confirmation](EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md) improves early-v10 timing
+means and mean reconstruction, but both worst-cohort timing scores fall; three
+paired cohorts improve and two worsen. Compact v10 remains unpromoted.
+Matched-target gain **RPB-v11** and wider pooled **RPB-v12** remain stopped.
+The [current continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_EARLY_MIXER_CONFIRMATION.md)
+retains these tradeoffs and the separately engineered
+[harder timing benchmark](../../../doc/HARDER_TIMING_BENCHMARK_PLAN.md).
+Its data-only fixtures pass; harder encoder quality remains unmeasured.
 
 **Active research: RPB-v4 — Learned global bottleneck**, through
 [learned_global.conf](config/learned_global.conf). Its native 32-number global
@@ -69,10 +73,11 @@ coverage stays 100%. Strong separate untrained amplitude controls and all four
 seven-method panels remain explicit. Route and first-layer capacity change
 together; this does not identify an isolated projection-loss cause. The sole
 audit passed 96,170,207 checks. Stop wider pooled width and gain without rescue.
-The [next direction](NEXT_ADVANCE.md) is one fresh fixed512 compact early v10
-confirmation against late v7, with new sources and separately frozen gates.
-No confirmation result, new tag, selected point or promotion is claimed. See
-the [current continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
+The fresh fixed512 compact early-v10 confirmation selected by this milestone
+is now complete as linked above. The [next direction](NEXT_ADVANCE.md) keeps
+both designs for the separately engineered harder timing benchmark, with no
+harder encoder result or promotion claimed. See
+the [historical pooled continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
 and [portable source tools](../../evaluation/tools/pooled_context_v1/README.md).
 
 The [RPB-v5 comparison](PAIRED_POOLING_ADVANCE.md) and

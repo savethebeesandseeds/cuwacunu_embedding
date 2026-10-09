@@ -1,5 +1,13 @@
 # Embedding version registry
 
+Latest completed: [fresh early/late confirmation](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
+and [durable JSON](results/early_mixer_confirmation_v1.json) add separate
+RPB-v7.alt-04/RPB-v10.alt-04 groups at512. Early-v10 improves timing means and
+mean original-query reconstruction but lowers both worst-cohort scores; three
+cohorts improve and two worsen. No promotion or historical replacement follows.
+The [current continuation](CONTINUATION_2026-10-09_AFTER_EARLY_MIXER_CONFIRMATION.md)
+retains all four panels and the separately engineered harder timing next step.
+
 RPB-v4 is the active research reference. RPB-v5's claimed advance failed the
 fixed512 comparison. Retained versions provide historical evidence and compatible
 loaders; routine experiments need not retrain all of them.
@@ -272,7 +280,7 @@ with its own frozen card and gates as recorded below.
 
 ## Pooled-context fixed512 milestone
 
-The latest [pooled-context diagnostic](../code/encoders/raw_patch_bottleneck_mae/POOLED_CONTEXT_DIAGNOSTIC.md)
+The earlier [pooled-context diagnostic](../code/encoders/raw_patch_bottleneck_mae/POOLED_CONTEXT_DIAGNOSTIC.md)
 and [durable JSON](results/pooled_context_v1.json) register fresh **RPB-v10.alt-03**
 compact early controls and **RPB-v12** pooled-width candidates on
 53151/54252/55353/56454/57555. Both serve native32 and keep the original .15
@@ -294,8 +302,7 @@ combined into a generic encoder score. Stop this wider route; no promotion.
 The sole independent audit passed 96,170,207 checks/1,235 CPU archive decodes.
 Every old version and instance-group object, original v7, active v4 and every
 continuous curve point remain unchanged. Compact early v10 is the next
-investigation candidate for one fresh fixed512 confirmation against late v7;
-that direction has no new result or tag yet. The
-[current continuation](CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md) records
+investigation candidate for the fresh fixed512 confirmation now completed above.
+The [historical pooled continuation](CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md) records
 the decision, and [portable SOURCE tools](../code/evaluation/tools/pooled_context_v1/README.md)
 provide a fresh blocked reader/stager command for a clean checkout.
