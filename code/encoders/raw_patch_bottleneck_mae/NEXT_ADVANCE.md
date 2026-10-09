@@ -2,8 +2,8 @@
 
 Date: 2026-10-10
 
-Continue developing RPB-MAE on TEMPO-3 through separate early-v10/v13 instance
-groups. Preserve original **RPB-v7** and the formal **RPB-v4** reference. Use
+Continue developing RPB-MAE on TEMPO-3 through separate architecture experiments.
+Preserve original **RPB-v7** and the formal **RPB-v4** reference. Use
 native 32-number embedding and fixed classifier heads. PCA is a standalone raw-data baseline.
 Older encoder designs remain archived references and compatibility inputs;
 routine research does not retrain every historical variant.
@@ -45,16 +45,29 @@ basename check and additive, exact-source-bound repair are preserved. No model
 was rerun on CPU and no old head was refitted. The input route and capacity
 changed together; this result cannot establish encoder information loss.
 
-The [next comparison](../../../doc/CONTINUATION_2026-10-10_AFTER_VISIBLE_DIFFERENCE.md)
-tests independent TRAIN support, not more repeats or head tuning. Freeze five
-fresh cohorts with 512 TRAIN source pairs and64 VALIDATION pairs, then select a
-nested 128-pair TRAIN subset by a source-only rule before fitting. Compare
-early-v10/v13 × small/large TRAIN on one common validation set and one scaler
-fitted only on the small TRAIN subset. Keep native32, .15/B8/512, objective,
-fixed heads and all cohorts. Equal encoder updates/draws do not imply equal
-total compute: larger full-batch heads process4× rows. Fresh data require new
-matched controls, features and heads; historical scores are context only.
-This is prospective, with no new card, implementation or measured group yet.
+The [architecture screen](TEMPORAL_ARCHITECTURE_SCREEN.md) now measures
+RPB-v14's generic temporal relations and RPB-v15's label-free dynamics objective.
+V14 passes the two-cohort75%/both-heads/both-views gate, then reaches97.03%/95.10%
+intact and72.97%/75.21% deleted across five known cohorts. Its initial scores
+are stronger, so credit the prior; waveform learning weakens timing. V15 stays
+near52% and stops after two cohorts. [V16](PARTITIONED_TEMPORAL_RELATION_SCREEN.md)
+separates20 shape+12 odd coordinates, reaching100% intact but failing the
+continuation gate on master76373's69.53% deleted neural accuracy. Stop its expansion.
+[V17](FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md) freezes only432 generic odd weights
+while shape/backbone/decoder train, preserving useful coordinates inside native32.
+All four designs have their own frozen card, source, tag and checkpoint namespace.
+
+Next: verify the strongest retained design on fresh independently generated
+TRAIN/VALIDATION source cohorts under a new fixed card, without head/budget
+search. Preserve its relation prior and original saved references. If that
+passes, specify a separate coherent multi-component timing challenge to test
+whether the generic relation bank handles richer signals; assign a new dataset
+codename/complexity before measuring. Reconstruction remains an explicit
+tradeoff, not evidence of timing learning. No TEST/stress or default promotion.
+See the [current continuation](../../../doc/CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md).
+The earlier [independent TRAIN-support proposal](../../../doc/CONTINUATION_2026-10-10_AFTER_VISIBLE_DIFFERENCE.md)
+is deferred and preserved, not measured. Avoid expanded comparisons of weak
+candidates and do not rescue v15/v16 by tuning their frozen recipes.
 
 ## Earlier completed milestones
 

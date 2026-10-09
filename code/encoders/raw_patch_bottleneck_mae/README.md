@@ -6,21 +6,27 @@ candidate is a masked autoencoder whose reconstruction loss passes through the
 served embedding. The baseline API, executable, archive reader and checkpoint
 format remain separate.
 
-The latest [RPB-v13 experiment](VISIBLE_DIFFERENCE_DIAGNOSTIC.md) adds currently
-visible adjacent differences to early mixing on **TEMPO-3**, complexity **4/5**.
-Five new CUDA runs retain native32, .15 context deletion, batch 8, 512 updates and
-the fixed heads. Mean TRAIN/VALIDATION query MAE improves to 0.622320 / 0.664399,
-but intact linear/neural accuracy is 53.28% / 52.03%; under extra 30% deletion it
-is 52.81% / 50.52%, all at 100% coverage. This is not a consistent improvement
-over the reused **RPB-v10.alt-05** control. Initial common state and all 15
-initial exports matched the saved early model exactly; the added 3,072 values
-raise capacity to 228,877. The [saved-TRAIN diagnosis](STRUCTURED_HARD_TIMING_TRAIN_DIAGNOSTIC.md)
-is also complete. The [next comparison](../../../doc/CONTINUATION_2026-10-10_AFTER_VISIBLE_DIFFERENCE.md)
-will test more independent TRAIN sources with a shared fresh validation set.
-Original saved **RPB-v7**, formal **RPB-v4**, TEMPO-1 **RPB-v10.alt-03** and all
-historical evidence remain protected. No promotion; gain **RPB-v11** and pooled
-**RPB-v12** remain stopped. The frozen [card](../../evaluation/cards/visible_difference_v1.md)
-and separately preserved repaired reader document this measured variation.
+The [temporal architecture screen](TEMPORAL_ARCHITECTURE_SCREEN.md) tests generic
+cross-channel relations (**RPB-v14**) and an independent label-free dynamics
+objective (**RPB-v15**) on **TEMPO-3**, complexity **4/5**. V14 reaches97.03%/95.10%
+intact accuracy on five known cohorts; deleted accuracy is72.97%/75.21%.
+Its untrained prior is stronger. V15 stays near52% and stops after two cohorts.
+[RPB-v16](PARTITIONED_TEMPORAL_RELATION_SCREEN.md) dedicates native32 to20 shape+12
+odd relations, reaching100% intact but failing the fixed deleted-view gate on one
+starting cohort. [RPB-v17](FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md) preserves that
+layout and freezes only432 generic odd projection values while training the
+226,445 remaining parameters. Five-cohort intact accuracy is100%/100%; deleted
+accuracy is85.94%/99.84%, all at100% coverage. Its timing strength is a fixed architecture prior;
+waveform shape and reconstruction remain learned through the sole native32.
+
+All screens use separate model tags/checkpoints/output sessions, the same
+B8/.15/512 CUDA training budget and shared fixed classifier heads, with no PCA
+after an encoder. Weak designs stop after the two-cohort gate; passing designs
+advance only to the three other known cohorts. These are development results,
+not unseen confirmation. [The continuation](../../../doc/CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md)
+records the next direction. Preserve original saved **RPB-v7**, formal **RPB-v4**,
+TEMPO-1 **RPB-v10.alt-03**, frozen cards and all historical artifacts. No promotion
+or legacy loader/default change. The earlier TRAIN-size proposal stays deferred.
 
 **Active research: RPB-v4 — Learned global bottleneck**, through
 [learned_global.conf](config/learned_global.conf). Its native 32-number global

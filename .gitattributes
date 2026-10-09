@@ -22,3 +22,16 @@ code/encoders/raw_patch_bottleneck_mae/VISIBLE_DIFFERENCE_DIAGNOSTIC.md text eol
 code/evaluation/tools/visible_difference_v1/** text eol=lf
 doc/results/visible_difference_v1.json text eol=lf
 doc/embedding_versions.json text eol=lf
+# Small architecture screens retain exact source/card/result bytes.
+code/evaluation/protocols/architecture_screen_v1/** text eol=lf
+code/evaluation/cards/architecture_screen_v1.md text eol=lf
+code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md text eol=lf
+doc/results/architecture_screen_v1.json text eol=lf
+code/evaluation/protocols/partitioned_relation_screen_v1/** text eol=lf
+code/evaluation/cards/partitioned_relation_screen_v1.md text eol=lf
+code/encoders/raw_patch_bottleneck_mae/PARTITIONED_TEMPORAL_RELATION_SCREEN.md text eol=lf
+doc/results/partitioned_relation_screen_v1.json text eol=lf
+code/evaluation/protocols/fixed_prior_relation_screen_v1/** text eol=lf
+code/evaluation/cards/fixed_prior_relation_screen_v1.md text eol=lf
+code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md text eol=lf
+doc/results/fixed_prior_relation_screen_v1.json text eol=lf

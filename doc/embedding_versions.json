@@ -1917,7 +1917,7 @@
       "audit_checks": 96352345,
       "measured_capsule": "output/runs/rpb-early-mixer-reliability/early-mixer-reliability-b6DsL0",
       "artifact_inventory_sha256": "426a1c17288f6b2781d25ca6c5ea94af7f1bb8f041bcc07a9a5412b92e1d50f5",
-      "next_focused_action": "one prospective TRAIN-only matched-target log-uniform gain 0.5–2 comparison at fixed512 using the same early architecture and a fresh matched control; skip half-mixer",
+      "next_focused_action": "one prospective TRAIN-only matched-target log-uniform gain 0.5\u20132 comparison at fixed512 using the same early architecture and a fresh matched control; skip half-mixer",
       "promotion": false,
       "existing_groups_replaced": false,
       "additional_measured_protocols": [
@@ -2009,6 +2009,583 @@
       "reader_source_sha256": "74fde8c189e22bc9e590a0f5c7059fadface9540500f8861e035b18d11c164c8",
       "promotion": false,
       "existing_groups_replaced": false
+    },
+    {
+      "tag": "RPB-v14",
+      "encoder": "raw_patch_bottleneck_mae",
+      "description": "Early mixer with generic temporal relations",
+      "status": "measured_known_TEMPO3_architecture_prior_not_promoted",
+      "architecture_id": "early-raw-global-plus-common-support-temporal-relations-v1",
+      "native_global_width": 32,
+      "parameter_count_at_C3_H32_F3": 236173,
+      "common_initial_parameter_values": 225805,
+      "additional_parameter_values": 10368,
+      "encoder_updates_each": 512,
+      "training_policy_id": "rpb-training-context-deletion-015-v1",
+      "protocol": "architecture-screen-v1",
+      "dataset_codename": "TEMPO-3",
+      "dataset_recipe_id": "structured-hard-timing-v1",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "evidence_stage": "all_known",
+      "master_seeds": [
+        75272,
+        76373,
+        77474,
+        78575,
+        79676
+      ],
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md",
+      "measured_record_sha256": "e903a2f9a63f030fec19c4da76aa7a84688d9517d5f32eb0ebcc4e6179fc43b3",
+      "durable_summary": "doc/results/architecture_screen_v1.json",
+      "durable_summary_sha256": "2ef939746dba6e2cc829513c858924b4ecbd99f7b30ee2d21ef8a73b96df9b1d",
+      "card": "code/evaluation/cards/architecture_screen_v1.md",
+      "card_sha256": "696a3aac0c5fab6a520c211aa709f2807d088664afded257b44f5db62ebfbfca",
+      "runs": [
+        {
+          "run": "/embedding/output/runs/rpb-architecture-screen/admission-wOFRSh/quality-v14",
+          "report_sha256": "2f12280e587873dc3705ae60161f60eb5b9e51c703d06ac1945764fdf6a2e93a",
+          "saved_check_sha256": "f82b9902e7ed74c67cdc886622d178665951c2d89b4129e85432d847f2659656",
+          "source_fingerprint": "c13ac172f6dc18155e2c1f1e2f2ba14651f5edad9d9110f6d7d30f889ced1ac5",
+          "saved_check": {
+            "protocol": "architecture-screen-saved-check-v1",
+            "status": "passed",
+            "report_sha256": "2f12280e587873dc3705ae60161f60eb5b9e51c703d06ac1945764fdf6a2e93a",
+            "reader_sha256": "b3e3f84cc8bf6c8c8242498c10af9486c08c4d36eba5da1f8ae867e013b33902",
+            "modules_sha256": {
+              "archive_codec.py": "4eb501222fb1d9205ae13c5bc0bf1b5fc96ebd2faef3ed247dd7809fb86a453d",
+              "saved_cpu_math.py": "1993af23915ba8200389727e2810caad175613fae7ead00d5ea0cb5250e303b9",
+              "legacy_implementation.py": "f0c64b9fe67a90a9d95196433e05dec527515778d1635bdc909d1703fa278b68"
+            },
+            "checks": 2331315,
+            "CPU_archive_decodes": 72,
+            "cohorts": [
+              {
+                "master": 75272,
+                "status": "passed"
+              },
+              {
+                "master": 76373,
+                "status": "passed"
+              }
+            ],
+            "encoder_forwards": 0,
+            "encoder_updates": 0,
+            "head_fits": 0,
+            "PCA_fits": 0
+          }
+        },
+        {
+          "run": "/embedding/output/runs/rpb-architecture-screen/admission-wOFRSh/quality-v14-remaining",
+          "report_sha256": "d9bbdc02b4139294100c89247a0445ee984d4a05c616e47f6dda03a419b1c20f",
+          "saved_check_sha256": "132e0375c6ebe5496b93639842f60eb70315a14e8b3031d87b017a2dd228eee2",
+          "source_fingerprint": "c13ac172f6dc18155e2c1f1e2f2ba14651f5edad9d9110f6d7d30f889ced1ac5",
+          "saved_check": {
+            "protocol": "architecture-screen-saved-check-v1",
+            "status": "passed",
+            "report_sha256": "d9bbdc02b4139294100c89247a0445ee984d4a05c616e47f6dda03a419b1c20f",
+            "reader_sha256": "b3e3f84cc8bf6c8c8242498c10af9486c08c4d36eba5da1f8ae867e013b33902",
+            "modules_sha256": {
+              "archive_codec.py": "4eb501222fb1d9205ae13c5bc0bf1b5fc96ebd2faef3ed247dd7809fb86a453d",
+              "saved_cpu_math.py": "1993af23915ba8200389727e2810caad175613fae7ead00d5ea0cb5250e303b9",
+              "legacy_implementation.py": "f0c64b9fe67a90a9d95196433e05dec527515778d1635bdc909d1703fa278b68"
+            },
+            "checks": 3496782,
+            "CPU_archive_decodes": 108,
+            "cohorts": [
+              {
+                "master": 77474,
+                "status": "passed"
+              },
+              {
+                "master": 78575,
+                "status": "passed"
+              },
+              {
+                "master": 79676,
+                "status": "passed"
+              }
+            ],
+            "encoder_forwards": 0,
+            "encoder_updates": 0,
+            "head_fits": 0,
+            "PCA_fits": 0
+          }
+        }
+      ],
+      "trained_quality": {
+        "validation_intact": {
+          "label": "RPB-v14",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 0.9703125,
+          "tiny_secondary_mean": 0.9510416666666667,
+          "coverage_mean": 1,
+          "ridge_worst": 0.9609375,
+          "tiny_secondary_worst": 0.9479166666666666
+        },
+        "validation_deleted": {
+          "label": "RPB-v14",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 0.7296875,
+          "tiny_secondary_mean": 0.7520833333333333,
+          "coverage_mean": 1,
+          "ridge_worst": 0.625,
+          "tiny_secondary_worst": 0.6614583333333334
+        }
+      },
+      "untrained_quality": {
+        "validation_intact": {
+          "label": "RPB-v14",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 1,
+          "tiny_secondary_mean": 1,
+          "coverage_mean": 1,
+          "ridge_worst": 1,
+          "tiny_secondary_worst": 1
+        },
+        "validation_deleted": {
+          "label": "RPB-v14",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 0.803125,
+          "tiny_secondary_mean": 0.8270833333333333,
+          "coverage_mean": 1,
+          "ridge_worst": 0.671875,
+          "tiny_secondary_worst": 0.6692708333333334
+        }
+      },
+      "training": {
+        "label": "RPB-v14",
+        "updates": 512,
+        "train_error": 0.685666180063088,
+        "validation_error": 0.725161284164929,
+        "GPU_training_seconds": 24.822020051
+      },
+      "screen_gate_passed": true,
+      "CPU_encoder_execution": false,
+      "old_model_reruns": 0,
+      "baseline_head_refits": 0,
+      "testing_accessed": false,
+      "stress_accessed": false,
+      "promotion": false,
+      "existing_groups_replaced": false
+    },
+    {
+      "tag": "RPB-v15",
+      "encoder": "raw_patch_bottleneck_mae",
+      "description": "Early mixer with label-free dynamics objective",
+      "status": "measured_failed_two_cohort_screen_stopped",
+      "architecture_id": "early-native32-label-free-dynamics-objective-v1",
+      "native_global_width": 32,
+      "parameter_count_at_C3_H32_F3": 226381,
+      "common_initial_parameter_values": 225805,
+      "additional_parameter_values": 576,
+      "encoder_updates_each": 512,
+      "training_policy_id": "rpb-training-context-deletion-015-v1",
+      "protocol": "architecture-screen-v1",
+      "dataset_codename": "TEMPO-3",
+      "dataset_recipe_id": "structured-hard-timing-v1",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "evidence_stage": "screen",
+      "master_seeds": [
+        75272,
+        76373
+      ],
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md",
+      "measured_record_sha256": "e903a2f9a63f030fec19c4da76aa7a84688d9517d5f32eb0ebcc4e6179fc43b3",
+      "durable_summary": "doc/results/architecture_screen_v1.json",
+      "durable_summary_sha256": "2ef939746dba6e2cc829513c858924b4ecbd99f7b30ee2d21ef8a73b96df9b1d",
+      "card": "code/evaluation/cards/architecture_screen_v1.md",
+      "card_sha256": "696a3aac0c5fab6a520c211aa709f2807d088664afded257b44f5db62ebfbfca",
+      "runs": [
+        {
+          "run": "/embedding/output/runs/rpb-architecture-screen/admission-wOFRSh/quality-v15",
+          "report_sha256": "2b8ba85f7e3f78c8742a90230d06bd0f2cd848f28c36e833cbfb1c28862aeeda",
+          "saved_check_sha256": "926e7028b32ccdc85988c01cf5b0fff8f034fd953771fd042cac50f685ea24f3",
+          "source_fingerprint": "c13ac172f6dc18155e2c1f1e2f2ba14651f5edad9d9110f6d7d30f889ced1ac5",
+          "saved_check": {
+            "protocol": "architecture-screen-saved-check-v1",
+            "status": "passed",
+            "report_sha256": "2b8ba85f7e3f78c8742a90230d06bd0f2cd848f28c36e833cbfb1c28862aeeda",
+            "reader_sha256": "b3e3f84cc8bf6c8c8242498c10af9486c08c4d36eba5da1f8ae867e013b33902",
+            "modules_sha256": {
+              "archive_codec.py": "4eb501222fb1d9205ae13c5bc0bf1b5fc96ebd2faef3ed247dd7809fb86a453d",
+              "saved_cpu_math.py": "1993af23915ba8200389727e2810caad175613fae7ead00d5ea0cb5250e303b9",
+              "legacy_implementation.py": "f0c64b9fe67a90a9d95196433e05dec527515778d1635bdc909d1703fa278b68"
+            },
+            "checks": 2331315,
+            "CPU_archive_decodes": 72,
+            "cohorts": [
+              {
+                "master": 75272,
+                "status": "passed"
+              },
+              {
+                "master": 76373,
+                "status": "passed"
+              }
+            ],
+            "encoder_forwards": 0,
+            "encoder_updates": 0,
+            "head_fits": 0,
+            "PCA_fits": 0
+          }
+        }
+      ],
+      "trained_quality": {
+        "validation_intact": {
+          "label": "RPB-v15",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 0.5234375,
+          "tiny_secondary_mean": 0.5234375,
+          "coverage_mean": 1,
+          "ridge_worst": 0.5234375,
+          "tiny_secondary_worst": 0.5208333333333334
+        },
+        "validation_deleted": {
+          "label": "RPB-v15",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 0.52734375,
+          "tiny_secondary_mean": 0.5247395833333333,
+          "coverage_mean": 1,
+          "ridge_worst": 0.5,
+          "tiny_secondary_worst": 0.5078125
+        }
+      },
+      "untrained_quality": {
+        "validation_intact": {
+          "label": "RPB-v15",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 0.53515625,
+          "tiny_secondary_mean": 0.5078125,
+          "coverage_mean": 1,
+          "ridge_worst": 0.5234375,
+          "tiny_secondary_worst": 0.4973958333333333
+        },
+        "validation_deleted": {
+          "label": "RPB-v15",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 0.48046875,
+          "tiny_secondary_mean": 0.5052083333333333,
+          "coverage_mean": 1,
+          "ridge_worst": 0.46875,
+          "tiny_secondary_worst": 0.5
+        }
+      },
+      "training": {
+        "label": "RPB-v15",
+        "updates": 512,
+        "train_error": 0.7654744581175892,
+        "validation_error": 0.7861820627822855,
+        "GPU_training_seconds": 18.227094756
+      },
+      "screen_gate_passed": false,
+      "CPU_encoder_execution": false,
+      "old_model_reruns": 0,
+      "baseline_head_refits": 0,
+      "testing_accessed": false,
+      "stress_accessed": false,
+      "promotion": false,
+      "existing_groups_replaced": false
+    },
+    {
+      "tag": "RPB-v16",
+      "encoder": "raw_patch_bottleneck_mae",
+      "description": "Dedicated shape and grouped odd timing coordinates",
+      "status": "measured_failed_two_cohort_screen_stopped",
+      "architecture_id": "early-native20-shape-plus12-grouped-time-odd-relations-v1",
+      "native_global_width": 32,
+      "parameter_count_at_C3_H32_F3": 226877,
+      "common_initial_parameter_values": 225805,
+      "additional_parameter_values": 1072,
+      "encoder_updates_each": 512,
+      "training_policy_id": "rpb-training-context-deletion-015-v1",
+      "protocol": "partitioned-relation-screen-v1",
+      "dataset_codename": "TEMPO-3",
+      "dataset_recipe_id": "structured-hard-timing-v1",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "evidence_stage": "screen",
+      "master_seeds": [
+        75272,
+        76373
+      ],
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/PARTITIONED_TEMPORAL_RELATION_SCREEN.md",
+      "measured_record_sha256": "69979d5107402652ae1a6c1192a4d41d3911a41614e5363864f61d89d13dfd1b",
+      "durable_summary": "doc/results/partitioned_relation_screen_v1.json",
+      "durable_summary_sha256": "b2f20ec07cbba4113c2bc03416bd274a1c096e4fd95d580dc41fd6576382053c",
+      "card": "code/evaluation/cards/partitioned_relation_screen_v1.md",
+      "card_sha256": "e6409ee9697ab497ee3d9cd066b7eac1b1c3451656796cd5cd7fde678c3a5ddc",
+      "runs": [
+        {
+          "run": "/embedding/output/runs/rpb-partitioned-relation-screen/admission-K3FtYN/quality-v16",
+          "report_sha256": "ae2b6de67034dc0a7e9fbb37c31723d5b2d95d0347bb9eda52c1e914373d6e68",
+          "saved_check_sha256": "dc46852f75df5a13c4bae484df0015b12da8e23e2a827456f5c5cd2d632fcb98",
+          "source_fingerprint": "69e6d237145001b2808e58ab0206ab72c9d5229a008eb2447c5b9ea6a719f1a0",
+          "saved_check": {
+            "protocol": "partitioned-relation-screen-saved-check-v1",
+            "status": "passed",
+            "report_sha256": "ae2b6de67034dc0a7e9fbb37c31723d5b2d95d0347bb9eda52c1e914373d6e68",
+            "reader_sha256": "91f17f26a78fafc774c68162813d3810651f2c089567a5a6ae053782942711e8",
+            "modules_sha256": {
+              "archive_codec.py": "4eb501222fb1d9205ae13c5bc0bf1b5fc96ebd2faef3ed247dd7809fb86a453d",
+              "saved_cpu_math.py": "1993af23915ba8200389727e2810caad175613fae7ead00d5ea0cb5250e303b9",
+              "legacy_implementation.py": "f0c64b9fe67a90a9d95196433e05dec527515778d1635bdc909d1703fa278b68"
+            },
+            "checks": 2331315,
+            "CPU_archive_decodes": 72,
+            "cohorts": [
+              {
+                "master": 75272,
+                "status": "passed"
+              },
+              {
+                "master": 76373,
+                "status": "passed"
+              }
+            ],
+            "encoder_forwards": 0,
+            "encoder_updates": 0,
+            "head_fits": 0,
+            "PCA_fits": 0
+          }
+        }
+      ],
+      "trained_quality": {
+        "validation_intact": {
+          "label": "RPB-v16",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 1,
+          "tiny_secondary_mean": 1,
+          "coverage_mean": 1,
+          "ridge_worst": 1,
+          "tiny_secondary_worst": 1
+        },
+        "validation_deleted": {
+          "label": "RPB-v16",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 0.83203125,
+          "tiny_secondary_mean": 0.8033854166666667,
+          "coverage_mean": 1,
+          "ridge_worst": 0.8203125,
+          "tiny_secondary_worst": 0.6953125
+        }
+      },
+      "untrained_quality": {
+        "validation_intact": {
+          "label": "RPB-v16",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 1,
+          "tiny_secondary_mean": 1,
+          "coverage_mean": 1,
+          "ridge_worst": 1,
+          "tiny_secondary_worst": 1
+        },
+        "validation_deleted": {
+          "label": "RPB-v16",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 0.890625,
+          "tiny_secondary_mean": 0.9973958333333334,
+          "coverage_mean": 1,
+          "ridge_worst": 0.859375,
+          "tiny_secondary_worst": 0.9973958333333334
+        }
+      },
+      "training": {
+        "label": "RPB-v16",
+        "updates": 512,
+        "train_error": 0.6682283519633466,
+        "validation_error": 0.7072653134731646,
+        "GPU_training_seconds": 21.0810956565
+      },
+      "screen_gate_passed": false,
+      "CPU_encoder_execution": false,
+      "old_model_reruns": 0,
+      "baseline_head_refits": 0,
+      "testing_accessed": false,
+      "stress_accessed": false,
+      "promotion": false,
+      "existing_groups_replaced": false
+    },
+    {
+      "tag": "RPB-v17",
+      "encoder": "raw_patch_bottleneck_mae",
+      "description": "Learned shape with fixed generic odd timing relations",
+      "status": "measured_known_TEMPO3_architecture_prior_not_promoted",
+      "architecture_id": "early-native20-shape-plus12-fixed-grouped-time-odd-relations-v1",
+      "native_global_width": 32,
+      "parameter_count_at_C3_H32_F3": 226877,
+      "common_initial_parameter_values": 225805,
+      "additional_parameter_values": 1072,
+      "encoder_updates_each": 512,
+      "training_policy_id": "rpb-training-context-deletion-015-v1",
+      "protocol": "fixed-prior-relation-screen-v1",
+      "dataset_codename": "TEMPO-3",
+      "dataset_recipe_id": "structured-hard-timing-v1",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "evidence_stage": "all_known",
+      "master_seeds": [
+        75272,
+        76373,
+        77474,
+        78575,
+        79676
+      ],
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md",
+      "measured_record_sha256": "846edd2e3a1e8bea775d3ce0d733e1614514e881a369e2756a8d4b5c30d80d02",
+      "durable_summary": "doc/results/fixed_prior_relation_screen_v1.json",
+      "durable_summary_sha256": "fce25e34c569fdabfa0ac71cefb7f30dfd281a1c6f1ae34ed67d75f8d72be352",
+      "card": "code/evaluation/cards/fixed_prior_relation_screen_v1.md",
+      "card_sha256": "4d7c79bb86a3acc351119a772a2d9cd0d1d5a0373a13f1f7305811fb23dccfe3",
+      "runs": [
+        {
+          "run": "/embedding/output/runs/rpb-fixed-prior-relation-screen/admission-r7nl4r/quality-v17",
+          "report_sha256": "111bdf61d79be896b71a6f2c5b5b0fa360b91c109269fa90b71d6b6cf00552da",
+          "saved_check_sha256": "3a27e6c9ec9ea3dd6706cbbfb51b3369a45baf5b034ad56345e39ee42c24522f",
+          "source_fingerprint": "86e027d6028737d211329b399ea4940be75b3fd286ddd6fd07d0bc2687e99f12",
+          "saved_check": {
+            "protocol": "fixed-prior-relation-screen-saved-check-v1",
+            "status": "passed",
+            "report_sha256": "111bdf61d79be896b71a6f2c5b5b0fa360b91c109269fa90b71d6b6cf00552da",
+            "reader_sha256": "aad2d75498c1db818b48fc319aa082d38e134ea0f964226886e6e6cc42229270",
+            "modules_sha256": {
+              "archive_codec.py": "4eb501222fb1d9205ae13c5bc0bf1b5fc96ebd2faef3ed247dd7809fb86a453d",
+              "saved_cpu_math.py": "1993af23915ba8200389727e2810caad175613fae7ead00d5ea0cb5250e303b9",
+              "legacy_implementation.py": "f0c64b9fe67a90a9d95196433e05dec527515778d1635bdc909d1703fa278b68"
+            },
+            "checks": 2331333,
+            "CPU_archive_decodes": 72,
+            "cohorts": [
+              {
+                "master": 75272,
+                "status": "passed"
+              },
+              {
+                "master": 76373,
+                "status": "passed"
+              }
+            ],
+            "fixed_odd_coordinate_values_checked": 12288,
+            "encoder_forwards": 0,
+            "encoder_updates": 0,
+            "head_fits": 0,
+            "PCA_fits": 0
+          }
+        },
+        {
+          "run": "/embedding/output/runs/rpb-fixed-prior-relation-screen/admission-r7nl4r/quality-v17-remaining",
+          "report_sha256": "bd31c82f32a0301a2d016c2ca4b21bb29f5075073b9d5e04d288affcb93fddb8",
+          "saved_check_sha256": "4c4988f899283a8e12155278642dca47bddb679618e5cb878cb0adbbf55738df",
+          "source_fingerprint": "86e027d6028737d211329b399ea4940be75b3fd286ddd6fd07d0bc2687e99f12",
+          "saved_check": {
+            "protocol": "fixed-prior-relation-screen-saved-check-v1",
+            "status": "passed",
+            "report_sha256": "bd31c82f32a0301a2d016c2ca4b21bb29f5075073b9d5e04d288affcb93fddb8",
+            "reader_sha256": "aad2d75498c1db818b48fc319aa082d38e134ea0f964226886e6e6cc42229270",
+            "modules_sha256": {
+              "archive_codec.py": "4eb501222fb1d9205ae13c5bc0bf1b5fc96ebd2faef3ed247dd7809fb86a453d",
+              "saved_cpu_math.py": "1993af23915ba8200389727e2810caad175613fae7ead00d5ea0cb5250e303b9",
+              "legacy_implementation.py": "f0c64b9fe67a90a9d95196433e05dec527515778d1635bdc909d1703fa278b68"
+            },
+            "checks": 3496809,
+            "CPU_archive_decodes": 108,
+            "cohorts": [
+              {
+                "master": 77474,
+                "status": "passed"
+              },
+              {
+                "master": 78575,
+                "status": "passed"
+              },
+              {
+                "master": 79676,
+                "status": "passed"
+              }
+            ],
+            "fixed_odd_coordinate_values_checked": 18432,
+            "encoder_forwards": 0,
+            "encoder_updates": 0,
+            "head_fits": 0,
+            "PCA_fits": 0
+          }
+        }
+      ],
+      "trained_quality": {
+        "validation_intact": {
+          "label": "RPB-v17",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 1,
+          "tiny_secondary_mean": 1,
+          "coverage_mean": 1,
+          "ridge_worst": 1,
+          "tiny_secondary_worst": 1
+        },
+        "validation_deleted": {
+          "label": "RPB-v17",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 0.859375,
+          "tiny_secondary_mean": 0.9984375,
+          "coverage_mean": 1,
+          "ridge_worst": 0.6875,
+          "tiny_secondary_worst": 0.9947916666666666
+        }
+      },
+      "untrained_quality": {
+        "validation_intact": {
+          "label": "RPB-v17",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 1,
+          "tiny_secondary_mean": 1,
+          "coverage_mean": 1,
+          "ridge_worst": 1,
+          "tiny_secondary_worst": 1
+        },
+        "validation_deleted": {
+          "label": "RPB-v17",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 0.8609375,
+          "tiny_secondary_mean": 0.9973958333333334,
+          "coverage_mean": 1,
+          "ridge_worst": 0.6953125,
+          "tiny_secondary_worst": 0.9947916666666666
+        }
+      },
+      "training": {
+        "label": "RPB-v17",
+        "updates": 512,
+        "train_error": 0.6891811595848741,
+        "validation_error": 0.7238490005449247,
+        "GPU_training_seconds": 20.2257454034
+      },
+      "screen_gate_passed": true,
+      "CPU_encoder_execution": false,
+      "old_model_reruns": 0,
+      "baseline_head_refits": 0,
+      "testing_accessed": false,
+      "stress_accessed": false,
+      "promotion": false,
+      "existing_groups_replaced": false,
+      "trainable_parameter_values": 226445,
+      "frozen_parameter_values": 432,
+      "encoder_training_recipe_id": "original-waveform-huber1;fixed-grouped-odd-prior432;shape-backbone-decoder-trainable-v1"
     }
   ],
   "early_mixer_fixed512_diagnostic": {
@@ -2273,7 +2850,7 @@
     "promotion": false,
     "existing_groups_replaced": false,
     "decision_scope": "both groups reconstruct more accurately with longer training, without monotone timing classification improvement; early deletion advantage accompanies an amplitude-transfer tradeoff; all budgets retained, none selected",
-    "next_direction": "one prospective TRAIN-only matched-target log-uniform gain 0.5–2 comparison at fixed512 using the same early architecture and a fresh matched control; skip half-mixer"
+    "next_direction": "one prospective TRAIN-only matched-target log-uniform gain 0.5\u20132 comparison at fixed512 using the same early architecture and a fresh matched control; skip half-mixer"
   },
   "planned_matched_target_gain": {
     "status": "completed_failed_all_six_numeric_guards_stopped_no_promotion",
@@ -2296,7 +2873,7 @@
     "encoder_updates_each": 512,
     "batch_size": 8,
     "architecture": "same early mixer and native32 as RPB-v10",
-    "augmentation": "TRAIN-only source-paired matched-target gain, log-uniform 0.5–2 under the frozen card",
+    "augmentation": "TRAIN-only source-paired matched-target gain, log-uniform 0.5\u20132 under the frozen card",
     "quality_oracle_access_before_freeze": false,
     "testing_accessed": false,
     "stress_accessed": false,
@@ -2488,7 +3065,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only — no encoder",
+            "display_label": "PCA only \u2014 no encoder",
             "size": 32,
             "status": "measured",
             "linear": {
@@ -2867,7 +3444,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only — no encoder",
+            "display_label": "PCA only \u2014 no encoder",
             "size": 32,
             "status": "measured",
             "linear": {
@@ -3246,7 +3823,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only — no encoder",
+            "display_label": "PCA only \u2014 no encoder",
             "size": 32,
             "status": "measured",
             "linear": {
@@ -3625,7 +4202,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only — no encoder",
+            "display_label": "PCA only \u2014 no encoder",
             "size": 32,
             "status": "measured",
             "linear": {
@@ -4317,7 +4894,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only — no encoder",
+            "display_label": "PCA only \u2014 no encoder",
             "size": 32,
             "per_master": [
               {
@@ -6054,7 +6631,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only — no encoder",
+            "display_label": "PCA only \u2014 no encoder",
             "size": 32,
             "per_master": [
               {
@@ -7791,7 +8368,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only — no encoder",
+            "display_label": "PCA only \u2014 no encoder",
             "size": 32,
             "per_master": [
               {
@@ -9528,7 +10105,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only — no encoder",
+            "display_label": "PCA only \u2014 no encoder",
             "size": 32,
             "per_master": [
               {
@@ -11468,7 +12045,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only — no encoder",
+            "display_label": "PCA only \u2014 no encoder",
             "size": 32,
             "per_master": [
               {
@@ -13205,7 +13782,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only — no encoder",
+            "display_label": "PCA only \u2014 no encoder",
             "size": 32,
             "per_master": [
               {
@@ -14942,7 +15519,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only — no encoder",
+            "display_label": "PCA only \u2014 no encoder",
             "size": 32,
             "per_master": [
               {
@@ -16679,7 +17256,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only — no encoder",
+            "display_label": "PCA only \u2014 no encoder",
             "size": 32,
             "per_master": [
               {
@@ -18570,7 +19147,7 @@
       "validation_intact": [
         {
           "method": "raw",
-          "label": "Raw data — no encoder",
+          "label": "Raw data \u2014 no encoder",
           "size": 576,
           "per_master": [
             {
@@ -18648,7 +19225,7 @@
         },
         {
           "method": "mask_metadata",
-          "label": "Mask metadata — no encoder",
+          "label": "Mask metadata \u2014 no encoder",
           "size": 288,
           "per_master": [
             {
@@ -18726,7 +19303,7 @@
         },
         {
           "method": "pca_only",
-          "label": "PCA only — no encoder",
+          "label": "PCA only \u2014 no encoder",
           "size": 32,
           "per_master": [
             {
@@ -19118,7 +19695,7 @@
       "validation_deleted": [
         {
           "method": "raw",
-          "label": "Raw data — no encoder",
+          "label": "Raw data \u2014 no encoder",
           "size": 576,
           "per_master": [
             {
@@ -19196,7 +19773,7 @@
         },
         {
           "method": "mask_metadata",
-          "label": "Mask metadata — no encoder",
+          "label": "Mask metadata \u2014 no encoder",
           "size": 288,
           "per_master": [
             {
@@ -19274,7 +19851,7 @@
         },
         {
           "method": "pca_only",
-          "label": "PCA only — no encoder",
+          "label": "PCA only \u2014 no encoder",
           "size": 32,
           "per_master": [
             {
@@ -20422,6 +20999,47 @@
     "encoder_forwards": 0,
     "head_refits": 0,
     "new_validation_tensor_reads": 0,
+    "promotion": false
+  },
+  "architecture_screen_diagnostic": {
+    "measured_record": "code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md",
+    "durable_summary": "doc/results/architecture_screen_v1.json",
+    "candidates": [
+      "RPB-v14",
+      "RPB-v15"
+    ],
+    "quality_trajectories": 7,
+    "encoder_updates": 3584,
+    "native_exports": 42,
+    "head_pipelines": 42,
+    "individual_heads": 84,
+    "query_writers": 14,
+    "necessary_masked_forwards": 56,
+    "CPU_encoder_execution": false,
+    "old_model_reruns": 0,
+    "baseline_head_refits": 0,
+    "promotion": false
+  },
+  "partitioned_relation_diagnostic": {
+    "measured_record": "code/encoders/raw_patch_bottleneck_mae/PARTITIONED_TEMPORAL_RELATION_SCREEN.md",
+    "durable_summary": "doc/results/partitioned_relation_screen_v1.json",
+    "candidate": "RPB-v16",
+    "quality_trajectories": 2,
+    "encoder_updates": 1024,
+    "CPU_encoder_execution": false,
+    "old_model_reruns": 0,
+    "baseline_head_refits": 0,
+    "promotion": false
+  },
+  "fixed_prior_relation_diagnostic": {
+    "measured_record": "code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md",
+    "durable_summary": "doc/results/fixed_prior_relation_screen_v1.json",
+    "candidate": "RPB-v17",
+    "quality_trajectories": 5,
+    "encoder_updates": 2560,
+    "CPU_encoder_execution": false,
+    "old_model_reruns": 0,
+    "baseline_head_refits": 0,
     "promotion": false
   }
 }

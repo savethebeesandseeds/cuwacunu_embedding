@@ -59,13 +59,27 @@ consistently. The audit passed 17,152,339 checks / 280 CPU witness archives.
 The original sealed reader and failed v1 audit remain preserved; the additive
 reader-v2 corrects only a query artifact basename and binds its exact original
 source. No CPU model execution, old model forwards or control head refits.
-The [current continuation](doc/CONTINUATION_2026-10-10_AFTER_VISIBLE_DIFFERENCE.md)
-specifies a prospective 2×2 comparison of early-v10/v13 and 128/512 independent
-TRAIN pairs on a common fresh validation set. Freeze that new card, sources and
-reader before measurement. Fixed512×B8 means equal encoder draws, not equal
-total compute; larger full-batch heads process four times as many rows. No
-head tuning, phase/lag label input, stopped-recipe rescue or automatic promotion.
-Preserve original saved v7 and formal v4; gainv11 and pooledv12 stay stopped.
+The user redirected work toward architecture changes and asked to limit
+comparisons of weak candidates. The [measured architecture screen](code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md)
+finds RPB-v14's generic relation bank much stronger on TEMPO-3:97.03%/95.10%
+intact and72.97%/75.21% deleted across five known cohorts, at100% coverage.
+Its untrained prior is stronger; credit the architectural relation calculation.
+RPB-v15 stays near52% and stops after two cohorts. The [separate v16 screen](code/encoders/raw_patch_bottleneck_mae/PARTITIONED_TEMPORAL_RELATION_SCREEN.md)
+reaches100% intact with20 shape+12 grouped odd coordinates, but master76373's
+69.53% deleted neural score fails its75% gate; stop that frozen recipe.
+[RPB-v17](code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md)
+freezes only the generic432 odd weights, while learning shape/backbone/decoder.
+Five-cohort intact accuracy is100%/100%; deleted accuracy is85.94%/99.84%,
+at100% coverage. Passed saved checks verify30,720 exact odd coordinates at0/512;
+actual CUDA admission checks immutable load and trainable gradients.
+Keep shared heads, native32, CUDA-only encoder execution and original masked-query
+MAE. Use each frozen card's two-cohort75%/100%-coverage gate before remaining
+known cohorts; known validation is development evidence, not unseen confirmation.
+The [current continuation](doc/CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md)
+records fresh-data verification as the next step; the earlier data-support2×2
+plan is deferred and preserved. No phase/lag labels, head tuning, stopped-recipe
+rescue or automatic promotion. Preserve original v7 and formal v4.
+
 The earlier [confirmation](code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
 retains both worst-cohort regressions, including master65262, without promotion.
 

@@ -1,18 +1,20 @@
 # Embedding version registry
 
-Latest completed: [RPB-v13](../code/encoders/raw_patch_bottleneck_mae/VISIBLE_DIFFERENCE_DIAGNOSTIC.md)
-and its [durable JSON](results/visible_difference_v1.json) record five new CUDA
-instances at 512 on TEMPO-3, designed complexity 4/5. Visible adjacent differences
-improve mean reconstruction, but intact linear/neural accuracy 53.28%/52.03%
-and deleted 52.81%/50.52% do not improve timing consistently over the saved early
-control. Coverage remains 100%. All seven baseline/control rows were reused.
-The [saved-TRAIN diagnosis](../code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_TRAIN_DIAGNOSTIC.md)
-is also complete. No promotion or historical replacement; all 13 prior designs
-and15 prior instance groups are unchanged. The
-[current continuation](CONTINUATION_2026-10-10_AFTER_VISIBLE_DIFFERENCE.md)
-specifies a fresh, nested TRAIN-support comparison with fixed heads.
-TEMPO-1 RPB-v10.alt-03 and the earlier [confirmation](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
-remain separate preserved evidence.
+Latest completed architecture screens: [RPB-v14/v15](../code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md),
+[RPB-v16](../code/encoders/raw_patch_bottleneck_mae/PARTITIONED_TEMPORAL_RELATION_SCREEN.md)
+and [RPB-v17](../code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md).
+On TEMPO-3, designed complexity4/5, explicit generic relations substantially
+improve intact timing accuracy. Waveform training weakens the learnable prior;
+v17 fixes only the grouped odd projection while learning the20-coordinate shape
+path and decoder. Five-cohort intact accuracy is100%/100%; deleted is85.94%/99.84%,
+coverage100%. Credit the prior rather than claiming learned timing.
+The objective-only v15 and unstable deleted-view v16 stop after their two-cohort
+screens. All original versions/instance groups/cards/checkpoints remain intact;
+new tags and separate artifacts never replace old saved models. No promotion.
+The [current continuation](CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md) prioritizes
+fresh-source verification before a richer coherent timing dataset. TEMPO-1
+RPB-v10.alt-03 remains separate preserved evidence; the data-support2×2 plan
+is deferred and preserved.
 
 RPB-v4 is the active research reference. RPB-v5's claimed advance failed the
 fixed 512 comparison. Retained versions provide historical evidence and compatible
@@ -53,6 +55,10 @@ preserved alongside the successful result.
 | RPB-v11 | Early mixer with matched-target TRAIN gain | Measured; all six numeric guards fail; recipe stopped | [Gain diagnostic](../code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md) |
 | RPB-v12 | Pooled temporal summaries before global bottleneck | Measured; all four timing numeric guards fail; wider route stopped | [Pooled-context diagnostic](../code/encoders/raw_patch_bottleneck_mae/POOLED_CONTEXT_DIAGNOSTIC.md) |
 | RPB-v13 | Early mixer with visible adjacent differences | Measured on TEMPO-3; no consistent classification improvement; not promoted | [Visible-difference diagnostic](../code/encoders/raw_patch_bottleneck_mae/VISIBLE_DIFFERENCE_DIAGNOSTIC.md) |
+| RPB-v14 | Early mixer with generic temporal relations | Strong prior; waveform learning weakens it; five known cohorts; not promoted | [Temporal screen](../code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md) |
+| RPB-v15 | Early mixer with label-free dynamics objective | Near52%; failed two-cohort screen; stopped | [Temporal screen](../code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md) |
+| RPB-v16 | Dedicated shape and grouped odd timing coordinates | 100% intact; one deleted neural gate fails; stopped | [Partitioned screen](../code/encoders/raw_patch_bottleneck_mae/PARTITIONED_TEMPORAL_RELATION_SCREEN.md) |
+| RPB-v17 | Learned shape with fixed generic odd relations | 100% intact;99.84% deleted neural; five known cohorts; not promoted | [Fixed-prior screen](../code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md) |
 
 The [machine-readable registry](embedding_versions.json) records the same mapping.
 `RPB-v4.alt-01` names the fresh v4 controls paired with `RPB-v7.alt-01` on

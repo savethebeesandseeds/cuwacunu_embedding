@@ -5,21 +5,23 @@ MTF-JEPA-MAE-VICReg implementation. It converts masked multichannel histories in
 global and per-channel embeddings and trains without the parent project's runtime,
 DSL, registries, graph orchestration, forecasting, trading, or interface components.
 
-The latest [RPB-v13 experiment](code/encoders/raw_patch_bottleneck_mae/VISIBLE_DIFFERENCE_DIAGNOSTIC.md)
-adds visible adjacent changes to early mixing on **TEMPO-3**, designed complexity
-**4/5**. Five new CUDA runs at 512 updates improve mean reconstruction error,
-but not timing classification consistently: intact linear/neural accuracy is
-53.28% / 52.03%, versus the saved early **RPB-v10.alt-05** control's
-52.81% / 54.90%. Coverage is 100%. The controls and their fitted heads were
-reused; no older encoder was retrained. The
-[saved-TRAIN diagnosis](code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_TRAIN_DIAGNOSTIC.md)
-also records the substantial training/validation gap. The
-[next comparison](doc/CONTINUATION_2026-10-10_AFTER_VISIBLE_DIFFERENCE.md)
-will test more independent TRAIN sources while retaining the same signal law,
-native32, encoder budget and fixed heads. No model is promoted. Original saved
-**RPB-v7**, the formal **RPB-v4** reference and the strong TEMPO-1
-**RPB-v10.alt-03** results remain protected; gain **RPB-v11** and pooled
-**RPB-v12** remain stopped.
+The latest [architecture experiments](code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md)
+add explicit generic temporal relations on **TEMPO-3**, designed complexity
+**4/5**. RPB-v14 reaches97.03%/95.10% intact linear/neural accuracy across five
+known cohorts, but its waveform training weakens an already strong untrained
+prior. RPB-v15's objective-only screen stays near52% and stops after two cohorts.
+[RPB-v16](code/encoders/raw_patch_bottleneck_mae/PARTITIONED_TEMPORAL_RELATION_SCREEN.md)
+separates20 shape+12 odd relation coordinates; it reaches100% intact but fails
+its deleted-view continuation gate on one cohort. The separate
+[RPB-v17](code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md)
+reaches100% intact and85.94%/99.84% deleted across five known cohorts. It
+freezes only that generic432-value relation projection while learning the shape
+path and original decoder. All versions serve native32 through the same fixed
+heads. The timing gain comes from the architecture prior, not learned timing
+from waveform reconstruction. New CUDA runs occur once; old baselines are reused.
+See the [continuation](doc/CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md).
+Original saved **RPB-v7**, formal **RPB-v4**, TEMPO-1 **RPB-v10.alt-03** and all
+historical evidence remain protected. No production promotion or default change.
 
 The retained baseline uses multiscale time descriptors and windowed frequency
 magnitudes, a shared token encoder, JEPA context/target masking and latent
