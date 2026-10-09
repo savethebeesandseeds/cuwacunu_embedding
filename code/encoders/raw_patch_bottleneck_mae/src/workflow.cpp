@@ -302,6 +302,7 @@ Settings parse_settings(const std::string &text) {
 #undef PARSE_MODEL_INT
       if(key=="global_bottleneck_mode"){settings.model.global_bottleneck_mode=integer(value);continue;}
       if(key=="channel_mixer_placement"){settings.model.channel_mixer_placement=integer(value);continue;}
+      if(key=="global_pool_input_source"){settings.model.global_pool_input_source=integer(value);continue;}
 #define PARSE_MODEL_DOUBLE(name) if(key==#name){settings.model.name=real(value);continue;}
       MODEL_DOUBLES(PARSE_MODEL_DOUBLE)
 #undef PARSE_MODEL_DOUBLE
@@ -340,6 +341,8 @@ std::string settings_text(const Settings &settings) {
   // Placement zero is the historical path; preserve its canonical text/IDs.
   if(settings.model.channel_mixer_placement>0)
     out<<"channel_mixer_placement="<<settings.model.channel_mixer_placement<<'\n';
+  if(settings.model.global_pool_input_source>0)
+    out<<"global_pool_input_source="<<settings.model.global_pool_input_source<<'\n';
 #define WRITE_RUN(name) out<<#name "="<<settings.name<<'\n';
   RUN_INTS(WRITE_RUN)
   RUN_DOUBLES(WRITE_RUN)
@@ -441,6 +444,10 @@ void save_checkpoint(const std::string &path,const Checkpoint &checkpoint,torch:
     archive.write("channel_mixer_placement",torch::tensor(checkpoint.settings.model.channel_mixer_placement),true);
     write_text(archive,"architecture_id",architecture_id(checkpoint.settings.model));
   }
+  if(checkpoint.settings.model.global_pool_input_source>0) {
+    archive.write("global_pool_input_source",torch::tensor(checkpoint.settings.model.global_pool_input_source,torch::kInt64),true);
+    write_text(archive,"global_pool_input_semantics",global_pool_input_semantics(checkpoint.settings.model));
+  }
   if(checkpoint.settings.model.global_bottleneck_mode>0) {
     archive.write("global_bottleneck_mode",torch::tensor(checkpoint.settings.model.global_bottleneck_mode),true);
     write_text(archive,"reconstruction_export_semantics",reconstruction_output_semantics(checkpoint.settings.model));
@@ -470,6 +477,14 @@ Checkpoint load_checkpoint(const std::string &path,const torch::Device &device) 
   const auto text=read_text(archive,"settings");Fingerprint hash;hash.text(text);
   require(read_text(archive,"configuration_id")==hash.id("rpb-config-fnv1a-v1"),"checkpoint config identity mismatch");
   Checkpoint checkpoint;checkpoint.settings=parse_settings(text);checkpoint.settings.model.device=device;
+  torch::Tensor pool_source_tag,pool_semantics_tag;
+  const bool has_pool_source=archive.try_read("global_pool_input_source",pool_source_tag,true);
+  const bool has_pool_semantics=archive.try_read("global_pool_input_semantics",pool_semantics_tag,true);
+  require(checkpoint.settings.model.global_pool_input_source==0 ? (!has_pool_source && !has_pool_semantics) :
+      (has_pool_source && pool_source_tag.scalar_type()==torch::kInt64 && pool_source_tag.dim()==0 &&
+       pool_source_tag.item<int64_t>()==checkpoint.settings.model.global_pool_input_source &&
+       has_pool_semantics && tensor_text(pool_semantics_tag)==global_pool_input_semantics(checkpoint.settings.model)),
+      "checkpoint global pool input source/semantics metadata mismatch");
   torch::Tensor placement_tag,architecture_tag;
   const bool has_placement=archive.try_read("channel_mixer_placement",placement_tag,true);
   const bool has_architecture=archive.try_read("architecture_id",architecture_tag,true);
@@ -647,6 +662,10 @@ int run_cli(int argc,char **argv) {
     if(checkpoint.settings.model.channel_mixer_placement>0) {
       archive.write("channel_mixer_placement",torch::tensor(checkpoint.settings.model.channel_mixer_placement),true);
       write_text(archive,"architecture_id",architecture_id(checkpoint.settings.model));
+    }
+    if(checkpoint.settings.model.global_pool_input_source>0) {
+      archive.write("global_pool_input_source",torch::tensor(checkpoint.settings.model.global_pool_input_source,torch::kInt64),true);
+      write_text(archive,"global_pool_input_semantics",global_pool_input_semantics(checkpoint.settings.model));
     }
     if(checkpoint.settings.model.global_bottleneck_mode>0) {
       archive.write("global_bottleneck_mode",torch::tensor(checkpoint.settings.model.global_bottleneck_mode),true);

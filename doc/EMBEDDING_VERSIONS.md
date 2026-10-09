@@ -37,6 +37,7 @@ preserved alongside the successful result.
 | RPB-v9 | Global bottleneck with native view agreement | Measured and audited; severe fixed512 failure; not promoted | [Native view agreement diagnostic](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md) |
 | RPB-v10 | Global bottleneck with earlier channel mixing | Measured at 512 and in a continuous 2048-update comparison; experimental, not promoted | [Learning-curve diagnostic](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md) |
 | RPB-v11 | Early mixer with matched-target TRAIN gain | Measured; all six numeric guards fail; recipe stopped | [Gain diagnostic](../code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md) |
+| RPB-v12 | Pooled temporal summaries before global bottleneck | Measured; all four timing numeric guards fail; wider route stopped | [Pooled-context diagnostic](../code/encoders/raw_patch_bottleneck_mae/POOLED_CONTEXT_DIAGNOSTIC.md) |
 
 The [machine-readable registry](embedding_versions.json) records the same mapping.
 `RPB-v4.alt-01` names the fresh v4 controls paired with `RPB-v7.alt-01` on
@@ -203,15 +204,15 @@ calibration passes, but the joint development guard fails three of six numeric
 conditions. Independent audit passed 67,932,331 checks. Encoder/native outputs
 are unchanged by calibration; there is no new design tag or automatic promotion.
 V7 remains the working direction and v4 the active reference. The
-[current continuation](CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md)
-prescribes an all-master saved-TRAIN reliability diagnosis before further tuning.
+[historical continuation](CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md)
+prescribed the all-master saved-TRAIN reliability diagnosis completed below.
 
 That [saved-TRAIN diagnosis](../code/encoders/raw_patch_bottleneck_mae/SAVED_NATIVE_RELIABILITY_DIAGNOSTIC.md)
 is complete and independently verified: v4/v7 alternative-group linear means
 94.92188%/94.45313%, neural means99.89583%/98.35938%, full coverage. The weak v7
 master is already weaker on TRAIN; mixed geometry/trace differences do not
 identify a common architecture defect. No encoder update, forward, head refit
-or held-out analysis occurs. The next step is one separately planned new-source
+or held-out analysis occurred. Its next step was the separately frozen new-source
 amplitude-transfer check using frozen encoders and original timing scalers.
 
 That [amplitude transfer check](../code/encoders/raw_patch_bottleneck_mae/FROZEN_AMPLITUDE_TRANSFER_DIAGNOSTIC.md)
@@ -264,6 +265,37 @@ fail, and all five gain instances have worse original-query TRAIN/VALIDATION MAE
 Audit passed 88,154,488 checks. This fixed gain recipe is stopped, with no
 range/rate/budget/head rescue. No prior group or curve evidence is replaced.
 
-Half-mixer exploration remains skipped. A separate pooled-context feasibility
-step is planned, starting with source and CUDA engineering gates; it is not
-implemented, measured or registered by this milestone. See the [continuation](CONTINUATION_2026-10-09_AFTER_MATCHED_TARGET_GAIN.md).
+Half-mixer exploration remains skipped. The gain milestone's
+[historical continuation](CONTINUATION_2026-10-09_AFTER_MATCHED_TARGET_GAIN.md)
+planned the separate pooled-context feasibility step, subsequently completed
+with its own frozen card and gates as recorded below.
+
+## Pooled-context fixed512 milestone
+
+The latest [pooled-context diagnostic](../code/encoders/raw_patch_bottleneck_mae/POOLED_CONTEXT_DIAGNOSTIC.md)
+and [durable JSON](results/pooled_context_v1.json) register fresh **RPB-v10.alt-03**
+compact early controls and **RPB-v12** pooled-width candidates on
+53151/54252/55353/56454/57555. Both serve native32 and keep the original .15
+training view. V12 pools contextual temporal W64 summaries before the global
+bottleneck rather than the compact D32 projection. Route and first-layer
+capacity change together: 231,949 registered values versus 225,805; 2,080
+projection values remain inactive. The reconstructed route reaches 229,869
+values, 4,064 more than the control. This comparison does not isolate a causal
+effect of projection loss.
+
+At512, compact/pooled timing linear means are 98.28125%/90.9375% intact and
+97.03125%/83.125% with deletion, at 100% coverage. Every cohort loses timing
+Ridge in both views. Worst-cohort scores are 93.75%/73.4375% intact and
+89.0625%/53.125% deleted. Both mean original-query TRAIN/VALIDATION MAE guards
+pass, while all four timing numeric guards fail. All amplitude panels and both
+strong separate untrained controls are retained in the report, rather than
+combined into a generic encoder score. Stop this wider route; no promotion.
+
+The sole independent audit passed 96,170,207 checks/1,235 CPU archive decodes.
+Every old version and instance-group object, original v7, active v4 and every
+continuous curve point remain unchanged. Compact early v10 is the next
+investigation candidate for one fresh fixed512 confirmation against late v7;
+that direction has no new result or tag yet. The
+[current continuation](CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md) records
+the decision, and [portable SOURCE tools](../code/evaluation/tools/pooled_context_v1/README.md)
+provide a fresh blocked reader/stager command for a clean checkout.

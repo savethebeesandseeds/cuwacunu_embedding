@@ -20,6 +20,9 @@ struct Config {
   // 0: per-channel decoder; 1: mean global; 2: learned channel-summary global;
   // 3: learned original-patch-state global, before channel-summary compression.
   int64_t global_bottleneck_mode{0};
+  // Prospective closed route: 0 preserves D channel summaries; 1 uses the
+  // existing learned temporally pooled W summaries before D diagnostics.
+  int64_t global_pool_input_source{0};
   int64_t feedforward_width{256}, decoder_hidden_width{128};
   double dropout{0.0}, layer_norm_epsilon{1e-5}, mask_ratio{0.25};
   double huber_delta{1.0}, scale_floor{1e-6}, sampling_interval{1.0};
@@ -45,6 +48,16 @@ inline void validate_config(const Config &c) {
               "[rpb-mae] channel_mixer_layers must be nonnegative");
   TORCH_CHECK(c.global_bottleneck_mode >= 0 && c.global_bottleneck_mode <= 3,
               "[rpb-mae] global_bottleneck_mode must be 0, 1, 2 or 3");
+  TORCH_CHECK(c.global_pool_input_source == 0 || c.global_pool_input_source == 1,
+              "[rpb-mae] global_pool_input_source must be 0 or 1");
+  TORCH_CHECK(c.global_pool_input_source == 0 ||
+                  (c.global_bottleneck_mode == 2 && c.channel_mixer_layers == 1 &&
+                   c.channel_mixer_placement == 1 && c.dropout == 0),
+              "[rpb-mae] pooled-W global input requires mode2/mixer1/early/dropout0");
+  if (c.global_pool_input_source == 1)
+    TORCH_CHECK(c.encoder_width < std::numeric_limits<int64_t>::max() &&
+                    c.channel_count <= std::numeric_limits<int64_t>::max() / (c.encoder_width + 1),
+                "[rpb-mae] pooled-W global input width overflow");
   TORCH_CHECK(c.channel_mixer_placement == 0 || c.channel_mixer_placement == 1,
               "[rpb-mae] channel_mixer_placement must be 0 or 1");
   TORCH_CHECK(c.channel_mixer_placement == 0 ||

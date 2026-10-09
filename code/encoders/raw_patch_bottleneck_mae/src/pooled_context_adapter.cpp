@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-#include "embedding/encoders/raw_patch_bottleneck_mae/matched_target_gain_adapter.h"
+#include "embedding/encoders/raw_patch_bottleneck_mae/pooled_context_adapter.h"
 #include "embedding/encoders/raw_patch_bottleneck_mae/training_utils.h"
 #include "embedding/shared/data.h"
 #include <ATen/Context.h>
@@ -16,8 +16,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#ifndef MATCHED_TARGET_GAIN_ADAPTER_SOURCE_ID
-#define MATCHED_TARGET_GAIN_ADAPTER_SOURCE_ID "unrecorded"
+#ifndef POOLED_CONTEXT_ADAPTER_SOURCE_ID
+#define POOLED_CONTEXT_ADAPTER_SOURCE_ID "unrecorded"
 #endif
 
 namespace embedding::encoders::raw_patch_bottleneck_mae {
@@ -25,42 +25,31 @@ namespace {
 namespace ev = embedding::evaluation;
 namespace fs = std::filesystem;
 using Named = std::map<std::string, torch::Tensor>;
-constexpr const char *context_policy = "rpb-training-context-deletion-015-v1";
+constexpr const char *policy = "rpb-training-context-deletion-015-v1";
 constexpr const char *counter_policy = "splitmix64-counter-rows-masks-torch-attempt-v1";
-bool curve_scope(MatchedTargetGainScope) { return true; }
-bool quality_scope(MatchedTargetGainScope scope) {
-  return scope == MatchedTargetGainScope::quality;
+bool curve_scope(PooledContextScope) { return true; }
+bool quality_scope(PooledContextScope scope) { return scope==PooledContextScope::quality; }
+int64_t source(PooledContextRole role) {
+  switch(role) { case PooledContextRole::compact_control:return 0; case PooledContextRole::pooled_width_candidate:return 1; }
+  throw std::runtime_error("explicit pooled role required");
 }
+int64_t parameter_count(int64_t input_source) { return input_source==1 ? 231949 : 225805; }
 
 void require(bool ok, const std::string &message) {
-  if (!ok) throw std::runtime_error("[rpb matched target gain adapter] " + message);
+  if (!ok) throw std::runtime_error("[rpb pooled context adapter] " + message);
 }
-const char *fit_protocol(MatchedTargetGainScope scope) {
-  switch (scope) {
-    case MatchedTargetGainScope::quality: return kMatchedTargetGainFitProtocol;
-    case MatchedTargetGainScope::engineering: return kMatchedTargetGainFixtureFitProtocol;
-  }
-  throw std::runtime_error("[rpb matched target gain adapter] explicit bounded scope required");
+const char *fit_protocol(PooledContextScope scope) {
+  switch(scope) { case PooledContextScope::quality:return kPooledContextFitProtocol;
+    case PooledContextScope::engineering:return kPooledContextFixtureFitProtocol; }
+  throw std::runtime_error("explicit pooled scope required");
 }
-void budget_contract(MatchedTargetGainScope scope, int64_t updates) {
+void budget_contract(PooledContextScope scope,int64_t updates) {
   (void)fit_protocol(scope);
-  bool valid = false;
-  switch (scope) {
-    case MatchedTargetGainScope::quality: valid = updates == 0 || updates == 512; break;
-    case MatchedTargetGainScope::engineering:
-      valid = updates == 0 || updates == 1 || updates == 2 || updates == 4; break;
-  }
-  require(valid, "budget outside the declared scope");
+  require(scope==PooledContextScope::quality ? updates==0 || updates==512 : updates==0 || updates==1 || updates==2 || updates==4,
+      "budget outside the declared pooled scope");
 }
-TrainingSourceGainOptions gain_options(MatchedTargetGainPolicy policy) {
-  require(policy == MatchedTargetGainPolicy::coordinate15_control || policy == MatchedTargetGainPolicy::coordinate15_gain,
-      "explicit bounded gain policy required");
-  return {policy == MatchedTargetGainPolicy::coordinate15_gain ? TrainingSourceGainRecipe::source_log2_v1 : TrainingSourceGainRecipe::unit_control_v1};
-}
-const char *checkpoint_policy(MatchedTargetGainPolicy policy) {
-  return training_source_gain::gained(gain_options(policy)) ? kMatchedTargetGainPolicy : context_policy;
-}
-const char *tag(MatchedTargetGainPolicy policy) { return training_source_gain::gained(gain_options(policy)) ? "RPB-v11" : "RPB-v10"; }
+const char *tag(int64_t input_source) { return input_source==1 ? "RPB-v12" : "RPB-v10"; }
+
 bool source_id(const std::string &value) {
   return value.size() == 64 && value.find_first_not_of("0123456789abcdef") == std::string::npos;
 }
@@ -113,13 +102,12 @@ std::string file_id(const std::string &path) {
   require(in.eof(), "parent read failed");
   std::ostringstream out; out << "fnv1a64-runtime-content-v1-" << std::hex << std::setw(16) << std::setfill('0') << hash; return out.str();
 }
-std::map<std::string, std::string> bindings(const std::string &path, MatchedTargetGainScope scope) {
+std::map<std::string, std::string> bindings(const std::string &path, PooledContextScope scope) {
   std::map<std::string, std::string> result;
   for (const auto &suffix : {std::string(), std::string(".audit.pt"), std::string(".scaler.pt"), std::string(".training-raw.pt")})
     result.emplace(suffix, file_id(path + suffix));
   if (curve_scope(scope)) result.emplace(kLearningCurveContinuationSuffix,
       file_id(path + kLearningCurveContinuationSuffix));
-  result.emplace(kMatchedTargetGainViewSuffix,file_id(path+kMatchedTargetGainViewSuffix));
   return result;
 }
 Named parameters(const Model &model) {
@@ -157,12 +145,10 @@ Input raw_input(const embedding::Batch &batch, const Config &c, const ev::Provid
       torch::full({batch.data.size(0)}, fit.endpoint, torch::kFloat64), fit.sampling_interval};
   validate_input(result, c); return result;
 }
-void configuration(const Settings &settings, MatchedTargetGainScope scope) {
+void configuration(const Settings &settings, PooledContextScope scope) {
   validate_settings(settings); (void)fit_protocol(scope); const auto &c = settings.model;
-  require(c.global_pool_input_source == 0, "matched gain factory rejects pooled-W input");
-  const bool ceiling = scope == MatchedTargetGainScope::quality ? settings.steps == 512 && settings.attempt_limit == 1024 :
-      (settings.steps == 4 && settings.attempt_limit == 8) || (settings.steps == 8 && settings.attempt_limit == 16);
-  require(c.device.is_cuda() && c.channel_mixer_placement == 1 &&
+  const bool ceiling=scope==PooledContextScope::quality ? settings.steps==512 && settings.attempt_limit==1024 : settings.steps==4;
+  require(c.device.is_cuda() && c.channel_mixer_placement==1 && (c.global_pool_input_source==0 || c.global_pool_input_source==1) &&
       c.channel_count == 3 && c.history_length == 32 && c.input_width == 3 && c.patch_length == 8 &&
       c.encoder_width == 64 && c.export_width == 32 && c.num_layers == 3 && c.num_heads == 4 &&
       c.feedforward_width == 256 && c.decoder_hidden_width == 128 && c.channel_mixer_layers == 1 &&
@@ -173,7 +159,7 @@ void configuration(const Settings &settings, MatchedTargetGainScope scope) {
       ceiling,
       "fixed architecture, CUDA, optimizer, trace and scope ceiling required");
 }
-void fit_contract(const ev::ProviderFitInput &fit, MatchedTargetGainScope scope) {
+void fit_contract(const ev::ProviderFitInput &fit, PooledContextScope scope) {
   require(fit.protocol_id == fit_protocol(scope) && fit.shape.channel_count == 3 &&
       fit.shape.history_length == 32 && fit.shape.input_width == 3 && fit.shape.dtype == torch::kFloat64 &&
       fit.shape.device.is_cpu() && fit.channel_ids == std::vector<int64_t>({0, 1, 2}) &&
@@ -196,8 +182,7 @@ struct Parent {
   Named initial_parameters, initial_buffers;
   std::string scaler_identity;
   std::map<std::string, std::string> content, audit;
-  MatchedTargetGainScope scope{MatchedTargetGainScope::quality};
-  MatchedTargetGainPolicy policy{MatchedTargetGainPolicy::coordinate15_control};
+  PooledContextScope scope{PooledContextScope::quality};
 };
 
 Named read_named(torch::serialize::InputArchive &archive, const std::string &key) {
@@ -220,20 +205,43 @@ void verify_continuation(const std::shared_ptr<Parent> &parent) {
   torch::serialize::InputArchive a; a.load_from(parent->path + kLearningCurveContinuationSuffix, torch::kCPU);
   auto resolved = parse_settings(text(a, "resolved_settings"));
   resolved.model.device = cp.settings.model.device;
-  require(text(a, "artifact_kind") == kMatchedTargetGainContinuationArtifact &&
+  require(text(a, "artifact_kind") == kPooledContextContinuationArtifact &&
       text(a, "protocol_id") == parent->fit.protocol_id &&
       settings_text(resolved) == settings_text(cp.settings) &&
       text(a, "fit_source_manifest") == manifest(parent->fit.training_source_ids) &&
       text(a, "checkpoint_path") == parent->path &&
       text(a, "core_writer_source_fingerprint") == cp.source_fingerprint &&
       text(a, "training_producer_source_fingerprint") == parent->audit.at("training_producer_source_fingerprint") &&
-      text(a, "training_policy_id") == checkpoint_policy(parent->policy) &&
+      text(a, "training_policy_id") == policy &&
       text(a, "state_capture_policy") ==
           "live_named_CUDA_parameter_state_to_CPU;no_model_forward;no_optimizer_reload_or_step" &&
       integer(a, "attempted_steps") == cp.attempted_steps && integer(a, "completed_steps") == cp.completed_steps &&
       integer(a, "sampled_rows") == cp.completed_steps * 8 &&
       integer(a, "channel_mixer_placement_value") == cp.settings.model.channel_mixer_placement,
       "curve continuation state identity/counter/source differs");
+  require(integer(a,"global_pool_input_source_value")==cp.settings.model.global_pool_input_source &&
+      integer(a,"shared_parameter_values")==219469 &&
+      integer(a,"copied_parameter_values")== (cp.settings.model.global_pool_input_source ? 219469 : 0) &&
+      integer(a,"inactive_projection_values")== (cp.settings.model.global_pool_input_source ? 2080 : 0),
+      "typed pooled initialization values differ");
+  require(text(a,"paired_initialization_json")==parent->audit.at("paired_initialization_json"),
+      "paired initialization JSON differs between audit and continuation");
+  const auto initial=read_named(a,"initial_model_parameters");
+  require(initial.size()==parent->initial_parameters.size(),"complete paired initial parameters required");
+  for (const auto &[name,value]:parent->initial_parameters)
+    require(initial.count(name) && initial.at(name).scalar_type()==value.scalar_type() && initial.at(name).sizes()==value.sizes(),
+        "initial/current parameter names, shapes and dtypes differ");
+  require(same(read_named(a,"initial_model_buffers"),parent->initial_buffers),"initial/current buffers changed");
+  if (cp.completed_steps==0) require(same(initial,parent->initial_parameters),"point0 initial/current values differ");
+  if (cp.settings.model.global_pool_input_source==1)
+  {
+    torch::Tensor before; a.read("candidate_first_before_copy",before,true);
+    require(before.device().is_cpu() && before.scalar_type()==torch::kFloat32 && before.sizes()==torch::IntArrayRef({64,195}) &&
+        torch::equal(before,initial.at("global_pool_first.weight")),"wider first weight initialization changed during copy");
+    for (const auto &name : {std::string("export_projection.weight"),std::string("export_projection.bias")})
+      require(torch::equal(initial.at(name),parent->initial_parameters.at(name)),"diagnostic projection changed");
+  }
+
   for (const auto &key : {"context_requested_deleted_coordinates", "context_actual_deleted_coordinates", "context_restored_coordinates"})
     require(std::to_string(integer(a, key)) == parent->audit.at(key), "live context-state count differs");
   require(same(read_named(a, "model_parameters"), parameters(cp.model)) &&
@@ -265,6 +273,9 @@ void verify_continuation(const std::shared_ptr<Parent> &parent) {
         torch::equal(shape, torch::tensor(parameter.sizes().vec(), torch::kInt64)) &&
         present.device().is_cpu() && present.scalar_type() == torch::kBool && present.dim() == 0,
         "AdamW association shape/active flag differs");
+    if (cp.settings.model.global_pool_input_source==1 &&
+        (name=="export_projection.weight" || name=="export_projection.bias"))
+      require(!present.item<bool>(),"diagnostic projection must not acquire AdamW state");
     if (present.item<bool>()) {
       const auto step = integer(entry, "step"); torch::Tensor first, second;
       entry.read("exp_avg", first, true); entry.read("exp_avg_sq", second, true);
@@ -279,19 +290,20 @@ void verify_continuation(const std::shared_ptr<Parent> &parent) {
   require(active == declared_active && (cp.completed_steps != 0 || active == 0) &&
       optimizer.keys().size() == static_cast<size_t>(count + 2), "AdamW active named-state set differs");
 }
-std::shared_ptr<Parent> admit(const MatchedTargetGainSnapshotOptions &options, const ev::ProviderFitInput &fit) {
+std::shared_ptr<Parent> admit(const PooledContextSnapshotOptions &options, const ev::ProviderFitInput &fit) {
   budget_contract(options.scope, options.expected_completed_updates);
-  const auto selected_gain = gain_options(options.policy);
+  require(source(options.role) == 0 || source(options.role) == 1,
+      "explicit placement0 or placement1 required");
   require(source_id(options.expected_core_source_fingerprint) && source_id(options.expected_training_producer_source_fingerprint),
       "explicit parent writer and training producer fingerprints required");
   fit_contract(fit, options.scope); require(torch::cuda::is_available(), "CUDA mandatory; no CPU fallback");
-  auto parent = std::make_shared<Parent>(); parent->path = path_key(options.checkpoint_path); parent->scope = options.scope; parent->policy=options.policy;
+  auto parent = std::make_shared<Parent>(); parent->path = path_key(options.checkpoint_path); parent->scope = options.scope;
   parent->content = bindings(parent->path, options.scope);
   parent->checkpoint = load_checkpoint(parent->path, torch::Device(torch::kCUDA, 0));
   auto &cp = parent->checkpoint; const auto &c = cp.settings.model; const auto updates = options.expected_completed_updates;
   configuration(cp.settings, options.scope);
-  require(c.channel_mixer_placement == 1 &&
-      cp.attempted_steps == updates && cp.completed_steps == updates && cp.training_policy_id == checkpoint_policy(options.policy) &&
+  require(c.global_pool_input_source == source(options.role) &&
+      cp.attempted_steps == updates && cp.completed_steps == updates && cp.training_policy_id == policy &&
       cp.source_fingerprint == options.expected_core_source_fingerprint &&
       cp.settings.seed == static_cast<int64_t>(fit.seed & 0x7fffffffffffffffULL),
       "declared placement, policy, seed, unskipped counters or writer scope differs");
@@ -305,7 +317,7 @@ std::shared_ptr<Parent> admit(const MatchedTargetGainSnapshotOptions &options, c
       scaler.identity() == cp.scaler.identity(), "exact TRAIN/raw/scaler/schema companions differ");
   torch::serialize::InputArchive audit; audit.load_from(parent->path + ".audit.pt", torch::kCPU);
   require(text(audit, "artifact_kind") == "rpb_learning_curve_training_audit_v1" &&
-      text(audit, "protocol_id") == fit.protocol_id && text(audit, "model_tag") == tag(options.policy) &&
+      text(audit, "protocol_id") == fit.protocol_id && text(audit, "model_tag") == tag(c.global_pool_input_source) &&
       text(audit, "architecture_id") == architecture_id(c) &&
       text(audit, "channel_mixer_placement") == std::to_string(c.channel_mixer_placement) &&
       integer(audit, "channel_mixer_placement_value") == c.channel_mixer_placement &&
@@ -327,6 +339,33 @@ std::shared_ptr<Parent> admit(const MatchedTargetGainSnapshotOptions &options, c
       "typed architecture/source/counter/TRAIN audit differs");
   auto resolved = parse_settings(text(audit, "resolved_settings")); resolved.model.device = c.device;
   require(settings_text(resolved) == settings_text(cp.settings), "resolved saved settings differ");
+  require(integer(audit,"global_pool_input_source_value")==c.global_pool_input_source &&
+      text(audit,"global_pool_input_source")==std::to_string(c.global_pool_input_source) &&
+      text(audit,"global_pool_input_semantics")==global_pool_input_semantics(c) &&
+      integer(audit,"shared_parameter_values")==219469 &&
+      integer(audit,"copied_parameter_values")== (c.global_pool_input_source ? 219469 : 0) &&
+      integer(audit,"inactive_projection_values")== (c.global_pool_input_source ? 2080 : 0) &&
+      text(audit,"pooled_shared_parameter_values")=="219469" &&
+      text(audit,"pooled_copied_parameter_values")== (c.global_pool_input_source ? "219469" : "0") &&
+      text(audit,"pooled_inactive_projection_values")== (c.global_pool_input_source ? "2080" : "0") &&
+      text(audit,"pooled_loss_reachable_parameter_values")== (c.global_pool_input_source ? "229869" : "225805") &&
+      text(audit,"pooled_nonshared_parameter_name")=="global_pool_first.weight" &&
+      text(audit,"pooled_initialization_policy")== (c.global_pool_input_source ?
+        "copy-all-shared-named-parameters-and-buffers-from-compact-point0-before-AdamW;except-global_pool_first.weight" :
+        "compact-control-independent-initialization;no-copy"),"strict pooled initialization binding differs");
+  if (c.global_pool_input_source==1) {
+    const auto reference=text(audit,"pooled_reference_point0_path");
+    require(!reference.empty() && path_key(reference)==reference,"canonical paired control point0 path required");
+    for (const auto &[suffix,id]:bindings(reference,options.scope))
+      require(text(audit,"pooled_reference_content_id"+suffix)==id,"paired control point0 bytes changed");
+  } else require(text(audit,"pooled_reference_point0_path").empty(),"control cannot declare a copy reference");
+  std::ostringstream paired;
+  paired << "{\"input_source\":" << c.global_pool_input_source
+      << ",\"copied_before_AdamW\":true,\"shared_parameter_values\":219469,\"copied_parameter_values\":"
+      << (c.global_pool_input_source ? 219469 : 0) << ",\"inactive_projection_values\":" << (c.global_pool_input_source ? 2080 : 0)
+      << ",\"nonshared_parameter_name\":\"global_pool_first.weight\",\"reference_point0_path\":"
+      << std::quoted(text(audit,"pooled_reference_point0_path")) << "}";
+  require(text(audit,"paired_initialization_json")==paired.str(),"typed paired initialization JSON declaration differs");
   torch::Tensor ids, interval, endpoint, ratio, seconds, changed, finite;
   audit.read("channel_order", ids, true); audit.read("sampling_interval", interval, true); audit.read("endpoint", endpoint, true);
   audit.read("context_deletion_ratio_value", ratio, true); audit.read("training_seconds", seconds, true);
@@ -343,7 +382,7 @@ std::shared_ptr<Parent> admit(const MatchedTargetGainSnapshotOptions &options, c
       (updates == 0 ? (!changed.item<bool>() && !finite.item<bool>() && seconds.item<double>() == 0) :
           (changed.item<bool>() && finite.item<bool>() && seconds.item<double>() > 0)),
       "typed IDs/time/context ratio or CUDA training witness differs");
-  require(text(audit, "training_policy_id") == checkpoint_policy(options.policy) && text(audit, "context_deletion_ratio") == "0.15" &&
+  require(text(audit, "training_policy_id") == policy && text(audit, "context_deletion_ratio") == "0.15" &&
       text(audit, "context_deletion_stream") == "0x6374782d64726f70" &&
       text(audit, "context_deletion_rng_policy") == context_deletion::rng_policy &&
       text(audit, "context_deletion_repair_policy") == context_deletion::repair_policy &&
@@ -351,46 +390,6 @@ std::shared_ptr<Parent> admit(const MatchedTargetGainSnapshotOptions &options, c
       text(audit, "context_deletion_count_policy") == "cumulative-requested/actual/restored-coordinate-counts;eligible-forward-batches-only" &&
       text(audit, "context_deletion_resume_policy") == "fresh-continuous-only;ordinary-workflow-resume-rejected;no-augmented-resume-API",
       "unchanged coordinate15 policy companion required");
-  const auto gain = training_source_gain::make_manifest(fit.training_source_ids,cp.settings.seed,selected_gain);
-  const std::map<std::string,std::string> gain_fields{
-      {"context_component_policy_id",context_policy},{"source_gain_recipe",training_source_gain::recipe_name(selected_gain.recipe)},
-      {"source_gain_stream","0x6761696e2d763131"},{"source_gain_rng_policy",training_source_gain::rng_policy},
-      {"source_gain_policy",training_source_gain::gain_policy},{"source_gain_target_policy",training_source_gain::target_policy},
-      {"source_gain_inference_policy",training_source_gain::inference_policy},{"gain_manifest_id",gain.identity},
-      {"gain_view_artifact_kind",kMatchedTargetGainViewArtifact},{"gain_view_suffix",kMatchedTargetGainViewSuffix},
-      {"continuation_state_artifact_kind",kMatchedTargetGainContinuationArtifact},
-      {"source_gain_resume_policy","fresh-continuous-only;ordinary-and-historical-tagged-resume-rejected;no-gain-resume-API"}};
-  torch::serialize::InputArchive view; view.load_from(parent->path+kMatchedTargetGainViewSuffix,torch::kCPU);
-  require(text(view,"artifact_kind") == kMatchedTargetGainViewArtifact && text(view,"checkpoint_path") == parent->path &&
-      text(view,"fit_source_manifest") == manifest(fit.training_source_ids) && text(view,"protocol_id") == fit.protocol_id &&
-      integer(view,"attempted_steps") == updates && integer(view,"completed_steps") == updates && integer(view,"sampled_rows") == updates*8 &&
-      integer(view,"source_gain_stream_value") == static_cast<int64_t>(training_source_gain::stream),"gain-view artifact/source/counters differ");
-  training_source_gain::verify_manifest(view,gain);
-  for (const auto &[key,value]:gain_fields)
-    require(text(audit,key) == value && text(view,key) == value,"source gain policy binding differs: "+key);
-  torch::Tensor attempts,indices,gains,targets,ln2;
-  view.read("attempt_indices",attempts,true); view.read("sampled_row_indices",indices,true);
-  view.read("sampled_gains",gains,true); view.read("actual_normalized_targets",targets,true); view.read("source_gain_ln2_value",ln2,true);
-  const bool candidate=training_source_gain::gained(selected_gain);
-  require(attempts.device().is_cpu() && attempts.scalar_type() == torch::kInt64 && attempts.sizes() == torch::IntArrayRef({updates}) &&
-      torch::equal(attempts,torch::arange(updates,torch::kInt64)) && indices.device().is_cpu() && indices.scalar_type() == torch::kInt64 &&
-      indices.sizes() == torch::IntArrayRef({updates,8}) && (indices>=0).all().item<bool>() && (indices<static_cast<int64_t>(fit.training_source_ids.size())).all().item<bool>() &&
-      gains.device().is_cpu() && gains.scalar_type() == torch::kFloat64 && gains.sizes() == torch::IntArrayRef({updates,8}) &&
-      torch::equal(gains,gain.row_gains.index_select(0,indices.reshape({-1})).reshape({updates,8})) &&
-      targets.device().is_cpu() && targets.scalar_type() == torch::kFloat32 &&
-      targets.sizes() == torch::IntArrayRef({candidate?updates:0,8,3,32,3}) && torch::isfinite(targets).all().item<bool>() &&
-      ln2.device().is_cpu() && ln2.scalar_type() == torch::kFloat64 && ln2.dim() == 0 && ln2.item<double>() == training_source_gain::ln2,
-      "gain sampled indices/association/target precision or LN2 differs");
-  require(text(view,"target_witness_scope") == (candidate ? "all-completed-attempts-actual-normalized-CUDA-F32-target-copy" :
-      "unit-control-no-target-copy;closed-zero-leading-dimension"),"target evidence scope differs");
-  for (int64_t attempt=0;attempt<updates;++attempt) {
-    require(torch::equal(indices[attempt],training_detail::sampled_indices(fit.training_source_ids.size(),8,cp.settings.seed,attempt)),
-        "gain actual sampled counter stream differs");
-    if (candidate) {
-      const auto observed=parent->fit.training_observations.feature_mask.index_select(0,indices[attempt]);
-      require((targets[attempt].masked_select(observed.logical_not()) == 0).all().item<bool>(),"absent normalized target storage must be exact zero");
-    }
-  }
   const auto requested = integer(audit, "context_requested_deleted_coordinates");
   const auto actual = integer(audit, "context_actual_deleted_coordinates");
   const auto restored = integer(audit, "context_restored_coordinates");
@@ -404,7 +403,7 @@ std::shared_ptr<Parent> admit(const MatchedTargetGainSnapshotOptions &options, c
     require(p.is_cuda() && torch::isfinite(p).all().item<bool>(), "finite CUDA parameters required");
     p.set_requires_grad(false); count += p.numel();
   }
-  require(count == 225805, "225805 named parameters required");
+  require(count == parameter_count(c.global_pool_input_source), "exact registered parameter values required");
   for (const auto &b : cp.model->buffers()) require(b.is_cuda() && torch::isfinite(b).all().item<bool>(), "finite CUDA buffers required");
   parent->initial_parameters = parameters(cp.model); parent->initial_buffers = buffers(cp.model);
   parent->scaler_identity = cp.scaler.identity();
@@ -429,31 +428,32 @@ void immutable(const std::shared_ptr<Parent> &parent) {
 }
 } // namespace
 
-ev::CurveSnapshot make_matched_target_gain_snapshot(const MatchedTargetGainSnapshotOptions &options, const ev::ProviderFitInput &fit) {
+ev::CurveSnapshot make_pooled_context_snapshot(const PooledContextSnapshotOptions &options, const ev::ProviderFitInput &fit) {
   // Declaration checks precede generator/thread state changes and file reads.
   budget_contract(options.scope, options.expected_completed_updates);
-  (void)gain_options(options.policy);
+  require(source(options.role) == 0 || source(options.role) == 1,
+      "explicit placement required");
   fit_contract(fit, options.scope);
   const RuntimeIsolation isolation; at::set_num_threads(1);
   const auto parent = admit(options, fit); auto metadata = parent->fit;
   metadata.training_observations = {}; metadata.training_source_ids.clear();
   const auto &cp = parent->checkpoint;
   ev::CurveSnapshot snapshot;
-  snapshot.features.provenance = std::string(tag(options.policy)) +
+  snapshot.features.provenance = std::string(tag(source(options.role))) +
       "; immutable timing-protocol checkpoint; exact contextual-global32 CUDA serving; ordinary original-Q decoder";
   auto &fields = snapshot.features.audit_fields;
   fields = parent->audit;
-  fields["protocol_id"] = kMatchedTargetGainProtocol;
+  fields["protocol_id"] = kPooledContextProtocol;
   fields["original_training_protocol_id"] = fit.protocol_id;
   fields["parent_checkpoint_path"] = parent->path;
   fields["parent_writer_source_fingerprint"] = cp.source_fingerprint;
   fields["parent_training_producer_source_fingerprint"] = options.expected_training_producer_source_fingerprint;
-  fields["snapshot_loader_source_fingerprint"] = MATCHED_TARGET_GAIN_ADAPTER_SOURCE_ID;
-  fields["source_fingerprint_scope"] = "parent=core_writer_and_training_producer;loader=new_matched_target_gain_adapter";
+  fields["snapshot_loader_source_fingerprint"] = POOLED_CONTEXT_ADAPTER_SOURCE_ID;
+  fields["source_fingerprint_scope"] = "parent=core_writer_and_training_producer;loader=new_pooled_context_adapter";
   fields["original_encoder_attempted"] = std::to_string(cp.attempted_steps);
   fields["original_encoder_completed"] = std::to_string(cp.completed_steps);
   fields["training_schema_id"] = cp.schema_id; fields["training_dataset_id"] = cp.dataset_id;
-  fields["preprocessing_id"] = cp.scaler.identity(); fields["parameter_count"] = "225805";
+  fields["preprocessing_id"] = cp.scaler.identity(); fields["parameter_count"] = std::to_string(parameter_count(cp.settings.model.global_pool_input_source));
   fields["encoder_updates"] = "0"; fields["decoder_updates"] = "0"; fields["head_refits"] = "0";
   fields["no_optimizer_created"] = "true"; fields["inference_device"] = cp.settings.model.device.str();
   fields["snapshot_policy"] = "independent_CUDA_model;eval_no_grad;frozen_timing_TRAIN_scaler;ordinary_query_no_context_erasure;no_refit";
@@ -479,25 +479,27 @@ ev::CurveSnapshot make_matched_target_gain_snapshot(const MatchedTargetGainSnaps
   };
   snapshot.features.save_assets = [parent, fields](const std::string &directory) {
     const RuntimeIsolation guard; immutable(parent); torch::serialize::OutputArchive a;
-    text(a, "artifact_kind", kMatchedTargetGainSnapshotArtifact);
+    text(a, "artifact_kind", curve_scope(parent->scope) ? kPooledContextSnapshotArtifact : kPooledContextSnapshotArtifact);
     for (const auto &[key, value] : fields) text(a, key, value);
+    a.write("global_pool_input_source_value",torch::tensor(parent->checkpoint.settings.model.global_pool_input_source),true);
     a.write("channel_mixer_placement_value", torch::tensor(parent->checkpoint.settings.model.channel_mixer_placement, torch::kInt64), true);
     a.write("original_encoder_attempted_value", torch::tensor(parent->checkpoint.attempted_steps), true);
     a.write("original_encoder_completed_value", torch::tensor(parent->checkpoint.completed_steps), true);
     named(a, "model_parameters", parent->initial_parameters); named(a, "model_buffers", parent->initial_buffers);
     torch::serialize::OutputArchive scaler; parent->checkpoint.scaler.save(scaler); a.write("scaler", scaler);
-    save_exclusive((fs::path(directory) / kMatchedTargetGainSnapshotAuditFile).string(), a); immutable(parent);
+    save_exclusive((fs::path(directory) / kPooledContextSnapshotAuditFile).string(), a); immutable(parent);
   };
   immutable(parent); return snapshot;
 }
 
-ev::CurveTrainerFactory make_matched_target_gain_trainer(const Settings &settings, MatchedTargetGainPolicy policy, MatchedTargetGainScope scope) {
+ev::CurveTrainerFactory make_pooled_context_trainer(const Settings &settings,PooledContextRole role,const std::string &reference,PooledContextScope scope) {
+  require(settings.model.global_pool_input_source==source(role) && (source(role) ? !reference.empty() : reference.empty()),
+      "explicit pooled role/reference/config must agree");
   configuration(settings, scope);
-  const auto selected_gain=gain_options(policy);
   const RuntimeIsolation isolation;
   const auto base_factory = make_learning_curve_trainer(settings,
-      ContextDeletionOptions{true, ContextDeletionRecipe::coordinate15_v1}, LearningCurveStateWitnessOptions{true},selected_gain);
-  return [settings, scope, policy, base_factory](const ev::ProviderFitInput &fit) {
+      ContextDeletionOptions{true, ContextDeletionRecipe::coordinate15_v1}, LearningCurveStateWitnessOptions{true},TrainingSourceGainOptions{},PooledContextInitializationOptions{true,reference});
+  return [settings, role, scope, base_factory](const ev::ProviderFitInput &fit) {
     fit_contract(fit, scope); const RuntimeIsolation guard; at::set_num_threads(1);
     auto captured_fit = fit;
     captured_fit.training_observations.data = cpu(fit.training_observations.data);
@@ -508,8 +510,8 @@ ev::CurveTrainerFactory make_matched_target_gain_trainer(const Settings &setting
     const auto writer = base.audit_fields.at("core_writer_source_fingerprint");
     const auto producer = base.audit_fields.at("training_producer_source_fingerprint");
     ev::CurveTrainer result; result.audit_fields = base.audit_fields;
-    result.audit_fields["snapshot_adapter_source_fingerprint"] = MATCHED_TARGET_GAIN_ADAPTER_SOURCE_ID;
-    result.audit_fields["snapshot_policy"] = "new_protocol_bound_CUDA_only;historical_CPU_snapshot_not_called";
+    result.audit_fields["snapshot_adapter_source_fingerprint"] = POOLED_CONTEXT_ADAPTER_SOURCE_ID;
+    result.audit_fields["snapshot_policy"] = "new_pooled_protocol_bound_CUDA_only;historical_CPU_snapshot_not_called";
     result.train_to = [base, scope, latest, saved, failed](int64_t budget) {
       require(!*failed, "failed live trainer cannot continue"); budget_contract(scope, budget);
       const RuntimeIsolation isolate; at::set_num_threads(1);
@@ -537,45 +539,50 @@ ev::CurveTrainerFactory make_matched_target_gain_trainer(const Settings &setting
       const RuntimeIsolation isolate; at::set_num_threads(1); base.save_checkpoint(path);
       require(saved->emplace(path_key(path), std::make_pair(latest->completed, bindings(path, scope))).second, "point already recorded");
     };
-    result.snapshot = [fit = captured_fit, scope, policy, writer, producer, saved, failed](const std::string &path) {
+    result.snapshot = [fit = captured_fit, settings, role, scope, writer, producer, saved, failed](const std::string &path) {
       require(!*failed, "failed trainer cannot serve snapshots"); const auto found = saved->find(path_key(path));
       require(found != saved->end() && bindings(path, scope) == found->second.second, "snapshot is not this trainer's immutable saved point");
-      MatchedTargetGainSnapshotOptions options{path,policy,scope,found->second.first,writer,producer};
-      return make_matched_target_gain_snapshot(options, fit);
+      PooledContextSnapshotOptions options{path,role,found->second.first,scope,writer,producer};
+      return make_pooled_context_snapshot(options, fit);
     };
     return result;
   };
 }
 
-std::map<std::string, std::string> audit_matched_target_gain_initialization(const std::string &control_path,
-    const std::string &candidate_path,const ev::ProviderFitInput &fit,MatchedTargetGainScope scope) {
-  fit_contract(fit,scope);
-  const RuntimeIsolation isolation; at::set_num_threads(1);
-  // Admit the complete six-file byte matrices before interpreting audit metadata.
-  const auto control_content=bindings(path_key(control_path),scope), candidate_content=bindings(path_key(candidate_path),scope);
-  torch::serialize::InputArchive control_audit,candidate_audit;
-  control_audit.load_from(control_path+".audit.pt",torch::kCPU); candidate_audit.load_from(candidate_path+".audit.pt",torch::kCPU);
-  const auto writer=text(control_audit,"core_writer_source_fingerprint"),producer=text(control_audit,"training_producer_source_fingerprint");
-  require(text(candidate_audit,"core_writer_source_fingerprint") == writer &&
-      text(candidate_audit,"training_producer_source_fingerprint") == producer,"paired source producers differ");
-  const MatchedTargetGainSnapshotOptions control{control_path,MatchedTargetGainPolicy::coordinate15_control,scope,0,writer,producer};
-  const MatchedTargetGainSnapshotOptions candidate{candidate_path,MatchedTargetGainPolicy::coordinate15_gain,scope,0,writer,producer};
-  const auto late=admit(control,fit),early=admit(candidate,fit);
-  require(late->content==control_content && early->content==candidate_content &&
-      settings_text(early->checkpoint.settings) == settings_text(late->checkpoint.settings) &&
-      late->checkpoint.source_fingerprint == early->checkpoint.source_fingerprint &&
-      late->audit.at("training_producer_source_fingerprint") == early->audit.at("training_producer_source_fingerprint") &&
-      same(late->initial_parameters, early->initial_parameters) && same(late->initial_buffers, early->initial_buffers) &&
-      late->scaler_identity == early->scaler_identity && late->checkpoint.dataset_id == early->checkpoint.dataset_id &&
-      late->checkpoint.schema_id == early->checkpoint.schema_id &&
-      late->audit.at("fit_source_manifest") == early->audit.at("fit_source_manifest") &&
-      late->audit.at("initialization_seed") == early->audit.at("initialization_seed") &&
-      late->audit.at("rng_policy") == early->audit.at("rng_policy"), "complete point0 weights/buffers/scaler/data/seed pairing differs");
-  immutable(late); immutable(early);
-  return {{"common_parameters_exact", "true"}, {"common_buffers_exact", "true"}, {"scaler_exact", "true"},
-      {"training_dataset_exact", "true"}, {"counter_streams_exact", "true"}, {"parameter_count", "225805"},
-      {"architecture_id", architecture_id(early->checkpoint.settings.model)},
-      {"initialization_seed", late->audit.at("initialization_seed")}, {"initial_features_equality_required", "true"},
-      {"snapshot_loader_source_fingerprint", MATCHED_TARGET_GAIN_ADAPTER_SOURCE_ID}};
+std::map<std::string,std::string> audit_pooled_context_initialization(const std::string &control_path,
+    const std::string &candidate_path,const ev::ProviderFitInput &fit,PooledContextScope scope) {
+  fit_contract(fit,scope); const RuntimeIsolation isolate; at::set_num_threads(1);
+  auto options=[&](const std::string &path,PooledContextRole role) {
+    torch::serialize::InputArchive a; a.load_from(path+".audit.pt",torch::kCPU);
+    return PooledContextSnapshotOptions{path,role,0,scope,text(a,"core_writer_source_fingerprint"),text(a,"training_producer_source_fingerprint")};
+  };
+  const auto control=admit(options(control_path,PooledContextRole::compact_control),fit);
+  const auto candidate=admit(options(candidate_path,PooledContextRole::pooled_width_candidate),fit);
+  auto expected=candidate->checkpoint.settings; expected.model.global_pool_input_source=0;
+  require(settings_text(expected)==settings_text(control->checkpoint.settings) && control->scaler_identity==candidate->scaler_identity &&
+      control->checkpoint.dataset_id==candidate->checkpoint.dataset_id && control->checkpoint.schema_id==candidate->checkpoint.schema_id &&
+      control->checkpoint.source_fingerprint==candidate->checkpoint.source_fingerprint &&
+      control->audit.at("training_producer_source_fingerprint")==candidate->audit.at("training_producer_source_fingerprint") &&
+      candidate->audit.at("pooled_reference_point0_path")==path_key(control_path) &&
+      same(control->initial_buffers,candidate->initial_buffers),"paired original TRAIN/config/buffers/source differs");
+  int64_t common=0;
+  for (const auto &[name,value]:control->initial_parameters) {
+    const auto &other=candidate->initial_parameters.at(name);
+    if (name=="global_pool_first.weight") {
+      require(value.sizes()==torch::IntArrayRef({64,99}) && other.sizes()==torch::IntArrayRef({64,195}),"declared wider input required"); continue;
+    }
+    require(value.scalar_type()==other.scalar_type() && value.sizes()==other.sizes() && torch::equal(value,other),"copied common point0 values differ");
+    common+=value.numel();
+  }
+  require(common==219469,"exact219469 shared parameter values required");
+  for (const auto &[suffix,id]:control->content)
+    require(candidate->audit.at("pooled_reference_content_id"+suffix)==id,"paired reference bytes differ");
+  immutable(control); immutable(candidate);
+  return {{"common_parameters_exact","true"},{"common_buffers_exact","true"},{"scaler_exact","true"},
+    {"training_dataset_exact","true"},{"counter_streams_exact","true"},{"shared_parameter_values","219469"},
+    {"control_registered_parameter_values","225805"},{"candidate_registered_parameter_values","231949"},
+    {"candidate_inactive_projection_values","2080"},{"candidate_loss_reachable_parameter_values","229869"},
+    {"initial_features_equality_required","false"},{"nonshared_parameter_name","global_pool_first.weight"},
+    {"copied_before_AdamW","true"},{"snapshot_loader_source_fingerprint",POOLED_CONTEXT_ADAPTER_SOURCE_ID}};
 }
 } // namespace embedding::encoders::raw_patch_bottleneck_mae

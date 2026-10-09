@@ -11,6 +11,15 @@ namespace embedding::encoders::raw_patch_bottleneck_mae {
 inline constexpr const char *kLearningCurveContinuationSuffix = ".continuation.pt";
 inline constexpr const char *kLearningCurveContinuationArtifact =
     "rpb_early_mixer_curve_continuation_state_v1";
+inline constexpr const char *kPooledContextContinuationArtifact =
+    "rpb_pooled_context_continuation_state_v1";
+struct PooledContextInitializationOptions {
+  bool enabled{false};
+  // Candidate only: immutable compact-control point0 in the SAME new TRAIN scope.
+  // Empty for the compact control; never an ordinary checkpoint resume.
+  std::string control_point0_checkpoint_path;
+};
+
 struct LearningCurveStateWitnessOptions {
   bool enabled{false};
 };
@@ -46,5 +55,11 @@ embedding::evaluation::CurveTrainerFactory make_learning_curve_trainer(
 embedding::evaluation::CurveTrainerFactory make_learning_curve_trainer(
     const Settings &settings, ContextDeletionOptions options,
     LearningCurveStateWitnessOptions state_witness, TrainingSourceGainOptions gain);
+
+// Closed pooled-context scope only. Existing overloads keep this disabled and
+// reject source1. Common tensors are copied before AdamW and its initial witness.
+embedding::evaluation::CurveTrainerFactory make_learning_curve_trainer(
+    const Settings &, ContextDeletionOptions, LearningCurveStateWitnessOptions,
+    TrainingSourceGainOptions, PooledContextInitializationOptions);
 
 } // namespace embedding::encoders::raw_patch_bottleneck_mae

@@ -94,14 +94,21 @@ or automatic promotion.
 The completed [early-mixer learning curve](code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md)
 retains every 0/512/1024/2048 point for fresh RPB-v7.alt-03/RPB-v10.alt-01.
 Both reconstruct more accurately without monotone timing classification benefit;
-no best point was selected. The latest [matched-target gain diagnostic](code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md)
+no best point was selected. The completed [matched-target gain diagnostic](code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md)
 compares fresh RPB-v10.alt-02/RPB-v11 at fixed 512. All six numeric guards fail,
 all five original-query MAEs worsen, and equal 100% coverage remains. Audit
 passed 88,154,488 checks. Stop this gain recipe without range/rate/budget/head
 rescue. Preserve original v7, active v4, all earlier groups and every curve point.
-The [next direction](code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md)
-is engineering-first review of one pooled-context information path with a
-matched compact control; it has no measured result or new registered tag yet.
+The completed [pooled-context diagnostic](code/encoders/raw_patch_bottleneck_mae/POOLED_CONTEXT_DIAGNOSTIC.md)
+compares RPB-v10.alt-03/RPB-v12 at fixed512. All four timing numeric guards
+fail and all five cohorts lose timing Ridge in both views; both mean MAE guards
+and coverage pass. The sole archive audit passed 96,170,207 checks. Stop wider
+pooled width and gain without rate/budget/head rescue. Compact early v10 remains
+an investigation candidate, not a promoted reference. The [next direction](code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md)
+is one fresh fixed512 confirmation against late v7 under a separately frozen
+prospective card. Preserve every group and curve point, original working v7 and
+active v4. The [current continuation](doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
+records the exact evidence and container-only gates.
 The user's current working direction is RPB-v7, with
 RPB-v4 retained as the active reference. The separate
 [saved-TRAIN v9 scale lesson](code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_LOSS_SCALE_TRAIN_DIAGNOSTIC.md)
@@ -121,12 +128,13 @@ equal-decoder reconstruction guards fail; the joint guard fails three of six
 numeric conditions. Independent saved-evidence audit passed 67,932,331 checks.
 No TEST/stress, selection, promotion or new tag occurred. Preserve the fresh
 card, measured sources, all five pairs, failed admission fixture evidence and
-sealed passed audit. Do not rewrite them to improve a result. Continue from v7
-with v4 as reference under the
-[current continuation](doc/CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md):
-first diagnose saved TRAIN representation reliability across all ten instances,
-with no encoder/decoder updates, head refits or VALIDATION/TEST/stress analysis
-inputs. Do not tune the heads, deletion rate, decoder budget or v9 coefficients.
+sealed passed audit. Do not rewrite them to improve a result. The
+[historical continuation](doc/CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md)
+prescribed saved TRAIN reliability analysis across all ten instances, with no
+encoder/decoder updates, head refits or held-out analysis inputs. That diagnosis
+and the subsequent milestones are complete; the current next action is recorded
+in the pooled-context continuation above. Do not tune the heads, deletion rate,
+decoder budget or stopped v9 coefficients.
 
 Older versions remain available for archived evidence, explicit comparisons,
 and compatibility tests. Do not routinely retrain all older architectures.

@@ -74,6 +74,8 @@ struct EncodeOutput {
   // learned pools in mode 2, original-patch-state learned pools in mode 3.
   // In modes 1/2/3 the selected global is the sole decoder input. Mode 3 leaves
   // per-channel D summaries diagnostic-only; reconstruction does not train them.
+  // Prospective mode2/input-source1 likewise retains per-channel D diagnostics
+  // but pools learned temporal W summaries into the sole global D decoder input.
   // Undefined with channel_mixer_layers=0. Support remains observed-only.
   torch::Tensor z_contextual, z_contextual_global;
   torch::Tensor channel_valid_mask, sample_valid_mask;

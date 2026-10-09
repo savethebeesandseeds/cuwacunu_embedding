@@ -12,12 +12,23 @@ inline constexpr const char *kEncoderId = "raw_patch_bottleneck_mae_v1";
 inline constexpr const char *kOutputSemantics = "local_observed_global_equal_valid_v1";
 inline constexpr const char *kEarlyMixerArchitectureId = "aligned-mixer-before-temporal-v1";
 inline constexpr const char *kLateMixerArchitectureId = "aligned-mixer-after-temporal-v1";
+// Prototype technical literals; no model-version tag or protocol is reserved.
+inline constexpr const char *kPooledContextArchitectureId = "aligned-mixer-before-temporal-pooled-context-width-v1";
 
 inline const char *architecture_id(const Config &config) {
+  if (config.global_pool_input_source == 1) return kPooledContextArchitectureId;
   return config.channel_mixer_placement == 1 ? kEarlyMixerArchitectureId : kLateMixerArchitectureId;
 }
 
+inline const char *global_pool_input_semantics(const Config &config) {
+  return config.global_pool_input_source == 1 ?
+      "semantic_ordered_temporally_pooled_W_before_diagnostic_D_projection_v1" :
+      "semantic_ordered_projected_D_channel_summaries_v1";
+}
+
 inline const char *output_semantics(const Config &config) {
+  if (config.global_pool_input_source == 1)
+    return "local_diagnostic_observed_contextual_pretemporal_aligned_pooled_W_global_semantic_mlp_bottleneck_v1";
   if (config.channel_mixer_placement == 1)
     return "local_observed_contextual_pretemporal_aligned_global_semantic_mlp_bottleneck_v1";
   if (config.global_bottleneck_mode == 3)
@@ -37,6 +48,8 @@ inline const char *output_semantics(const Config &config) {
 }
 
 inline const char *reconstruction_output_semantics(const Config &config) {
+  if (config.global_pool_input_source == 1)
+    return "exact_pretemporal_contextual_observed_pooled_W_global_semantic_mlp_export_v1";
   if (config.channel_mixer_placement == 1)
     return "exact_pretemporal_contextual_observed_global_semantic_mlp_export_v1";
   if (config.global_bottleneck_mode == 3)
@@ -56,6 +69,10 @@ inline const char *reconstruction_output_semantics(const Config &config) {
 }
 
 inline const char *global_readout_description(const Config &config, bool contextual) {
+  if (config.global_pool_input_source == 1)
+    return contextual ?
+        "at least one channel has visible observations; early contextual learned temporal W summaries and configured-semantic support bits through the global MLP before diagnostic D projection" :
+        "at least one channel has visible observations; independent learned temporal W summaries and configured-semantic support bits through the global MLP before diagnostic D projection";
   if (config.channel_mixer_placement == 1 && contextual)
     return "at least one channel has visible observations; original-patch-aligned projected states mix across channels before temporal blocks; semantic-ordered contextual vectors and support bits through the learned global MLP";
   if (config.global_bottleneck_mode == 3)

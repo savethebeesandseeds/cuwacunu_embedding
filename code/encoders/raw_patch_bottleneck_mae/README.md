@@ -6,6 +6,13 @@ candidate is a masked autoencoder whose reconstruction loss passes through the
 served embedding. The baseline API, executable, archive reader and checkpoint
 format remain separate.
 
+The original saved **RPB-v7** bundle remains protected, and **RPB-v4** remains
+the formal reference. Compact early **RPB-v10** is the unpromoted candidate for
+one fresh fixed512 confirmation against late v7. Matched-target gain **RPB-v11**
+and wider pooled **RPB-v12** are stopped after their audited comparisons. The
+[current continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
+records the exact evidence, preserved groups and next bounded action.
+
 **Active research: RPB-v4 — Learned global bottleneck**, through
 [learned_global.conf](config/learned_global.conf). Its native 32-number global
 export is the sole reconstruction signal. The completed
@@ -53,9 +60,20 @@ compares fresh RPB-v10.alt-02/RPB-v11 at fixed 512. Timing linear means fall
 from 96.40625% to 95.3125% intact and 92.5% to 84.6875% under extra deletion;
 all coverage remains 100%. All six numeric guards fail and all five original-query
 MAEs worsen. The gain recipe is stopped without range/rate/budget/head rescue.
-The [next direction](NEXT_ADVANCE.md) is one pooled-context information-path
-feasibility step with a matched compact control, starting with source and CUDA
-engineering gates. No wider architecture is measured or registered here.
+The completed [pooled-context diagnostic](POOLED_CONTEXT_DIAGNOSTIC.md)
+compares the compact early RPB-v10.alt-03 with RPB-v12 at the same 512 budget.
+Compact/pooled timing linear means are 98.28125%/90.9375% intact and
+97.03125%/83.125% under additional deletion; every paired cohort loses in both
+views. Both mean reconstruction guards pass, all four timing guards fail, and
+coverage stays 100%. Strong separate untrained amplitude controls and all four
+seven-method panels remain explicit. Route and first-layer capacity change
+together; this does not identify an isolated projection-loss cause. The sole
+audit passed 96,170,207 checks. Stop wider pooled width and gain without rescue.
+The [next direction](NEXT_ADVANCE.md) is one fresh fixed512 compact early v10
+confirmation against late v7, with new sources and separately frozen gates.
+No confirmation result, new tag, selected point or promotion is claimed. See
+the [current continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
+and [portable source tools](../../evaluation/tools/pooled_context_v1/README.md).
 
 The [RPB-v5 comparison](PAIRED_POOLING_ADVANCE.md) and
 [optimization diagnostic](OPTIMIZATION_DIAGNOSTIC.md) are complete. Direct patch
@@ -163,9 +181,9 @@ The equal-decoder MAE guards also fail, although recovery against pre-calibratio
 v4 passes. Independent saved-evidence audit passed 67,932,331 checks. Native
 exports remain exact across calibration; classification fits and scores are
 reused afterward. No new tag, TEST/stress access or promotion. The
-[current continuation](../../../doc/CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md)
-focuses on saved TRAIN reliability across all ten instances before changing
-training. Generalized frozen-decoder calibration stays in this encoder; the new
+[historical continuation](../../../doc/CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md)
+prescribed saved TRAIN reliability across all ten instances, now completed before
+the later comparisons above. Generalized frozen-decoder calibration stays in this encoder; the new
 tensor-only fixed-head evaluator stays in shared code.
 
 The [embedding evaluation policy](../../../doc/EMBEDDING_EVALUATION_POLICY.md)

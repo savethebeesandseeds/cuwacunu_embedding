@@ -1,4 +1,4 @@
-# RPB v4 evaluation and development plan
+# RPB evaluation and development plan
 
 Date: 2026-10-09
 
@@ -32,12 +32,24 @@ MAE rises from 0.075181/0.076729 to 0.216641/0.214659; every gain instance is wo
 on both splits. All six numeric guards fail. Stop this recipe without changing
 its gain range, deletion rate, budget or heads. Amplitude deletion also worsens.
 
-Skip the half-mixer variation. The next bounded direction is engineering-first
-feasibility of one pooled-context information path with a matched compact control.
-A separate prospective card, exact common-initialization witnesses, CUDA-only
-correctness and sealed reader must precede new generation. No new architecture
-result or registered tag is claimed here. Preserve original RPB-v7, active RPB-v4,
-every earlier group and every retained curve point. See the [end-window continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_MATCHED_TARGET_GAIN.md).
+The completed [pooled-context diagnostic](POOLED_CONTEXT_DIAGNOSTIC.md)
+uses fresh RPB-v10.alt-03/RPB-v12 at 512. Compact/pooled timing linear means are
+98.28125%/90.9375% intact and 97.03125%/83.125% deleted. All five cohorts lose
+in both views, despite both mean original-query MAE guards and equal 100%
+coverage passing. All four timing numeric guards fail; the joint decision fails.
+The wider route and first-layer capacity change together, so do not assign a
+causal defect to the compact projection from these results. The four full
+seven-method task/view panels, separate initial controls and all cohort details
+are preserved. Stop pooled width and gain without tuning heads, rates or budgets.
+
+Skip half-mixer and further width variations. The next bounded action is one
+fresh fixed512 confirmation of compact early v10 against late v7, under a
+separate prospective card and matched new sources. Keep the original .15 view,
+native32, batch8 and fixed heads. Retain every declared cohort; do not choose a
+best curve point or rescue the comparison after observing scores. No new card,
+confirmation result or additional tag is created by this navigation update.
+Preserve original RPB-v7, active RPB-v4, every earlier group and every retained
+curve point. See the [current continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md).
 
 ## Completed milestone
 

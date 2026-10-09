@@ -1121,3 +1121,49 @@ test-rpb-matched-target-gain-adapter: $(RPB_TEST_DIR)/matched_target_gain_adapte
 
 evaluate-matched-target-gain: $(MATCHED_TARGET_GAIN_BIN)
 	@MATCHED_TARGET_GAIN_BIN="$(abspath $(MATCHED_TARGET_GAIN_BIN))" MATCHED_TARGET_GAIN_SOURCE_INPUTS="$(MATCHED_TARGET_GAIN_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-matched-target-gain.sh
+
+# Fixed pooled-context architecture comparison. Every linked legacy/admission
+# scope is included, while the new adapter keeps its own enclosing source ID.
+POOLED_CONTEXT_BIN := $(BUILD_DIR)/embedding_pooled_context
+POOLED_CONTEXT_ADAPTER_OBJECT := $(RPB_OBJECT_DIR)/pooled_context_adapter.o
+POOLED_CONTEXT_INPUTS := $(sort $(MATCHED_TARGET_GAIN_INPUTS) $(SDK_PROVENANCE_INPUTS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/pooled_context_adapter.h $(RPB_ROOT)/src/pooled_context_adapter.cpp $(RPB_ROOT)/tests/pooled_context_adapter_test.cpp $(RPB_ROOT)/tests/pooled_context_model_test.cpp $(RPB_ROOT)/tests/pooled_context_old_model_reference.h $(EVALUATION_ROOT)/src/pooled_context_main.cpp $(EVALUATION_ROOT)/cards/pooled_context_v1.md $(CODE_ROOT)/scripts/prepare-pooled-context.py $(CODE_ROOT)/scripts/check-pooled-context.sh $(CODE_ROOT)/scripts/evaluate-pooled-context.sh)
+POOLED_CONTEXT_SOURCE_ID := $(shell sha256sum $(POOLED_CONTEXT_INPUTS) | sha256sum | cut -d ' ' -f 1)
+POOLED_CONTEXT_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(POOLED_CONTEXT_SOURCE_ID)\" -DPOOLED_CONTEXT_ADAPTER_SOURCE_ID=\"$(POOLED_CONTEXT_SOURCE_ID)\"
+.PHONY: pooled-context print-pooled-context-sources test-rpb-pooled-context-model test-rpb-pooled-context-adapter evaluate-pooled-context
+pooled-context: $(POOLED_CONTEXT_BIN)
+print-pooled-context-sources:
+	@printf '%s\n' $(POOLED_CONTEXT_INPUTS)
+
+$(EVALUATION_OBJECT_DIR)/pooled_context_main.o: $(EVALUATION_ROOT)/src/pooled_context_main.cpp $(POOLED_CONTEXT_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(POOLED_CONTEXT_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(POOLED_CONTEXT_ADAPTER_OBJECT): $(RPB_ROOT)/src/pooled_context_adapter.cpp $(POOLED_CONTEXT_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(POOLED_CONTEXT_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(POOLED_CONTEXT_BIN): $(EVALUATION_OBJECT_DIR)/pooled_context_main.o $(POOLED_CONTEXT_ADAPTER_OBJECT) $(RPB_TRAINING_SOURCE_GAIN_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS) $(FIXED_FEATURE_READOUTS_OBJECT)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(RPB_TEST_DIR)/pooled_context_model_test.o: $(RPB_ROOT)/tests/pooled_context_model_test.cpp $(POOLED_CONTEXT_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/pooled_context_model_test: $(RPB_TEST_DIR)/pooled_context_model_test.o $(RPB_WORKFLOW_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-pooled-context-model: $(RPB_TEST_DIR)/pooled_context_model_test
+	$(RPB_TEST_DIR)/pooled_context_model_test
+
+$(RPB_TEST_DIR)/pooled_context_adapter_test.o: $(RPB_ROOT)/tests/pooled_context_adapter_test.cpp $(POOLED_CONTEXT_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(POOLED_CONTEXT_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/pooled_context_adapter_test: $(RPB_TEST_DIR)/pooled_context_adapter_test.o $(POOLED_CONTEXT_ADAPTER_OBJECT) $(RPB_TRAINING_SOURCE_GAIN_OBJECT) $(EARLY_MIXER_ADAPTER_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(HARNESS_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-pooled-context-adapter: $(RPB_TEST_DIR)/pooled_context_adapter_test
+	$(RPB_TEST_DIR)/pooled_context_adapter_test
+
+evaluate-pooled-context: $(POOLED_CONTEXT_BIN)
+	@POOLED_CONTEXT_BIN="$(abspath $(POOLED_CONTEXT_BIN))" POOLED_CONTEXT_SOURCE_INPUTS="$(POOLED_CONTEXT_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-pooled-context.sh

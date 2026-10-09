@@ -5,6 +5,13 @@ MTF-JEPA-MAE-VICReg implementation. It converts masked multichannel histories in
 global and per-channel embeddings and trains without the parent project's runtime,
 DSL, registries, graph orchestration, forecasting, trading, or interface components.
 
+The original saved **RPB-v7** bundle remains protected, and **RPB-v4** remains
+the formal reference. Compact early **RPB-v10** is the unpromoted candidate for
+one fresh fixed512 confirmation against late v7. Matched-target gain **RPB-v11**
+and wider pooled **RPB-v12** are stopped after their audited comparisons. The
+[current continuation](doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
+records the exact evidence, preserved groups and next bounded action.
+
 The retained baseline uses multiscale time descriptors and windowed frequency
 magnitudes, a shared token encoder, JEPA context/target masking and latent
 prediction, an EMA teacher, auxiliary reconstruction, time/frequency alignment,
@@ -77,7 +84,7 @@ there is no TEST/stress access or promotion. Keep v7 as the working direction,
 v4 as the active reference, and follow the
 [dated continuation](doc/CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md).
 Its saved-TRAIN reliability diagnosis and subsequent amplitude and early-mixer
-comparisons are complete. The latest
+comparisons are complete. The completed
 [continuous learning curve](code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md)
 retains every 0/512/1024/2048 point for fresh RPB-v7.alt-03/RPB-v10.alt-01 pairs.
 Both reconstruct more accurately with longer training, without monotone timing
@@ -89,9 +96,19 @@ best-point selection, TEST/stress or promotion. The completed
 compares fresh RPB-v10.alt-02/RPB-v11 at 512: all six numeric guards fail and all
 five original-query reconstruction errors worsen, despite equal 100% coverage.
 Its independent audit passed 88,154,488 checks. The gain recipe is stopped.
-The next direction is engineering-first review of one pooled-context path with a
-matched compact control; no new result or version is registered here. Follow the
-[end-window continuation](doc/CONTINUATION_2026-10-09_AFTER_MATCHED_TARGET_GAIN.md).
+The completed [pooled-context diagnostic](code/encoders/raw_patch_bottleneck_mae/POOLED_CONTEXT_DIAGNOSTIC.md)
+compares RPB-v10.alt-03/RPB-v12 at 512. The wider pooled route improves mean
+reconstruction but loses timing linear accuracy in all five cohorts and both
+views: compact/pooled means are 98.28125%/90.9375% intact and
+97.03125%/83.125% deleted, with full coverage. All four timing numeric guards
+fail; both mean MAE guards pass. Its sole audit passed 96,170,207 checks.
+Stop pooled width and gain without a head/rate/budget rescue. Keep compact early
+v10 as an investigation candidate; the next action is one fresh fixed512
+confirmation against late v7 under a separate prospective card, with no new
+result or promotion claimed. Preserve original v7 and active v4. Follow the
+[current continuation](doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md).
+The [portable source tools](code/evaluation/tools/pooled_context_v1/README.md)
+stage a fresh blocked reader from a clean checkout inside the managed container.
 Older designs remain available as archived references. See the
 [version registry](doc/EMBEDDING_VERSIONS.md),
 [results reporting standard](doc/RESULTS_REPORTING_STANDARD.md), and

@@ -177,3 +177,62 @@ step with a matched compact control, starting with source/card/CUDA engineering
 gates. This milestone registers no new wider architecture or quality result.
 The [end-window continuation](CONTINUATION_2026-10-09_AFTER_MATCHED_TARGET_GAIN.md)
 records the protected references and explicit decision boundary.
+
+Sixth milestone completed: the [pooled-context diagnostic](../code/encoders/raw_patch_bottleneck_mae/POOLED_CONTEXT_DIAGNOSTIC.md)
+and [exact durable JSON](results/pooled_context_v1.json) preserve five fresh
+RPB-v10.alt-03/RPB-v12 pairs at fixed512. Compact/pooled timing linear means
+are 98.28125%/90.9375% intact and 97.03125%/83.125% deleted. Every cohort loses
+in both views; all four timing numeric guards fail. Both mean reconstruction
+guards pass: TRAIN 0.079615491/0.075831372 and VALIDATION
+0.080886286/0.078075544. Coverage is100%. Amplitude favors the wider route on
+these fresh cohorts, with strong untrained intact controls; all four panels,
+all five cohorts and conditional intervals remain in the report. The joint
+direction fails. Stop pooled width and gain without head/rate/budget rescue.
+
+The route and first-layer capacity change together. The candidate registers
+231,949 values versus225,805, with219,469 common values copied before AdamW,
+2,080 inactive projection values and229,869 reconstruction-reachable values.
+These results do not prove an isolated projection-loss mechanism. Ten joint
+encoder/decoder trajectories complete512 at batch8 on RTX A2000 8GB CUDA;
+there is zero extra decoder calibration. Synchronized loop means
+13.827282377/13.886893782 seconds include CPU evidence capture and exclude
+checkpoint/state writing, quality inference and CPU head/interval work.
+
+Admission LyXM0F passed before the sole quality run. The independent saved-
+arithmetic audit passed96,170,207 checks/1,235 CPU archives in402.684740278s;
+emission metadata QA passed347,585 comparisons. The exact saver copied the
+reviewed report/JSON once and preserved all eight admitted metadata inputs.
+It verified210 pipelines/420 heads,120 distinct native exports,20 query
+writers/80 necessary masked CUDA forwards,20 retained points and40,960 row
+exposures. No historical payload, TEST/stress, CPU encoder/optimizer/PCA/head
+rerun, best-point selection or promotion occurred.
+
+Capsule Na1nEQ inventory SHA is
+`66a86efd911b5c98485b8540120c348105fb7be6853e9180b9733c53e4b3d700`;
+enclosing SOURCE SHA is
+`be129553c8712415d3f009dce8b2131c88123ff2e39f3822baf3bb55e0310059`.
+Audit SHA is `6820cd40ec4ff79a715ff7521a4ff1315c78908ae81c8d2fa8e27395b7f23964`.
+Report SHA is `3fc19814bfb5976a04e7335df2f2c5cf6b5d1f4b38022496ab2ff73814378944`;
+JSON SHA is `196c4197e7ab3b34ad91d4df0df58fcfb6ca50197a70c8f0156b4ef3515142e1`.
+The original false-flag reader, reviewed fixture/seal, captured code and all
+historical registry objects remain byte/digest exact. Source portability copies
+are outside the174-path compiled closure: seven exact tools plus the reviewed
+stager/manifest/README/proofs. One separate managed-container SOURCE stager
+smoke created a fresh FALSE triple and passed27,229 artificial checks, with
+zero payload/archive/model/head execution; it did not replace any current
+reader pointer, reuse old fixtures or rerun the quality audit.
+
+Root's next bounded direction is one fresh fixed512 compact early-v10
+confirmation against late-v7, with a separate prospective card and matched
+sources. Keep original v7 protected and v4 active. The
+[current continuation](CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md) records
+the stopped mechanisms and exact container-only setup; no next-run results
+or new tag are invented here. Root's once-only final
+[protected-capsule check](../output/runs/rpb-matched-target-gain/original-v7-preserved-20261009-end-window.json)
+passed: all 1,710 files / 678,396,765 bytes are unchanged, including 1,483 original
+v7 files / 547,772,582 bytes and 227 decoder-calibration files / 130,624,183 bytes.
+Both original inventory identities remain exact. Proof SHA is
+`46f97eea182aeb1d1e1bb44e572033545f66ea455eca7b079c9cca44e6773c84`.
+There were zero tensor decodes, payload mutations, model/head executions or
+original roles used for quality analysis. This closes preservation verification
+without repeating encoder inference, fitting or an archive audit.

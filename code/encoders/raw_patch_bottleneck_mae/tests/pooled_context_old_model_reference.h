@@ -9,8 +9,8 @@
 
 namespace embedding::encoders::raw_patch_bottleneck_mae {
 
-struct ModelImpl : torch::nn::Module {
-  explicit ModelImpl(const Config &config) : config_(config) {
+struct PrePooledModelImpl : torch::nn::Module {
+  explicit PrePooledModelImpl(const Config &config) : config_(config) {
     validate_config(config_);
     const auto W = config_.encoder_width, K = config_.history_length / config_.patch_length;
     const auto PF = config_.patch_length * config_.input_width;
@@ -39,13 +39,8 @@ struct ModelImpl : torch::nn::Module {
     // Register after every old module, including the optional mixer, to keep
     // common initialized weights and mode-0/1 random streams exactly unchanged.
     if (config_.global_bottleneck_mode == 2) {
-      if (config_.global_pool_input_source == 0) {
-        global_pool_first = register_module("global_pool_first",
-            torch::nn::Linear(config_.channel_count * (config_.export_width + 1), W));
-      } else {
-        global_pool_first = register_module("global_pool_first",
-            torch::nn::Linear(config_.channel_count * (W + 1), W));
-      }
+      global_pool_first = register_module("global_pool_first",
+          torch::nn::Linear(config_.channel_count * (config_.export_width + 1), W));
       global_pool_second = register_module("global_pool_second",
           torch::nn::Linear(W, config_.export_width));
     }
@@ -66,11 +61,6 @@ struct ModelImpl : torch::nn::Module {
     auto local = torch::zeros({B * C, D}, torch::TensorOptions().dtype(config_.dtype).device(config_.device));
     torch::Tensor contextual;
     if (config_.channel_mixer_layers > 0) contextual = torch::zeros_like(local);
-    torch::Tensor pooled_local_width, pooled_contextual_width;
-    if (config_.global_pool_input_source == 1) {
-      pooled_local_width = torch::zeros({B * C, config_.encoder_width}, local.options());
-      pooled_contextual_width = torch::zeros_like(pooled_local_width);
-    }
     torch::Tensor patch_global, contextual_patch_global;
     if (config_.global_bottleneck_mode == 3) {
       patch_global = torch::zeros({B, D}, local.options());
@@ -100,8 +90,6 @@ struct ModelImpl : torch::nn::Module {
       scores = scores.masked_fill(patches.valid.logical_not(), -std::numeric_limits<float>::infinity());
       auto weights = torch::softmax(scores, 1);
       auto pooled = (h * weights.unsqueeze(-1)).sum(1);
-      if (config_.global_pool_input_source == 1)
-        pooled_local_width = pooled_local_width.index_copy(0, patches.row_indices, pooled);
       auto z = export_projection(pooled);
       local = local.index_copy(0, patches.row_indices, z);
       if (config_.channel_mixer_layers > 0) {
@@ -115,8 +103,6 @@ struct ModelImpl : torch::nn::Module {
             patches.valid.logical_not(), -std::numeric_limits<float>::infinity());
         auto contextual_weights = torch::softmax(contextual_scores, 1);
         auto contextual_pooled = (mixed * contextual_weights.unsqueeze(-1)).sum(1);
-        if (config_.global_pool_input_source == 1)
-          pooled_contextual_width = pooled_contextual_width.index_copy(0, patches.row_indices, contextual_pooled);
         contextual = contextual.index_copy(0, patches.row_indices,
                                            export_projection(contextual_pooled));
       }
@@ -135,18 +121,10 @@ struct ModelImpl : torch::nn::Module {
     out.visible_patch_counts = patches.patch_counts;
     out.channel_ids = (input.channel_ids.dim() == 1 ? input.channel_ids.unsqueeze(0).expand({B, C}) : input.channel_ids).to(config_.device);
     if (config_.global_bottleneck_mode == 2) {
-      if (config_.global_pool_input_source == 0) {
-        out.z_global = learned_global(out.z_local, out.channel_valid_mask, out.channel_ids);
-        if (config_.channel_mixer_layers > 0)
-          out.z_contextual_global = learned_global(out.z_contextual, out.channel_valid_mask,
-                                                   out.channel_ids);
-      } else {
-        const auto W = config_.encoder_width;
-        out.z_global = learned_pooled_width_global(pooled_local_width.reshape({B, C, W}),
-                                                   out.channel_valid_mask, out.channel_ids);
-        out.z_contextual_global = learned_pooled_width_global(pooled_contextual_width.reshape({B, C, W}),
-                                                              out.channel_valid_mask, out.channel_ids);
-      }
+      out.z_global = learned_global(out.z_local, out.channel_valid_mask, out.channel_ids);
+      if (config_.channel_mixer_layers > 0)
+        out.z_contextual_global = learned_global(out.z_contextual, out.channel_valid_mask,
+                                                 out.channel_ids);
     }
     if (config_.global_bottleneck_mode == 3) {
       out.z_global = patch_global;
@@ -273,20 +251,6 @@ private:
     return torch::where(patches.valid.unsqueeze(-1), mixed_packed, torch::zeros_like(h));
   }
 
-  // Prospective source-1 route only. Keep learned_global's default D arithmetic
-  // unchanged; both local/contextual W tensors use this same registered head.
-  torch::Tensor learned_pooled_width_global(const torch::Tensor &vectors, const torch::Tensor &valid,
-                                            const torch::Tensor &ids) {
-    const auto B = vectors.size(0), C = config_.channel_count, W = config_.encoder_width;
-    const auto order = channel_indices(ids, config_, B, config_.device).argsort(int64_t{1});
-    const auto canonical = vectors.gather(1, order.unsqueeze(-1).expand({B, C, W}));
-    const auto support = valid.gather(1, order);
-    const auto observed_vectors = torch::where(support.unsqueeze(-1), canonical, torch::zeros_like(canonical));
-    const auto features = torch::cat({observed_vectors.flatten(1), support.to(config_.dtype)}, 1);
-    const auto pooled = global_pool_second(torch::gelu(global_pool_first(features)));
-    return torch::where(valid.any(1).unsqueeze(-1), pooled, torch::zeros_like(pooled));
-  }
-
   Config config_;
   torch::nn::Linear patch_projection{nullptr}, pool_score{nullptr}, export_projection{nullptr};
   torch::nn::Linear decoder_first{nullptr}, decoder_second{nullptr};
@@ -298,6 +262,6 @@ private:
   std::vector<PreNormBlock> blocks;
   std::vector<PreNormBlock> channel_mixer_blocks;
 };
-TORCH_MODULE(Model);
+TORCH_MODULE(PrePooledModel);
 
 } // namespace embedding::encoders::raw_patch_bottleneck_mae
