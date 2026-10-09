@@ -23,6 +23,8 @@ struct Config {
   // Prospective closed route: 0 preserves D channel summaries; 1 uses the
   // existing learned temporally pooled W summaries before D diagnostics.
   int64_t global_pool_input_source{0};
+  // 0 preserves raw patches. 1 adds a visible adjacent-difference projection.
+  int64_t temporal_difference_input{0};
   int64_t feedforward_width{256}, decoder_hidden_width{128};
   double dropout{0.0}, layer_norm_epsilon{1e-5}, mask_ratio{0.25};
   double huber_delta{1.0}, scale_floor{1e-6}, sampling_interval{1.0};
@@ -50,6 +52,14 @@ inline void validate_config(const Config &c) {
               "[rpb-mae] global_bottleneck_mode must be 0, 1, 2 or 3");
   TORCH_CHECK(c.global_pool_input_source == 0 || c.global_pool_input_source == 1,
               "[rpb-mae] global_pool_input_source must be 0 or 1");
+  TORCH_CHECK(c.temporal_difference_input == 0 || c.temporal_difference_input == 1,
+              "[rpb-mae] temporal_difference_input must be 0 or 1");
+  TORCH_CHECK(c.temporal_difference_input == 0 ||
+                  (c.channel_count == 3 && c.history_length == 32 && c.input_width == 3 &&
+                   c.patch_length == 8 && c.encoder_width == 64 && c.export_width == 32 &&
+                   c.channel_mixer_layers == 1 && c.channel_mixer_placement == 1 &&
+                   c.global_bottleneck_mode == 2 && c.global_pool_input_source == 0 && c.dropout == 0),
+              "[rpb-mae] visible differences require C3/H32/F3/P8/W64/D32/mixer1/early/mode2/source0/dropout0");
   TORCH_CHECK(c.global_pool_input_source == 0 ||
                   (c.global_bottleneck_mode == 2 && c.channel_mixer_layers == 1 &&
                    c.channel_mixer_placement == 1 && c.dropout == 0),

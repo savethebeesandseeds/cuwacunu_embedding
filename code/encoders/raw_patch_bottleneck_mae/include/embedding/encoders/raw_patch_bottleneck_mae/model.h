@@ -5,6 +5,7 @@
 #include "embedding/encoders/raw_patch_bottleneck_mae/masking.h"
 #include "embedding/encoders/raw_patch_bottleneck_mae/objectives.h"
 #include "embedding/encoders/raw_patch_bottleneck_mae/tokenization.h"
+#include "embedding/encoders/raw_patch_bottleneck_mae/visible_difference.h"
 #include <limits>
 
 namespace embedding::encoders::raw_patch_bottleneck_mae {
@@ -55,6 +56,9 @@ struct ModelImpl : torch::nn::Module {
       global_patch_pool_second = register_module("global_patch_pool_second",
           torch::nn::Linear(W, config_.export_width));
     }
+    // A child registered last keeps every old parameter as the exact prefix.
+    if (config_.temporal_difference_input == 1)
+      visible_difference_projection = register_module("visible_difference_projection", VisibleDifferenceProjection(W, PF));
     to(config_.device, config_.dtype);
   }
 
@@ -78,6 +82,11 @@ struct ModelImpl : torch::nn::Module {
     }
     if (patches.row_indices.numel() != 0) {
       auto projected = patch_projection(torch::cat({patches.values, patches.visibility.to(config_.dtype)}, -1));
+      if (config_.temporal_difference_input == 1) {
+        const auto differences = pack_visible_differences(visible_first_differences(input, config_), patches, config_);
+        projected = projected + visible_difference_projection(
+            torch::cat({differences.values, differences.visibility.to(config_.dtype)}, -1));
+      }
       // Public original indices keep padding=-1; only private embedding lookup uses 0.
       auto lookup_positions = patches.positions.clamp_min(0);
       auto h = projected + positions(lookup_positions) + channels(patches.channel_indices).unsqueeze(1);
@@ -292,6 +301,7 @@ private:
   torch::nn::Linear decoder_first{nullptr}, decoder_second{nullptr};
   torch::nn::Linear global_pool_first{nullptr}, global_pool_second{nullptr};
   torch::nn::Linear global_patch_pool_first{nullptr}, global_patch_pool_second{nullptr};
+  VisibleDifferenceProjection visible_difference_projection{nullptr};
   torch::nn::Embedding positions{nullptr}, channels{nullptr}, pool_positions{nullptr};
   torch::nn::Embedding decoder_positions{nullptr}, decoder_channels{nullptr};
   torch::nn::LayerNorm final_norm{nullptr};

@@ -303,6 +303,7 @@ Settings parse_settings(const std::string &text) {
       if(key=="global_bottleneck_mode"){settings.model.global_bottleneck_mode=integer(value);continue;}
       if(key=="channel_mixer_placement"){settings.model.channel_mixer_placement=integer(value);continue;}
       if(key=="global_pool_input_source"){settings.model.global_pool_input_source=integer(value);continue;}
+      if(key=="temporal_difference_input"){settings.model.temporal_difference_input=integer(value);continue;}
 #define PARSE_MODEL_DOUBLE(name) if(key==#name){settings.model.name=real(value);continue;}
       MODEL_DOUBLES(PARSE_MODEL_DOUBLE)
 #undef PARSE_MODEL_DOUBLE
@@ -343,6 +344,8 @@ std::string settings_text(const Settings &settings) {
     out<<"channel_mixer_placement="<<settings.model.channel_mixer_placement<<'\n';
   if(settings.model.global_pool_input_source>0)
     out<<"global_pool_input_source="<<settings.model.global_pool_input_source<<'\n';
+  if(settings.model.temporal_difference_input>0)
+    out<<"temporal_difference_input="<<settings.model.temporal_difference_input<<'\n';
 #define WRITE_RUN(name) out<<#name "="<<settings.name<<'\n';
   RUN_INTS(WRITE_RUN)
   RUN_DOUBLES(WRITE_RUN)
@@ -440,6 +443,10 @@ void save_checkpoint(const std::string &path,const Checkpoint &checkpoint,torch:
   torch::serialize::OutputArchive archive,weights,state,scaler;
   envelope(archive,"rpb_training_checkpoint_v1");
   write_text(archive,"output_semantics",output_semantics(checkpoint.settings.model));
+  if(checkpoint.settings.model.temporal_difference_input>0) {
+    archive.write("temporal_difference_input",torch::tensor(checkpoint.settings.model.temporal_difference_input,torch::kInt64),true);
+    write_text(archive,"temporal_difference_input_semantics",visible_difference_input_semantics(checkpoint.settings.model));
+  }
   if(checkpoint.settings.model.channel_mixer_placement>0) {
     archive.write("channel_mixer_placement",torch::tensor(checkpoint.settings.model.channel_mixer_placement),true);
     write_text(archive,"architecture_id",architecture_id(checkpoint.settings.model));
@@ -477,6 +484,14 @@ Checkpoint load_checkpoint(const std::string &path,const torch::Device &device) 
   const auto text=read_text(archive,"settings");Fingerprint hash;hash.text(text);
   require(read_text(archive,"configuration_id")==hash.id("rpb-config-fnv1a-v1"),"checkpoint config identity mismatch");
   Checkpoint checkpoint;checkpoint.settings=parse_settings(text);checkpoint.settings.model.device=device;
+  torch::Tensor difference_tag,difference_semantics_tag;
+  const bool has_difference=archive.try_read("temporal_difference_input",difference_tag,true);
+  const bool has_difference_semantics=archive.try_read("temporal_difference_input_semantics",difference_semantics_tag,true);
+  require(checkpoint.settings.model.temporal_difference_input==0 ? (!has_difference && !has_difference_semantics) :
+      (has_difference && difference_tag.scalar_type()==torch::kInt64 && difference_tag.dim()==0 &&
+       difference_tag.item<int64_t>()==checkpoint.settings.model.temporal_difference_input &&
+       has_difference_semantics && tensor_text(difference_semantics_tag)==visible_difference_input_semantics(checkpoint.settings.model)),
+      "checkpoint temporal difference input/semantics metadata mismatch");
   torch::Tensor pool_source_tag,pool_semantics_tag;
   const bool has_pool_source=archive.try_read("global_pool_input_source",pool_source_tag,true);
   const bool has_pool_semantics=archive.try_read("global_pool_input_semantics",pool_semantics_tag,true);
@@ -563,6 +578,8 @@ int run_cli(int argc,char **argv) {
     Checkpoint checkpoint;
     if(!resume.empty()) {
       checkpoint=load_checkpoint(resume,device_from(optional(args,"--device","cpu")));
+      require(checkpoint.settings.model.temporal_difference_input==0,
+          "ordinary train/resume rejects visible differences; use its matching training adapter");
       require(checkpoint.settings.model.channel_mixer_placement==0,
           "ordinary train/resume rejects early mixer placement; use its matching training adapter");
       require(checkpoint.training_policy_id.empty(),
@@ -570,6 +587,8 @@ int run_cli(int argc,char **argv) {
     }
     else checkpoint.settings=args.count("--config")?read_settings(args.at("--config")):default_settings();
     auto &settings=checkpoint.settings;
+    require(settings.model.temporal_difference_input==0,
+        "ordinary train/resume rejects visible differences; use its matching training adapter");
     require(settings.model.channel_mixer_placement==0,
         "ordinary train/resume rejects early mixer placement; use its matching training adapter");
     if(args.count("--device"))settings.model.device=device_from(args.at("--device"));
@@ -659,6 +678,10 @@ int run_cli(int argc,char **argv) {
     }
     torch::serialize::OutputArchive archive;envelope(archive,"rpb_embedding_export_v1");
     write_text(archive,"output_semantics",output_semantics(checkpoint.settings.model));write_text(archive,"schema_id",dataset.schema_id);
+    if(checkpoint.settings.model.temporal_difference_input>0) {
+      archive.write("temporal_difference_input",torch::tensor(checkpoint.settings.model.temporal_difference_input,torch::kInt64),true);
+      write_text(archive,"temporal_difference_input_semantics",visible_difference_input_semantics(checkpoint.settings.model));
+    }
     if(checkpoint.settings.model.channel_mixer_placement>0) {
       archive.write("channel_mixer_placement",torch::tensor(checkpoint.settings.model.channel_mixer_placement),true);
       write_text(archive,"architecture_id",architecture_id(checkpoint.settings.model));

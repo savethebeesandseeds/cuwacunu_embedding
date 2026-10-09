@@ -1,10 +1,10 @@
 # RPB evaluation and development plan
 
-Date: 2026-10-09
+Date: 2026-10-10
 
-Continue from **RPB-v7 — Global bottleneck with lighter context deletion**,
-keeping **RPB-v4 — Learned global bottleneck** as the active reference. Use native 32-number
-embedding and fixed classifier heads. PCA is a standalone raw-data baseline.
+Continue developing RPB-MAE on TEMPO-3 through separate early-v10/v13 instance
+groups. Preserve original **RPB-v7** and the formal **RPB-v4** reference. Use
+native 32-number embedding and fixed classifier heads. PCA is a standalone raw-data baseline.
 Older encoder designs remain archived references and compatibility inputs;
 routine research does not retrain every historical variant.
 
@@ -16,33 +16,50 @@ stays separate from encoder training and decoding.
 
 The [TEMPO-3 comparison](STRUCTURED_HARD_TIMING_DIAGNOSTIC.md) completed once
 and passed its independent audit. This is structured harder timing at designed
-complexity4/5, with unchanged native32, .15/B8/fixed512 and heads. Fresh late
+complexity 4/5, with unchanged native32, .15/B8/fixed 512 and heads. Fresh late
 RPB-v7.alt-05 and early RPB-v10.alt-05 have intact linear means55.47%/52.81%
-and deleted means54.22%/53.75%, all at100% coverage. Neural means are54.64%/54.90%
+and deleted means54.22%/53.75%, all at 100% coverage. Neural means are54.64%/54.90%
 and54.01%/54.32%. Raw fixed heads also stay near chance. The observed-only
 cross-feature analytic timing rule solves every saved quality row, so this is
 not evidence that the legal observations lack usable timing. Neither group is
 promoted, and these fresh cohorts do not replace or damage original saved v7.
 
-The next proposed bounded action is a saved-TRAIN diagnosis, under a new
-prospective card and closed input roles before execution. Compare fixed-head
-TRAIN accuracy/margins with already audited held-out metadata. Then check
-relative timing in saved reconstruction query outputs against their saved
-targets, using only legal triplets within each bank's8-tick patch and the same
-support restriction for both. The four query banks use different masked
-contexts; they are not a single full-context embedding. Poor reconstructed
-timing against strong targets would identify a reconstruction-path limitation,
-not encoder information loss. Strong reconstructed timing would establish
-multi-context encoder/decoder accessibility, not sufficiency of the served32
-numbers. Keep all five cohorts, source pairs and invalid rows. Use no encoder
-updates, head refits or PCA; freeze TEMPO-3 and the heads before further
-architecture, gain, width or budget changes. See the
-[current continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_STRUCTURED_HARD_TIMING.md).
+The [saved-TRAIN diagnosis](STRUCTURED_HARD_TIMING_TRAIN_DIAGNOSTIC.md) is now
+complete without model execution, head refits or PCA. Early-v10 fixed neural
+accuracy is 82.06% on TRAIN and54.90% on intact VALIDATION; raw is99.69%/50.73%.
+Same-support timing in query targets is 100%, versus68.28% for late and61.02%
+for early reconstruction. Those four banks use different masked contexts and
+cannot establish information loss in a single full-context native32 vector.
+
+**RPB-v13 — Early mixer with visible adjacent differences** is now measured
+under [its frozen card](../../evaluation/cards/visible_difference_v1.md).
+The [report](VISIBLE_DIFFERENCE_DIAGNOSTIC.md) retains all five candidate CUDA
+trajectories, all fixed heads and reused controls. Original common initialization
+and all 15 point0 features match; the new branch adds 3,072 values for 228,877 total.
+Mean query MAE improves 0.644282/0.682958→0.622320/0.664399 TRAIN/VAL, while intact
+linear/neural accuracy changes 52.81%/54.90%→53.28%/52.03% and deleted
+53.75%/54.32%→52.81%/50.52%. Coverage is 100%. Intact linear improves in two
+cohorts, falls in two and ties in one; the small mean gain is not consistent.
+The saved CPU audit passed 17,152,339 checks/280 witness archives. Its failed v1
+basename check and additive, exact-source-bound repair are preserved. No model
+was rerun on CPU and no old head was refitted. The input route and capacity
+changed together; this result cannot establish encoder information loss.
+
+The [next comparison](../../../doc/CONTINUATION_2026-10-10_AFTER_VISIBLE_DIFFERENCE.md)
+tests independent TRAIN support, not more repeats or head tuning. Freeze five
+fresh cohorts with 512 TRAIN source pairs and64 VALIDATION pairs, then select a
+nested 128-pair TRAIN subset by a source-only rule before fitting. Compare
+early-v10/v13 × small/large TRAIN on one common validation set and one scaler
+fitted only on the small TRAIN subset. Keep native32, .15/B8/512, objective,
+fixed heads and all cohorts. Equal encoder updates/draws do not imply equal
+total compute: larger full-batch heads process4× rows. Fresh data require new
+matched controls, features and heads; historical scores are context only.
+This is prospective, with no new card, implementation or measured group yet.
 
 ## Earlier completed milestones
 
 The [fresh early/late confirmation](EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
-remains a separate TEMPO-1/AMP-1 fixed512 record for RPB-v7.alt-04/RPB-v10.alt-04.
+remains a separate TEMPO-1/AMP-1 fixed 512 record for RPB-v7.alt-04/RPB-v10.alt-04.
 Timing Ridge means rise94.21875%→95% intact and88.28125%→92.8125% deleted, but
 worst scores fall84.375%→80.46875% and78.125%→75%. Three pairs improve and two
 worsen in both views; master65262 loses strongly. Its better mean reconstruction
@@ -51,7 +68,7 @@ that record rather than comparing fresh harder cohorts as a decline of its weigh
 
 The [continuous learning-curve diagnostic](EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md)
 is complete for RPB-v7.alt-03 and RPB-v10.alt-01. All five paired live controllers
-retain 0/512/1024/2048, with unchanged native32, coordinate15 policy, batch8 and
+retain 0/512/1024/2048, with unchanged native32, coordinate15 policy, batch 8 and
 heads. Longer training improves both groups' reconstruction without monotone
 timing classification benefit. At 2048, late/early intact linear means are
 92.1875%/92.65625% and additional-deletion means are 87.8125%/91.71875%, with
@@ -78,7 +95,7 @@ seven-method task/view panels, separate initial controls and all cohort details
 are preserved. Stop pooled width and gain without tuning heads, rates or budgets.
 
 Skip half-mixer and further width variations. The pooled milestone selected the
-fresh fixed512 confirmation now completed above. Preserve original RPB-v7,
+fresh fixed 512 confirmation now completed above. Preserve original RPB-v7,
 active RPB-v4, every earlier group and every retained curve point. The
 [historical pooled continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
 preserves that prospective decision.
@@ -225,7 +242,7 @@ corruptions and no fit under stress. Do not routinely train RPB-v1/v2/v3-mean.
 ## Phase 3 Change the encoder only for a measured gap
 
 **Completed:** the [paired pooling record](PAIRED_POOLING_ADVANCE.md) reports
-RPB-v5 versus the frozen RPB-v4 reference at512. Intact timing linear accuracy
+RPB-v5 versus the frozen RPB-v4 reference at 512. Intact timing linear accuracy
 is84.38% versus94.53%; additional30% deletion is66.15% versus85.16%, with equal
 100% coverage. V5 TRAIN/VALIDATION fixed-query MAE also worsens. The claimed
 advance is rejected at this fixed budget; RPB-v4 stays active. The unchanged
@@ -269,13 +286,13 @@ support, thresholds and cost contract to be defined before acceptance.
 ## Completed diagnostic: continue v5 on TRAIN and VALIDATION only
 
 The [optimization diagnostic](OPTIMIZATION_DIAGNOSTIC.md) is complete and
-independently audited. Mean linear VALIDATION accuracy was84.38% at512,
+independently audited. Mean linear VALIDATION accuracy was84.38% at 512,
 84.38% at1024 and82.81% at2048, while reconstruction error improved at both
 new budgets. Longer training did not improve mean linear access under the fixed
-heads. This does not change the fixed512 rejection or establish universal
+heads. This does not change the fixed 512 rejection or establish universal
 failure at every possible budget. The following records its frozen procedure.
 
-Save and commit the fixed512 milestone before further source work. A separate
+Save and commit the fixed 512 milestone before further source work. A separate
 prospective recipe may resume each exact saved v5 point512 model, AdamW state,
 scaler and counter stream through absolute1024 and2048 updates on the same
 TRAIN observations. Keep all three masters, native32 and the fixed readout
@@ -285,7 +302,7 @@ optimizer, preprocessing or sampling/mask progression.
 
 This is an optimization diagnosis using known VALIDATION, fixed-query
 TRAIN/VALIDATION reconstruction and native linear access. Do not open or
-rescore TEST/stress, introduce a replacement seed, alter the fixed512 rejection,
+rescore TEST/stress, introduce a replacement seed, alter the fixed 512 rejection,
 or promote v5 based on it. Its own card was frozen before running. Any later trained-budget comparison needs its own
 declared reference/budget and new TEST namespace before unseen scoring.
 
@@ -456,7 +473,7 @@ The [v7 decoder calibration](V7_DECODER_CALIBRATION_DIAGNOSTIC.md) then froze al
 214,277 non-decoder parameters and trained the existing 11,528-parameter decoder
 for 128 updates on CUDA. Mean TRAIN/known-VALIDATION MAE fell from
 0.081179/0.083630 to 0.054039/0.056989. Every master is below its paired v4
-fixed512 error. Exact encoder/native/scaler invariants and the independent
+fixed 512 error. Exact encoder/native/scaler invariants and the independent
 25,450,287-check saved-arithmetic audit passed. Classification is cached and
 unchanged; there were zero new encoder updates or head fits. This demonstrates
 decoder recoverability on these cohorts, with no new embedding tag or promotion.

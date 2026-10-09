@@ -147,6 +147,7 @@ Input raw_input(const embedding::Batch &batch, const Config &c, const ev::Provid
 }
 void configuration(const Settings &settings, PooledContextScope scope) {
   validate_settings(settings); (void)fit_protocol(scope); const auto &c = settings.model;
+  require(c.temporal_difference_input == 0, "historical pooled context factory rejects visible difference input");
   const bool ceiling=scope==PooledContextScope::quality ? settings.steps==512 && settings.attempt_limit==1024 : settings.steps==4;
   require(c.device.is_cuda() && c.channel_mixer_placement==1 && (c.global_pool_input_source==0 || c.global_pool_input_source==1) &&
       c.channel_count == 3 && c.history_length == 32 && c.input_width == 3 && c.patch_length == 8 &&

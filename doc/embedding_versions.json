@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "registered_date": "2026-10-07",
-  "last_updated_date": "2026-10-09",
+  "last_updated_date": "2026-10-10",
   "active_research_tag": "RPB-v4",
   "working_encoder_tag": "RPB-v7",
   "working_instance_bundle": "RPB-v7",
@@ -1211,24 +1211,86 @@
       "deleted_coverage_percent": 100.0,
       "promotion": false,
       "replacement_by_new_training": "forbidden; this fresh dataset cohort does not replace original saved models"
+    },
+    {
+      "id": "RPB-v13",
+      "encoder_tag": "RPB-v13",
+      "status": "measured_descriptive_TEMPO3_no_promotion",
+      "description": "Early mixer with visible adjacent differences",
+      "master_seeds": [
+        75272,
+        76373,
+        77474,
+        78575,
+        79676
+      ],
+      "task": "lag_sign",
+      "encoder_updates_each": 512,
+      "retained_points_each": [
+        0,
+        512
+      ],
+      "native_size": 32,
+      "registered_parameters": 228877,
+      "batch_size": 8,
+      "context_deletion_rate": 0.15,
+      "checkpoint_path_pattern": "output/runs/rpb-visible-difference/visible-difference-wnUUCa/results/seed-{master}-lag_sign/candidate/point-{point}/checkpoint.pt",
+      "protocol": "visible-difference-v1",
+      "dataset_codename": "TEMPO-3",
+      "dataset_recipe_id": "structured-hard-timing-v1",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/VISIBLE_DIFFERENCE_DIAGNOSTIC.md",
+      "measured_record_sha256": "54dbf40e1989a0b4d6cbd45f7bbeeea974516f1c0a45c76fae5bb3f31f7b0721",
+      "durable_summary": "doc/results/visible_difference_v1.json",
+      "durable_summary_sha256": "648586a087590bb85d92256fae25cdb99f96da5b90eb93b95a464bf95a34c690",
+      "capsule": "output/runs/rpb-visible-difference/visible-difference-wnUUCa",
+      "artifact_inventory_sha256": "384ed378bd0cd563e2f0e38f65c35a20d4e8db746dac4830c86cb8f29129f2fb",
+      "audit_validation": "output/runs/rpb-visible-difference/audit-tools/run-wnUUCa-v2/validation.json",
+      "audit_validation_sha256": "b4849d9aca2530523b12093706f8f52229bc512cf9947447c68870d2d31ee070",
+      "audit_checks": 17152339,
+      "audit_archive_decodes": 280,
+      "card": "code/evaluation/cards/visible_difference_v1.md",
+      "card_sha256": "75e30dce63ddadaeeaf9daa6b25fd540ed02f9e0e11374e8787a7f846eaf78bc",
+      "reader_source_sha256": "74fde8c189e22bc9e590a0f5c7059fadface9540500f8861e035b18d11c164c8",
+      "promotion": false,
+      "existing_groups_replaced": false,
+      "intact_linear_accuracy_percent": 53.28125,
+      "intact_neural_accuracy_percent": 52.03124999999999,
+      "intact_coverage_percent": 100.0,
+      "deleted_linear_accuracy_percent": 52.81249999999999,
+      "deleted_neural_accuracy_percent": 50.520833333333336,
+      "deleted_coverage_percent": 100.0
     }
   ],
   "latest_completed_diagnostic": {
-    "protocol": "structured-hard-timing-comparison-v2",
+    "protocol": "visible-difference-v1",
+    "dataset_codename": "TEMPO-3",
+    "dataset_recipe_id": "structured-hard-timing-v1",
+    "designed_complexity_level": 4,
+    "complexity_scale_max": 5,
+    "measured_record": "code/encoders/raw_patch_bottleneck_mae/VISIBLE_DIFFERENCE_DIAGNOSTIC.md",
+    "measured_record_sha256": "54dbf40e1989a0b4d6cbd45f7bbeeea974516f1c0a45c76fae5bb3f31f7b0721",
+    "durable_summary": "doc/results/visible_difference_v1.json",
+    "durable_summary_sha256": "648586a087590bb85d92256fae25cdb99f96da5b90eb93b95a464bf95a34c690",
+    "capsule": "output/runs/rpb-visible-difference/visible-difference-wnUUCa",
+    "artifact_inventory_sha256": "384ed378bd0cd563e2f0e38f65c35a20d4e8db746dac4830c86cb8f29129f2fb",
+    "audit_validation": "output/runs/rpb-visible-difference/audit-tools/run-wnUUCa-v2/validation.json",
+    "audit_validation_sha256": "b4849d9aca2530523b12093706f8f52229bc512cf9947447c68870d2d31ee070",
+    "audit_checks": 17152339,
+    "audit_archive_decodes": 280,
+    "card": "code/evaluation/cards/visible_difference_v1.md",
+    "card_sha256": "75e30dce63ddadaeeaf9daa6b25fd540ed02f9e0e11374e8787a7f846eaf78bc",
+    "reader_source_sha256": "74fde8c189e22bc9e590a0f5c7059fadface9540500f8861e035b18d11c164c8",
+    "promotion": false,
+    "existing_groups_replaced": false,
     "instance_groups": [
+      "RPB-v13"
+    ],
+    "reused_comparison_groups": [
       "RPB-v7.alt-05",
       "RPB-v10.alt-05"
-    ],
-    "measured_record": "code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_DIAGNOSTIC.md",
-    "durable_summary": "doc/results/structured_hard_timing_comparison_v2.json",
-    "measured_record_sha256": "d5715fa734e5c5685d0b6eb1252e9987f9730a715817f761d9507f297a554d86",
-    "durable_summary_sha256": "1f5641212ce329a449073822a98d0db5c7e99a818532dfdca857bc78b9e17cd4",
-    "audit_validation_sha256": "cf79abdca511f22778622d2b08e62b74b592c10618d1090ea2bd53eefd84539c",
-    "audit_checks": 52934423,
-    "dataset_codename": "TEMPO-3",
-    "designed_complexity_level": 4,
-    "promotion": false,
-    "existing_groups_replaced": false
+    ]
   },
   "frozen_amplitude_transfer_diagnostic": {
     "protocol": "frozen-amplitude-transfer-v1",
@@ -1485,9 +1547,9 @@
     "testing_accessed": false,
     "stress_accessed": false
   },
-  "bounded_candidate_tag": "RPB-v9",
-  "bounded_candidate_status": "completed_failed_fixed512_development",
-  "last_measured_candidate_tag": "RPB-v10",
+  "bounded_candidate_tag": "RPB-v13",
+  "bounded_candidate_status": "measured_descriptive_TEMPO3_no_promotion",
+  "last_measured_candidate_tag": "RPB-v13",
   "training_objective_diagnostic": {
     "protocol": "training-objective-diagnostic-v1",
     "status": "completed_null_auxiliary_rejected",
@@ -1855,7 +1917,7 @@
       "audit_checks": 96352345,
       "measured_capsule": "output/runs/rpb-early-mixer-reliability/early-mixer-reliability-b6DsL0",
       "artifact_inventory_sha256": "426a1c17288f6b2781d25ca6c5ea94af7f1bb8f041bcc07a9a5412b92e1d50f5",
-      "next_focused_action": "one prospective TRAIN-only matched-target log-uniform gain 0.5\u20132 comparison at fixed512 using the same early architecture and a fresh matched control; skip half-mixer",
+      "next_focused_action": "one prospective TRAIN-only matched-target log-uniform gain 0.5–2 comparison at fixed512 using the same early architecture and a fresh matched control; skip half-mixer",
       "promotion": false,
       "existing_groups_replaced": false,
       "additional_measured_protocols": [
@@ -1908,6 +1970,43 @@
       "card": "code/evaluation/cards/pooled_context_v1.md",
       "card_sha256": "b9f3f92e69cb55295dafa2e9f5d0d776b0b8c8bcde2762c241dfb225dbaf4fa7",
       "training_policy_id": "rpb-training-context-deletion-015-v1",
+      "promotion": false,
+      "existing_groups_replaced": false
+    },
+    {
+      "tag": "RPB-v13",
+      "encoder": "raw_patch_bottleneck_mae",
+      "description": "Early mixer with visible adjacent differences",
+      "status": "measured_descriptive_TEMPO3_no_promotion",
+      "architecture_id": "aligned-mixer-before-temporal-visible-first-difference-v1",
+      "temporal_difference_input": 1,
+      "channel_mixer_placement": 1,
+      "native_global_width": 32,
+      "parameter_count_at_C3_H32_F3": 228877,
+      "common_initial_parameter_values": 225805,
+      "copied_parameter_values": 0,
+      "zero_initial_difference_parameter_values": 3072,
+      "comparison_instance_bundle": "RPB-v10.alt-05",
+      "encoder_updates_each": 512,
+      "training_policy_id": "rpb-training-context-deletion-015-v1",
+      "protocol": "visible-difference-v1",
+      "dataset_codename": "TEMPO-3",
+      "dataset_recipe_id": "structured-hard-timing-v1",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/VISIBLE_DIFFERENCE_DIAGNOSTIC.md",
+      "measured_record_sha256": "54dbf40e1989a0b4d6cbd45f7bbeeea974516f1c0a45c76fae5bb3f31f7b0721",
+      "durable_summary": "doc/results/visible_difference_v1.json",
+      "durable_summary_sha256": "648586a087590bb85d92256fae25cdb99f96da5b90eb93b95a464bf95a34c690",
+      "capsule": "output/runs/rpb-visible-difference/visible-difference-wnUUCa",
+      "artifact_inventory_sha256": "384ed378bd0cd563e2f0e38f65c35a20d4e8db746dac4830c86cb8f29129f2fb",
+      "audit_validation": "output/runs/rpb-visible-difference/audit-tools/run-wnUUCa-v2/validation.json",
+      "audit_validation_sha256": "b4849d9aca2530523b12093706f8f52229bc512cf9947447c68870d2d31ee070",
+      "audit_checks": 17152339,
+      "audit_archive_decodes": 280,
+      "card": "code/evaluation/cards/visible_difference_v1.md",
+      "card_sha256": "75e30dce63ddadaeeaf9daa6b25fd540ed02f9e0e11374e8787a7f846eaf78bc",
+      "reader_source_sha256": "74fde8c189e22bc9e590a0f5c7059fadface9540500f8861e035b18d11c164c8",
       "promotion": false,
       "existing_groups_replaced": false
     }
@@ -2174,7 +2273,7 @@
     "promotion": false,
     "existing_groups_replaced": false,
     "decision_scope": "both groups reconstruct more accurately with longer training, without monotone timing classification improvement; early deletion advantage accompanies an amplitude-transfer tradeoff; all budgets retained, none selected",
-    "next_direction": "one prospective TRAIN-only matched-target log-uniform gain 0.5\u20132 comparison at fixed512 using the same early architecture and a fresh matched control; skip half-mixer"
+    "next_direction": "one prospective TRAIN-only matched-target log-uniform gain 0.5–2 comparison at fixed512 using the same early architecture and a fresh matched control; skip half-mixer"
   },
   "planned_matched_target_gain": {
     "status": "completed_failed_all_six_numeric_guards_stopped_no_promotion",
@@ -2197,7 +2296,7 @@
     "encoder_updates_each": 512,
     "batch_size": 8,
     "architecture": "same early mixer and native32 as RPB-v10",
-    "augmentation": "TRAIN-only source-paired matched-target gain, log-uniform 0.5\u20132 under the frozen card",
+    "augmentation": "TRAIN-only source-paired matched-target gain, log-uniform 0.5–2 under the frozen card",
     "quality_oracle_access_before_freeze": false,
     "testing_accessed": false,
     "stress_accessed": false,
@@ -2389,7 +2488,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only \u2014 no encoder",
+            "display_label": "PCA only — no encoder",
             "size": 32,
             "status": "measured",
             "linear": {
@@ -2768,7 +2867,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only \u2014 no encoder",
+            "display_label": "PCA only — no encoder",
             "size": 32,
             "status": "measured",
             "linear": {
@@ -3147,7 +3246,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only \u2014 no encoder",
+            "display_label": "PCA only — no encoder",
             "size": 32,
             "status": "measured",
             "linear": {
@@ -3526,7 +3625,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only \u2014 no encoder",
+            "display_label": "PCA only — no encoder",
             "size": 32,
             "status": "measured",
             "linear": {
@@ -4218,7 +4317,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only \u2014 no encoder",
+            "display_label": "PCA only — no encoder",
             "size": 32,
             "per_master": [
               {
@@ -5955,7 +6054,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only \u2014 no encoder",
+            "display_label": "PCA only — no encoder",
             "size": 32,
             "per_master": [
               {
@@ -7692,7 +7791,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only \u2014 no encoder",
+            "display_label": "PCA only — no encoder",
             "size": 32,
             "per_master": [
               {
@@ -9429,7 +9528,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only \u2014 no encoder",
+            "display_label": "PCA only — no encoder",
             "size": 32,
             "per_master": [
               {
@@ -11369,7 +11468,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only \u2014 no encoder",
+            "display_label": "PCA only — no encoder",
             "size": 32,
             "per_master": [
               {
@@ -13106,7 +13205,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only \u2014 no encoder",
+            "display_label": "PCA only — no encoder",
             "size": 32,
             "per_master": [
               {
@@ -14843,7 +14942,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only \u2014 no encoder",
+            "display_label": "PCA only — no encoder",
             "size": 32,
             "per_master": [
               {
@@ -16580,7 +16679,7 @@
           },
           {
             "method": "pca_only",
-            "display_label": "PCA only \u2014 no encoder",
+            "display_label": "PCA only — no encoder",
             "size": 32,
             "per_master": [
               {
@@ -18471,7 +18570,7 @@
       "validation_intact": [
         {
           "method": "raw",
-          "label": "Raw data \u2014 no encoder",
+          "label": "Raw data — no encoder",
           "size": 576,
           "per_master": [
             {
@@ -18549,7 +18648,7 @@
         },
         {
           "method": "mask_metadata",
-          "label": "Mask metadata \u2014 no encoder",
+          "label": "Mask metadata — no encoder",
           "size": 288,
           "per_master": [
             {
@@ -18627,7 +18726,7 @@
         },
         {
           "method": "pca_only",
-          "label": "PCA only \u2014 no encoder",
+          "label": "PCA only — no encoder",
           "size": 32,
           "per_master": [
             {
@@ -19019,7 +19118,7 @@
       "validation_deleted": [
         {
           "method": "raw",
-          "label": "Raw data \u2014 no encoder",
+          "label": "Raw data — no encoder",
           "size": 576,
           "per_master": [
             {
@@ -19097,7 +19196,7 @@
         },
         {
           "method": "mask_metadata",
-          "label": "Mask metadata \u2014 no encoder",
+          "label": "Mask metadata — no encoder",
           "size": 288,
           "per_master": [
             {
@@ -19175,7 +19274,7 @@
         },
         {
           "method": "pca_only",
-          "label": "PCA only \u2014 no encoder",
+          "label": "PCA only — no encoder",
           "size": 32,
           "per_master": [
             {
@@ -20276,5 +20375,53 @@
     "selection": false,
     "promotion": false,
     "existing_groups_replaced": false
+  },
+  "visible_difference_diagnostic": {
+    "protocol": "visible-difference-v1",
+    "dataset_codename": "TEMPO-3",
+    "dataset_recipe_id": "structured-hard-timing-v1",
+    "designed_complexity_level": 4,
+    "complexity_scale_max": 5,
+    "measured_record": "code/encoders/raw_patch_bottleneck_mae/VISIBLE_DIFFERENCE_DIAGNOSTIC.md",
+    "measured_record_sha256": "54dbf40e1989a0b4d6cbd45f7bbeeea974516f1c0a45c76fae5bb3f31f7b0721",
+    "durable_summary": "doc/results/visible_difference_v1.json",
+    "durable_summary_sha256": "648586a087590bb85d92256fae25cdb99f96da5b90eb93b95a464bf95a34c690",
+    "capsule": "output/runs/rpb-visible-difference/visible-difference-wnUUCa",
+    "artifact_inventory_sha256": "384ed378bd0cd563e2f0e38f65c35a20d4e8db746dac4830c86cb8f29129f2fb",
+    "audit_validation": "output/runs/rpb-visible-difference/audit-tools/run-wnUUCa-v2/validation.json",
+    "audit_validation_sha256": "b4849d9aca2530523b12093706f8f52229bc512cf9947447c68870d2d31ee070",
+    "audit_checks": 17152339,
+    "audit_archive_decodes": 280,
+    "card": "code/evaluation/cards/visible_difference_v1.md",
+    "card_sha256": "75e30dce63ddadaeeaf9daa6b25fd540ed02f9e0e11374e8787a7f846eaf78bc",
+    "reader_source_sha256": "74fde8c189e22bc9e590a0f5c7059fadface9540500f8861e035b18d11c164c8",
+    "promotion": false,
+    "existing_groups_replaced": false,
+    "candidate": "RPB-v13",
+    "common_initialization_exact": true,
+    "initial_parity_exports": 15,
+    "candidate_only_head_pipelines": 15,
+    "candidate_only_heads": 30,
+    "planned_candidate_head_pipelines": 15,
+    "planned_candidate_heads": 30,
+    "control_training_or_model_forwards": 0,
+    "control_head_refits": 0
+  },
+  "structured_hard_timing_train_diagnostic": {
+    "protocol": "structured-hard-timing-train-diagnostic-v1",
+    "status": "passed",
+    "dataset_codename": "TEMPO-3",
+    "designed_complexity_level": 4,
+    "complexity_scale_max": 5,
+    "card_sha256": "3b7e8ea947d91f82ee3fb001dfdc06314945ea8888a763d37459ccc7410673b4",
+    "measured_record": "code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_TRAIN_DIAGNOSTIC.md",
+    "measured_record_sha256": "ea4a908b4236ae078215c6962c91ce4b58b1f4685a99ceaf1f76424cff27b399",
+    "durable_summary": "doc/results/structured_hard_timing_train_diagnostic_v1.json",
+    "durable_summary_sha256": "592ad30b1cf023ba4b4d2430ea13882666194ff417e4164f59269b79b0396015",
+    "encoder_updates": 0,
+    "encoder_forwards": 0,
+    "head_refits": 0,
+    "new_validation_tensor_reads": 0,
+    "promotion": false
   }
 }

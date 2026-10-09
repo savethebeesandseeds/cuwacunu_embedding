@@ -5,19 +5,21 @@ MTF-JEPA-MAE-VICReg implementation. It converts masked multichannel histories in
 global and per-channel embeddings and trains without the parent project's runtime,
 DSL, registries, graph orchestration, forecasting, trading, or interface components.
 
-The original saved **RPB-v7** bundle remains protected, and **RPB-v4** remains
-the formal reference. The latest [TEMPO-3 comparison](code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_DIAGNOSTIC.md)
-measures fresh **RPB-v7.alt-05 / RPB-v10.alt-05** on structured harder timing,
-designed complexity **4/5**. At fixed 512 updates, intact linear means are
-55.47% / 52.81% and extra-deletion means are 54.22% / 53.75%, all at 100%
-coverage. Raw data with the fixed heads also scores near chance, while the
-observed-only analytic timing rule solves these saved cohorts. This does not
-establish whether the served representation, fixed head or optimization limits
-access to that cue. Neither model is promoted; gain **RPB-v11** and pooled width
-**RPB-v12** remain stopped. The
-[current continuation](doc/CONTINUATION_2026-10-09_AFTER_STRUCTURED_HARD_TIMING.md)
-proposes a saved-TRAIN fit/margin and bank-specific reconstruction diagnosis,
-with no new model, head or PCA fitting.
+The latest [RPB-v13 experiment](code/encoders/raw_patch_bottleneck_mae/VISIBLE_DIFFERENCE_DIAGNOSTIC.md)
+adds visible adjacent changes to early mixing on **TEMPO-3**, designed complexity
+**4/5**. Five new CUDA runs at 512 updates improve mean reconstruction error,
+but not timing classification consistently: intact linear/neural accuracy is
+53.28% / 52.03%, versus the saved early **RPB-v10.alt-05** control's
+52.81% / 54.90%. Coverage is 100%. The controls and their fitted heads were
+reused; no older encoder was retrained. The
+[saved-TRAIN diagnosis](code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_TRAIN_DIAGNOSTIC.md)
+also records the substantial training/validation gap. The
+[next comparison](doc/CONTINUATION_2026-10-10_AFTER_VISIBLE_DIFFERENCE.md)
+will test more independent TRAIN sources while retaining the same signal law,
+native32, encoder budget and fixed heads. No model is promoted. Original saved
+**RPB-v7**, the formal **RPB-v4** reference and the strong TEMPO-1
+**RPB-v10.alt-03** results remain protected; gain **RPB-v11** and pooled
+**RPB-v12** remain stopped.
 
 The retained baseline uses multiscale time descriptors and windowed frequency
 magnitudes, a shared token encoder, JEPA context/target masking and latent
@@ -110,7 +112,7 @@ views: compact/pooled means are 98.28125%/90.9375% intact and
 97.03125%/83.125% deleted, with full coverage. All four timing numeric guards
 fail; both mean MAE guards pass. Its sole audit passed 96,170,207 checks.
 Stop pooled width and gain without a head/rate/budget rescue. Keep compact early
-v10 as an investigation candidate. The fresh fixed512 confirmation selected by
+v10 as an investigation candidate. The fresh fixed 512 confirmation selected by
 this milestone is now complete as linked above; it made no promotion. Preserve
 original v7 and active v4. The
 [historical pooled continuation](doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)

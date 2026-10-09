@@ -81,6 +81,9 @@ struct CurveState {
   bool balanced_failed{false};
   bool continuation_witness{false};
   PooledContextInitializationOptions pooled_options;
+  VisibleDifferenceOptions difference_options;
+  std::map<std::string, torch::Tensor> difference_initial_parameters, difference_initial_buffers;
+  std::map<std::string, std::string> difference_parent_content;
   torch::Tensor pooled_first_before_copy;
   std::map<std::string, torch::Tensor> pooled_initial_parameters, pooled_initial_buffers;
   std::map<std::string, std::string> pooled_reference_content;
@@ -279,6 +282,107 @@ void verify_pooled_inactive(const std::shared_ptr<CurveState> &state) {
   }
 }
 
+void prepare_visible_difference_initialization(const std::shared_ptr<CurveState> &state) {
+  if (!state->difference_options.enabled) return;
+  const auto &option=state->difference_options;
+  const auto path=path_key(option.parent_point0_checkpoint_path);
+  for (const auto &suffix : {std::string(),std::string(".audit.pt"),std::string(".scaler.pt"),std::string(".training-raw.pt")})
+    require(fs::is_regular_file(path+suffix) && fs::hard_link_count(path+suffix)==1 &&
+        fs::canonical(path+suffix)==fs::absolute(path+suffix).lexically_normal(),"complete direct original point0 roles required");
+  for (const auto &suffix : {std::string(),std::string(".audit.pt"),std::string(".scaler.pt"),std::string(".training-raw.pt")}) {
+    require(fs::canonical(path+suffix)==fs::absolute(path+suffix).lexically_normal(),"direct canonical original point0 role required");
+    state->difference_parent_content.emplace(suffix,pooled_file_id(path+suffix));
+  }
+  auto expected=state->settings; expected.model.temporal_difference_input=0;
+  torch::serialize::InputArchive audit; audit.load_from(path+".audit.pt",torch::kCPU);
+  auto declared=parse_settings(pooled_text(audit,"resolved_settings")); declared.model.device=expected.model.device;
+  require(settings_text(declared)==settings_text(expected) && pooled_text(audit,"protocol_id")==option.expected_parent_fit_protocol &&
+      pooled_text(audit,"model_tag")=="RPB-v10" &&
+      pooled_text(audit,"core_writer_source_fingerprint")==option.expected_parent_core_source_fingerprint &&
+      pooled_text(audit,"training_producer_source_fingerprint")==option.expected_parent_training_producer_source_fingerprint &&
+      pooled_text(audit,"fit_source_manifest")==source_manifest(state->fit.training_source_ids) &&
+      pooled_text(audit,"preprocessing_id")==state->scaler.identity() && pooled_text(audit,"training_dataset_id")==state->training.dataset_id &&
+      pooled_int(audit,"attempted_steps")==0 && pooled_int(audit,"completed_steps")==0 && pooled_int(audit,"sampled_rows")==0,
+      "original point0 source/settings/TRAIN association differs before weights");
+  const auto raw=load_dataset(path+".training-raw.pt",expected.model);
+  const auto scaler=load_scaler(path+".scaler.pt",expected.model,state->training.schema_id);
+  require(raw.dataset_id==state->training.dataset_id && raw.schema_id==state->training.schema_id && raw.feature_units==state->fit.feature_units &&
+      torch::equal(raw.input.data,state->training.input.data) && torch::equal(raw.input.observed,state->training.input.observed) &&
+      torch::equal(raw.input.channel_ids,state->training.input.channel_ids) && torch::equal(raw.input.endpoints,state->training.input.endpoints) &&
+      scaler.identity()==state->scaler.identity(),"original point0 raw/scaler binding differs before weights");
+  auto cp=load_checkpoint(path,state->settings.model.device);
+  expected.model.device=cp.settings.model.device;
+  require(settings_text(cp.settings)==settings_text(expected) && cp.attempted_steps==0 && cp.completed_steps==0 &&
+      cp.training_policy_id=="rpb-training-context-deletion-015-v1" &&
+      cp.source_fingerprint==option.expected_parent_core_source_fingerprint &&
+      cp.dataset_id==state->training.dataset_id && cp.schema_id==state->training.schema_id &&
+      cp.scaler_fit_dataset_id==cp.dataset_id && cp.scaler.identity()==state->scaler.identity(),
+      "original early point0 settings/counters/data/scaler/writer differs");
+  require(raw.dataset_id==cp.dataset_id && raw.schema_id==cp.schema_id && raw.feature_units==state->fit.feature_units &&
+      torch::equal(raw.input.data,state->training.input.data) && torch::equal(raw.input.observed,state->training.input.observed) &&
+      torch::equal(raw.input.channel_ids,state->training.input.channel_ids) && torch::equal(raw.input.endpoints,state->training.input.endpoints) &&
+      scaler.identity()==state->scaler.identity(),"original point0 exact TRAIN/scaler differs");
+  require(pooled_text(audit,"artifact_kind")=="rpb_learning_curve_training_audit_v1" &&
+      pooled_text(audit,"protocol_id")==option.expected_parent_fit_protocol && pooled_text(audit,"model_tag")=="RPB-v10" &&
+      pooled_text(audit,"architecture_id")==architecture_id(cp.settings.model) &&
+      pooled_text(audit,"fit_source_manifest")==source_manifest(state->fit.training_source_ids) &&
+      pooled_text(audit,"preprocessing_id")==state->scaler.identity() &&
+      pooled_text(audit,"training_dataset_id")==state->training.dataset_id &&
+      pooled_text(audit,"actual_training_seed")==std::to_string(state->settings.seed) &&
+      pooled_text(audit,"initialization_seed")==std::to_string(state->initialization_seed) &&
+      pooled_text(audit,"training_producer_source_fingerprint")==option.expected_parent_training_producer_source_fingerprint &&
+      pooled_text(audit,"core_writer_source_fingerprint")==option.expected_parent_core_source_fingerprint &&
+      pooled_text(audit,"training_policy_id")=="rpb-training-context-deletion-015-v1" &&
+      pooled_text(audit,"context_deletion_ratio")=="0.15" &&
+      pooled_text(audit,"context_deletion_rng_policy")==context_deletion::rng_policy &&
+      pooled_text(audit,"context_deletion_repair_policy")==context_deletion::repair_policy &&
+      pooled_text(audit,"context_deletion_visibility_policy")==context_deletion::visibility_policy &&
+      pooled_int(audit,"attempted_steps")==0 && pooled_int(audit,"completed_steps")==0 && pooled_int(audit,"sampled_rows")==0 &&
+      pooled_int(audit,"channel_mixer_placement_value")==1 &&
+      pooled_int(audit,"context_deletion_stream_value")==static_cast<int64_t>(context_deletion::stream) &&
+      pooled_int(audit,"context_requested_deleted_coordinates")==0 && pooled_int(audit,"context_actual_deleted_coordinates")==0 &&
+      pooled_int(audit,"context_restored_coordinates")==0,"original point0 audit/source/order/policy differs");
+  auto resolved=parse_settings(pooled_text(audit,"resolved_settings")); resolved.model.device=cp.settings.model.device;
+  require(settings_text(resolved)==settings_text(cp.settings),"original point0 resolved audit settings differ");
+  for (const auto &key : {"training_seconds","context_deletion_ratio_value"}) {
+    torch::Tensor v; audit.read(key,v,true);
+    require(v.device().is_cpu() && v.scalar_type()==torch::kFloat64 && v.dim()==0 &&
+        v.item<double>()==(std::string(key)=="training_seconds" ? 0. : .15),"typed original point0 timing/ratio differs");
+  }
+  for (const auto &key : {"weights_changed","finite_gradients"}) {
+    torch::Tensor v; audit.read(key,v,true);
+    require(v.device().is_cpu() && v.scalar_type()==torch::kBool && v.dim()==0 && !v.item<bool>(),"point0 must be untouched");
+  }
+  const auto reference=cp.model->named_parameters(), candidate=state->model->named_parameters();
+  require(candidate.size()==reference.size()+1 && candidate.contains("visible_difference_projection.weight"),"exact one added branch parameter required");
+  for (size_t i=0;i<reference.size();++i)
+    require(reference[i].key()==candidate[i].key(),"original common parameter registration prefix differs");
+  require(candidate[reference.size()].key()=="visible_difference_projection.weight","zero difference child must be registered last");
+  int64_t matched=0;
+  for (const auto &entry:reference) {
+    require(candidate.contains(entry.key()) && candidate[entry.key()].sizes()==entry.value().sizes() &&
+        candidate[entry.key()].scalar_type()==entry.value().scalar_type() && entry.value().is_cuda() &&
+        torch::isfinite(entry.value()).all().item<bool>(),"finite matching original common parameter required");
+    require(torch::equal(candidate[entry.key()],entry.value()),"independent common initialization differs from original point0");
+    matched+=entry.value().numel();
+  }
+  const auto branch=candidate["visible_difference_projection.weight"];
+  require(matched==225805 && branch.sizes()==torch::IntArrayRef({64,48}) && branch.scalar_type()==torch::kFloat32 &&
+      torch::equal(branch,torch::zeros_like(branch)),"225805 exact common values and zero3072 branch required");
+  const auto rb=cp.model->named_buffers(), cb=state->model->named_buffers();
+  require(rb.size()==cb.size(),"original point0 buffer count differs");
+  for (size_t i=0;i<rb.size();++i) require(rb[i].key()==cb[i].key(),"original buffer registration order differs");
+  for (const auto &entry:rb) {
+    require(cb.contains(entry.key()) && cb[entry.key()].sizes()==entry.value().sizes() && cb[entry.key()].scalar_type()==entry.value().scalar_type(),
+        "original buffer geometry differs");
+    require(torch::equal(cb[entry.key()],entry.value()),"independent buffer initialization differs from original point0");
+  }
+  for (const auto &entry:candidate) state->difference_initial_parameters.emplace(entry.key(),cpu_state(entry.value()));
+  for (const auto &entry:cb) state->difference_initial_buffers.emplace(entry.key(),cpu_state(entry.value()));
+  for (const auto &[suffix,id]:state->difference_parent_content)
+    require(pooled_file_id(path+suffix)==id,"original point0 bytes changed during initialization");
+}
+
 void save_continuation_state(const std::shared_ptr<CurveState> &state, const std::string &path) {
   require(state->progress.attempted == state->progress.completed &&
       state->progress.sampled_rows == state->progress.completed * state->settings.batch_size &&
@@ -286,7 +390,8 @@ void save_continuation_state(const std::shared_ptr<CurveState> &state, const std
       "curve live-state witness requires the complete unskipped per-attempt trace");
   torch::serialize::OutputArchive archive;
   write_text(archive, "artifact_kind", training_source_gain::enabled(state->gain_options) ?
-      kMatchedTargetGainContinuationArtifact : state->pooled_options.enabled ? kPooledContextContinuationArtifact : kLearningCurveContinuationArtifact);
+      kMatchedTargetGainContinuationArtifact : state->pooled_options.enabled ? kPooledContextContinuationArtifact :
+      state->difference_options.enabled ? kVisibleDifferenceContinuationArtifact : kLearningCurveContinuationArtifact);
   for (const auto &[key, value] : state->audit) write_text(archive, key, value);
   write_text(archive, "fit_source_manifest", source_manifest(state->fit.training_source_ids));
   write_text(archive, "checkpoint_path", path_key(path));
@@ -345,6 +450,14 @@ void save_continuation_state(const std::shared_ptr<CurveState> &state, const std
   require(active == static_cast<int64_t>(state->optimizer->state().size()),
       "AdamW state must associate with exactly one named model parameter");
   archive.write("optimizer_state", optimizer);
+  if (state->difference_options.enabled) {
+    archive.write("temporal_difference_input_value",torch::tensor(int64_t(1)),true);
+    archive.write("common_parameter_values",torch::tensor(int64_t(225805)),true);
+    archive.write("copied_parameter_values",torch::tensor(int64_t(0)),true);
+    archive.write("difference_parameter_values",torch::tensor(int64_t(3072)),true);
+    write_named_state(archive,"initial_model_parameters",state->difference_initial_parameters);
+    write_named_state(archive,"initial_model_buffers",state->difference_initial_buffers);
+  }
   if (state->pooled_options.enabled) {
     verify_pooled_inactive(state);
     archive.write("global_pool_input_source_value",torch::tensor(state->settings.model.global_pool_input_source),true);
@@ -399,6 +512,7 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
       path + ".scaler.pt", path + ".audit.pt"};
   if (state->continuation_witness) outputs.push_back(path + kLearningCurveContinuationSuffix);
   if (training_source_gain::enabled(state->gain_options)) outputs.push_back(path + kMatchedTargetGainViewSuffix);
+  if (state->difference_options.enabled) outputs.push_back(path + kVisibleDifferenceBindingSuffix);
   for (const auto &output : outputs) {
     require(!fs::exists(output) && !fs::is_symlink(fs::symlink_status(output)),
         "refusing to replace an existing point artifact: " + output);
@@ -444,6 +558,8 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
   if (state->audit.count("architecture_id"))
     audit.write("channel_mixer_placement_value",
         torch::tensor(state->settings.model.channel_mixer_placement, torch::kInt64), true);
+  if (state->difference_options.enabled)
+    audit.write("temporal_difference_input_value",torch::tensor(int64_t(1)),true);
   if (state->context_options.enabled) {
     audit.write("context_deletion_ratio_value",
         torch::tensor(context_deletion::descriptor(state->context_options.recipe).ratio, torch::kFloat64), true);
@@ -461,6 +577,20 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
   embedding::archive::save_archive(path + ".audit.pt", audit);
   if (state->continuation_witness) save_continuation_state(state, path);
   if (training_source_gain::enabled(state->gain_options)) save_gain_view(state,path);
+  if (state->difference_options.enabled) {
+    torch::serialize::OutputArchive binding;
+    write_text(binding,"artifact_kind",kVisibleDifferenceBindingArtifact);
+    for (const auto &[name,value]:state->audit) write_text(binding,name,value);
+    write_text(binding,"fit_source_manifest",source_manifest(state->fit.training_source_ids));
+    write_text(binding,"checkpoint_path",key);
+    binding.write("attempted_steps",torch::tensor(state->progress.attempted),true);
+    binding.write("completed_steps",torch::tensor(state->progress.completed),true);
+    binding.write("sampled_rows",torch::tensor(state->progress.sampled_rows),true);
+    binding.write("temporal_difference_input_value",torch::tensor(int64_t(1)),true);
+    for (const auto &suffix : {std::string(),std::string(".audit.pt"),std::string(".scaler.pt"),std::string(".training-raw.pt"),std::string(kLearningCurveContinuationSuffix)})
+      write_text(binding,"checkpoint_content_id"+suffix,pooled_file_id(path+suffix));
+    embedding::archive::save_archive(path+kVisibleDifferenceBindingSuffix,binding);
+  }
   state->saved.emplace(key, std::make_pair(checkpoint.attempted_steps, checkpoint.completed_steps));
   if (state->context_options.enabled) state->saved_context_counts.emplace(key, state->context_counts);
   if (balanced) state->saved_branch_counts.emplace(key, state->branch_counts);
@@ -468,6 +598,7 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
 
 ev::CurveSnapshot snapshot_point(const std::shared_ptr<CurveState> &state,
                                 const std::string &path) {
+  require(state->settings.model.temporal_difference_input==0,"visible difference requires its new CUDA snapshot adapter");
   require(state->settings.model.global_pool_input_source == 0,"pooled source1 requires its new CUDA snapshot adapter");
   require(!state->continuation_witness,
       "curve snapshots require the protocol-bound CUDA adapter; historical CPU serving is forbidden");
@@ -599,6 +730,25 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
 
 ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, ContextDeletionOptions options,
     LearningCurveStateWitnessOptions state_witness, TrainingSourceGainOptions gain, PooledContextInitializationOptions pooled) {
+  return make_learning_curve_trainer(settings,options,state_witness,gain,pooled,VisibleDifferenceOptions{});
+}
+
+ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, ContextDeletionOptions options,
+    LearningCurveStateWitnessOptions state_witness, TrainingSourceGainOptions gain, PooledContextInitializationOptions pooled,
+    VisibleDifferenceOptions difference) {
+  const auto valid_pin=[](const std::string &v) { return v.size()==64 && v.find_first_not_of("0123456789abcdef")==std::string::npos; };
+  require(settings.model.temporal_difference_input==0 || difference.enabled,"historical learning factory rejects visible difference input1");
+  require(difference.enabled || (difference.parent_point0_checkpoint_path.empty() && difference.expected_parent_core_source_fingerprint.empty() &&
+      difference.expected_parent_training_producer_source_fingerprint.empty() && difference.expected_parent_fit_protocol.empty()),
+      "disabled visible difference binding must be empty");
+  require(!difference.enabled || (settings.model.temporal_difference_input==1 && settings.model.global_pool_input_source==0 &&
+      settings.model.channel_mixer_placement==1 && state_witness.enabled && !pooled.enabled && !training_source_gain::enabled(gain) &&
+      options.enabled && options.recipe==ContextDeletionRecipe::coordinate15_v1 && settings.log_every==1 &&
+      !difference.parent_point0_checkpoint_path.empty() && valid_pin(difference.expected_parent_core_source_fingerprint) &&
+      valid_pin(difference.expected_parent_training_producer_source_fingerprint) &&
+      (difference.expected_parent_fit_protocol=="early-mixer-reliability-v1/lag_sign" ||
+       difference.expected_parent_fit_protocol=="early-mixer-reliability-engineering-v1/lag_sign")),
+      "closed visible-difference scope and explicit original source pins required");
   require(settings.model.global_pool_input_source == 0 || pooled.enabled,
       "historical learning factory rejects pooled source1");
   require(pooled.enabled || pooled.control_point0_checkpoint_path.empty(), "disabled pooled binding must be empty");
@@ -618,7 +768,10 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
   require(!training_source_gain::enabled(gain) || (state_witness.enabled && options.enabled &&
       options.recipe == ContextDeletionRecipe::coordinate15_v1 && settings.model.channel_mixer_placement == 1 &&
       settings.log_every == 1), "matched source gain requires early coordinate15 with complete live-state witness");
-  return [settings, options, state_witness, gain, pooled](const ev::ProviderFitInput &fit) {
+  return [settings, options, state_witness, gain, pooled, difference](const ev::ProviderFitInput &fit) {
+    const bool difference_protocol=fit.protocol_id=="visible-difference-v1/lag_sign" ||
+        fit.protocol_id=="visible-difference-engineering-v1/lag_sign";
+    require(difference_protocol==difference.enabled,"visible-difference namespace and explicit option must agree");
     const bool pooled_protocol=fit.protocol_id=="pooled-context-v1/lag_sign" || fit.protocol_id=="pooled-context-engineering-v1/lag_sign";
     require(pooled_protocol==pooled.enabled,"pooled namespace and explicit initialization scope must agree");
     const bool gain_protocol = fit.protocol_id == kMatchedTargetGainFitProtocol || fit.protocol_id == kMatchedTargetGainFixtureFitProtocol;
@@ -626,8 +779,8 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
     const bool curve_protocol = fit.protocol_id == "early-mixer-learning-curve-v1/lag_sign" ||
         fit.protocol_id == "early-mixer-learning-curve-engineering-v1/lag_sign";
     const bool early_protocol = fit.protocol_id == "early-mixer-reliability-v1/lag_sign" ||
-        fit.protocol_id == "early-mixer-reliability-engineering-v1/lag_sign" || curve_protocol || gain_protocol || pooled_protocol;
-    require(!state_witness.enabled || ((curve_protocol || gain_protocol || pooled_protocol) && options.enabled &&
+        fit.protocol_id == "early-mixer-reliability-engineering-v1/lag_sign" || curve_protocol || gain_protocol || pooled_protocol || difference_protocol;
+    require(!state_witness.enabled || ((curve_protocol || gain_protocol || pooled_protocol || difference_protocol) && options.enabled &&
         options.recipe == ContextDeletionRecipe::coordinate15_v1 && settings.log_every == 1),
         "live continuation witness requires the separately bound coordinate15 curve and complete trace");
     require(settings.model.channel_mixer_placement == 0 ||
@@ -666,6 +819,7 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
     state->continuation_witness = state_witness.enabled;
     state->gain_options = gain;
     state->pooled_options = pooled;
+    state->difference_options = difference;
     state->settings.seed = static_cast<int64_t>(fit.seed & 0x7fffffffffffffffULL);
     state->fit = fit;
     state->fit.training_observations.data = fit.training_observations.data.detach().clone();
@@ -681,6 +835,7 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
     state->model = Model(state->settings.model);
     state->model->train();
     prepare_pooled_initialization(state);
+    prepare_visible_difference_initialization(state);
     state->optimizer = std::make_unique<torch::optim::AdamW>(state->model->parameters(),
         torch::optim::AdamWOptions(settings.learning_rate).weight_decay(settings.weight_decay));
     for (const auto &parameter : state->model->parameters()) {
@@ -740,7 +895,8 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
       state->audit.emplace("architecture_id", architecture_id(settings.model));
     }
     if (state_witness.enabled) {
-      state->audit.emplace("continuation_state_artifact_kind", gain_protocol ? kMatchedTargetGainContinuationArtifact : pooled_protocol ? kPooledContextContinuationArtifact : kLearningCurveContinuationArtifact);
+      state->audit.emplace("continuation_state_artifact_kind", gain_protocol ? kMatchedTargetGainContinuationArtifact : pooled_protocol ? kPooledContextContinuationArtifact :
+          difference_protocol ? kVisibleDifferenceContinuationArtifact : kLearningCurveContinuationArtifact);
       state->audit.emplace("continuation_state_suffix", kLearningCurveContinuationSuffix);
       state->audit.emplace("continuation_state_policy", "live_named_CPU_model_buffers_scaler_AdamW_and_complete_trace_v1");
       state->audit.emplace("curve_skip_policy", "abort_ineligible_attempt;no_skipped_update_prefix_permitted");
@@ -786,6 +942,23 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
           << ",\"nonshared_parameter_name\":\"global_pool_first.weight\",\"reference_point0_path\":"
           << std::quoted(candidate ? path_key(pooled.control_point0_checkpoint_path) : std::string()) << "}";
       state->audit.emplace("paired_initialization_json",paired.str());
+    }
+
+    if (difference_protocol) {
+      state->audit["model_tag"]="RPB-v13";
+      state->audit.emplace("temporal_difference_input","1");
+      state->audit.emplace("temporal_difference_input_semantics",visible_difference_input_semantics(settings.model));
+      state->audit.emplace("visible_difference_initialization_policy","independent-original-common-state-exact;last-zero-branch-no-RNG;assert-before-AdamW;no-copy");
+      state->audit.emplace("visible_difference_common_parameter_values","225805");
+      state->audit.emplace("visible_difference_added_parameter_values","3072");
+      state->audit.emplace("visible_difference_copied_parameter_values","0");
+      state->audit.emplace("visible_difference_parent_point0_path",path_key(difference.parent_point0_checkpoint_path));
+      state->audit.emplace("visible_difference_parent_core_source_fingerprint",difference.expected_parent_core_source_fingerprint);
+      state->audit.emplace("visible_difference_parent_training_producer_source_fingerprint",difference.expected_parent_training_producer_source_fingerprint);
+      state->audit.emplace("visible_difference_parent_fit_protocol",difference.expected_parent_fit_protocol);
+      state->audit.emplace("visible_difference_binding_artifact_kind",kVisibleDifferenceBindingArtifact);
+      state->audit.emplace("visible_difference_binding_suffix",kVisibleDifferenceBindingSuffix);
+      for (const auto &[suffix,id]:state->difference_parent_content) state->audit.emplace("visible_difference_parent_content_id"+suffix,id);
     }
 
     ev::CurveTrainer trainer;
@@ -877,7 +1050,7 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
             state->progress.losses.push_back(state->last_loss);
         }
       } catch (...) {
-        if (balanced || training_source_gain::enabled(state->gain_options) || state->pooled_options.enabled) state->balanced_failed = true;
+        if (balanced || training_source_gain::enabled(state->gain_options) || state->pooled_options.enabled || state->difference_options.enabled) state->balanced_failed = true;
         finish_timing();
         throw;
       }

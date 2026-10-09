@@ -14,8 +14,17 @@ inline constexpr const char *kEarlyMixerArchitectureId = "aligned-mixer-before-t
 inline constexpr const char *kLateMixerArchitectureId = "aligned-mixer-after-temporal-v1";
 // Prototype technical literals; no model-version tag or protocol is reserved.
 inline constexpr const char *kPooledContextArchitectureId = "aligned-mixer-before-temporal-pooled-context-width-v1";
+inline constexpr const char *kVisibleDifferenceArchitectureId = "aligned-mixer-before-temporal-visible-first-difference-v1";
+inline constexpr const char *kVisibleDifferenceInputSemantics =
+    "actual_visible_original_adjacent_backward_difference_and_pair_visibility_additive_projection_v1";
+
+inline const char *visible_difference_input_semantics(const Config &config) {
+  return config.temporal_difference_input == 1 ? kVisibleDifferenceInputSemantics :
+      "raw_visible_values_and_visibility_v1";
+}
 
 inline const char *architecture_id(const Config &config) {
+  if (config.temporal_difference_input == 1) return kVisibleDifferenceArchitectureId;
   if (config.global_pool_input_source == 1) return kPooledContextArchitectureId;
   return config.channel_mixer_placement == 1 ? kEarlyMixerArchitectureId : kLateMixerArchitectureId;
 }
@@ -27,6 +36,8 @@ inline const char *global_pool_input_semantics(const Config &config) {
 }
 
 inline const char *output_semantics(const Config &config) {
+  if (config.temporal_difference_input == 1)
+    return "local_observed_visible_first_difference_contextual_pretemporal_aligned_global_semantic_mlp_bottleneck_v1";
   if (config.global_pool_input_source == 1)
     return "local_diagnostic_observed_contextual_pretemporal_aligned_pooled_W_global_semantic_mlp_bottleneck_v1";
   if (config.channel_mixer_placement == 1)
@@ -48,6 +59,8 @@ inline const char *output_semantics(const Config &config) {
 }
 
 inline const char *reconstruction_output_semantics(const Config &config) {
+  if (config.temporal_difference_input == 1)
+    return "exact_visible_first_difference_pretemporal_contextual_observed_global_semantic_mlp_export_v1";
   if (config.global_pool_input_source == 1)
     return "exact_pretemporal_contextual_observed_pooled_W_global_semantic_mlp_export_v1";
   if (config.channel_mixer_placement == 1)
@@ -69,6 +82,10 @@ inline const char *reconstruction_output_semantics(const Config &config) {
 }
 
 inline const char *global_readout_description(const Config &config, bool contextual) {
+  if (config.temporal_difference_input == 1)
+    return contextual ?
+        "at least one channel has visible observations; raw and legal original-adjacent first-difference projected states mix before temporal blocks; contextual D summaries and semantic support bits through the learned global MLP" :
+        "at least one channel has visible observations; raw and legal original-adjacent first-difference projected states through independent temporal blocks; local D summaries and semantic support bits through the learned global MLP";
   if (config.global_pool_input_source == 1)
     return contextual ?
         "at least one channel has visible observations; early contextual learned temporal W summaries and configured-semantic support bits through the global MLP before diagnostic D projection" :

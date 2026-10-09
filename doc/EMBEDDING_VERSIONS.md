@@ -1,22 +1,24 @@
 # Embedding version registry
 
-Latest completed: the [TEMPO-3 comparison](../code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_DIAGNOSTIC.md)
-and [durable JSON](results/structured_hard_timing_comparison_v2.json) add fresh
-RPB-v7.alt-05/RPB-v10.alt-05 instance groups at512 on structured harder timing,
-designed complexity4/5. Intact linear means are55.47%/52.81%; extra30% deletion
-gives54.22%/53.75%, all at100% coverage. Raw fixed-head scores also remain near
-chance. The observed-only analytic rule solves the saved cohorts, but this does
-not identify a learned-path failure mechanism. No promotion or historical
-replacement follows. The [current continuation](CONTINUATION_2026-10-09_AFTER_STRUCTURED_HARD_TIMING.md)
-proposes a bounded saved-TRAIN diagnosis before new architecture or head changes.
-Earlier [confirmation](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
-evidence, including both worst-cohort regressions, remains unchanged.
+Latest completed: [RPB-v13](../code/encoders/raw_patch_bottleneck_mae/VISIBLE_DIFFERENCE_DIAGNOSTIC.md)
+and its [durable JSON](results/visible_difference_v1.json) record five new CUDA
+instances at 512 on TEMPO-3, designed complexity 4/5. Visible adjacent differences
+improve mean reconstruction, but intact linear/neural accuracy 53.28%/52.03%
+and deleted 52.81%/50.52% do not improve timing consistently over the saved early
+control. Coverage remains 100%. All seven baseline/control rows were reused.
+The [saved-TRAIN diagnosis](../code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_TRAIN_DIAGNOSTIC.md)
+is also complete. No promotion or historical replacement; all 13 prior designs
+and15 prior instance groups are unchanged. The
+[current continuation](CONTINUATION_2026-10-10_AFTER_VISIBLE_DIFFERENCE.md)
+specifies a fresh, nested TRAIN-support comparison with fixed heads.
+TEMPO-1 RPB-v10.alt-03 and the earlier [confirmation](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
+remain separate preserved evidence.
 
 RPB-v4 is the active research reference. RPB-v5's claimed advance failed the
-fixed512 comparison. Retained versions provide historical evidence and compatible
+fixed 512 comparison. Retained versions provide historical evidence and compatible
 loaders; routine experiments need not retrain all of them.
 RPB-v6 keeps the v4 inference architecture with a fixed training policy that
-removes some visible context while preserving targets. Its audited fixed512
+removes some visible context while preserving targets. Its audited fixed 512
 comparison improves both linear accuracy primaries, but worsens reconstruction.
 The declared reconstruction guard prevents promotion while that tradeoff remains.
 Its completed [context optimization diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_OPTIMIZATION_DIAGNOSTIC.md)
@@ -46,10 +48,11 @@ preserved alongside the successful result.
 | RPB-v6 | Global bottleneck with context deletion | Accuracy gains, reconstruction tradeoff; not promoted | [Context deletion card](../code/evaluation/cards/context_deletion_v1.md) |
 | RPB-v7 | Global bottleneck with lighter context deletion | Measured validation gains, unresolved reconstruction tradeoff; not promoted | [Lighter-policy diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_LIGHTER_VALIDATION_DIAGNOSTIC.md) |
 | RPB-v8 | Global bottleneck with balanced context views | Measured and audited; joint guard failed; not promoted | [Balanced-view diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_BALANCED_VALIDATION_DIAGNOSTIC.md) |
-| RPB-v9 | Global bottleneck with native view agreement | Measured and audited; severe fixed512 failure; not promoted | [Native view agreement diagnostic](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md) |
+| RPB-v9 | Global bottleneck with native view agreement | Measured and audited; severe fixed 512 failure; not promoted | [Native view agreement diagnostic](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md) |
 | RPB-v10 | Global bottleneck with earlier channel mixing | Measured at 512 and in a continuous 2048-update comparison; experimental, not promoted | [Learning-curve diagnostic](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md) |
 | RPB-v11 | Early mixer with matched-target TRAIN gain | Measured; all six numeric guards fail; recipe stopped | [Gain diagnostic](../code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md) |
 | RPB-v12 | Pooled temporal summaries before global bottleneck | Measured; all four timing numeric guards fail; wider route stopped | [Pooled-context diagnostic](../code/encoders/raw_patch_bottleneck_mae/POOLED_CONTEXT_DIAGNOSTIC.md) |
+| RPB-v13 | Early mixer with visible adjacent differences | Measured on TEMPO-3; no consistent classification improvement; not promoted | [Visible-difference diagnostic](../code/encoders/raw_patch_bottleneck_mae/VISIBLE_DIFFERENCE_DIAGNOSTIC.md) |
 
 The [machine-readable registry](embedding_versions.json) records the same mapping.
 `RPB-v4.alt-01` names the fresh v4 controls paired with `RPB-v7.alt-01` on
@@ -90,7 +93,7 @@ reconstruction gradient in mode3. At C3/H32/F3/patch8, it has269,389 parameters,
 versus225,805 for RPB-v4. The
 [paired pooling experiment](../code/encoders/raw_patch_bottleneck_mae/PAIRED_POOLING_ADVANCE.md)
 completed: v5 failed both declared Ridge primaries and TRAIN/VALIDATION
-reconstruction at512. Its claimed advance is rejected under that frozen card;
+reconstruction at 512. Its claimed advance is rejected under that frozen card;
 this is not a rejection of the design under every possible budget.
 
 The configuration files are templates. GPU/device, data schema, dimensions,
@@ -148,9 +151,9 @@ v4 fail, neural means fall and one master loses deletion accuracy. V7 is not
 promoted; no TEST/stress, selection or consumer acceptance is claimed.
 
 RPB-v4 remains the active research reference; RPB-v5 is retained as a measured
-fixed512 result and a completed separately frozen TRAIN/VALIDATION-only
+fixed 512 result and a completed separately frozen TRAIN/VALIDATION-only
 continuation diagnostic at1024/2048. That follow-up did not reopen TEST/stress,
-change the fixed512 disposition or promote the candidate. Retain RPB-v2's frozen evidence
+change the fixed 512 disposition or promote the candidate. Retain RPB-v2's frozen evidence
 for this completed milestone and existing compatibility tests. Later advances
 compare against a named relevant checkpoint of RPB-v4, without automatically
 bringing every older design back into training.
@@ -181,7 +184,7 @@ passed. This is not a new quality score or model version.
 **RPB-v9 — Global bottleneck with native view agreement** is implemented and
 measured in its [separate diagnostic](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md).
 Its [plan](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_PLAN.md)
-and quality card remain frozen prospective records. Five fresh CUDA runs at512
+and quality card remain frozen prospective records. Five fresh CUDA runs at 512
 use the same v4 inference architecture, ordinary reconstruction and fixed heads.
 All six numeric guards fail: mean native linear accuracy is 59.21875% intact /
 57.03125% under extra deletion; mean TRAIN/VALIDATION MAE is
@@ -196,10 +199,10 @@ Current work continues from RPB-v7. Its separate
 [decoder calibration](../code/encoders/raw_patch_bottleneck_mae/V7_DECODER_CALIBRATION_DIAGNOSTIC.md)
 freezes all encoder parameters, buffers and scaler, then optimizes only its
 existing decoder for 128 CUDA updates. Mean TRAIN/known-VALIDATION MAE is
-0.054039/0.056989; every run is below its paired v4 fixed512 reference.
+0.054039/0.056989; every run is below its paired v4 fixed 512 reference.
 Independent arithmetic audit and exact native32 invariants passed. Classification
 scores are reused without fitting. This leaves the RPB-v7 embedding unchanged,
-creates no new design tag, and does not revise historical fixed512 dispositions
+creates no new design tag, and does not revise historical fixed 512 dispositions
 or promote it. RPB-v4 remains the active reference. The new
 [dated continuation](CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
 defines the prospective fresh-source replication; dated notes and reports remain
@@ -230,7 +233,7 @@ amplitude-transfer check using frozen encoders and original timing scalers.
 That [amplitude transfer check](../code/encoders/raw_patch_bottleneck_mae/FROZEN_AMPLITUDE_TRANSFER_DIAGNOSTIC.md)
 is now complete, with38,784,404 independent audit checks. Both trained groups
 preserve amplitude well; the intact untrained control already reaches99.375%
-linear accuracy. With extra30% deletion, v4.alt-01/v7.alt-01 linear means are
+linear accuracy. With extra 30% deletion, v4.alt-01/v7.alt-01 linear means are
 96.875%/93.4375%, versus89.6875% untrained, with full coverage. These are new
 data and head fits on reused encoders, with zero encoder updates. They do not
 identify a timing mechanism or promote a model.
@@ -271,7 +274,7 @@ promotion occurred; v4 remains active.
 
 The completed [matched-target gain comparison](../code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md)
 uses **RPB-v10.alt-02** against **RPB-v11**, with the same early architecture and
-fixed512 budget. Timing intact/deletion linear means are 96.40625%/92.5% for the
+fixed 512 budget. Timing intact/deletion linear means are 96.40625%/92.5% for the
 control and 95.3125%/84.6875% for gain; coverage is 100%. All six numeric guards
 fail, and all five gain instances have worse original-query TRAIN/VALIDATION MAE.
 Audit passed 88,154,488 checks. This fixed gain recipe is stopped, with no
@@ -282,7 +285,7 @@ Half-mixer exploration remains skipped. The gain milestone's
 planned the separate pooled-context feasibility step, subsequently completed
 with its own frozen card and gates as recorded below.
 
-## Pooled-context fixed512 milestone
+## Pooled-context fixed 512 milestone
 
 The earlier [pooled-context diagnostic](../code/encoders/raw_patch_bottleneck_mae/POOLED_CONTEXT_DIAGNOSTIC.md)
 and [durable JSON](results/pooled_context_v1.json) register fresh **RPB-v10.alt-03**
@@ -306,7 +309,7 @@ combined into a generic encoder score. Stop this wider route; no promotion.
 The sole independent audit passed 96,170,207 checks/1,235 CPU archive decodes.
 Every old version and instance-group object, original v7, active v4 and every
 continuous curve point remain unchanged. Compact early v10 is the next
-investigation candidate for the fresh fixed512 confirmation now completed above.
+investigation candidate for the fresh fixed 512 confirmation now completed above.
 The [historical pooled continuation](CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md) records
 the decision, and [portable SOURCE tools](../code/evaluation/tools/pooled_context_v1/README.md)
 provide a fresh blocked reader/stager command for a clean checkout.

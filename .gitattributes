@@ -12,3 +12,13 @@ code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_DIAGNOSTIC.md text
 doc/dataset_registry.json text eol=lf
 doc/results/structured_hard_timing_*.json text eol=lf
 doc/STRUCTURED_HARD_TIMING*.md text eol=lf
+# Preserve the saved TRAIN diagnosis and future difference-input experiment pins.
+code/evaluation/tools/structured_hard_timing_train_v1/** text eol=lf
+code/evaluation/cards/structured_hard_timing_train_diagnostic_v1.md text eol=lf
+code/evaluation/protocols/visible_difference_v1/** text eol=lf
+code/evaluation/cards/visible_difference_v1.md text eol=lf
+code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_TRAIN_DIAGNOSTIC.md text eol=lf
+code/encoders/raw_patch_bottleneck_mae/VISIBLE_DIFFERENCE_DIAGNOSTIC.md text eol=lf
+code/evaluation/tools/visible_difference_v1/** text eol=lf
+doc/results/visible_difference_v1.json text eol=lf
+doc/embedding_versions.json text eol=lf

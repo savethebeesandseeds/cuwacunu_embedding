@@ -157,6 +157,7 @@ Input raw_input(const embedding::Batch &batch, const Config &c, const ev::Provid
 }
 void configuration(const Settings &settings, EarlyMixerScope scope) {
   validate_settings(settings); (void)fit_protocol(scope); const auto &c = settings.model;
+  require(c.temporal_difference_input == 0, "historical early mixer factory rejects visible difference input");
   require(c.global_pool_input_source == 0, "historical early mixer factory rejects pooled-W input");
   const bool ceiling = scope == EarlyMixerScope::quality ? settings.steps == 512 :
       scope == EarlyMixerScope::engineering ? settings.steps == 4 :

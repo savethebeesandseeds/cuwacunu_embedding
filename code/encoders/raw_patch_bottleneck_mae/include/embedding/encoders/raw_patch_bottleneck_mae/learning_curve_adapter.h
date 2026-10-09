@@ -13,6 +13,20 @@ inline constexpr const char *kLearningCurveContinuationArtifact =
     "rpb_early_mixer_curve_continuation_state_v1";
 inline constexpr const char *kPooledContextContinuationArtifact =
     "rpb_pooled_context_continuation_state_v1";
+inline constexpr const char *kVisibleDifferenceContinuationArtifact =
+    "rpb_visible_difference_continuation_state_v1";
+inline constexpr const char *kVisibleDifferenceBindingSuffix = ".visible-difference.pt";
+inline constexpr const char *kVisibleDifferenceBindingArtifact =
+    "rpb_visible_difference_training_binding_v1";
+struct VisibleDifferenceOptions {
+  bool enabled{false};
+  // Original compact early point0; old writer and fit identities are explicit
+  // and independent of the new trainer's enclosing source fingerprint.
+  std::string parent_point0_checkpoint_path;
+  std::string expected_parent_core_source_fingerprint;
+  std::string expected_parent_training_producer_source_fingerprint;
+  std::string expected_parent_fit_protocol;
+};
 struct PooledContextInitializationOptions {
   bool enabled{false};
   // Candidate only: immutable compact-control point0 in the SAME new TRAIN scope.
@@ -61,5 +75,12 @@ embedding::evaluation::CurveTrainerFactory make_learning_curve_trainer(
 embedding::evaluation::CurveTrainerFactory make_learning_curve_trainer(
     const Settings &, ContextDeletionOptions, LearningCurveStateWitnessOptions,
     TrainingSourceGainOptions, PooledContextInitializationOptions);
+
+// Closed visible-difference protocol only. All historical overloads disable
+// this option and reject temporal_difference_input1 before reading TRAIN.
+embedding::evaluation::CurveTrainerFactory make_learning_curve_trainer(
+    const Settings &, ContextDeletionOptions, LearningCurveStateWitnessOptions,
+    TrainingSourceGainOptions, PooledContextInitializationOptions,
+    VisibleDifferenceOptions);
 
 } // namespace embedding::encoders::raw_patch_bottleneck_mae

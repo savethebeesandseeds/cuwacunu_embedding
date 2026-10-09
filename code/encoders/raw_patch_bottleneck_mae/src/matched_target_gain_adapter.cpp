@@ -159,6 +159,7 @@ Input raw_input(const embedding::Batch &batch, const Config &c, const ev::Provid
 }
 void configuration(const Settings &settings, MatchedTargetGainScope scope) {
   validate_settings(settings); (void)fit_protocol(scope); const auto &c = settings.model;
+  require(c.temporal_difference_input == 0, "historical matched gain factory rejects visible difference input");
   require(c.global_pool_input_source == 0, "matched gain factory rejects pooled-W input");
   const bool ceiling = scope == MatchedTargetGainScope::quality ? settings.steps == 512 && settings.attempt_limit == 1024 :
       (settings.steps == 4 && settings.attempt_limit == 8) || (settings.steps == 8 && settings.attempt_limit == 16);

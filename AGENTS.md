@@ -36,18 +36,35 @@ fixed across encoder comparisons; fit their weights separately on training data.
 
 ## Active research version
 
-Latest completed evidence is the fixed512
+The fixed 512
 [TEMPO-3 comparison](code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_DIAGNOSTIC.md)
 for fresh RPB-v7.alt-05/RPB-v10.alt-05: structured harder timing, designed
-complexity4/5, near-chance fixed-head scores and 100% coverage. Raw fixed-head
+complexity 4/5, near-chance fixed-head scores and 100% coverage. Raw fixed-head
 scores are also near chance; the legal-observation analytic rule solves all
 saved quality cohorts. Do not infer encoder information loss from accuracy alone.
-Neither group is promoted. The [current continuation](doc/CONTINUATION_2026-10-09_AFTER_STRUCTURED_HARD_TIMING.md)
-proposes a separately specified saved-TRAIN diagnosis: fixed-head fit/margins and
-relative timing within each saved reconstruction query bank's8-tick patch.
-These four banks use different masked contexts; they are not one full-context
-embedding. The diagnostic remains prospective and unmeasured; freeze its card
-and saved-evidence roles before execution.
+Neither group is promoted. The [saved-TRAIN diagnosis](code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_TRAIN_DIAGNOSTIC.md)
+is now complete, with no model execution or head refits. Early-v10 neural
+accuracy is 82.06% on TRAIN and54.90% on intact VALIDATION; raw neural accuracy
+is99.69%/50.73%. Same-support query timing is 100% in targets,68.28% in late
+reconstruction and61.02% in early reconstruction. The four8-tick query banks
+use different masked contexts; these scores do not establish information loss
+in a single full-context native32 vector. The
+[RPB-v13 visible-difference experiment](code/encoders/raw_patch_bottleneck_mae/VISIBLE_DIFFERENCE_DIAGNOSTIC.md)
+is now measured and audited at fixed native32/.15/B8/512 and heads. It adds 3,072
+zero-initialized values while preserving the original 225,805 common
+initialization and all 15 initial features. Intact linear/neural means are
+53.28%/52.03%; deleted means 52.81%/50.52%, all at 100% coverage. Mean query
+TRAIN/VAL MAE improves to 0.622320/0.664399, but timing does not improve
+consistently. The audit passed 17,152,339 checks / 280 CPU witness archives.
+The original sealed reader and failed v1 audit remain preserved; the additive
+reader-v2 corrects only a query artifact basename and binds its exact original
+source. No CPU model execution, old model forwards or control head refits.
+The [current continuation](doc/CONTINUATION_2026-10-10_AFTER_VISIBLE_DIFFERENCE.md)
+specifies a prospective 2×2 comparison of early-v10/v13 and 128/512 independent
+TRAIN pairs on a common fresh validation set. Freeze that new card, sources and
+reader before measurement. Fixed512×B8 means equal encoder draws, not equal
+total compute; larger full-batch heads process four times as many rows. No
+head tuning, phase/lag label input, stopped-recipe rescue or automatic promotion.
 Preserve original saved v7 and formal v4; gainv11 and pooledv12 stay stopped.
 The earlier [confirmation](code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_CONFIRMATION_DIAGNOSTIC.md)
 retains both worst-cohort regressions, including master65262, without promotion.
@@ -62,11 +79,11 @@ of the original saved encoder. Any architecture, objective or training recipe
 change gets a new design tag and separate outputs, leaving the original v7 intact.
 
 RPB-v4, the learned global bottleneck, is the active experimental encoder.
-RPB-v5, the direct patch global bottleneck, failed the fixed512 comparison under
+RPB-v5, the direct patch global bottleneck, failed the fixed 512 comparison under
 paired-pooling-v1 and is not promoted. This rejects that measured advance, not
 the design under every budget. Its separately frozen TRAIN/VALIDATION-only
 continuation at1024/2048 improved reconstruction without improving mean native
-linear accuracy. It did not reopen TEST/stress or change the fixed512 disposition.
+linear accuracy. It did not reopen TEST/stress or change the fixed 512 disposition.
 RPB-v6's audited context-deletion comparison improves both linear timing primaries,
 with equal coverage and improved worst-master scores, but fails the no-worse
 TRAIN/VALIDATION reconstruction guard. It is not promoted. Its completed
@@ -127,12 +144,12 @@ all five original-query MAEs worsen, and equal 100% coverage remains. Audit
 passed 88,154,488 checks. Stop this gain recipe without range/rate/budget/head
 rescue. Preserve original v7, active v4, all earlier groups and every curve point.
 The completed [pooled-context diagnostic](code/encoders/raw_patch_bottleneck_mae/POOLED_CONTEXT_DIAGNOSTIC.md)
-compares RPB-v10.alt-03/RPB-v12 at fixed512. All four timing numeric guards
+compares RPB-v10.alt-03/RPB-v12 at fixed 512. All four timing numeric guards
 fail and all five cohorts lose timing Ridge in both views; both mean MAE guards
 and coverage pass. The sole archive audit passed 96,170,207 checks. Stop wider
 pooled width and gain without rate/budget/head rescue. Compact early v10 remains
 an investigation candidate, not a promoted reference. The [next direction](code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md)
-was the fresh fixed512 confirmation against late v7, now completed as linked
+was the fresh fixed 512 confirmation against late v7, now completed as linked
 above. Preserve every group and curve point, original working v7 and active v4.
 The [historical pooled continuation](doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
 records that decision and its container-only gates.

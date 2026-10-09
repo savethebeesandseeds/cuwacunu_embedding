@@ -6,17 +6,21 @@ candidate is a masked autoencoder whose reconstruction loss passes through the
 served embedding. The baseline API, executable, archive reader and checkpoint
 format remain separate.
 
-The original saved **RPB-v7** bundle remains protected, and **RPB-v4** remains
-the formal reference. The latest [TEMPO-3 comparison](STRUCTURED_HARD_TIMING_DIAGNOSTIC.md)
-measures fresh **RPB-v7.alt-05 / RPB-v10.alt-05** on structured harder timing,
-designed complexity **4/5**. Intact linear means are 55.47% / 52.81%; extra
-30% deletion gives 54.22% / 53.75%, with 100% coverage. Fixed heads on raw data
-also remain near chance; the observed-only analytic timing rule solves the saved
-cohorts. These measurements do not damage or replace original saved models,
-and neither architecture is promoted. Gain **RPB-v11** and wider pooled
-**RPB-v12** remain stopped. The [current continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_STRUCTURED_HARD_TIMING.md)
-proposes saved-TRAIN fit/margin and bank-specific reconstruction diagnosis
-before further architecture or head changes.
+The latest [RPB-v13 experiment](VISIBLE_DIFFERENCE_DIAGNOSTIC.md) adds currently
+visible adjacent differences to early mixing on **TEMPO-3**, complexity **4/5**.
+Five new CUDA runs retain native32, .15 context deletion, batch 8, 512 updates and
+the fixed heads. Mean TRAIN/VALIDATION query MAE improves to 0.622320 / 0.664399,
+but intact linear/neural accuracy is 53.28% / 52.03%; under extra 30% deletion it
+is 52.81% / 50.52%, all at 100% coverage. This is not a consistent improvement
+over the reused **RPB-v10.alt-05** control. Initial common state and all 15
+initial exports matched the saved early model exactly; the added 3,072 values
+raise capacity to 228,877. The [saved-TRAIN diagnosis](STRUCTURED_HARD_TIMING_TRAIN_DIAGNOSTIC.md)
+is also complete. The [next comparison](../../../doc/CONTINUATION_2026-10-10_AFTER_VISIBLE_DIFFERENCE.md)
+will test more independent TRAIN sources with a shared fresh validation set.
+Original saved **RPB-v7**, formal **RPB-v4**, TEMPO-1 **RPB-v10.alt-03** and all
+historical evidence remain protected. No promotion; gain **RPB-v11** and pooled
+**RPB-v12** remain stopped. The frozen [card](../../evaluation/cards/visible_difference_v1.md)
+and separately preserved repaired reader document this measured variation.
 
 **Active research: RPB-v4 — Learned global bottleneck**, through
 [learned_global.conf](config/learned_global.conf). Its native 32-number global
@@ -74,7 +78,7 @@ coverage stays 100%. Strong separate untrained amplitude controls and all four
 seven-method panels remain explicit. Route and first-layer capacity change
 together; this does not identify an isolated projection-loss cause. The sole
 audit passed 96,170,207 checks. Stop wider pooled width and gain without rescue.
-The fresh fixed512 compact early-v10 confirmation selected by this milestone
+The fresh fixed 512 compact early-v10 confirmation selected by this milestone
 is now complete as linked above. The [next direction](NEXT_ADVANCE.md) keeps
 both designs for the separately engineered harder timing benchmark, with no
 harder encoder result or promotion claimed. See

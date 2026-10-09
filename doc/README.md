@@ -3,12 +3,18 @@
 For container setup, named task sessions and coordination, see
 [the development environment](ENVIRONMENT.md).
 
-Latest completed work is the [TEMPO-3 harder timing comparison](../code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_DIAGNOSTIC.md),
-designed complexity4/5, with fresh fixed512 late/early groups. Fixed-head scores
-are near chance despite recoverable legal-observation timing; no model is
-promoted. The [current continuation](CONTINUATION_2026-10-09_AFTER_STRUCTURED_HARD_TIMING.md)
-proposes a saved-TRAIN diagnosis with no new model/head/PCA fitting. Earlier
-milestones below remain historical evidence.
+Latest completed work is the [RPB-v13 TEMPO-3 experiment](../code/encoders/raw_patch_bottleneck_mae/VISIBLE_DIFFERENCE_DIAGNOSTIC.md),
+designed complexity 4/5. Visible adjacent differences improve mean reconstruction
+without improving timing classification consistently. The independent audit
+passed 17,152,339 checks on 280 CPU witness archives; no CPU encoder execution
+occurred. The [saved-TRAIN diagnosis](../code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_TRAIN_DIAGNOSTIC.md)
+is also complete without model/head/PCA fitting. The
+[current continuation](CONTINUATION_2026-10-10_AFTER_VISIBLE_DIFFERENCE.md)
+specifies a fresh comparison of 128 versus512 independent TRAIN source pairs,
+with common validation and unchanged heads. The
+[session record](RESEARCH_SESSION_2026-10-10.md) preserves the failed admission,
+launch and reader attempts. Historical results and the original saved encoders
+remain unchanged; no promotion occurred.
 
 The [embedding evaluation policy](EMBEDDING_EVALUATION_POLICY.md) is the shared
 reference for evaluating any encoder, separating correctness, optimization,
