@@ -48,10 +48,14 @@ The audit passed 141,317,815 checks. Fixed heads, one-time quality exports and
 all five pairs remain preserved, with no best-point selection or promotion.
 Existing saved groups remain unchanged.
 
-The [next direction](NEXT_ADVANCE.md) is a planned fixed 512 comparison of the
-same early architecture: RPB-v10.alt-02 versus RPB-v11 with one TRAIN-only
-matched-target gain over 0.5–2, drawn log-uniformly. No result or frozen card is
-claimed for that comparison; half-mixer exploration is skipped.
+The completed [matched-target gain diagnostic](MATCHED_TARGET_GAIN_DIAGNOSTIC.md)
+compares fresh RPB-v10.alt-02/RPB-v11 at fixed 512. Timing linear means fall
+from 96.40625% to 95.3125% intact and 92.5% to 84.6875% under extra deletion;
+all coverage remains 100%. All six numeric guards fail and all five original-query
+MAEs worsen. The gain recipe is stopped without range/rate/budget/head rescue.
+The [next direction](NEXT_ADVANCE.md) is one pooled-context information-path
+feasibility step with a matched compact control, starting with source and CUDA
+engineering gates. No wider architecture is measured or registered here.
 
 The [RPB-v5 comparison](PAIRED_POOLING_ADVANCE.md) and
 [optimization diagnostic](OPTIMIZATION_DIAGNOSTIC.md) are complete. Direct patch

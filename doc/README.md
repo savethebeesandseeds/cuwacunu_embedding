@@ -37,8 +37,10 @@ uses new data and heads with retained encoders. The separately frozen
 implements RPB-v10 against fresh RPB-v7.alt-02. Its
 [verified result](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_RELIABILITY_DIAGNOSTIC.md)
 improves mean and worst-cohort timing accuracy with mixed cohort and amplitude
-tradeoffs. The next [paired learning curve](../code/evaluation/cards/early_mixer_learning_curve_v1.md)
-uses fresh v7.alt-03/v10.alt-01 groups and retains every 512/1024/2048 point.
+tradeoffs. The completed [paired learning curve](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md)
+retains every 0/512/1024/2048 point. The latest [matched-target gain diagnostic](../code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md)
+fails all six numeric guards and is stopped. The [end-window continuation](CONTINUATION_2026-10-09_AFTER_MATCHED_TARGET_GAIN.md)
+records protected evidence and the engineering-first next direction.
 
 `representation-encoder.pdf` is the one-page outreach brief. Editable sources are
 `representation-encoder.tex` and `references.bib`.

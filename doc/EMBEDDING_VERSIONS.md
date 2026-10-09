@@ -30,13 +30,13 @@ preserved alongside the successful result.
 | RPB-v2 | Channel mixing and channel reconstruction | Archived reference | [Channel mixer](../code/encoders/raw_patch_bottleneck_mae/config/channel_mixer.conf) |
 | RPB-v3-mean | Averaged global bottleneck | Ablation reference | [Mean global](../code/encoders/raw_patch_bottleneck_mae/config/mean_global.conf) |
 | **RPB-v4** | **Learned global bottleneck** | **Active experimental version** | [Learned global](../code/encoders/raw_patch_bottleneck_mae/config/learned_global.conf) |
-| RPB-v5 | Direct patch global bottleneck | Advance rejected at fixed512, not promoted | [Direct patch global](../code/encoders/raw_patch_bottleneck_mae/config/learned_patch_global.conf) |
+| RPB-v5 | Direct patch global bottleneck | Advance rejected at fixed 512, not promoted | [Direct patch global](../code/encoders/raw_patch_bottleneck_mae/config/learned_patch_global.conf) |
 | RPB-v6 | Global bottleneck with context deletion | Accuracy gains, reconstruction tradeoff; not promoted | [Context deletion card](../code/evaluation/cards/context_deletion_v1.md) |
 | RPB-v7 | Global bottleneck with lighter context deletion | Measured validation gains, unresolved reconstruction tradeoff; not promoted | [Lighter-policy diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_LIGHTER_VALIDATION_DIAGNOSTIC.md) |
 | RPB-v8 | Global bottleneck with balanced context views | Measured and audited; joint guard failed; not promoted | [Balanced-view diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_BALANCED_VALIDATION_DIAGNOSTIC.md) |
 | RPB-v9 | Global bottleneck with native view agreement | Measured and audited; severe fixed512 failure; not promoted | [Native view agreement diagnostic](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md) |
 | RPB-v10 | Global bottleneck with earlier channel mixing | Measured at 512 and in a continuous 2048-update comparison; experimental, not promoted | [Learning-curve diagnostic](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md) |
-| RPB-v11 | Early mixer with matched-target TRAIN gain | Planned; no card or measured result yet | [Next advance](../code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md) |
+| RPB-v11 | Early mixer with matched-target TRAIN gain | Measured; all six numeric guards fail; recipe stopped | [Gain diagnostic](../code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md) |
 
 The [machine-readable registry](embedding_versions.json) records the same mapping.
 `RPB-v4.alt-01` names the fresh v4 controls paired with `RPB-v7.alt-01` on
@@ -88,7 +88,7 @@ earlier checkpoints. In particular, an omitted global mode still means mode 0.
 ## Design tags and trained instances
 
 The frozen working bundle is **RPB-v7**: the five original saved
-instances on masters4404/5505/6606/7707/8808, with their original checkpoints,
+instances on masters 4404/5505/6606/7707/8808, with their original checkpoints,
 scalers and readouts. Their earlier intact timing VALIDATION means remain
 97.96875% linear and 98.95833% neural. Optional decoder-calibration assets live
 in a separate capsule and do not replace those checkpoints or encoder weights.
@@ -256,9 +256,14 @@ quality exports occur once after continuation. Earlier fixed-512 evidence and
 the original v7 group remain unchanged. No best-point selection, TEST/stress or
 promotion occurred; v4 remains active.
 
-The planned next comparison is **RPB-v10.alt-02** against **RPB-v11**, using the
-same early architecture at fixed 512 with one TRAIN-only matched-target gain
-drawn log-uniformly over 0.5–2. Timing masters are
-41140/42241/43342/44443/45544 and amplitude masters are
-46645/47746/48847/49948/51049. Half-mixer exploration is skipped. This is a
-planned direction with no frozen card or measured result yet.
+The completed [matched-target gain comparison](../code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md)
+uses **RPB-v10.alt-02** against **RPB-v11**, with the same early architecture and
+fixed512 budget. Timing intact/deletion linear means are 96.40625%/92.5% for the
+control and 95.3125%/84.6875% for gain; coverage is 100%. All six numeric guards
+fail, and all five gain instances have worse original-query TRAIN/VALIDATION MAE.
+Audit passed 88,154,488 checks. This fixed gain recipe is stopped, with no
+range/rate/budget/head rescue. No prior group or curve evidence is replaced.
+
+Half-mixer exploration remains skipped. A separate pooled-context feasibility
+step is planned, starting with source and CUDA engineering gates; it is not
+implemented, measured or registered by this milestone. See the [continuation](CONTINUATION_2026-10-09_AFTER_MATCHED_TARGET_GAIN.md).

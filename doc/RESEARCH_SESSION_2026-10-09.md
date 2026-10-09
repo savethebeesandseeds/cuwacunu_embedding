@@ -142,3 +142,38 @@ TRAIN-only matched-target gain drawn log-uniformly over 0.5–2. Timing seeds ar
 46645/47746/48847/49948/51049. This is a planned direction, with no frozen card
 or measured result yet. Its exact recipe and source/admission/reader gates must
 precede new generation. Preserve all historical evidence and every curve point.
+
+Fifth milestone completed at approximately 05:58 Dubai: the [matched-target gain
+diagnostic](../code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md)
+and [durable summary](results/matched_target_gain_v1.json) preserve all five new
+RPB-v10.alt-02/RPB-v11 pairs at 512. Timing linear means fall 96.40625%→95.3125%
+intact and 92.5%→84.6875% under additional deletion, with equal 100% coverage.
+All six numeric guards fail; all five original-query TRAIN/VALIDATION errors
+worsen. Mean MAE rises 0.075181/0.076729→0.216641/0.214659. Amplitude deletion
+linear accuracy falls 97.5%→86.25%; strong untrained intact controls remain explicit.
+Stop this gain recipe without range/rate/budget/head rescue; no promotion.
+
+Actual CUDA admission admission-nrpfpL passed before quality generation. The sole
+independent saved-arithmetic audit passed 88,154,488 checks/1,165 CPU archives in
+358.420464 seconds. Emission peer metadata QA passed 169,228 comparisons; one
+reviewed flag-only saver copied the exact report and JSON once, preserving all
+eight approved metadata inputs. There were 180 pipelines/360 heads, 20 retained
+points, 120 full native callbacks (90 quality + 30 initial counterpart witnesses),
+20 query writers/80 necessary masked CUDA forwards and 40,960 sampled exposures.
+Loop means 14.177860/14.335223 seconds include CPU evidence capture and candidate
+target copies; they are not pure kernel timing. No extra decoder calibration,
+CPU model replay, historical quality inputs, TEST/stress or best-point selection.
+
+Capsule YmAtKW inventory is `e653ab95509af9eb321a0ff90e50f16f4566051894a3e4df4d162f55dda0f4f4`;
+enclosing source is `1b734e72069f46aef80ecf9270edfa186aa50557b715ae3f101380b80f519215`.
+Passed audit SHA is `9807e8439c60c3beefeb83431cd7660667a10aae449fbdc4b281c98b1b631682`.
+Report SHA is `f88af56f6d7d9a4692d622b479613e76af2cb58f53ef02ff9b91767da21a7217`;
+JSON SHA is `6afdc72e738b915c50043c92d436f9a4c1006c38e92f1746b4e7bbb5d8b7112c`.
+The original false-flag reader/renderer/saver sources and source-only stale-pin
+rejection remain preserved. No numeric acceptance requirement was changed.
+
+The next bounded direction is one pooled-context information-path feasibility
+step with a matched compact control, starting with source/card/CUDA engineering
+gates. This milestone registers no new wider architecture or quality result.
+The [end-window continuation](CONTINUATION_2026-10-09_AFTER_MATCHED_TARGET_GAIN.md)
+records the protected references and explicit decision boundary.

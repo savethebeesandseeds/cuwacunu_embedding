@@ -24,14 +24,20 @@ timing classification benefit. At 2048, late/early intact linear means are
 quality panels, budget-specific training tables and conditional intervals are
 in the linked report. No budget is selected and neither group is promoted.
 
-Skip the half-mixer variation. The next planned comparison keeps the same early
-architecture and fixed 512 training: RPB-v10.alt-02 is the new matched control;
-RPB-v11 adds one TRAIN-only matched-target gain drawn log-uniformly over 0.5–2.
-Use timing masters 41140/42241/43342/44443/45544 and amplitude masters
-46645/47746/48847/49948/51049. The exact recipe needs its own prospective card
-and source/admission/reader gates before generation. These labels and seeds are
-planned, with no measured result or frozen card yet. Preserve original RPB-v7,
-the active RPB-v4 reference, every earlier group and every retained curve point.
+The completed [matched-target gain diagnostic](MATCHED_TARGET_GAIN_DIAGNOSTIC.md)
+uses fresh RPB-v10.alt-02/RPB-v11 at fixed 512 under [its frozen card](../../evaluation/cards/matched_target_gain_v1.md).
+Timing intact/deletion linear means are 96.40625%/92.5% for the control and
+95.3125%/84.6875% for gain, at equal 100% coverage. TRAIN/VALIDATION original-query
+MAE rises from 0.075181/0.076729 to 0.216641/0.214659; every gain instance is worse
+on both splits. All six numeric guards fail. Stop this recipe without changing
+its gain range, deletion rate, budget or heads. Amplitude deletion also worsens.
+
+Skip the half-mixer variation. The next bounded direction is engineering-first
+feasibility of one pooled-context information path with a matched compact control.
+A separate prospective card, exact common-initialization witnesses, CUDA-only
+correctness and sealed reader must precede new generation. No new architecture
+result or registered tag is claimed here. Preserve original RPB-v7, active RPB-v4,
+every earlier group and every retained curve point. See the [end-window continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_MATCHED_TARGET_GAIN.md).
 
 ## Completed milestone
 

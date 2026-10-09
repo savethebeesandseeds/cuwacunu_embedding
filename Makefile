@@ -122,6 +122,7 @@ RPB_CPPFLAGS := -I$(RPB_ROOT)/include -I$(RPB_ROOT)/tests $(COMMON_CPPFLAGS) -DR
 
 MINIMUM_PROVENANCE_INPUTS := $(sort $(wildcard $(CODE_ROOT)/shared/include/embedding/shared/*.h $(CODE_ROOT)/shared/src/*.cpp $(ENCODER_ROOT)/include/embedding/encoders/mtf_jepa_mae_vicreg/*.h $(ENCODER_ROOT)/src/*.cpp $(ENCODER_ROOT)/config/*.conf $(EVALUATION_ROOT)/src/*.cpp $(EVALUATION_ROOT)/include/*.h) Makefile $(SDK_PROVENANCE_INPUTS))
 EVALUATION_PROVENANCE_INPUTS := $(sort $(MINIMUM_PROVENANCE_INPUTS) $(RPB_PROVENANCE_INPUTS) $(RPB_ROOT)/src/evaluation_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/src/reconstruction_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/src/learning_curve_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h $(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h))
+EVALUATION_PROVENANCE_INPUTS := $(sort $(EVALUATION_PROVENANCE_INPUTS) $(RPB_ROOT)/src/training_source_gain.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/training_source_gain.h)
 MINIMUM_SOURCE_ID := $(shell sha256sum $(MINIMUM_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 EVALUATION_SOURCE_ID := $(shell sha256sum $(EVALUATION_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 EVALUATION_PROVENANCE_CPPFLAGS := -DEVALUATION_SOURCE_ID=\"$(EVALUATION_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
@@ -1074,3 +1075,49 @@ test-rpb-early-mixer-curve-adapter: $(RPB_TEST_DIR)/early_mixer_curve_adapter_te
 
 evaluate-early-mixer-learning-curve: $(EARLY_MIXER_LEARNING_CURVE_BIN)
 	@EARLY_MIXER_LEARNING_CURVE_BIN="$(abspath $(EARLY_MIXER_LEARNING_CURVE_BIN))" EARLY_MIXER_LEARNING_CURVE_SOURCE_INPUTS="$(EARLY_MIXER_LEARNING_CURVE_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-early-mixer-learning-curve.sh
+
+# Default-disabled source-gain primitive is shared by the learner. Every legacy
+# learner consumer links it explicitly; historical target recipes remain intact.
+RPB_TRAINING_SOURCE_GAIN_OBJECT := $(RPB_OBJECT_DIR)/training_source_gain.o
+$(RPB_TRAINING_SOURCE_GAIN_OBJECT): $(RPB_ROOT)/src/training_source_gain.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/training_source_gain.h $(EVALUATION_PROVENANCE_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include $(CXXFLAGS) -c $< -o $@
+
+RPB_LEGACY_SOURCE_GAIN_CONSUMERS := $(LEARNING_CURVE_BIN) $(GLOBAL_BOTTLENECK_BIN) $(NATIVE_CURVE_BIN) $(PAIRED_POOLING_BIN) $(OPTIMIZATION_DIAGNOSTIC_BIN) $(CONTEXT_DELETION_BIN) $(CONTEXT_OPTIMIZATION_BIN) $(CONTEXT_REPLICATION_BIN) $(CONTEXT_LIGHTER_BIN) $(CONTEXT_BALANCED_BIN) $(NATIVE_VIEW_AGREEMENT_VALIDATION_BIN) $(FRESH_DECODER_REPLICATION_BIN) $(FROZEN_AMPLITUDE_TRANSFER_BIN) $(EARLY_MIXER_RELIABILITY_BIN) $(EARLY_MIXER_LEARNING_CURVE_BIN) $(RPB_TEST_DIR)/learning_curve_adapter_test $(RPB_TEST_DIR)/native_curve_gate_test $(RPB_TEST_DIR)/optimization_diagnostic_adapter_test $(RPB_TEST_DIR)/context_deletion_test $(RPB_TEST_DIR)/context_deletion_adapter_test $(RPB_TEST_DIR)/context_replay_adapter_test $(RPB_TEST_DIR)/context_replication_adapter_test $(RPB_TEST_DIR)/context_lighter_test $(RPB_TEST_DIR)/context_balanced_test $(RPB_TEST_DIR)/native_view_agreement_test $(RPB_TEST_DIR)/decoder_calibration_test $(RPB_TEST_DIR)/frozen_decoder_calibration_test $(RPB_TEST_DIR)/frozen_native_feature_adapter_test $(RPB_TEST_DIR)/frozen_amplitude_legacy_test $(RPB_TEST_DIR)/early_mixer_adapter_test $(RPB_TEST_DIR)/early_mixer_curve_adapter_test
+$(RPB_LEGACY_SOURCE_GAIN_CONSUMERS): $(RPB_TRAINING_SOURCE_GAIN_OBJECT)
+
+# A fresh fixed512 comparison of one original early-mixer TRAIN view and one
+# matched-target source-gain view. Its enclosing capture unions all link scopes.
+MATCHED_TARGET_GAIN_BIN := $(BUILD_DIR)/embedding_matched_target_gain
+MATCHED_TARGET_GAIN_ADAPTER_OBJECT := $(RPB_OBJECT_DIR)/matched_target_gain_adapter.o
+MATCHED_TARGET_GAIN_INPUTS := $(sort $(EARLY_MIXER_LEARNING_CURVE_INPUTS) $(SDK_PROVENANCE_INPUTS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/training_source_gain.h $(RPB_ROOT)/src/training_source_gain.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/matched_target_gain_adapter.h $(RPB_ROOT)/src/matched_target_gain_adapter.cpp $(RPB_ROOT)/tests/matched_target_gain_adapter_test.cpp $(EVALUATION_ROOT)/src/matched_target_gain_main.cpp $(EVALUATION_ROOT)/cards/matched_target_gain_v1.md $(CODE_ROOT)/scripts/prepare-matched-target-gain.py $(CODE_ROOT)/scripts/check-matched-target-gain.sh $(CODE_ROOT)/scripts/evaluate-matched-target-gain.sh)
+MATCHED_TARGET_GAIN_SOURCE_ID := $(shell sha256sum $(MATCHED_TARGET_GAIN_INPUTS) | sha256sum | cut -d ' ' -f 1)
+MATCHED_TARGET_GAIN_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(MATCHED_TARGET_GAIN_SOURCE_ID)\" -DMATCHED_TARGET_GAIN_ADAPTER_SOURCE_ID=\"$(MATCHED_TARGET_GAIN_SOURCE_ID)\"
+.PHONY: matched-target-gain print-matched-target-gain-sources test-rpb-matched-target-gain-adapter evaluate-matched-target-gain
+matched-target-gain: $(MATCHED_TARGET_GAIN_BIN)
+print-matched-target-gain-sources:
+	@printf '%s\n' $(MATCHED_TARGET_GAIN_INPUTS)
+
+$(EVALUATION_OBJECT_DIR)/matched_target_gain_main.o: $(EVALUATION_ROOT)/src/matched_target_gain_main.cpp $(MATCHED_TARGET_GAIN_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(MATCHED_TARGET_GAIN_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(MATCHED_TARGET_GAIN_ADAPTER_OBJECT): $(RPB_ROOT)/src/matched_target_gain_adapter.cpp $(MATCHED_TARGET_GAIN_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(MATCHED_TARGET_GAIN_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(MATCHED_TARGET_GAIN_BIN): $(EVALUATION_OBJECT_DIR)/matched_target_gain_main.o $(MATCHED_TARGET_GAIN_ADAPTER_OBJECT) $(RPB_TRAINING_SOURCE_GAIN_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS) $(FIXED_FEATURE_READOUTS_OBJECT)
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+$(RPB_TEST_DIR)/matched_target_gain_adapter_test.o: $(RPB_ROOT)/tests/matched_target_gain_adapter_test.cpp $(MATCHED_TARGET_GAIN_INPUTS)
+	mkdir -p "$(@D)"
+	$(CXX) $(MATCHED_TARGET_GAIN_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/matched_target_gain_adapter_test: $(RPB_TEST_DIR)/matched_target_gain_adapter_test.o $(MATCHED_TARGET_GAIN_ADAPTER_OBJECT) $(RPB_TRAINING_SOURCE_GAIN_OBJECT) $(EARLY_MIXER_ADAPTER_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(HARNESS_OBJECT) $(OBJECT_DIR)/shared/data.o
+	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+test-rpb-matched-target-gain-adapter: $(RPB_TEST_DIR)/matched_target_gain_adapter_test
+	$(RPB_TEST_DIR)/matched_target_gain_adapter_test
+
+evaluate-matched-target-gain: $(MATCHED_TARGET_GAIN_BIN)
+	@MATCHED_TARGET_GAIN_BIN="$(abspath $(MATCHED_TARGET_GAIN_BIN))" MATCHED_TARGET_GAIN_SOURCE_INPUTS="$(MATCHED_TARGET_GAIN_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-matched-target-gain.sh

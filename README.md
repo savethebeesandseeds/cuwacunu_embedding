@@ -84,9 +84,14 @@ Both reconstruct more accurately with longer training, without monotone timing
 classification benefit. At 2048, late/early intact linear means are
 92.1875%/92.65625% and additional-deletion means are 87.8125%/91.71875%, with
 full coverage. Independent audit passed 141,317,815 checks. There is no
-best-point selection, TEST/stress or promotion. The next planned direction is
-one TRAIN-only matched-target gain comparison at fixed 512 on the same early
-architecture, with a new matched control; its card and results are not yet frozen.
+best-point selection, TEST/stress or promotion. The completed
+[matched-target gain diagnostic](code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md)
+compares fresh RPB-v10.alt-02/RPB-v11 at 512: all six numeric guards fail and all
+five original-query reconstruction errors worsen, despite equal 100% coverage.
+Its independent audit passed 88,154,488 checks. The gain recipe is stopped.
+The next direction is engineering-first review of one pooled-context path with a
+matched compact control; no new result or version is registered here. Follow the
+[end-window continuation](doc/CONTINUATION_2026-10-09_AFTER_MATCHED_TARGET_GAIN.md).
 Older designs remain available as archived references. See the
 [version registry](doc/EMBEDDING_VERSIONS.md),
 [results reporting standard](doc/RESULTS_REPORTING_STANDARD.md), and

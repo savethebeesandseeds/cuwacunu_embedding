@@ -395,8 +395,8 @@
     {
       "id": "RPB-v10.alt-02",
       "encoder_tag": "RPB-v10",
-      "status": "planned_not_measured_no_card_yet",
-      "description": "Fresh matched early-mixer control for the prospective TRAIN gain comparison",
+      "status": "measured_matched_fresh_control_no_reference_replacement",
+      "description": "Fresh early-mixer control for the completed matched-target gain comparison",
       "master_seeds": [
         41140,
         42241,
@@ -405,13 +405,49 @@
         45544
       ],
       "planned_encoder_updates_each": 512,
-      "existing_groups_replaced": false
+      "existing_groups_replaced": false,
+      "encoder_updates_each": 512,
+      "retained_completed_updates": [
+        0,
+        512
+      ],
+      "checkpoint_path_pattern": "output/runs/rpb-matched-target-gain/matched-target-gain-YmAtKW/results/seed-{master}-lag_sign/control/point-{budget}/checkpoint.pt",
+      "capsule": "output/runs/rpb-matched-target-gain/matched-target-gain-YmAtKW",
+      "artifact_inventory_sha256": "e653ab95509af9eb321a0ff90e50f16f4566051894a3e4df4d162f55dda0f4f4",
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md",
+      "measured_record_sha256": "f88af56f6d7d9a4692d622b479613e76af2cb58f53ef02ff9b91767da21a7217",
+      "durable_summary": "doc/results/matched_target_gain_v1.json",
+      "durable_summary_sha256": "6afdc72e738b915c50043c92d436f9a4c1006c38e92f1746b4e7bbb5d8b7112c",
+      "source_fingerprint": "1b734e72069f46aef80ecf9270edfa186aa50557b715ae3f101380b80f519215",
+      "promotion": false,
+      "intact_linear_accuracy_percent": 96.40625,
+      "intact_neural_accuracy_percent": 99.89583333333333,
+      "intact_worst_linear_accuracy_percent": 90.625,
+      "coverage_percent": 100.0,
+      "dropout30_linear_accuracy_percent": 92.5,
+      "dropout30_neural_accuracy_percent": 98.02083333333333,
+      "dropout30_worst_linear_accuracy_percent": 83.59375,
+      "training_standardized_mae": {
+        "mean": 0.07518095497891544,
+        "min": 0.0655362498792414,
+        "max": 0.08280197863544082
+      },
+      "validation_standardized_mae": {
+        "mean": 0.07672889401475888,
+        "min": 0.06828924017818656,
+        "max": 0.08365123183325986
+      },
+      "GPU_update_loop_seconds": {
+        "mean": 14.1778600992,
+        "min": 13.651445801,
+        "max": 14.655154923
+      }
     },
     {
       "id": "RPB-v11",
       "encoder_tag": "RPB-v11",
-      "status": "planned_not_measured_no_card_yet",
-      "description": "Prospective matched-target TRAIN gain on the unchanged early-mixer architecture",
+      "status": "measured_failed_all_six_numeric_guards_stopped_no_promotion",
+      "description": "Matched-target TRAIN gain on the unchanged early-mixer architecture; fixed recipe stopped",
       "master_seeds": [
         41140,
         42241,
@@ -420,218 +456,1677 @@
         45544
       ],
       "planned_encoder_updates_each": 512,
-      "existing_groups_replaced": false
+      "existing_groups_replaced": false,
+      "encoder_updates_each": 512,
+      "retained_completed_updates": [
+        0,
+        512
+      ],
+      "checkpoint_path_pattern": "output/runs/rpb-matched-target-gain/matched-target-gain-YmAtKW/results/seed-{master}-lag_sign/candidate/point-{budget}/checkpoint.pt",
+      "capsule": "output/runs/rpb-matched-target-gain/matched-target-gain-YmAtKW",
+      "artifact_inventory_sha256": "e653ab95509af9eb321a0ff90e50f16f4566051894a3e4df4d162f55dda0f4f4",
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md",
+      "measured_record_sha256": "f88af56f6d7d9a4692d622b479613e76af2cb58f53ef02ff9b91767da21a7217",
+      "durable_summary": "doc/results/matched_target_gain_v1.json",
+      "durable_summary_sha256": "6afdc72e738b915c50043c92d436f9a4c1006c38e92f1746b4e7bbb5d8b7112c",
+      "source_fingerprint": "1b734e72069f46aef80ecf9270edfa186aa50557b715ae3f101380b80f519215",
+      "promotion": false,
+      "intact_linear_accuracy_percent": 95.3125,
+      "intact_neural_accuracy_percent": 97.5,
+      "intact_worst_linear_accuracy_percent": 84.375,
+      "coverage_percent": 100.0,
+      "dropout30_linear_accuracy_percent": 84.6875,
+      "dropout30_neural_accuracy_percent": 90.41666666666667,
+      "dropout30_worst_linear_accuracy_percent": 73.4375,
+      "training_standardized_mae": {
+        "mean": 0.21664079920752743,
+        "min": 0.16728978506847797,
+        "max": 0.2541864501610272
+      },
+      "validation_standardized_mae": {
+        "mean": 0.21465864056257256,
+        "min": 0.16851160932650142,
+        "max": 0.2546031758690345
+      },
+      "GPU_update_loop_seconds": {
+        "mean": 14.335222582400002,
+        "min": 14.18440825,
+        "max": 14.473876112
+      }
     }
   ],
   "latest_completed_diagnostic": {
-    "protocol": "early-mixer-learning-curve-v1",
-    "status": "completed_independently_verified_experimental_no_promotion",
+    "protocol": "matched-target-gain-v1",
+    "status": "completed_failed_all_six_numeric_guards_stopped_no_promotion",
     "instance_bundles": [
-      "RPB-v7.alt-03",
-      "RPB-v10.alt-01"
+      "RPB-v10.alt-02",
+      "RPB-v11"
     ],
     "timing_master_seeds": [
-      30130,
-      31231,
-      32332,
-      33433,
-      34534
+      41140,
+      42241,
+      43342,
+      44443,
+      45544
     ],
     "amplitude_data_master_seeds": [
-      35635,
-      36736,
-      37837,
-      38938,
-      40039
+      46645,
+      47746,
+      48847,
+      49948,
+      51049
     ],
     "encoder_trajectories": 10,
-    "encoder_updates_each": 2048,
+    "encoder_updates_each": 512,
+    "batch_size": 8,
     "retained_completed_updates": [
       0,
-      512,
-      1024,
-      2048
+      512
     ],
-    "retained_points": 40,
-    "sampled_rows": 163840,
+    "retained_points": 20,
+    "sampled_rows": 40960,
     "extra_decoder_calibration_updates": 0,
-    "new_head_pipelines": 270,
-    "new_individual_heads": 540,
-    "full_native_export_calls": 180,
-    "fixed_query_writer_calls": 60,
-    "necessary_query_forwards": 240,
-    "coverage_percent": 100,
-    "quality_by_budget": [
+    "new_head_pipelines": 180,
+    "new_individual_heads": 360,
+    "unique_quality_native_exports": 90,
+    "initial_counterpart_exports": 30,
+    "actual_full_native_export_calls": 120,
+    "timing_query_evaluation_calls": 20,
+    "necessary_query_CUDA_forwards": 80,
+    "quality_panels": [
       {
         "task": "lag_sign",
+        "view": "validation_intact",
         "budget": 512,
-        "view": "validation_intact",
-        "late_linear_percent": 94.84375,
-        "early_linear_percent": 92.5,
-        "late_neural_percent": 98.33333333333333,
-        "early_neural_percent": 98.95833333333334,
-        "late_worst_linear_percent": 91.40625,
-        "early_worst_linear_percent": 83.59375,
-        "coverage_percent": 100.0
+        "methods": [
+          {
+            "method": "raw",
+            "display_label": "Raw data",
+            "size": 576,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 65,
+                "denominator": 128,
+                "decimal": 0.5078125
+              },
+              "min": {
+                "numerator": 59,
+                "denominator": 128,
+                "decimal": 0.4609375
+              },
+              "max": {
+                "numerator": 71,
+                "denominator": 128,
+                "decimal": 0.5546875
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1003,
+                "denominator": 1920,
+                "decimal": 0.5223958333333333
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 55,
+                "denominator": 96,
+                "decimal": 0.5729166666666666
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "mask_metadata",
+            "display_label": "Mask only",
+            "size": 288,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "pca_only",
+            "display_label": "PCA only — no encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 141,
+                "denominator": 320,
+                "decimal": 0.440625
+              },
+              "min": {
+                "numerator": 13,
+                "denominator": 32,
+                "decimal": 0.40625
+              },
+              "max": {
+                "numerator": 61,
+                "denominator": 128,
+                "decimal": 0.4765625
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 493,
+                "denominator": 640,
+                "decimal": 0.7703125
+              },
+              "min": {
+                "numerator": 45,
+                "denominator": 64,
+                "decimal": 0.703125
+              },
+              "max": {
+                "numerator": 79,
+                "denominator": 96,
+                "decimal": 0.8229166666666666
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "untrained_native",
+            "display_label": "Untrained encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 351,
+                "denominator": 640,
+                "decimal": 0.5484375
+              },
+              "min": {
+                "numerator": 33,
+                "denominator": 64,
+                "decimal": 0.515625
+              },
+              "max": {
+                "numerator": 75,
+                "denominator": 128,
+                "decimal": 0.5859375
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1303,
+                "denominator": 1920,
+                "decimal": 0.6786458333333333
+              },
+              "min": {
+                "numerator": 69,
+                "denominator": 128,
+                "decimal": 0.5390625
+              },
+              "max": {
+                "numerator": 7,
+                "denominator": 8,
+                "decimal": 0.875
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_control",
+            "display_label": "RPB-v10.alt-02",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 617,
+                "denominator": 640,
+                "decimal": 0.9640625
+              },
+              "min": {
+                "numerator": 29,
+                "denominator": 32,
+                "decimal": 0.90625
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 959,
+                "denominator": 960,
+                "decimal": 0.9989583333333333
+              },
+              "min": {
+                "numerator": 383,
+                "denominator": 384,
+                "decimal": 0.9973958333333334
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_gain",
+            "display_label": "RPB-v11",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 61,
+                "denominator": 64,
+                "decimal": 0.953125
+              },
+              "min": {
+                "numerator": 27,
+                "denominator": 32,
+                "decimal": 0.84375
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 39,
+                "denominator": 40,
+                "decimal": 0.975
+              },
+              "min": {
+                "numerator": 11,
+                "denominator": 12,
+                "decimal": 0.9166666666666666
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          }
+        ]
       },
       {
         "task": "lag_sign",
+        "view": "validation_deleted",
         "budget": 512,
-        "view": "validation_deleted",
-        "late_linear_percent": 89.375,
-        "early_linear_percent": 92.1875,
-        "late_neural_percent": 92.91666666666667,
-        "early_neural_percent": 96.51041666666667,
-        "late_worst_linear_percent": 85.15625,
-        "early_worst_linear_percent": 85.15625,
-        "coverage_percent": 100.0
-      },
-      {
-        "task": "lag_sign",
-        "budget": 1024,
-        "view": "validation_intact",
-        "late_linear_percent": 93.28125,
-        "early_linear_percent": 94.375,
-        "late_neural_percent": 98.95833333333334,
-        "early_neural_percent": 98.75,
-        "late_worst_linear_percent": 82.8125,
-        "early_worst_linear_percent": 91.40625,
-        "coverage_percent": 100.0
-      },
-      {
-        "task": "lag_sign",
-        "budget": 1024,
-        "view": "validation_deleted",
-        "late_linear_percent": 87.1875,
-        "early_linear_percent": 92.96875,
-        "late_neural_percent": 94.53125,
-        "early_neural_percent": 96.45833333333333,
-        "late_worst_linear_percent": 80.46875,
-        "early_worst_linear_percent": 89.0625,
-        "coverage_percent": 100.0
-      },
-      {
-        "task": "lag_sign",
-        "budget": 2048,
-        "view": "validation_intact",
-        "late_linear_percent": 92.1875,
-        "early_linear_percent": 92.65625,
-        "late_neural_percent": 98.07291666666667,
-        "early_neural_percent": 98.02083333333333,
-        "late_worst_linear_percent": 78.125,
-        "early_worst_linear_percent": 82.8125,
-        "coverage_percent": 100.0
-      },
-      {
-        "task": "lag_sign",
-        "budget": 2048,
-        "view": "validation_deleted",
-        "late_linear_percent": 87.8125,
-        "early_linear_percent": 91.71875,
-        "late_neural_percent": 93.85416666666667,
-        "early_neural_percent": 95.3125,
-        "late_worst_linear_percent": 73.4375,
-        "early_worst_linear_percent": 80.46875,
-        "coverage_percent": 100.0
+        "methods": [
+          {
+            "method": "raw",
+            "display_label": "Raw data",
+            "size": 576,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 81,
+                "denominator": 160,
+                "decimal": 0.50625
+              },
+              "min": {
+                "numerator": 15,
+                "denominator": 32,
+                "decimal": 0.46875
+              },
+              "max": {
+                "numerator": 71,
+                "denominator": 128,
+                "decimal": 0.5546875
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 313,
+                "denominator": 640,
+                "decimal": 0.4890625
+              },
+              "min": {
+                "numerator": 59,
+                "denominator": 128,
+                "decimal": 0.4609375
+              },
+              "max": {
+                "numerator": 49,
+                "denominator": 96,
+                "decimal": 0.5104166666666666
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "mask_metadata",
+            "display_label": "Mask only",
+            "size": 288,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "pca_only",
+            "display_label": "PCA only — no encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 281,
+                "denominator": 640,
+                "decimal": 0.4390625
+              },
+              "min": {
+                "numerator": 13,
+                "denominator": 32,
+                "decimal": 0.40625
+              },
+              "max": {
+                "numerator": 61,
+                "denominator": 128,
+                "decimal": 0.4765625
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 527,
+                "denominator": 960,
+                "decimal": 0.5489583333333333
+              },
+              "min": {
+                "numerator": 175,
+                "denominator": 384,
+                "decimal": 0.4557291666666667
+              },
+              "max": {
+                "numerator": 227,
+                "denominator": 384,
+                "decimal": 0.5911458333333334
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "untrained_native",
+            "display_label": "Untrained encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 323,
+                "denominator": 640,
+                "decimal": 0.5046875
+              },
+              "min": {
+                "numerator": 15,
+                "denominator": 32,
+                "decimal": 0.46875
+              },
+              "max": {
+                "numerator": 9,
+                "denominator": 16,
+                "decimal": 0.5625
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 343,
+                "denominator": 640,
+                "decimal": 0.5359375
+              },
+              "min": {
+                "numerator": 91,
+                "denominator": 192,
+                "decimal": 0.4739583333333333
+              },
+              "max": {
+                "numerator": 221,
+                "denominator": 384,
+                "decimal": 0.5755208333333334
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_control",
+            "display_label": "RPB-v10.alt-02",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 37,
+                "denominator": 40,
+                "decimal": 0.925
+              },
+              "min": {
+                "numerator": 107,
+                "denominator": 128,
+                "decimal": 0.8359375
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 941,
+                "denominator": 960,
+                "decimal": 0.9802083333333333
+              },
+              "min": {
+                "numerator": 181,
+                "denominator": 192,
+                "decimal": 0.9427083333333334
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_gain",
+            "display_label": "RPB-v11",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 271,
+                "denominator": 320,
+                "decimal": 0.846875
+              },
+              "min": {
+                "numerator": 47,
+                "denominator": 64,
+                "decimal": 0.734375
+              },
+              "max": {
+                "numerator": 123,
+                "denominator": 128,
+                "decimal": 0.9609375
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 217,
+                "denominator": 240,
+                "decimal": 0.9041666666666667
+              },
+              "min": {
+                "numerator": 97,
+                "denominator": 128,
+                "decimal": 0.7578125
+              },
+              "max": {
+                "numerator": 127,
+                "denominator": 128,
+                "decimal": 0.9921875
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          }
+        ]
       },
       {
         "task": "amplitude",
-        "budget": 2048,
         "view": "validation_intact",
-        "late_linear_percent": 99.84375,
-        "early_linear_percent": 97.5,
-        "late_neural_percent": 99.375,
-        "early_neural_percent": 97.55208333333333,
-        "late_worst_linear_percent": 99.21875,
-        "early_worst_linear_percent": 91.40625,
-        "coverage_percent": 100.0
+        "budget": 512,
+        "methods": [
+          {
+            "method": "raw",
+            "display_label": "Raw data",
+            "size": 576,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 97,
+                "denominator": 160,
+                "decimal": 0.60625
+              },
+              "min": {
+                "numerator": 75,
+                "denominator": 128,
+                "decimal": 0.5859375
+              },
+              "max": {
+                "numerator": 5,
+                "denominator": 8,
+                "decimal": 0.625
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1189,
+                "denominator": 1920,
+                "decimal": 0.6192708333333333
+              },
+              "min": {
+                "numerator": 19,
+                "denominator": 32,
+                "decimal": 0.59375
+              },
+              "max": {
+                "numerator": 121,
+                "denominator": 192,
+                "decimal": 0.6302083333333334
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "mask_metadata",
+            "display_label": "Mask only",
+            "size": 288,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "pca_only",
+            "display_label": "PCA only — no encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 87,
+                "denominator": 160,
+                "decimal": 0.54375
+              },
+              "min": {
+                "numerator": 17,
+                "denominator": 32,
+                "decimal": 0.53125
+              },
+              "max": {
+                "numerator": 9,
+                "denominator": 16,
+                "decimal": 0.5625
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 107,
+                "denominator": 160,
+                "decimal": 0.66875
+              },
+              "min": {
+                "numerator": 245,
+                "denominator": 384,
+                "decimal": 0.6380208333333334
+              },
+              "max": {
+                "numerator": 265,
+                "denominator": 384,
+                "decimal": 0.6901041666666666
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "untrained_native",
+            "display_label": "Untrained encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 79,
+                "denominator": 80,
+                "decimal": 0.9875
+              },
+              "min": {
+                "numerator": 125,
+                "denominator": 128,
+                "decimal": 0.9765625
+              },
+              "max": {
+                "numerator": 127,
+                "denominator": 128,
+                "decimal": 0.9921875
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 95,
+                "denominator": 96,
+                "decimal": 0.9895833333333334
+              },
+              "min": {
+                "numerator": 47,
+                "denominator": 48,
+                "decimal": 0.9791666666666666
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_control",
+            "display_label": "RPB-v10.alt-02",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 639,
+                "denominator": 640,
+                "decimal": 0.9984375
+              },
+              "min": {
+                "numerator": 127,
+                "denominator": 128,
+                "decimal": 0.9921875
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 319,
+                "denominator": 320,
+                "decimal": 0.996875
+              },
+              "min": {
+                "numerator": 95,
+                "denominator": 96,
+                "decimal": 0.9895833333333334
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_gain",
+            "display_label": "RPB-v11",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 637,
+                "denominator": 640,
+                "decimal": 0.9953125
+              },
+              "min": {
+                "numerator": 125,
+                "denominator": 128,
+                "decimal": 0.9765625
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 479,
+                "denominator": 480,
+                "decimal": 0.9979166666666667
+              },
+              "min": {
+                "numerator": 95,
+                "denominator": 96,
+                "decimal": 0.9895833333333334
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          }
+        ]
       },
       {
         "task": "amplitude",
-        "budget": 2048,
         "view": "validation_deleted",
-        "late_linear_percent": 97.65625,
-        "early_linear_percent": 92.1875,
-        "late_neural_percent": 94.16666666666667,
-        "early_neural_percent": 90.0,
-        "late_worst_linear_percent": 94.53125,
-        "early_worst_linear_percent": 78.90625,
-        "coverage_percent": 100.0
+        "budget": 512,
+        "methods": [
+          {
+            "method": "raw",
+            "display_label": "Raw data",
+            "size": 576,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 409,
+                "denominator": 640,
+                "decimal": 0.6390625
+              },
+              "min": {
+                "numerator": 39,
+                "denominator": 64,
+                "decimal": 0.609375
+              },
+              "max": {
+                "numerator": 83,
+                "denominator": 128,
+                "decimal": 0.6484375
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 59,
+                "denominator": 128,
+                "decimal": 0.4609375
+              },
+              "min": {
+                "numerator": 7,
+                "denominator": 16,
+                "decimal": 0.4375
+              },
+              "max": {
+                "numerator": 63,
+                "denominator": 128,
+                "decimal": 0.4921875
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "mask_metadata",
+            "display_label": "Mask only",
+            "size": 288,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "pca_only",
+            "display_label": "PCA only — no encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 179,
+                "denominator": 320,
+                "decimal": 0.559375
+              },
+              "min": {
+                "numerator": 65,
+                "denominator": 128,
+                "decimal": 0.5078125
+              },
+              "max": {
+                "numerator": 5,
+                "denominator": 8,
+                "decimal": 0.625
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1087,
+                "denominator": 1920,
+                "decimal": 0.5661458333333333
+              },
+              "min": {
+                "numerator": 205,
+                "denominator": 384,
+                "decimal": 0.5338541666666666
+              },
+              "max": {
+                "numerator": 113,
+                "denominator": 192,
+                "decimal": 0.5885416666666666
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "untrained_native",
+            "display_label": "Untrained encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 531,
+                "denominator": 640,
+                "decimal": 0.8296875
+              },
+              "min": {
+                "numerator": 95,
+                "denominator": 128,
+                "decimal": 0.7421875
+              },
+              "max": {
+                "numerator": 29,
+                "denominator": 32,
+                "decimal": 0.90625
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 49,
+                "denominator": 60,
+                "decimal": 0.8166666666666667
+              },
+              "min": {
+                "numerator": 49,
+                "denominator": 64,
+                "decimal": 0.765625
+              },
+              "max": {
+                "numerator": 111,
+                "denominator": 128,
+                "decimal": 0.8671875
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_control",
+            "display_label": "RPB-v10.alt-02",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 39,
+                "denominator": 40,
+                "decimal": 0.975
+              },
+              "min": {
+                "numerator": 121,
+                "denominator": 128,
+                "decimal": 0.9453125
+              },
+              "max": {
+                "numerator": 127,
+                "denominator": 128,
+                "decimal": 0.9921875
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 365,
+                "denominator": 384,
+                "decimal": 0.9505208333333334
+              },
+              "min": {
+                "numerator": 117,
+                "denominator": 128,
+                "decimal": 0.9140625
+              },
+              "max": {
+                "numerator": 95,
+                "denominator": 96,
+                "decimal": 0.9895833333333334
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_gain",
+            "display_label": "RPB-v11",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 69,
+                "denominator": 80,
+                "decimal": 0.8625
+              },
+              "min": {
+                "numerator": 101,
+                "denominator": 128,
+                "decimal": 0.7890625
+              },
+              "max": {
+                "numerator": 127,
+                "denominator": 128,
+                "decimal": 0.9921875
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 299,
+                "denominator": 320,
+                "decimal": 0.934375
+              },
+              "min": {
+                "numerator": 173,
+                "denominator": 192,
+                "decimal": 0.9010416666666666
+              },
+              "max": {
+                "numerator": 191,
+                "denominator": 192,
+                "decimal": 0.9947916666666666
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          }
+        ]
       }
     ],
-    "training_by_budget": [
+    "training": [
       {
-        "instance_bundle": "RPB-v7.alt-03",
+        "tag": "RPB-v10.alt-02",
+        "role": "control",
         "updates": 512,
-        "train_standardized_mae": 0.06742729793673133,
-        "validation_standardized_mae": 0.06874694524778582,
-        "cumulative_update_loop_seconds": 13.6834431706,
-        "interval_update_loop_seconds": 13.6834431706
+        "training_standardized_mae": {
+          "mean": 0.07518095497891544,
+          "min": 0.0655362498792414,
+          "max": 0.08280197863544082
+        },
+        "validation_standardized_mae": {
+          "mean": 0.07672889401475888,
+          "min": 0.06828924017818656,
+          "max": 0.08365123183325986
+        },
+        "GPU_update_loop_seconds": {
+          "mean": 14.1778600992,
+          "min": 13.651445801,
+          "max": 14.655154923
+        }
       },
       {
-        "instance_bundle": "RPB-v10.alt-01",
+        "tag": "RPB-v11",
+        "role": "candidate",
         "updates": 512,
-        "train_standardized_mae": 0.06845693612359596,
-        "validation_standardized_mae": 0.06951204900296724,
-        "cumulative_update_loop_seconds": 14.211625775600002,
-        "interval_update_loop_seconds": 14.211625775600002
-      },
-      {
-        "instance_bundle": "RPB-v7.alt-03",
-        "updates": 1024,
-        "train_standardized_mae": 0.05689297742025752,
-        "validation_standardized_mae": 0.058220360923722306,
-        "cumulative_update_loop_seconds": 27.2216438364,
-        "interval_update_loop_seconds": 13.5382006658
-      },
-      {
-        "instance_bundle": "RPB-v10.alt-01",
-        "updates": 1024,
-        "train_standardized_mae": 0.059983574002810715,
-        "validation_standardized_mae": 0.061028930434478934,
-        "cumulative_update_loop_seconds": 28.4012478058,
-        "interval_update_loop_seconds": 14.189622030200002
-      },
-      {
-        "instance_bundle": "RPB-v7.alt-03",
-        "updates": 2048,
-        "train_standardized_mae": 0.03620451122786698,
-        "validation_standardized_mae": 0.03730539146238403,
-        "cumulative_update_loop_seconds": 54.1306847286,
-        "interval_update_loop_seconds": 26.9090408922
-      },
-      {
-        "instance_bundle": "RPB-v10.alt-01",
-        "updates": 2048,
-        "train_standardized_mae": 0.036075301637501986,
-        "validation_standardized_mae": 0.03630395834882287,
-        "cumulative_update_loop_seconds": 56.9401723726,
-        "interval_update_loop_seconds": 28.5389245668
+        "training_standardized_mae": {
+          "mean": 0.21664079920752743,
+          "min": 0.16728978506847797,
+          "max": 0.2541864501610272
+        },
+        "validation_standardized_mae": {
+          "mean": 0.21465864056257256,
+          "min": 0.16851160932650142,
+          "max": 0.2546031758690345
+        },
+        "GPU_update_loop_seconds": {
+          "mean": 14.335222582400002,
+          "min": 14.18440825,
+          "max": 14.473876112
+        }
       }
     ],
-    "measured_record": "code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md",
-    "durable_summary": "doc/results/early_mixer_learning_curve_v1.json",
-    "measured_record_sha256": "3fa32d02bdf92dc084a5a1c78a9d06c1d3412abaf11935195d740fc079833372",
-    "durable_summary_sha256": "2f661e1d74d5f13d9b3851149c05e119844d3085075dac78cfa1eb57a5f3409f",
-    "card": "code/evaluation/cards/early_mixer_learning_curve_v1.md",
-    "card_sha256": "869d1a113ed8b6493295632555d69700a279f34e85b01754459761abcc7c4a98",
-    "source_fingerprint": "7bfda3c2d56716dc7d40c8835fb9f64f1df117969cd4603de3bfa846eb9632f8",
-    "core_source_fingerprint": "d7f59a497992150cb6c3bbe554081d1282f54f2973d6b1e14753e670d9de68bf",
-    "training_producer_source_fingerprint": "23719d39c1c145ce8f454501b37bb66d38d6b57be2cdc7be0fa7c03aed10fa10",
-    "artifact_inventory_sha256": "b153296974bb15d03d181c455f67a79b486d980631ebc2484e5c6ffe5b345d85",
-    "measured_capsule": "output/runs/rpb-early-mixer-learning-curve/early-mixer-learning-curve-FDv5b0",
-    "audit_checks": 141317815,
-    "audit_archive_decodes": 1675,
-    "audit_elapsed_seconds": 548.2862866810028,
-    "audit_validation_sha256": "4bcd70194986a0207abcd2e721b6e5bac5cfa62c6b22bf47106d86a09858ebbe",
-    "audit_reader_sha256": "6eec9d5f2b73a3e70b907a6d3df3d10ee509f11850e201b8d640f927b7b242e9",
+    "guards": {
+      "validation_intact_ridge_mean_no_worse": false,
+      "validation_intact_ridge_worst_no_worse": false,
+      "validation_intact_equal_per_master_coverage": true,
+      "validation_deleted_ridge_mean_no_worse": false,
+      "validation_deleted_ridge_worst_no_worse": false,
+      "validation_deleted_equal_per_master_coverage": true,
+      "training_original_query_mae_mean_no_worse": false,
+      "validation_original_query_mae_mean_no_worse": false
+    },
+    "joint_direction_passed": false,
+    "measured_record": "code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md",
+    "durable_summary": "doc/results/matched_target_gain_v1.json",
+    "measured_record_sha256": "f88af56f6d7d9a4692d622b479613e76af2cb58f53ef02ff9b91767da21a7217",
+    "durable_summary_sha256": "6afdc72e738b915c50043c92d436f9a4c1006c38e92f1746b4e7bbb5d8b7112c",
+    "card": "code/evaluation/cards/matched_target_gain_v1.md",
+    "card_sha256": "00d5d84815fd64a3e1787e3f25dddef045b1ca208458c19d5ca4000a5ca04eec",
+    "measured_capsule": "output/runs/rpb-matched-target-gain/matched-target-gain-YmAtKW",
+    "artifact_inventory_sha256": "e653ab95509af9eb321a0ff90e50f16f4566051894a3e4df4d162f55dda0f4f4",
+    "source_fingerprint": "1b734e72069f46aef80ecf9270edfa186aa50557b715ae3f101380b80f519215",
+    "audit_validation_sha256": "9807e8439c60c3beefeb83431cd7660667a10aae449fbdc4b281c98b1b631682",
+    "audit_reader_sha256": "f9c2851fb145e20f068f32ca555cb8573a60a817ea5e8b04557f51dbf6bc90e6",
+    "audit_checks": 88154488,
+    "audit_archive_decodes": 1165,
+    "audit_elapsed_seconds": 358.4204635560018,
+    "admission_sha256": "a8eae291a3d2854a6ac2f555a48d92a0263ee58fcc841f26c5af6c6d20d39f4b",
+    "admission_log_sha256": "71604f7cbe11c05b761873163b72e88358dc9fe7aeb4d7b47550abed10f04cf6",
     "testing_accessed": false,
     "stress_accessed": false,
     "selection": false,
     "promotion": false,
     "existing_groups_replaced": false,
-    "decision_scope": "both groups reconstruct more accurately with longer training, without monotone timing classification improvement; early deletion advantage accompanies an amplitude-transfer tradeoff; all budgets retained, none selected",
-    "next_direction": "one prospective TRAIN-only matched-target log-uniform gain 0.5–2 comparison at fixed512 using the same early architecture and a fresh matched control; skip half-mixer"
+    "decision_scope": "Stop this fixed matched-target gain recipe; all six numeric guards fail, all five original-query MAEs worsen, and coverage remains equal. No coefficient/range/rate/budget/head rescue.",
+    "next_direction": "Engineering-first feasibility for one pooled-context information path with a matched compact control; prospective card and CUDA correctness gates before any quality generation; no measured result or new registered tag yet."
   },
   "frozen_amplitude_transfer_diagnostic": {
     "protocol": "frozen-amplitude-transfer-v1",
@@ -890,7 +2385,7 @@
   },
   "bounded_candidate_tag": "RPB-v9",
   "bounded_candidate_status": "completed_failed_fixed512_development",
-  "last_measured_candidate_tag": "RPB-v10",
+  "last_measured_candidate_tag": "RPB-v11",
   "training_objective_diagnostic": {
     "protocol": "training-objective-diagnostic-v1",
     "status": "completed_null_auxiliary_rejected",
@@ -1269,14 +2764,24 @@
     {
       "tag": "RPB-v11",
       "encoder": "raw_patch_bottleneck_mae",
-      "description": "Early mixer with prospective matched-target TRAIN gain",
-      "status": "planned_not_measured_no_card_yet",
+      "description": "Early mixer with matched-target TRAIN gain; fixed512 recipe stopped",
+      "status": "measured_failed_all_six_numeric_guards_stopped_no_promotion",
       "architecture_id": "aligned-mixer-before-temporal-v1",
       "native_global_width": 32,
       "parameter_count_at_C3_H32_F3": 225805,
       "planned_encoder_updates_each": 512,
       "comparison_instance_bundle": "RPB-v10.alt-02",
-      "promotion": false
+      "promotion": false,
+      "measured_protocol": "matched-target-gain-v1",
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md",
+      "measured_record_sha256": "f88af56f6d7d9a4692d622b479613e76af2cb58f53ef02ff9b91767da21a7217",
+      "durable_summary": "doc/results/matched_target_gain_v1.json",
+      "durable_summary_sha256": "6afdc72e738b915c50043c92d436f9a4c1006c38e92f1746b4e7bbb5d8b7112c",
+      "encoder_updates_each": 512,
+      "card": "code/evaluation/cards/matched_target_gain_v1.md",
+      "card_sha256": "00d5d84815fd64a3e1787e3f25dddef045b1ca208458c19d5ca4000a5ca04eec",
+      "training_policy_id": "rpb-training-context-deletion-015-source-gain-v1",
+      "existing_groups_replaced": false
     }
   ],
   "early_mixer_fixed512_diagnostic": {
@@ -1544,7 +3049,7 @@
     "next_direction": "one prospective TRAIN-only matched-target log-uniform gain 0.5–2 comparison at fixed512 using the same early architecture and a fresh matched control; skip half-mixer"
   },
   "planned_matched_target_gain": {
-    "status": "planned_not_measured_no_card_yet",
+    "status": "completed_failed_all_six_numeric_guards_stopped_no_promotion",
     "reference_instance_bundle": "RPB-v10.alt-02",
     "candidate_tag": "RPB-v11",
     "timing_master_seeds": [
@@ -1564,11 +3069,1659 @@
     "encoder_updates_each": 512,
     "batch_size": 8,
     "architecture": "same early mixer and native32 as RPB-v10",
-    "augmentation": "TRAIN-only matched-target gain, log-uniform 0.5–2; detailed recipe awaits frozen prospective card",
+    "augmentation": "TRAIN-only source-paired matched-target gain, log-uniform 0.5–2 under the frozen card",
     "quality_oracle_access_before_freeze": false,
     "testing_accessed": false,
     "stress_accessed": false,
     "promotion": false,
-    "half_mixer": false
+    "half_mixer": false,
+    "card": "code/evaluation/cards/matched_target_gain_v1.md",
+    "card_sha256": "00d5d84815fd64a3e1787e3f25dddef045b1ca208458c19d5ca4000a5ca04eec",
+    "measured_record": "code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md",
+    "durable_summary": "doc/results/matched_target_gain_v1.json",
+    "measured_capsule": "output/runs/rpb-matched-target-gain/matched-target-gain-YmAtKW",
+    "guards": {
+      "validation_intact_ridge_mean_no_worse": false,
+      "validation_intact_ridge_worst_no_worse": false,
+      "validation_intact_equal_per_master_coverage": true,
+      "validation_deleted_ridge_mean_no_worse": false,
+      "validation_deleted_ridge_worst_no_worse": false,
+      "validation_deleted_equal_per_master_coverage": true,
+      "training_original_query_mae_mean_no_worse": false,
+      "validation_original_query_mae_mean_no_worse": false
+    }
+  },
+  "matched_target_gain_diagnostic": {
+    "protocol": "matched-target-gain-v1",
+    "status": "completed_failed_all_six_numeric_guards_stopped_no_promotion",
+    "instance_bundles": [
+      "RPB-v10.alt-02",
+      "RPB-v11"
+    ],
+    "timing_master_seeds": [
+      41140,
+      42241,
+      43342,
+      44443,
+      45544
+    ],
+    "amplitude_data_master_seeds": [
+      46645,
+      47746,
+      48847,
+      49948,
+      51049
+    ],
+    "encoder_trajectories": 10,
+    "encoder_updates_each": 512,
+    "batch_size": 8,
+    "retained_completed_updates": [
+      0,
+      512
+    ],
+    "retained_points": 20,
+    "sampled_rows": 40960,
+    "extra_decoder_calibration_updates": 0,
+    "new_head_pipelines": 180,
+    "new_individual_heads": 360,
+    "unique_quality_native_exports": 90,
+    "initial_counterpart_exports": 30,
+    "actual_full_native_export_calls": 120,
+    "timing_query_evaluation_calls": 20,
+    "necessary_query_CUDA_forwards": 80,
+    "quality_panels": [
+      {
+        "task": "lag_sign",
+        "view": "validation_intact",
+        "budget": 512,
+        "methods": [
+          {
+            "method": "raw",
+            "display_label": "Raw data",
+            "size": 576,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 65,
+                "denominator": 128,
+                "decimal": 0.5078125
+              },
+              "min": {
+                "numerator": 59,
+                "denominator": 128,
+                "decimal": 0.4609375
+              },
+              "max": {
+                "numerator": 71,
+                "denominator": 128,
+                "decimal": 0.5546875
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1003,
+                "denominator": 1920,
+                "decimal": 0.5223958333333333
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 55,
+                "denominator": 96,
+                "decimal": 0.5729166666666666
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "mask_metadata",
+            "display_label": "Mask only",
+            "size": 288,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "pca_only",
+            "display_label": "PCA only — no encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 141,
+                "denominator": 320,
+                "decimal": 0.440625
+              },
+              "min": {
+                "numerator": 13,
+                "denominator": 32,
+                "decimal": 0.40625
+              },
+              "max": {
+                "numerator": 61,
+                "denominator": 128,
+                "decimal": 0.4765625
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 493,
+                "denominator": 640,
+                "decimal": 0.7703125
+              },
+              "min": {
+                "numerator": 45,
+                "denominator": 64,
+                "decimal": 0.703125
+              },
+              "max": {
+                "numerator": 79,
+                "denominator": 96,
+                "decimal": 0.8229166666666666
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "untrained_native",
+            "display_label": "Untrained encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 351,
+                "denominator": 640,
+                "decimal": 0.5484375
+              },
+              "min": {
+                "numerator": 33,
+                "denominator": 64,
+                "decimal": 0.515625
+              },
+              "max": {
+                "numerator": 75,
+                "denominator": 128,
+                "decimal": 0.5859375
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1303,
+                "denominator": 1920,
+                "decimal": 0.6786458333333333
+              },
+              "min": {
+                "numerator": 69,
+                "denominator": 128,
+                "decimal": 0.5390625
+              },
+              "max": {
+                "numerator": 7,
+                "denominator": 8,
+                "decimal": 0.875
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_control",
+            "display_label": "RPB-v10.alt-02",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 617,
+                "denominator": 640,
+                "decimal": 0.9640625
+              },
+              "min": {
+                "numerator": 29,
+                "denominator": 32,
+                "decimal": 0.90625
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 959,
+                "denominator": 960,
+                "decimal": 0.9989583333333333
+              },
+              "min": {
+                "numerator": 383,
+                "denominator": 384,
+                "decimal": 0.9973958333333334
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_gain",
+            "display_label": "RPB-v11",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 61,
+                "denominator": 64,
+                "decimal": 0.953125
+              },
+              "min": {
+                "numerator": 27,
+                "denominator": 32,
+                "decimal": 0.84375
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 39,
+                "denominator": 40,
+                "decimal": 0.975
+              },
+              "min": {
+                "numerator": 11,
+                "denominator": 12,
+                "decimal": 0.9166666666666666
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          }
+        ]
+      },
+      {
+        "task": "lag_sign",
+        "view": "validation_deleted",
+        "budget": 512,
+        "methods": [
+          {
+            "method": "raw",
+            "display_label": "Raw data",
+            "size": 576,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 81,
+                "denominator": 160,
+                "decimal": 0.50625
+              },
+              "min": {
+                "numerator": 15,
+                "denominator": 32,
+                "decimal": 0.46875
+              },
+              "max": {
+                "numerator": 71,
+                "denominator": 128,
+                "decimal": 0.5546875
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 313,
+                "denominator": 640,
+                "decimal": 0.4890625
+              },
+              "min": {
+                "numerator": 59,
+                "denominator": 128,
+                "decimal": 0.4609375
+              },
+              "max": {
+                "numerator": 49,
+                "denominator": 96,
+                "decimal": 0.5104166666666666
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "mask_metadata",
+            "display_label": "Mask only",
+            "size": 288,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "pca_only",
+            "display_label": "PCA only — no encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 281,
+                "denominator": 640,
+                "decimal": 0.4390625
+              },
+              "min": {
+                "numerator": 13,
+                "denominator": 32,
+                "decimal": 0.40625
+              },
+              "max": {
+                "numerator": 61,
+                "denominator": 128,
+                "decimal": 0.4765625
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 527,
+                "denominator": 960,
+                "decimal": 0.5489583333333333
+              },
+              "min": {
+                "numerator": 175,
+                "denominator": 384,
+                "decimal": 0.4557291666666667
+              },
+              "max": {
+                "numerator": 227,
+                "denominator": 384,
+                "decimal": 0.5911458333333334
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "untrained_native",
+            "display_label": "Untrained encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 323,
+                "denominator": 640,
+                "decimal": 0.5046875
+              },
+              "min": {
+                "numerator": 15,
+                "denominator": 32,
+                "decimal": 0.46875
+              },
+              "max": {
+                "numerator": 9,
+                "denominator": 16,
+                "decimal": 0.5625
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 343,
+                "denominator": 640,
+                "decimal": 0.5359375
+              },
+              "min": {
+                "numerator": 91,
+                "denominator": 192,
+                "decimal": 0.4739583333333333
+              },
+              "max": {
+                "numerator": 221,
+                "denominator": 384,
+                "decimal": 0.5755208333333334
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_control",
+            "display_label": "RPB-v10.alt-02",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 37,
+                "denominator": 40,
+                "decimal": 0.925
+              },
+              "min": {
+                "numerator": 107,
+                "denominator": 128,
+                "decimal": 0.8359375
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 941,
+                "denominator": 960,
+                "decimal": 0.9802083333333333
+              },
+              "min": {
+                "numerator": 181,
+                "denominator": 192,
+                "decimal": 0.9427083333333334
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_gain",
+            "display_label": "RPB-v11",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 271,
+                "denominator": 320,
+                "decimal": 0.846875
+              },
+              "min": {
+                "numerator": 47,
+                "denominator": 64,
+                "decimal": 0.734375
+              },
+              "max": {
+                "numerator": 123,
+                "denominator": 128,
+                "decimal": 0.9609375
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 217,
+                "denominator": 240,
+                "decimal": 0.9041666666666667
+              },
+              "min": {
+                "numerator": 97,
+                "denominator": 128,
+                "decimal": 0.7578125
+              },
+              "max": {
+                "numerator": 127,
+                "denominator": 128,
+                "decimal": 0.9921875
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          }
+        ]
+      },
+      {
+        "task": "amplitude",
+        "view": "validation_intact",
+        "budget": 512,
+        "methods": [
+          {
+            "method": "raw",
+            "display_label": "Raw data",
+            "size": 576,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 97,
+                "denominator": 160,
+                "decimal": 0.60625
+              },
+              "min": {
+                "numerator": 75,
+                "denominator": 128,
+                "decimal": 0.5859375
+              },
+              "max": {
+                "numerator": 5,
+                "denominator": 8,
+                "decimal": 0.625
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1189,
+                "denominator": 1920,
+                "decimal": 0.6192708333333333
+              },
+              "min": {
+                "numerator": 19,
+                "denominator": 32,
+                "decimal": 0.59375
+              },
+              "max": {
+                "numerator": 121,
+                "denominator": 192,
+                "decimal": 0.6302083333333334
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "mask_metadata",
+            "display_label": "Mask only",
+            "size": 288,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "pca_only",
+            "display_label": "PCA only — no encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 87,
+                "denominator": 160,
+                "decimal": 0.54375
+              },
+              "min": {
+                "numerator": 17,
+                "denominator": 32,
+                "decimal": 0.53125
+              },
+              "max": {
+                "numerator": 9,
+                "denominator": 16,
+                "decimal": 0.5625
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 107,
+                "denominator": 160,
+                "decimal": 0.66875
+              },
+              "min": {
+                "numerator": 245,
+                "denominator": 384,
+                "decimal": 0.6380208333333334
+              },
+              "max": {
+                "numerator": 265,
+                "denominator": 384,
+                "decimal": 0.6901041666666666
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "untrained_native",
+            "display_label": "Untrained encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 79,
+                "denominator": 80,
+                "decimal": 0.9875
+              },
+              "min": {
+                "numerator": 125,
+                "denominator": 128,
+                "decimal": 0.9765625
+              },
+              "max": {
+                "numerator": 127,
+                "denominator": 128,
+                "decimal": 0.9921875
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 95,
+                "denominator": 96,
+                "decimal": 0.9895833333333334
+              },
+              "min": {
+                "numerator": 47,
+                "denominator": 48,
+                "decimal": 0.9791666666666666
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_control",
+            "display_label": "RPB-v10.alt-02",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 639,
+                "denominator": 640,
+                "decimal": 0.9984375
+              },
+              "min": {
+                "numerator": 127,
+                "denominator": 128,
+                "decimal": 0.9921875
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 319,
+                "denominator": 320,
+                "decimal": 0.996875
+              },
+              "min": {
+                "numerator": 95,
+                "denominator": 96,
+                "decimal": 0.9895833333333334
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_gain",
+            "display_label": "RPB-v11",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 637,
+                "denominator": 640,
+                "decimal": 0.9953125
+              },
+              "min": {
+                "numerator": 125,
+                "denominator": 128,
+                "decimal": 0.9765625
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 479,
+                "denominator": 480,
+                "decimal": 0.9979166666666667
+              },
+              "min": {
+                "numerator": 95,
+                "denominator": 96,
+                "decimal": 0.9895833333333334
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          }
+        ]
+      },
+      {
+        "task": "amplitude",
+        "view": "validation_deleted",
+        "budget": 512,
+        "methods": [
+          {
+            "method": "raw",
+            "display_label": "Raw data",
+            "size": 576,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 409,
+                "denominator": 640,
+                "decimal": 0.6390625
+              },
+              "min": {
+                "numerator": 39,
+                "denominator": 64,
+                "decimal": 0.609375
+              },
+              "max": {
+                "numerator": 83,
+                "denominator": 128,
+                "decimal": 0.6484375
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 59,
+                "denominator": 128,
+                "decimal": 0.4609375
+              },
+              "min": {
+                "numerator": 7,
+                "denominator": 16,
+                "decimal": 0.4375
+              },
+              "max": {
+                "numerator": 63,
+                "denominator": 128,
+                "decimal": 0.4921875
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "mask_metadata",
+            "display_label": "Mask only",
+            "size": 288,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 2,
+                "decimal": 0.5
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "pca_only",
+            "display_label": "PCA only — no encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 179,
+                "denominator": 320,
+                "decimal": 0.559375
+              },
+              "min": {
+                "numerator": 65,
+                "denominator": 128,
+                "decimal": 0.5078125
+              },
+              "max": {
+                "numerator": 5,
+                "denominator": 8,
+                "decimal": 0.625
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 1087,
+                "denominator": 1920,
+                "decimal": 0.5661458333333333
+              },
+              "min": {
+                "numerator": 205,
+                "denominator": 384,
+                "decimal": 0.5338541666666666
+              },
+              "max": {
+                "numerator": 113,
+                "denominator": 192,
+                "decimal": 0.5885416666666666
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "untrained_native",
+            "display_label": "Untrained encoder",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 531,
+                "denominator": 640,
+                "decimal": 0.8296875
+              },
+              "min": {
+                "numerator": 95,
+                "denominator": 128,
+                "decimal": 0.7421875
+              },
+              "max": {
+                "numerator": 29,
+                "denominator": 32,
+                "decimal": 0.90625
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 49,
+                "denominator": 60,
+                "decimal": 0.8166666666666667
+              },
+              "min": {
+                "numerator": 49,
+                "denominator": 64,
+                "decimal": 0.765625
+              },
+              "max": {
+                "numerator": 111,
+                "denominator": 128,
+                "decimal": 0.8671875
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_control",
+            "display_label": "RPB-v10.alt-02",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 39,
+                "denominator": 40,
+                "decimal": 0.975
+              },
+              "min": {
+                "numerator": 121,
+                "denominator": 128,
+                "decimal": 0.9453125
+              },
+              "max": {
+                "numerator": 127,
+                "denominator": 128,
+                "decimal": 0.9921875
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 365,
+                "denominator": 384,
+                "decimal": 0.9505208333333334
+              },
+              "min": {
+                "numerator": 117,
+                "denominator": 128,
+                "decimal": 0.9140625
+              },
+              "max": {
+                "numerator": 95,
+                "denominator": 96,
+                "decimal": 0.9895833333333334
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          },
+          {
+            "method": "native_gain",
+            "display_label": "RPB-v11",
+            "size": 32,
+            "status": "measured",
+            "linear": {
+              "mean": {
+                "numerator": 69,
+                "denominator": 80,
+                "decimal": 0.8625
+              },
+              "min": {
+                "numerator": 101,
+                "denominator": 128,
+                "decimal": 0.7890625
+              },
+              "max": {
+                "numerator": 127,
+                "denominator": 128,
+                "decimal": 0.9921875
+              }
+            },
+            "neural": {
+              "mean": {
+                "numerator": 299,
+                "denominator": 320,
+                "decimal": 0.934375
+              },
+              "min": {
+                "numerator": 173,
+                "denominator": 192,
+                "decimal": 0.9010416666666666
+              },
+              "max": {
+                "numerator": 191,
+                "denominator": 192,
+                "decimal": 0.9947916666666666
+              }
+            },
+            "coverage": {
+              "mean": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "min": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              },
+              "max": {
+                "numerator": 1,
+                "denominator": 1,
+                "decimal": 1.0
+              }
+            },
+            "undefined_cohorts": {
+              "linear": 0,
+              "neural": 0,
+              "coverage": 0
+            }
+          }
+        ]
+      }
+    ],
+    "training": [
+      {
+        "tag": "RPB-v10.alt-02",
+        "role": "control",
+        "updates": 512,
+        "training_standardized_mae": {
+          "mean": 0.07518095497891544,
+          "min": 0.0655362498792414,
+          "max": 0.08280197863544082
+        },
+        "validation_standardized_mae": {
+          "mean": 0.07672889401475888,
+          "min": 0.06828924017818656,
+          "max": 0.08365123183325986
+        },
+        "GPU_update_loop_seconds": {
+          "mean": 14.1778600992,
+          "min": 13.651445801,
+          "max": 14.655154923
+        }
+      },
+      {
+        "tag": "RPB-v11",
+        "role": "candidate",
+        "updates": 512,
+        "training_standardized_mae": {
+          "mean": 0.21664079920752743,
+          "min": 0.16728978506847797,
+          "max": 0.2541864501610272
+        },
+        "validation_standardized_mae": {
+          "mean": 0.21465864056257256,
+          "min": 0.16851160932650142,
+          "max": 0.2546031758690345
+        },
+        "GPU_update_loop_seconds": {
+          "mean": 14.335222582400002,
+          "min": 14.18440825,
+          "max": 14.473876112
+        }
+      }
+    ],
+    "guards": {
+      "validation_intact_ridge_mean_no_worse": false,
+      "validation_intact_ridge_worst_no_worse": false,
+      "validation_intact_equal_per_master_coverage": true,
+      "validation_deleted_ridge_mean_no_worse": false,
+      "validation_deleted_ridge_worst_no_worse": false,
+      "validation_deleted_equal_per_master_coverage": true,
+      "training_original_query_mae_mean_no_worse": false,
+      "validation_original_query_mae_mean_no_worse": false
+    },
+    "joint_direction_passed": false,
+    "measured_record": "code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md",
+    "durable_summary": "doc/results/matched_target_gain_v1.json",
+    "measured_record_sha256": "f88af56f6d7d9a4692d622b479613e76af2cb58f53ef02ff9b91767da21a7217",
+    "durable_summary_sha256": "6afdc72e738b915c50043c92d436f9a4c1006c38e92f1746b4e7bbb5d8b7112c",
+    "card": "code/evaluation/cards/matched_target_gain_v1.md",
+    "card_sha256": "00d5d84815fd64a3e1787e3f25dddef045b1ca208458c19d5ca4000a5ca04eec",
+    "measured_capsule": "output/runs/rpb-matched-target-gain/matched-target-gain-YmAtKW",
+    "artifact_inventory_sha256": "e653ab95509af9eb321a0ff90e50f16f4566051894a3e4df4d162f55dda0f4f4",
+    "source_fingerprint": "1b734e72069f46aef80ecf9270edfa186aa50557b715ae3f101380b80f519215",
+    "audit_validation_sha256": "9807e8439c60c3beefeb83431cd7660667a10aae449fbdc4b281c98b1b631682",
+    "audit_reader_sha256": "f9c2851fb145e20f068f32ca555cb8573a60a817ea5e8b04557f51dbf6bc90e6",
+    "audit_checks": 88154488,
+    "audit_archive_decodes": 1165,
+    "audit_elapsed_seconds": 358.4204635560018,
+    "admission_sha256": "a8eae291a3d2854a6ac2f555a48d92a0263ee58fcc841f26c5af6c6d20d39f4b",
+    "admission_log_sha256": "71604f7cbe11c05b761873163b72e88358dc9fe7aeb4d7b47550abed10f04cf6",
+    "testing_accessed": false,
+    "stress_accessed": false,
+    "selection": false,
+    "promotion": false,
+    "existing_groups_replaced": false,
+    "decision_scope": "Stop this fixed matched-target gain recipe; all six numeric guards fail, all five original-query MAEs worsen, and coverage remains equal. No coefficient/range/rate/budget/head rescue.",
+    "next_direction": "Engineering-first feasibility for one pooled-context information path with a matched compact control; prospective card and CUDA correctness gates before any quality generation; no measured result or new registered tag yet."
   }
 }

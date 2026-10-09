@@ -79,6 +79,10 @@ struct CurveState {
   std::map<std::string, std::array<int64_t, 2>> saved_branch_counts;
   bool balanced_failed{false};
   bool continuation_witness{false};
+  TrainingSourceGainOptions gain_options;
+  training_source_gain::Manifest gain_manifest;
+  std::vector<int64_t> gain_attempts;
+  std::vector<torch::Tensor> gain_indices, gain_targets;
   std::map<std::string, std::string> audit;
   uint64_t initialization_seed{0};
 };
@@ -128,7 +132,8 @@ void save_continuation_state(const std::shared_ptr<CurveState> &state, const std
       state->progress.losses.size() == static_cast<size_t>(state->progress.completed),
       "curve live-state witness requires the complete unskipped per-attempt trace");
   torch::serialize::OutputArchive archive;
-  write_text(archive, "artifact_kind", kLearningCurveContinuationArtifact);
+  write_text(archive, "artifact_kind", training_source_gain::enabled(state->gain_options) ?
+      kMatchedTargetGainContinuationArtifact : kLearningCurveContinuationArtifact);
   for (const auto &[key, value] : state->audit) write_text(archive, key, value);
   write_text(archive, "fit_source_manifest", source_manifest(state->fit.training_source_ids));
   write_text(archive, "checkpoint_path", path_key(path));
@@ -190,6 +195,35 @@ void save_continuation_state(const std::shared_ptr<CurveState> &state, const std
   embedding::archive::save_archive(path + kLearningCurveContinuationSuffix, archive);
 }
 
+void save_gain_view(const std::shared_ptr<CurveState> &state, const std::string &path) {
+  const auto completed = state->progress.completed;
+  require(state->progress.attempted == completed && state->gain_attempts.size() == static_cast<size_t>(completed) &&
+      state->gain_indices.size() == static_cast<size_t>(completed), "complete matched-view sample witness required");
+  const auto &c = state->settings.model; const auto b = state->settings.batch_size;
+  const bool candidate = training_source_gain::gained(state->gain_options);
+  require(state->gain_targets.size() == (candidate ? static_cast<size_t>(completed) : 0), "candidate target witness length differs");
+  torch::serialize::OutputArchive a;
+  write_text(a,"artifact_kind",kMatchedTargetGainViewArtifact);
+  training_source_gain::write_manifest(a,state->gain_manifest);
+  for (const auto &[key,value]:state->audit)
+    if (key != "source_gain_recipe" && key != "gain_manifest_id") write_text(a,key,value);
+  write_text(a,"fit_source_manifest",source_manifest(state->fit.training_source_ids));
+  write_text(a,"checkpoint_path",path_key(path));
+  write_text(a,"target_witness_scope",candidate ? "all-completed-attempts-actual-normalized-CUDA-F32-target-copy" : "unit-control-no-target-copy;closed-zero-leading-dimension");
+  a.write("attempted_steps",torch::tensor(state->progress.attempted),true);
+  a.write("completed_steps",torch::tensor(completed),true);
+  a.write("sampled_rows",torch::tensor(state->progress.sampled_rows),true);
+  a.write("source_gain_stream_value",torch::tensor(static_cast<int64_t>(training_source_gain::stream)),true);
+  a.write("source_gain_ln2_value",torch::tensor(training_source_gain::ln2,torch::kFloat64),true);
+  a.write("attempt_indices",torch::tensor(state->gain_attempts,torch::kInt64),true);
+  const auto indices = completed ? torch::stack(state->gain_indices) : torch::empty({0,b},torch::kInt64);
+  a.write("sampled_row_indices",indices,true);
+  a.write("sampled_gains",state->gain_manifest.row_gains.index_select(0,indices.reshape({-1})).reshape({completed,b}),true);
+  a.write("actual_normalized_targets",candidate && completed ? torch::stack(state->gain_targets) :
+      torch::empty({0,b,c.channel_count,c.history_length,c.input_width},torch::kFloat32),true);
+  embedding::archive::save_archive(path+kMatchedTargetGainViewSuffix,a);
+}
+
 void save_point(const std::shared_ptr<CurveState> &state, const std::string &path) {
   require(!state->balanced_failed, "balanced policy previously aborted; saving is forbidden");
   const bool balanced = state->context_options.enabled && context_deletion::is_balanced(state->context_options.recipe);
@@ -200,6 +234,7 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
   std::vector<std::string> outputs{path, path + ".training-raw.pt",
       path + ".scaler.pt", path + ".audit.pt"};
   if (state->continuation_witness) outputs.push_back(path + kLearningCurveContinuationSuffix);
+  if (training_source_gain::enabled(state->gain_options)) outputs.push_back(path + kMatchedTargetGainViewSuffix);
   for (const auto &output : outputs) {
     require(!fs::exists(output) && !fs::is_symlink(fs::symlink_status(output)),
         "refusing to replace an existing point artifact: " + output);
@@ -216,6 +251,7 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
   checkpoint.source_fingerprint = workflow_source_fingerprint();
   if (state->context_options.enabled)
     checkpoint.training_policy_id = context_deletion::descriptor(state->context_options.recipe).policy_id;
+  if (training_source_gain::gained(state->gain_options)) checkpoint.training_policy_id = kMatchedTargetGainPolicy;
   save_checkpoint(path, checkpoint, *state->optimizer);
   save_dataset(path + ".training-raw.pt", state->training);
   save_scaler(path + ".scaler.pt", state->scaler, state->settings.model,
@@ -254,6 +290,7 @@ void save_point(const std::shared_ptr<CurveState> &state, const std::string &pat
   }
   embedding::archive::save_archive(path + ".audit.pt", audit);
   if (state->continuation_witness) save_continuation_state(state, path);
+  if (training_source_gain::enabled(state->gain_options)) save_gain_view(state,path);
   state->saved.emplace(key, std::make_pair(checkpoint.attempted_steps, checkpoint.completed_steps));
   if (state->context_options.enabled) state->saved_context_counts.emplace(key, state->context_counts);
   if (balanced) state->saved_branch_counts.emplace(key, state->branch_counts);
@@ -381,6 +418,12 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
 
 ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, ContextDeletionOptions options,
     LearningCurveStateWitnessOptions state_witness) {
+  return make_learning_curve_trainer(settings,options,state_witness,TrainingSourceGainOptions{});
+}
+
+ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, ContextDeletionOptions options,
+    LearningCurveStateWitnessOptions state_witness, TrainingSourceGainOptions gain) {
+  training_source_gain::validate_options(gain);
   context_deletion::validate_options(options);
   validate_settings(settings);
   require(settings.model.device.is_cuda(), "learning-curve training requires an explicit CUDA device");
@@ -388,12 +431,17 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
   require(!options.enabled || (settings.model.global_bottleneck_mode == 2 &&
       settings.model.channel_mixer_layers == 1 && settings.model.export_width == 32),
       "context deletion requires the unchanged mode2/mixer1/native32 architecture");
-  return [settings, options, state_witness](const ev::ProviderFitInput &fit) {
+  require(!training_source_gain::enabled(gain) || (state_witness.enabled && options.enabled &&
+      options.recipe == ContextDeletionRecipe::coordinate15_v1 && settings.model.channel_mixer_placement == 1 &&
+      settings.log_every == 1), "matched source gain requires early coordinate15 with complete live-state witness");
+  return [settings, options, state_witness, gain](const ev::ProviderFitInput &fit) {
+    const bool gain_protocol = fit.protocol_id == kMatchedTargetGainFitProtocol || fit.protocol_id == kMatchedTargetGainFixtureFitProtocol;
+    require(gain_protocol == training_source_gain::enabled(gain), "new matched-view namespace and explicit recipe must agree");
     const bool curve_protocol = fit.protocol_id == "early-mixer-learning-curve-v1/lag_sign" ||
         fit.protocol_id == "early-mixer-learning-curve-engineering-v1/lag_sign";
     const bool early_protocol = fit.protocol_id == "early-mixer-reliability-v1/lag_sign" ||
-        fit.protocol_id == "early-mixer-reliability-engineering-v1/lag_sign" || curve_protocol;
-    require(!state_witness.enabled || (curve_protocol && options.enabled &&
+        fit.protocol_id == "early-mixer-reliability-engineering-v1/lag_sign" || curve_protocol || gain_protocol;
+    require(!state_witness.enabled || ((curve_protocol || gain_protocol) && options.enabled &&
         options.recipe == ContextDeletionRecipe::coordinate15_v1 && settings.log_every == 1),
         "live continuation witness requires the separately bound coordinate15 curve and complete trace");
     require(settings.model.channel_mixer_placement == 0 ||
@@ -430,6 +478,7 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
     state->settings = settings;
     state->context_options = options;
     state->continuation_witness = state_witness.enabled;
+    state->gain_options = gain;
     state->settings.seed = static_cast<int64_t>(fit.seed & 0x7fffffffffffffffULL);
     state->fit = fit;
     state->fit.training_observations.data = fit.training_observations.data.detach().clone();
@@ -437,6 +486,7 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
     const auto raw = protocol_input(state->fit.training_observations, settings.model, state->fit);
     state->training = describe_dataset(raw, settings.model, fit.feature_units);
     state->scaler = fit_scaler(raw, settings.model);
+    if (gain_protocol) state->gain_manifest = training_source_gain::make_manifest(fit.training_source_ids,state->settings.seed,gain);
     state->initialization_seed = training_detail::mixed(fit.seed ^ 0x7270622d696e6974ULL);
     torch::manual_seed(state->initialization_seed);
     // Construct with CUDA Config from the outset: Model::to alone cannot update
@@ -502,10 +552,28 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
       state->audit.emplace("architecture_id", architecture_id(settings.model));
     }
     if (state_witness.enabled) {
-      state->audit.emplace("continuation_state_artifact_kind", kLearningCurveContinuationArtifact);
+      state->audit.emplace("continuation_state_artifact_kind", gain_protocol ? kMatchedTargetGainContinuationArtifact : kLearningCurveContinuationArtifact);
       state->audit.emplace("continuation_state_suffix", kLearningCurveContinuationSuffix);
       state->audit.emplace("continuation_state_policy", "live_named_CPU_model_buffers_scaler_AdamW_and_complete_trace_v1");
       state->audit.emplace("curve_skip_policy", "abort_ineligible_attempt;no_skipped_update_prefix_permitted");
+    }
+    if (gain_protocol) {
+      state->audit["model_tag"] = training_source_gain::gained(gain) ? "RPB-v11" : "RPB-v10";
+      state->audit["training_policy_id"] = training_source_gain::gained(gain) ? kMatchedTargetGainPolicy : context_deletion::descriptor(options.recipe).policy_id;
+      state->audit.emplace("context_component_policy_id",context_deletion::descriptor(options.recipe).policy_id);
+      state->audit.emplace("source_gain_recipe",training_source_gain::recipe_name(gain.recipe));
+      state->audit.emplace("source_gain_stream","0x6761696e2d763131");
+      state->audit.emplace("source_gain_rng_policy",training_source_gain::rng_policy);
+      state->audit.emplace("source_gain_policy",training_source_gain::gain_policy);
+      state->audit.emplace("source_gain_target_policy",training_source_gain::target_policy);
+      state->audit.emplace("source_gain_inference_policy",training_source_gain::inference_policy);
+      state->audit.emplace("gain_manifest_id",state->gain_manifest.identity);
+      state->audit.emplace("gain_view_artifact_kind",kMatchedTargetGainViewArtifact);
+      state->audit.emplace("gain_view_suffix",kMatchedTargetGainViewSuffix);
+      state->audit.emplace("source_gain_resume_policy","fresh-continuous-only;ordinary-and-historical-tagged-resume-rejected;no-gain-resume-API");
+      state->audit.emplace("source_gain_evidence_cost_policy",training_source_gain::gained(gain) ?
+          "update-loop-includes-per-attempt-CPU-normalized-target-copy;sample-index-capture;save-IO-separate" :
+          "update-loop-includes-sample-index-capture;no-full-target-copy;save-IO-separate");
     }
 
     ev::CurveTrainer trainer;
@@ -532,8 +600,10 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
               state->settings.batch_size, "sampled row counter overflow");
           const auto indices = training_detail::sampled_indices(state->training.input.data.size(0),
               state->settings.batch_size, state->settings.seed, attempt);
-          const auto batch = state->scaler.transform(
-              training_detail::selected(state->training.input, indices), state->settings.model);
+          const auto batch = training_source_gain::gained(state->gain_options) ?
+              state->scaler.transform(training_source_gain::apply(training_detail::selected(state->training.input,indices),
+                  indices,state->gain_manifest),state->settings.model) :
+              state->scaler.transform(training_detail::selected(state->training.input, indices), state->settings.model);
           state->progress.last_input_cuda = batch.data.is_cuda();
           require(state->progress.last_input_cuda, "normalized training input is not on CUDA");
           const auto mask = make_training_mask(batch.observed, state->settings.model,
@@ -583,6 +653,10 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
           require(state->progress.finite_gradients, "nonfinite training gradients");
           state->optimizer->step();
           ++state->progress.completed;
+          if (training_source_gain::enabled(state->gain_options)) {
+            state->gain_attempts.push_back(attempt); state->gain_indices.push_back(cpu_state(indices));
+            if (training_source_gain::gained(state->gain_options)) state->gain_targets.push_back(cpu_state(batch.data));
+          }
           if (balanced) ++state->branch_counts[deletion ? 1 : 0];
           state->last_loss = {state->progress.attempted, state->progress.completed,
               output.target_cell_count, output.loss.item<double>(), gradient_norm};
@@ -591,7 +665,7 @@ ev::CurveTrainerFactory make_learning_curve_trainer(const Settings &settings, Co
             state->progress.losses.push_back(state->last_loss);
         }
       } catch (...) {
-        if (balanced) state->balanced_failed = true;
+        if (balanced || training_source_gain::enabled(state->gain_options)) state->balanced_failed = true;
         finish_timing();
         throw;
       }

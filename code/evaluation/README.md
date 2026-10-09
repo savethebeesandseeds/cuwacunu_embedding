@@ -443,6 +443,9 @@ bash code/scripts/task.sh rpb-paired-pooling evaluate-early-mixer-reliability
 
 The source-bound admission and sealed independent reader must precede quality
 generation. Saved features serve both views and every head; independent CPU
-verification runs no encoder. The next separately frozen
-[learning-curve card](cards/early_mixer_learning_curve_v1.md) uses fresh groups
-at512/1024/2048, with no change to classifier recipes or existing saved groups.
+verification runs no encoder. The completed
+[learning-curve diagnostic](../encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md)
+retains all four points through 2048. The subsequent [matched-target gain card](cards/matched_target_gain_v1.md)
+uses the same early inference and fixed heads at 512, with original-scaler gained
+TRAIN inputs and targets. Its [audited result](../encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md)
+fails all six numeric guards; no gain-range, budget or head rescue is authorized.

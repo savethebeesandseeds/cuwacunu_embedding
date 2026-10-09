@@ -3,6 +3,7 @@
 
 #include "embedding/encoders/raw_patch_bottleneck_mae/workflow.h"
 #include "embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h"
+#include "embedding/encoders/raw_patch_bottleneck_mae/training_source_gain.h"
 #include "embedding/shared/learning_curve.h"
 
 namespace embedding::encoders::raw_patch_bottleneck_mae {
@@ -38,5 +39,12 @@ make_learning_curve_trainer(const Settings &settings, ContextDeletionOptions opt
 embedding::evaluation::CurveTrainerFactory make_learning_curve_trainer(
     const Settings &settings, ContextDeletionOptions options,
     LearningCurveStateWitnessOptions state_witness);
+
+// Closed new TRAIN-view protocol only. Disabled delegates the literal old
+// transform/archive path; unit_control_v1 preserves its mathematics while
+// requesting new witnesses, and source_log2_v1 applies matched input/Q gains.
+embedding::evaluation::CurveTrainerFactory make_learning_curve_trainer(
+    const Settings &settings, ContextDeletionOptions options,
+    LearningCurveStateWitnessOptions state_witness, TrainingSourceGainOptions gain);
 
 } // namespace embedding::encoders::raw_patch_bottleneck_mae

@@ -26,7 +26,7 @@ fixed across encoder comparisons; fit their weights separately on training data.
 ## Active research version
 
 The working saved v7 models are pinned as **RPB-v7** in the version
-registry: masters4404/5505/6606/7707/8808 in the original lighter-policy capsule.
+registry: masters 4404/5505/6606/7707/8808 in the original lighter-policy capsule.
 Preserve their checkpoints, scalers, fitted readouts and reports. The newer
 **RPB-v7.alt-01** contains separately trained instances on different
 sources/seeds and does not replace this frozen reference. Use these short labels
@@ -82,7 +82,7 @@ saved-arithmetic audit v3 passed 16,119,003 checks; the failed v2 reader and
 cross-backend correction are preserved. This is local TRAIN evidence, not a
 new accuracy result. Preserve the diagnostic sources, card and captured evidence.
 The completed [RPB-v9 native view agreement diagnostic](code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md)
-fails all six numeric guards at fixed512. Native linear means are 59.21875%
+fails all six numeric guards at fixed 512. Native linear means are 59.21875%
 intact / 57.03125% under extra deletion; mean TRAIN/VALIDATION MAE is
 29.194490 / 29.371655, including one especially unstable run. Actual CUDA
 admission and independent audit passed 74,721,050 checks. Stop this frozen
@@ -91,15 +91,17 @@ this v9 mechanism remains stopped. The original
 [continuation note](doc/CONTINUATION_2026-10-08.md) prescribed the saved TRAIN
 loss-scale/component diagnosis, now complete as recorded below. No TEST/stress
 or automatic promotion.
-The latest completed [early-mixer learning curve](code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md)
-measures fresh RPB-v7.alt-03/RPB-v10.alt-01 through continuous 2048, retaining
-0/512/1024/2048. Both reconstruct more accurately without monotone timing
-classification improvement. Audit passed 141,317,815 checks; no best-point
-selection or promotion occurred. Preserve the original v7 and active v4.
-The [current next direction](code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md)
-is a planned TRAIN-only matched-target gain at fixed 512 on the same early
-architecture, RPB-v10.alt-02 versus RPB-v11. It has no measured result or frozen
-card yet; do not treat planned groups as replacement evidence.
+The completed [early-mixer learning curve](code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md)
+retains every 0/512/1024/2048 point for fresh RPB-v7.alt-03/RPB-v10.alt-01.
+Both reconstruct more accurately without monotone timing classification benefit;
+no best point was selected. The latest [matched-target gain diagnostic](code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md)
+compares fresh RPB-v10.alt-02/RPB-v11 at fixed 512. All six numeric guards fail,
+all five original-query MAEs worsen, and equal 100% coverage remains. Audit
+passed 88,154,488 checks. Stop this gain recipe without range/rate/budget/head
+rescue. Preserve original v7, active v4, all earlier groups and every curve point.
+The [next direction](code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md)
+is engineering-first review of one pooled-context information path with a
+matched compact control; it has no measured result or new registered tag yet.
 The user's current working direction is RPB-v7, with
 RPB-v4 retained as the active reference. The separate
 [saved-TRAIN v9 scale lesson](code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_LOSS_SCALE_TRAIN_DIAGNOSTIC.md)
