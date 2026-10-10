@@ -59,3 +59,9 @@ code/evaluation/cards/multiband_screen_v1.md text eol=lf
 doc/results/multiband_screen_v1.json text eol=lf
 doc/MULTIBAND_SCREEN_V1.md text eol=lf
 doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md text eol=lf
+# Preserve unchanged-v19 fresh-source confirmation evidence.
+code/evaluation/protocols/spectral_confirmation_v1/** text eol=lf
+code/evaluation/cards/spectral_confirmation_v1.md text eol=lf
+doc/results/spectral_confirmation_v1.json text eol=lf
+doc/SPECTRAL_CONFIRMATION_V1.md text eol=lf
+doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md text eol=lf
