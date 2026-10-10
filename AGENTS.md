@@ -36,23 +36,29 @@ fixed across encoder comparisons; fit their weights separately on training data.
 
 ## Active research version
 
-The newest completed development design is [RPB-v18](code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md),
-with 20 learned shape coordinates and 12 fixed, unit-normalized timing coordinates
-inside native32. Five known TEMPO-3 cohorts (designed complexity 4/5) reach
-100%/100% intact and 100%/99.95% deleted Linear/Neural accuracy, with 100% coverage.
-Its targeted two-cohort gate passed before the remaining three ran. Initial
-scores already reach 100%/99.90% deleted; credit the fixed prior rather than
-claiming waveform training learned timing. No promotion or default change follows.
+The newest completed development design is [RPB-v19](doc/MULTIBAND_SCREEN_V1.md):
+20 learned shape coordinates and 12 fixed low/high spectral relation coordinates
+inside native32. Its two-cohort screen keeps **TEMPO-4** slow-component timing
+and **AMP-2** component balance separate, each at designed complexity **5/5**.
+The prospective joint gate passed at 512 updates with 100% coverage. Initial
+controls already perform strongly; credit the architecture prior. Learned shape
+and reconstruction still need demonstrated progress. Fresh confirmation is next;
+no additional quality seeds are allocated. Follow the
+[current continuation](doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
+No promotion or default change follows.
 **RPB-v4 remains the formal evaluated reference**, and original saved **RPB-v7**
 and all historical models remain protected.
 
+The preserved [RPB-v18 TEMPO-3 result](code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md)
+retains five known cohorts (designed complexity 4/5): 100%/100% intact and
+100%/99.95% deleted Linear/Neural accuracy, with 100% coverage. Its targeted
+two-cohort gate passed before the other three ran; its nearly perfect initial
+timing scores credit the fixed prior.
 The earlier [fresh RPB-v17.alt-01 record](code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_FRESH_CONFIRMATION.md)
 retains all five new cohorts, including the 70.31% deleted Linear failure.
-V18 reuses its saved scores without old encoder or head execution. Keep the
-[v18 milestone](doc/MILESTONE_2026-10-10_RPB_V18.md) and follow the
-[current continuation](doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
-The separate coherent two-component challenge is prospective; freeze its recipe,
-legal-observation interface and information admission before model quality runs.
+V18 reused its saved scores without old encoder or head execution. Keep the
+[v18 milestone](doc/MILESTONE_2026-10-10_RPB_V18.md) and its
+[historical continuation](doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
 
 The fixed 512
 [TEMPO-3 comparison](code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_DIAGNOSTIC.md)
@@ -95,7 +101,7 @@ MAE. Use each frozen card's two-cohort75%/100%-coverage gate before remaining
 known cohorts; known validation is development evidence, not unseen confirmation.
 The [historical architecture-screen continuation](doc/CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md)
 proposed fresh-data verification, now completed as RPB-v17.alt-01. The subsequent
-RPB-v18 result and next direction are linked above; the earlier data-support 2×2
+RPB-v18 result and newest RPB-v19 screen are linked above; the earlier data-support 2×2
 plan remains deferred and preserved. No phase/lag labels, head tuning, stopped-recipe
 rescue or automatic promotion. Preserve original v7 and formal v4.
 
@@ -210,7 +216,7 @@ sealed passed audit. Do not rewrite them to improve a result. The
 prescribed saved TRAIN reliability analysis across all ten instances, with no
 encoder/decoder updates, head refits or held-out analysis inputs. That diagnosis
 and the subsequent milestones are complete; the current next action is recorded
-in the [current continuation](doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md) and next advance plan. Do not tune the heads, deletion rate,
+in the [current continuation](doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md) and next advance plan. Do not tune the heads, deletion rate,
 decoder budget or stopped v9 coefficients.
 
 Older versions remain available for archived evidence, explicit comparisons,

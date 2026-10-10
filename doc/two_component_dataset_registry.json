@@ -83,6 +83,8 @@
   },
   "information_rule": "observed-two-band-affine-fit-v1",
   "engineering_result": "doc/results/two_component_information_v1.json",
+  "encoder_quality_result": "doc/results/multiband_screen_v1.json",
+  "encoder_quality_stage": "completed_two_cohort_per_task_development_screen",
   "encoder_quality_results_recorded_separately": true,
   "historical_dataset_registry_unchanged": "doc/dataset_registry.json"
 }

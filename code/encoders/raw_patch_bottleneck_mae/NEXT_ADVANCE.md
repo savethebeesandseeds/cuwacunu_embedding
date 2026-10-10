@@ -2,7 +2,8 @@
 
 Date: 2026-10-10
 
-Continue developing RPB-MAE on TEMPO-3 through separate architecture experiments.
+Continue developing RPB-MAE through separate architecture experiments and fresh
+confirmation on the declared datasets.
 Preserve original **RPB-v7** and the formal **RPB-v4** reference. Use
 native 32-number embedding and fixed classifier heads. PCA is a standalone raw-data baseline.
 Older encoder designs remain archived references and compatibility inputs;
@@ -14,10 +15,25 @@ stays separate from encoder training and decoding.
 
 ## Current completed milestone and next direction
 
-The latest completed development design is [RPB-v18](UNIT_TEMPORAL_RELATION_SCREEN.md);
+The latest completed development design is [RPB-v19](../../../doc/MULTIBAND_SCREEN_V1.md);
 **RPB-v4 remains the formal evaluated reference**, with original saved **RPB-v7**
-protected. V18 normalizes each fixed four-spacing relation group inside native32.
-Its predeclared two-cohort gate passes, then all five matched known TEMPO-3
+protected. V19 keeps 20 learned shape coordinates and 12 fixed low/high spectral
+relation coordinates inside native32. Its two-cohort screen passed the
+prospective joint gate on **TEMPO-4** slow-component timing and separate **AMP-2**
+component balance, each at designed complexity **5/5**, with 100% coverage.
+Initial controls are already strong; credit the architecture prior rather than
+claiming waveform training learned these relations. Learned shape and
+reconstruction still need demonstrated progress.
+
+The next direction is fresh confirmation under a separate prospective card;
+no additional quality seeds are allocated. Keep native32, the fixed heads and
+the two task populations separate. Follow the
+[current continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
+No TEST/stress access or default promotion follows the screen.
+
+The preserved [RPB-v18 result](UNIT_TEMPORAL_RELATION_SCREEN.md) normalizes each
+fixed four-spacing timing group inside native32. Its two-cohort gate passed,
+then all five matched known TEMPO-3
 cohorts (designed complexity 4/5) reach 100%/100% intact and 100%/99.95% deleted
 Linear/Neural accuracy, with 100% coverage. Initial timing scores are already
 almost perfect; credit the fixed prior. All matched v17 scores are reused,
@@ -29,14 +45,10 @@ Its 70.31% deleted Linear cohort fails both joint rules. Both experiments keep
 the unchanged native32, .15 context deletion, B8, 512 updates and fixed heads.
 
 Keep the [v18 milestone](../../../doc/MILESTONE_2026-10-10_RPB_V18.md)
-and [continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
-The next concrete direction is the coherent two-component
-[challenge proposal](../../../doc/PROPOSED_TEMPO4_CHALLENGE.md): slow-band
-timing TEMPO-4 and separate component-balance AMP-2, each proposed complexity5/5.
-Freeze the legal-observation generator and information admission before quality.
-Use a small initial-control screen to test a frequency-sensitive candidate and
-whether learned shape adds useful information. Do not repeat a large legacy
-comparison or infer universal quality from near-perfect single-component timing.
+and its [historical continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
+The coherent two-component challenge proposed there now has passed information
+admission and the completed v18/v19 screen linked above. Do not infer universal
+quality from either the preserved single-component result or a two-cohort screen.
 The chronology below preserves the earlier development path.
 
 The [TEMPO-3 comparison](STRUCTURED_HARD_TIMING_DIAGNOSTIC.md) completed once

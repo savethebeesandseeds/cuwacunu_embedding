@@ -6,8 +6,12 @@ has now implemented this signal family as `two-component-v1` and completed
 [data-only information admission](TWO_COMPONENT_INFORMATION_V1.md).
 Both tasks recover100% of engineering answers with100% coverage in intact
 and extra-deleted views. The [new recipe registry](two_component_dataset_registry.json)
-retains the exact source and pre-outcome complexity assignments. Encoder quality
-is not measured yet. The proposal below preserves the reasoning; use the frozen
+retains the exact source and pre-outcome complexity assignments. The separate
+[multiband encoder screen](MULTIBAND_SCREEN_V1.md) is now completed on two
+fresh quality cohorts per task. RPB-v19 passes its joint continuation gate;
+RPB-v18.alt-01 is the matched new-dataset control. Initial scores credit the
+architectural prior; this is development evidence with no promotion.
+The proposal below preserves the reasoning; use the frozen
 card for exact implementation/draw order. TEMPO-3 and its results remain intact.
 
 **TEMPO-4** names only the slow-band lag-sign task. **AMP-2** names the separate

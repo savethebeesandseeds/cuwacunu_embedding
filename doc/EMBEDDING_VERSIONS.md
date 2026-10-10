@@ -1,20 +1,30 @@
 # Embedding version registry
 
-The latest completed development design is [RPB-v18](../code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md).
-Its native32 contains 20 learned shape coordinates and 12 fixed, unit-normalized
-timing coordinates. On five known TEMPO-3 cohorts (designed complexity 4/5),
+The latest completed development design is [RPB-v19](MULTIBAND_SCREEN_V1.md).
+Its native32 contains 20 learned shape coordinates and 12 fixed low/high spectral
+relation coordinates. The two-cohort screen passed the prospective joint gate
+on **TEMPO-4** slow-component timing and separate **AMP-2** component balance,
+each at designed complexity **5/5**, with 100% coverage. Strong initial controls
+credit the architecture prior; learned shape and reconstruction still need
+demonstrated progress. Fresh confirmation is next, with no additional quality
+seeds allocated. Follow the [current continuation](CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
+**RPB-v4 remains the formal evaluated reference**; original saved **RPB-v7** and
+every earlier design and instance remain preserved. No promotion follows.
+
+The preserved [RPB-v18 TEMPO-3 result](../code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md)
+retains 20 learned shape coordinates and 12 fixed, unit-normalized timing
+coordinates. On five known TEMPO-3 cohorts (designed complexity 4/5),
 Linear/Neural accuracy is 100%/100% intact and 100%/99.95% deleted, with 100% coverage.
 Its two-cohort gate passed before expansion. Initial timing scores are already
 nearly perfect, so credit the prior. This is targeted development, not fresh-data
-confirmation or promotion. **RPB-v4 remains the formal evaluated reference**;
-original saved **RPB-v7** and every earlier design and instance remain preserved.
+confirmation or promotion.
 
 The preceding [RPB-v17.alt-01 confirmation](../code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_FRESH_CONFIRMATION.md)
 retains five fresh source cohorts: 100%/100% intact and 82.19%/99.90% deleted,
 with 100% coverage. Its 70.31% deleted Linear cohort fails both joint rules.
 No saved v17 instance is replaced. The [v18 milestone](MILESTONE_2026-10-10_RPB_V18.md)
-and [current continuation](CONTINUATION_2026-10-10_AFTER_FRESH_V17.md) record the
-latest result and separate prospective two-component challenge.
+and its [historical continuation](CONTINUATION_2026-10-10_AFTER_FRESH_V17.md)
+record that earlier result and the subsequently completed two-component screen.
 
 Earlier completed architecture screens: [RPB-v14/v15](../code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md),
 [RPB-v16](../code/encoders/raw_patch_bottleneck_mae/PARTITIONED_TEMPORAL_RELATION_SCREEN.md)
@@ -33,7 +43,7 @@ v18 development screen. TEMPO-1
 RPB-v10.alt-03 remains separate preserved evidence; the data-support2×2 plan
 is deferred and preserved.
 
-RPB-v4 is the formal evaluated reference; v18 is the latest development design. RPB-v5's claimed advance failed the
+RPB-v4 is the formal evaluated reference; v19 is the latest development design. RPB-v5's claimed advance failed the
 fixed 512 comparison. Retained versions provide historical evidence and compatible
 loaders; routine experiments need not retrain all of them.
 RPB-v6 keeps the v4 inference architecture with a fixed training policy that
@@ -77,8 +87,13 @@ preserved alongside the successful result.
 | RPB-v16 | Dedicated shape and grouped odd timing coordinates | 100% intact; one deleted neural gate fails; stopped | [Partitioned screen](../code/encoders/raw_patch_bottleneck_mae/PARTITIONED_TEMPORAL_RELATION_SCREEN.md) |
 | RPB-v17 | Learned shape with fixed generic odd relations | 100% intact;99.84% deleted neural; five known cohorts; not promoted | [Fixed-prior screen](../code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md) |
 | RPB-v18 | Learned shape with fixed unit temporal relations | 100% intact;100%/99.95% deleted; five known cohorts; not promoted | [Unit-relation screen](../code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md) |
+| RPB-v19 | Learned shape with fixed low/high complex spectral relations | Two-task/two-cohort gate passed; not promoted | [Multiband card](../code/evaluation/cards/multiband_screen_v1.md) |
 
 The [machine-readable registry](embedding_versions.json) records the same mapping.
+`RPB-v18.alt-01` identifies the new v18 control instances on TEMPO-4 and AMP-2;
+it preserves every original v18 TEMPO-3 checkpoint. `RPB-v19` identifies the
+separate spectral design and its first four task/cohort instances. Future
+unchanged-design confirmation will receive a separate `.alt-01` bundle.
 `RPB-v4.alt-01` names the fresh v4 controls paired with `RPB-v7.alt-01` on
 masters9109/10210/11311/12412/13513. It is an instance-group alias for the
 unchanged v4 design, and does not rename or replace a historical checkpoint.

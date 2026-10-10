@@ -5,24 +5,31 @@ MTF-JEPA-MAE-VICReg implementation. It converts masked multichannel histories in
 global and per-channel embeddings and trains without the parent project's runtime,
 DSL, registries, graph orchestration, forecasting, trading, or interface components.
 
-The latest completed development design is [RPB-v18](code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md):
-20 learned shape coordinates and 12 fixed, unit-normalized timing coordinates,
-served as native32. On five known TEMPO-3 cohorts (designed complexity 4/5),
-Linear/Neural accuracy is 100%/100% intact and 100%/99.95% with extra deletion,
-with 100% coverage. Its initial timing scores are already nearly perfect;
-credit the fixed architecture prior. The two-cohort gate passed before the
-remaining three ran. This is development evidence, with no default promotion.
+The latest completed development design is [RPB-v19](doc/MULTIBAND_SCREEN_V1.md):
+20 learned shape coordinates and 12 fixed low/high spectral relation coordinates,
+served as native32. Its two-cohort screen passed the prospective joint gate on
+**TEMPO-4** slow-component timing and separate **AMP-2** component balance,
+each at designed complexity **5/5**. Trained Linear/Neural deleted accuracy is
+92.97%/94.27% for timing and 94.53%/88.41% for balance, with 100% coverage.
+Strong initial controls credit the architectural prior; learned shape and
+reconstruction still need demonstrated progress. Fresh confirmation is next,
+with no additional quality seeds allocated. See the
+[current continuation](doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
+This is development evidence, with no default promotion.
 **RPB-v4 remains the formal evaluated reference**, and original saved **RPB-v7**
 and every previous model remain preserved.
 
+The preserved [RPB-v18 TEMPO-3 result](code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md)
+retains five known cohorts (designed complexity 4/5): 100%/100% intact and
+100%/99.95% deleted Linear/Neural accuracy, with 100% coverage. Its initial
+timing scores are already nearly perfect; credit the fixed prior. The two-cohort
+gate passed before the remaining three ran.
 The preceding [fresh RPB-v17.alt-01 confirmation](code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_FRESH_CONFIRMATION.md)
 uses five new source cohorts: 100%/100% intact and 82.19%/99.90% deleted,
 with 100% coverage. One deleted Linear cohort reaches 70.31%, so both
 prospective joint rules fail. V18 reuses those saved matched scores without
-refitting v17. See the [v18 milestone](doc/MILESTONE_2026-10-10_RPB_V18.md) and
-[current continuation](doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
-The next direction is the separate coherent two-component challenge; its
-prospective recipe and information admission precede model quality measurement.
+refitting v17. See the [v18 milestone](doc/MILESTONE_2026-10-10_RPB_V18.md) and its
+[historical continuation](doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
 
 Earlier completed [architecture experiments](code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md)
 add explicit generic temporal relations on **TEMPO-3**, designed complexity

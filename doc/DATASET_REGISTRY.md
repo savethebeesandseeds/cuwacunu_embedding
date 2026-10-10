@@ -11,8 +11,8 @@ complexity. Historical frozen reports/cards/source captures stay unchanged.
 | TEMPO-2 | Timing lead/lag sign | 2/5 | PeriodU[12,20), absolute delayU[.5,1.5) | Implemented; data-only fixtures pass; encoder quality unmeasured |
 | TEMPO-3 | Timing lead/lag sign | 4/5 | PeriodU[10,24), delayU[.25,1), gains/offsets and 3-tick channel gaps | Implemented; cross-feature v2 information gates pass; fresh fixed512 comparison measured and audited |
 | AMP-1 | Amplitude contrast | 1/5 | Period16 sine scaled0.5×/2× | Original separate task implemented and measured |
-| TEMPO-4 | Slow-component timing lead/lag | 5/5 | Two coherent rhythms; slow lag sign, unrelated fast lag, gains/offsets and gaps | Implemented; data-only information admission passed; encoder quality not measured yet |
-| AMP-2 | Relative component balance | 5/5 | Swap slow/fast strength at equal component energy; gains/offsets and gaps | Implemented; data-only information admission passed; encoder quality not measured yet |
+| TEMPO-4 | Slow-component timing lead/lag | 5/5 | Two coherent rhythms; slow lag sign, unrelated fast lag, gains/offsets and gaps | Implemented; information admission and separate two-cohort CUDA encoder screen completed |
+| AMP-2 | Relative component balance | 5/5 | Swap slow/fast strength at equal component energy; gains/offsets and gaps | Implemented; information admission and separate two-cohort CUDA encoder screen completed |
 
 Complexity is an **ordinal designed challenge level on1–5**, assigned before
 measurement. It is not measured entropy, information content, accuracy,
@@ -29,6 +29,9 @@ passes all task/cohort/view gates on two engineering masters, with100% accuracy
 and coverage. These are legal-observation information scores, not encoder or
 fixed-head accuracy. New encoder experiments use a separate prospective card
 and fresh source cohorts; they cannot reuse TEMPO-3 scores as matched controls.
+The [completed multiband screen](MULTIBAND_SCREEN_V1.md) compares new
+RPB-v18.alt-01 and RPB-v19 instances on the same four quality cohorts. Its
+joint prospective continuation gate passes; this remains development evidence.
 
 The codenames apply to the closed C3/H32/F3 recipes below. Altering the signal
 law, shape, noise or natural observation mechanism requires an explicit new
@@ -109,6 +112,8 @@ Place these immediately beside each applicable result table:
 - `Dataset: TEMPO-2 · timing · complexity2/5 · P12–20, |delay|.5–1.5; intact VALIDATION.`
 - `Dataset: TEMPO-3 · timing · complexity4/5 · variable delay, gains/offsets, 3-tick gaps; intact VALIDATION.`
 - `Dataset: AMP-1 · amplitude · complexity1/5 · 0.5×/2× sine; extra30% deletion VALIDATION.`
+- `Dataset: TEMPO-4 · slow-component timing · complexity5/5 · two rhythms, gains/offsets and gaps; intact VALIDATION.`
+- `Dataset: AMP-2 · component balance · complexity5/5 · relative slow/fast strength; extra30% deletion VALIDATION.`
 - `Fit: TEMPO-1(1/5); score: AMP-1(1/5); timing encoder frozen.`
 
 Always state split/source counts and classifier/update budgets separately.

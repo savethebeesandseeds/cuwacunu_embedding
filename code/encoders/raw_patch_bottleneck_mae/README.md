@@ -6,23 +6,29 @@ candidate is a masked autoencoder whose reconstruction loss passes through the
 served embedding. The baseline API, executable, archive reader and checkpoint
 format remain separate.
 
-The latest completed development design is [RPB-v18](UNIT_TEMPORAL_RELATION_SCREEN.md),
-serving 20 learned shape coordinates and 12 fixed, unit-normalized timing
-coordinates as native32. On five known TEMPO-3 cohorts (designed complexity 4/5),
-Linear/Neural accuracy is 100%/100% intact and 100%/99.95% deleted, with 100% coverage.
-The two-cohort gate passed before the remaining three ran. Initial scores are
-already nearly perfect; credit the architecture prior. No new weights, head
-changes, post-encoder PCA or promotion. **RPB-v4 remains the formal evaluated
-reference**, and original saved **RPB-v7** and all existing models remain preserved.
+The latest completed development design is [RPB-v19](../../../doc/MULTIBAND_SCREEN_V1.md),
+serving 20 learned shape coordinates and 12 fixed low/high spectral relation
+coordinates as native32. Its two-cohort screen passed the prospective joint gate
+on **TEMPO-4** slow-component timing and separate **AMP-2** component balance,
+each at designed complexity **5/5**, with 100% coverage. Strong initial controls
+credit the fixed architecture prior; learned shape and reconstruction still need
+demonstrated progress. Fresh confirmation is next, with no additional quality
+seeds allocated. Follow the
+[current continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
+No head changes, post-encoder PCA or promotion. **RPB-v4 remains the formal
+evaluated reference**, and original saved **RPB-v7** and all existing models remain preserved.
 
+The preserved [RPB-v18 TEMPO-3 result](UNIT_TEMPORAL_RELATION_SCREEN.md)
+retains five known cohorts (designed complexity 4/5): 100%/100% intact and
+100%/99.95% deleted Linear/Neural accuracy, with 100% coverage. Its two-cohort
+gate passed before the remaining three ran. Nearly perfect initial timing
+scores credit the prior.
 The preceding [fresh RPB-v17.alt-01 confirmation](FIXED_PRIOR_FRESH_CONFIRMATION.md)
 retains five new source cohorts: 100%/100% intact and 82.19%/99.90% deleted,
 with 100% coverage. One 70.31% deleted Linear cohort fails both joint rules.
 V18 reuses those saved matched scores without refitting v17. See the
-[v18 milestone](../../../doc/MILESTONE_2026-10-10_RPB_V18.md) and
-[current continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
-The next direction is a separate prospective two-component challenge, with its
-recipe and legal-observation information admission fixed before model quality.
+[v18 milestone](../../../doc/MILESTONE_2026-10-10_RPB_V18.md) and its
+[historical continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
 
 The [temporal architecture screen](TEMPORAL_ARCHITECTURE_SCREEN.md) tests generic
 cross-channel relations (**RPB-v14**) and an independent label-free dynamics
