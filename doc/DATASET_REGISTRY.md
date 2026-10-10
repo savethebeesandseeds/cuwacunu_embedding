@@ -11,13 +11,24 @@ complexity. Historical frozen reports/cards/source captures stay unchanged.
 | TEMPO-2 | Timing lead/lag sign | 2/5 | PeriodU[12,20), absolute delayU[.5,1.5) | Implemented; data-only fixtures pass; encoder quality unmeasured |
 | TEMPO-3 | Timing lead/lag sign | 4/5 | PeriodU[10,24), delayU[.25,1), gains/offsets and 3-tick channel gaps | Implemented; cross-feature v2 information gates pass; fresh fixed512 comparison measured and audited |
 | AMP-1 | Amplitude contrast | 1/5 | Period16 sine scaled0.5×/2× | Original separate task implemented and measured |
+| TEMPO-4 | Slow-component timing lead/lag | 5/5 | Two coherent rhythms; slow lag sign, unrelated fast lag, gains/offsets and gaps | Implemented; data-only information admission passed; encoder quality not measured yet |
+| AMP-2 | Relative component balance | 5/5 | Swap slow/fast strength at equal component energy; gains/offsets and gaps | Implemented; data-only information admission passed; encoder quality not measured yet |
 
 Complexity is an **ordinal designed challenge level on1–5**, assigned before
 measurement. It is not measured entropy, information content, accuracy,
 observability, coverage or a mathematical difficulty ratio. Level4 does not mean
 twice the challenge of level2. Different tasks with the same level are not
-proved equally difficult. Levels3/5 and5/5 are unassigned. Keep achieved accuracy
+proved equally difficult. Level3/5 remains unassigned. Keep achieved accuracy
 and legal-observation information checks as separate evidence.
+
+The new [two-component recipe registry](two_component_dataset_registry.json)
+extends the original frozen [machine registry](dataset_registry.json) without
+changing its entries or bytes. TEMPO-4 and AMP-2 each received level5/5 before
+engineering outcomes. The [information admission](TWO_COMPONENT_INFORMATION_V1.md)
+passes all task/cohort/view gates on two engineering masters, with100% accuracy
+and coverage. These are legal-observation information scores, not encoder or
+fixed-head accuracy. New encoder experiments use a separate prospective card
+and fresh source cohorts; they cannot reuse TEMPO-3 scores as matched controls.
 
 The codenames apply to the closed C3/H32/F3 recipes below. Altering the signal
 law, shape, noise or natural observation mechanism requires an explicit new

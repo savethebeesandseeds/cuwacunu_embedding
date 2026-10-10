@@ -1,14 +1,20 @@
 # Proposed TEMPO-4 timing and AMP-2 shape challenges
 
-Status: **proposed and unmeasured**. No registry entry, prospective card,
-generator or quality seed allocation has been created for either new dataset.
-TEMPO-3 and every completed result remain unchanged.
+Original status: proposed and unmeasured. The separate
+[fixed information card](../code/evaluation/cards/two_component_information_v1.md)
+has now implemented this signal family as `two-component-v1` and completed
+[data-only information admission](TWO_COMPONENT_INFORMATION_V1.md).
+Both tasks recover100% of engineering answers with100% coverage in intact
+and extra-deleted views. The [new recipe registry](two_component_dataset_registry.json)
+retains the exact source and pre-outcome complexity assignments. Encoder quality
+is not measured yet. The proposal below preserves the reasoning; use the frozen
+card for exact implementation/draw order. TEMPO-3 and its results remain intact.
 
 **TEMPO-4** names only the slow-band lag-sign task. **AMP-2** names the separate
 component-balance task. Prechoose designed complexity **5/5** for each, as an
 ordinal label for its proposed two-component structure. These levels are not
 measured entropy, accuracy or mathematical comparisons with TEMPO-3 or AMP-1.
-Any registry entries and prospective cards come later.
+The implementation card and separate registry now fix those identities.
 
 ## What the completed TEMPO-3 work teaches
 
