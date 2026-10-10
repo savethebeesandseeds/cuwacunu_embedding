@@ -5,21 +5,26 @@ MTF-JEPA-MAE-VICReg implementation. It converts masked multichannel histories in
 global and per-channel embeddings and trains without the parent project's runtime,
 DSL, registries, graph orchestration, forecasting, trading, or interface components.
 
-The [saved RPB-v17 milestone](doc/MILESTONE_2026-10-10_RPB_V17.md) now has a
-[fresh-source follow-up](code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_FRESH_CONFIRMATION.md)
-as RPB-v17.alt-01. On TEMPO-3 (complexity4/5), both heads remain100% intact;
-deleted Neural is99.90%, Linear82.19%, coverage100%. One deleted Linear cohort
-is70.31%, so the prospective joint rules fail despite strong neural replication.
-The separate [RPB-v18 screen](code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md)
-normalizes each four-number timing group inside native32. Across those five
-known cohorts it reaches100%/100% intact and100%/99.95% deleted, coverage100%.
-The two-cohort continuation gate passed before the remaining three ran.
-These are development results; initial timing scores are already nearly perfect.
-The [v18 milestone](doc/MILESTONE_2026-10-10_RPB_V18.md) preserves the result,
-fixed-prior credit and limits. V17 and every existing saved model remain intact.
-See [the follow-up continuation](doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
+The latest completed development design is [RPB-v18](code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md):
+20 learned shape coordinates and 12 fixed, unit-normalized timing coordinates,
+served as native32. On five known TEMPO-3 cohorts (designed complexity 4/5),
+Linear/Neural accuracy is 100%/100% intact and 100%/99.95% with extra deletion,
+with 100% coverage. Its initial timing scores are already nearly perfect;
+credit the fixed architecture prior. The two-cohort gate passed before the
+remaining three ran. This is development evidence, with no default promotion.
+**RPB-v4 remains the formal evaluated reference**, and original saved **RPB-v7**
+and every previous model remain preserved.
 
-The latest [architecture experiments](code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md)
+The preceding [fresh RPB-v17.alt-01 confirmation](code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_FRESH_CONFIRMATION.md)
+uses five new source cohorts: 100%/100% intact and 82.19%/99.90% deleted,
+with 100% coverage. One deleted Linear cohort reaches 70.31%, so both
+prospective joint rules fail. V18 reuses those saved matched scores without
+refitting v17. See the [v18 milestone](doc/MILESTONE_2026-10-10_RPB_V18.md) and
+[current continuation](doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
+The next direction is the separate coherent two-component challenge; its
+prospective recipe and information admission precede model quality measurement.
+
+Earlier completed [architecture experiments](code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md)
 add explicit generic temporal relations on **TEMPO-3**, designed complexity
 **4/5**. RPB-v14 reaches97.03%/95.10% intact linear/neural accuracy across five
 known cohorts, but its waveform training weakens an already strong untrained
@@ -33,7 +38,7 @@ freezes only that generic432-value relation projection while learning the shape
 path and original decoder. All versions serve native32 through the same fixed
 heads. The timing gain comes from the architecture prior, not learned timing
 from waveform reconstruction. New CUDA runs occur once; old baselines are reused.
-See the [continuation](doc/CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md).
+The [historical architecture-screen continuation](doc/CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md) records the earlier plan, now completed by the fresh v17 confirmation and v18 development screen.
 Original saved **RPB-v7**, formal **RPB-v4**, TEMPO-1 **RPB-v10.alt-03** and all
 historical evidence remain protected. No production promotion or default change.
 
@@ -52,7 +57,7 @@ not depend on or modify `cuwacunu_torch` at runtime.
 The independent [Raw Patch Bottleneck MAE](code/encoders/raw_patch_bottleneck_mae/README.md)
 now has its own model, configuration, CLI, checkpoint format and tests. It shares
 archive utilities and frozen-feature evaluation components with the baseline.
-The active research version is **RPB-v4 — Learned global bottleneck**. It trains
+The formal evaluated reference is **RPB-v4 — Learned global bottleneck**. It trains
 reconstruction through its exact native 32-number global embedding. The fresh
 native-only timing TEST comparison gives 94.01% linear-head and 96.09% neural-head
 accuracy, versus 51.82% / 79.51% for standalone raw PCA32, all at 100% coverage;

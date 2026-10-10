@@ -14,16 +14,19 @@ stays separate from encoder training and decoding.
 
 ## Current completed milestone and next direction
 
-The [fresh v17 confirmation](FIXED_PRIOR_FRESH_CONFIRMATION.md) and
-[v18 unit-relation screen](UNIT_TEMPORAL_RELATION_SCREEN.md) are complete.
-Both use TEMPO-3, complexity4/5, unchanged native32/.15/B8/512 and fixed heads.
-Fresh RPB-v17.alt-01 reaches100%/100% intact and82.19%/99.90% deleted,
-coverage100%; its one70.31% deleted Linear cohort fails the joint rule.
-V18 normalizes each fixed four-spacing relation group inside the encoder.
-Its prospective two-cohort gate passes, then all five matched known cohorts
-reach100%/100% intact and100%/99.95% deleted, coverage100%. Initial v18
-timing scores are already almost perfect. All comparisons to v17 reuse saved
-scores; no historical model/head or CPU encoder reruns.
+The latest completed development design is [RPB-v18](UNIT_TEMPORAL_RELATION_SCREEN.md);
+**RPB-v4 remains the formal evaluated reference**, with original saved **RPB-v7**
+protected. V18 normalizes each fixed four-spacing relation group inside native32.
+Its predeclared two-cohort gate passes, then all five matched known TEMPO-3
+cohorts (designed complexity 4/5) reach 100%/100% intact and 100%/99.95% deleted
+Linear/Neural accuracy, with 100% coverage. Initial timing scores are already
+almost perfect; credit the fixed prior. All matched v17 scores are reused,
+with no old encoder or head refits and no promotion.
+
+The preceding [fresh v17 confirmation](FIXED_PRIOR_FRESH_CONFIRMATION.md)
+retains 100%/100% intact and 82.19%/99.90% deleted means, with 100% coverage.
+Its 70.31% deleted Linear cohort fails both joint rules. Both experiments keep
+the unchanged native32, .15 context deletion, B8, 512 updates and fixed heads.
 
 Keep the [v18 milestone](../../../doc/MILESTONE_2026-10-10_RPB_V18.md)
 and [continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
@@ -79,14 +82,12 @@ continuation gate on master76373's69.53% deleted neural accuracy. Stop its expan
 while shape/backbone/decoder train, preserving useful coordinates inside native32.
 All four designs have their own frozen card, source, tag and checkpoint namespace.
 
-Next: verify the strongest retained design on fresh independently generated
-TRAIN/VALIDATION source cohorts under a new fixed card, without head/budget
-search. Preserve its relation prior and original saved references. If that
-passes, specify a separate coherent multi-component timing challenge to test
-whether the generic relation bank handles richer signals; assign a new dataset
-codename/complexity before measuring. Reconstruction remains an explicit
-tradeoff, not evidence of timing learning. No TEST/stress or default promotion.
-See the [current continuation](../../../doc/CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md).
+That architecture-screen milestone proposed fresh-source verification of v17.
+The five-cohort RPB-v17.alt-01 follow-up is now complete, and the subsequent
+v18 development screen improves deleted Linear accuracy on those known cohorts.
+The [historical architecture-screen continuation](../../../doc/CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md)
+preserves the earlier decision. Use the current continuation and two-component
+challenge linked above for the next direction; no TEST/stress or default promotion.
 The earlier [independent TRAIN-support proposal](../../../doc/CONTINUATION_2026-10-10_AFTER_VISIBLE_DIFFERENCE.md)
 is deferred and preserved, not measured. Avoid expanded comparisons of weak
 candidates and do not rescue v15/v16 by tuning their frozen recipes.

@@ -6,19 +6,23 @@ candidate is a masked autoencoder whose reconstruction loss passes through the
 served embedding. The baseline API, executable, archive reader and checkpoint
 format remain separate.
 
-The [fresh RPB-v17.alt-01 confirmation](FIXED_PRIOR_FRESH_CONFIRMATION.md)
-retains five new TEMPO-3 source cohorts, complexity4/5. Intact accuracy is
-100%/100%; deleted is82.19%/99.90%, coverage100%. One70.31% deleted Linear
-cohort fails the joint rule, while the neural timing result replicates strongly.
-The separate [RPB-v18 screen](UNIT_TEMPORAL_RELATION_SCREEN.md) normalizes
-each fixed four-spacing timing group inside the32-number encoder export.
-It passes the initial two-cohort gate and reaches100%/100% intact and
-100%/99.95% deleted across all five matched known cohorts. No new weights,
-head changes or post-encoder PCA. Initial timing scores are already nearly
-perfect; credit the architecture prior. See the
-[saved milestone](../../../doc/MILESTONE_2026-10-10_RPB_V18.md) and
+The latest completed development design is [RPB-v18](UNIT_TEMPORAL_RELATION_SCREEN.md),
+serving 20 learned shape coordinates and 12 fixed, unit-normalized timing
+coordinates as native32. On five known TEMPO-3 cohorts (designed complexity 4/5),
+Linear/Neural accuracy is 100%/100% intact and 100%/99.95% deleted, with 100% coverage.
+The two-cohort gate passed before the remaining three ran. Initial scores are
+already nearly perfect; credit the architecture prior. No new weights, head
+changes, post-encoder PCA or promotion. **RPB-v4 remains the formal evaluated
+reference**, and original saved **RPB-v7** and all existing models remain preserved.
+
+The preceding [fresh RPB-v17.alt-01 confirmation](FIXED_PRIOR_FRESH_CONFIRMATION.md)
+retains five new source cohorts: 100%/100% intact and 82.19%/99.90% deleted,
+with 100% coverage. One 70.31% deleted Linear cohort fails both joint rules.
+V18 reuses those saved matched scores without refitting v17. See the
+[v18 milestone](../../../doc/MILESTONE_2026-10-10_RPB_V18.md) and
 [current continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
-Existing models, cards, checkpoints and defaults remain preserved.
+The next direction is a separate prospective two-component challenge, with its
+recipe and legal-observation information admission fixed before model quality.
 
 The [temporal architecture screen](TEMPORAL_ARCHITECTURE_SCREEN.md) tests generic
 cross-channel relations (**RPB-v14**) and an independent label-free dynamics
@@ -37,12 +41,12 @@ All screens use separate model tags/checkpoints/output sessions, the same
 B8/.15/512 CUDA training budget and shared fixed classifier heads, with no PCA
 after an encoder. Weak designs stop after the two-cohort gate; passing designs
 advance only to the three other known cohorts. These are development results,
-not unseen confirmation. [The continuation](../../../doc/CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md)
-records the next direction. Preserve original saved **RPB-v7**, formal **RPB-v4**,
+not unseen confirmation. [The historical architecture-screen continuation](../../../doc/CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md)
+records the earlier plan, now completed by fresh v17 and the v18 screen. Preserve original saved **RPB-v7**, formal **RPB-v4**,
 TEMPO-1 **RPB-v10.alt-03**, frozen cards and all historical artifacts. No promotion
 or legacy loader/default change. The earlier TRAIN-size proposal stays deferred.
 
-**Active research: RPB-v4 — Learned global bottleneck**, through
+**Formal evaluated reference: RPB-v4 — Learned global bottleneck**, through
 [learned_global.conf](config/learned_global.conf). Its native 32-number global
 export is the sole reconstruction signal. The completed
 [native curve advance](NATIVE_CURVE_ADVANCE.md) gives fresh timing TEST means of
@@ -193,7 +197,7 @@ The original [continuation](../../../doc/CONTINUATION_2026-10-08.md) is preserve
 Its [saved-TRAIN scale diagnosis](NATIVE_VIEW_LOSS_SCALE_TRAIN_DIAGNOSTIC.md) is
 complete, with no scale-floor hits and later agreement growth in all five runs.
 
-Current work continues from RPB-v7. The [decoder-calibration diagnosis](V7_DECODER_CALIBRATION_DIAGNOSTIC.md)
+An earlier milestone continued from preserved RPB-v7. The [decoder-calibration diagnosis](V7_DECODER_CALIBRATION_DIAGNOSTIC.md)
 freezes its encoder/scaler and trains only the existing decoder for 128 CUDA
 updates. Mean TRAIN/known-VALIDATION MAE is 0.054039/0.056989, below each paired
 v4 reference, with exact unchanged native32 outputs. Cached classification is

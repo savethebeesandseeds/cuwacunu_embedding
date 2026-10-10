@@ -1,20 +1,22 @@
 # Embedding version registry
 
-[RPB-v17.alt-01](../code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_FRESH_CONFIRMATION.md)
-now records five fresh instances of the unchanged v17 design on TEMPO-3,
-complexity4/5. Intact100%/100%, deleted82.19%/99.90%, coverage100%; the one
-70.31% deleted Linear cohort fails both prospective joint rules. Its Neural
-remains100%. Keep the successful fixed-prior timing result and that limitation
-together; no saved v17 instance is replaced. The separate
-[RPB-v18 screen](../code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md)
-uses generic per-pair unit normalization inside native32, with unchanged fixed
-heads. Its two-cohort gate passes, then all five known cohorts reach100%/100%
-intact and100%/99.95% deleted, coverage100%. This is targeted development,
-not a new fresh confirmation or promotion. Initial timing scores are already
-nearly perfect. The [v17 note](MILESTONE_2026-10-10_RPB_V17.md) and
-[v18 note](MILESTONE_2026-10-10_RPB_V18.md) preserve the results and their limits.
+The latest completed development design is [RPB-v18](../code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md).
+Its native32 contains 20 learned shape coordinates and 12 fixed, unit-normalized
+timing coordinates. On five known TEMPO-3 cohorts (designed complexity 4/5),
+Linear/Neural accuracy is 100%/100% intact and 100%/99.95% deleted, with 100% coverage.
+Its two-cohort gate passed before expansion. Initial timing scores are already
+nearly perfect, so credit the prior. This is targeted development, not fresh-data
+confirmation or promotion. **RPB-v4 remains the formal evaluated reference**;
+original saved **RPB-v7** and every earlier design and instance remain preserved.
 
-Latest completed architecture screens: [RPB-v14/v15](../code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md),
+The preceding [RPB-v17.alt-01 confirmation](../code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_FRESH_CONFIRMATION.md)
+retains five fresh source cohorts: 100%/100% intact and 82.19%/99.90% deleted,
+with 100% coverage. Its 70.31% deleted Linear cohort fails both joint rules.
+No saved v17 instance is replaced. The [v18 milestone](MILESTONE_2026-10-10_RPB_V18.md)
+and [current continuation](CONTINUATION_2026-10-10_AFTER_FRESH_V17.md) record the
+latest result and separate prospective two-component challenge.
+
+Earlier completed architecture screens: [RPB-v14/v15](../code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md),
 [RPB-v16](../code/encoders/raw_patch_bottleneck_mae/PARTITIONED_TEMPORAL_RELATION_SCREEN.md)
 and [RPB-v17](../code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md).
 On TEMPO-3, designed complexity4/5, explicit generic relations substantially
@@ -25,12 +27,13 @@ coverage100%. Credit the prior rather than claiming learned timing.
 The objective-only v15 and unstable deleted-view v16 stop after their two-cohort
 screens. All original versions/instance groups/cards/checkpoints remain intact;
 new tags and separate artifacts never replace old saved models. No promotion.
-The [current continuation](CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md) prioritizes
-fresh-source verification before a richer coherent timing dataset. TEMPO-1
+The [historical architecture-screen continuation](CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md)
+proposed fresh-source verification, now completed as RPB-v17.alt-01 before the
+v18 development screen. TEMPO-1
 RPB-v10.alt-03 remains separate preserved evidence; the data-support2×2 plan
 is deferred and preserved.
 
-RPB-v4 is the active research reference. RPB-v5's claimed advance failed the
+RPB-v4 is the formal evaluated reference; v18 is the latest development design. RPB-v5's claimed advance failed the
 fixed 512 comparison. Retained versions provide historical evidence and compatible
 loaders; routine experiments need not retrain all of them.
 RPB-v6 keeps the v4 inference architecture with a fixed training policy that
@@ -216,7 +219,7 @@ than useful optimization. Stop this recipe without coefficient/rate/budget
 rescue. RPB-v4 remains active; this RPB-v9 mechanism remains stopped.
 The [original continuation note](CONTINUATION_2026-10-08.md) records the pre-diagnosis state.
 
-Current work continues from RPB-v7. Its separate
+An earlier milestone continued from preserved RPB-v7. Its separate
 [decoder calibration](../code/encoders/raw_patch_bottleneck_mae/V7_DECODER_CALIBRATION_DIAGNOSTIC.md)
 freezes all encoder parameters, buffers and scaler, then optimizes only its
 existing decoder for 128 CUDA updates. Mean TRAIN/known-VALIDATION MAE is
@@ -239,7 +242,7 @@ Post-calibration v7 TRAIN/VALIDATION MAE is 0.056375/0.059200; v4 is lower at
 calibration passes, but the joint development guard fails three of six numeric
 conditions. Independent audit passed 67,932,331 checks. Encoder/native outputs
 are unchanged by calibration; there is no new design tag or automatic promotion.
-V7 remains the working direction and v4 the active reference. The
+That milestone retained v7 as its working direction and v4 as its reference. The
 [historical continuation](CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md)
 prescribed the all-master saved-TRAIN reliability diagnosis completed below.
 
