@@ -36,15 +36,30 @@ fixed across encoder comparisons; fit their weights separately on training data.
 
 ## Active research version
 
-The newest completed development design is [RPB-v19](doc/MULTIBAND_SCREEN_V1.md):
+The newest completed record is [RPB-v19.alt-01](doc/SPECTRAL_CONFIRMATION_V1.md),
+an unchanged-v19 confirmation on fresh masters 930905, 930906 and 930907 for each
+of **TEMPO-4** slow-component timing and **AMP-2** component balance, both at
+designed complexity **5/5**. Native32, batch 8, 512 CUDA updates and the fixed
+three-repetition heads are unchanged. All 12 prospective conditions pass with
+100% coverage. Deleted Linear/Neural means are 93.23%/93.23% for timing and
+94.79%/86.89% for balance. Most strength comes from the fixed prior; modest
+training gains on fresh deleted means are not uniform across cohorts. Original
+query VALIDATION MAE is 0.74248 for timing and 0.75793 for balance, so
+reconstruction remains work to do.
+The next separate architecture is a harmonic linear decoder, retaining the
+prior, heads and data; it is prospective, with no implementation or new quality
+cohorts allocated. Follow the
+[current continuation](doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).
+
+The preceding completed [RPB-v19 screen](doc/MULTIBAND_SCREEN_V1.md) introduced
 20 learned shape coordinates and 12 fixed low/high spectral relation coordinates
 inside native32. Its two-cohort screen keeps **TEMPO-4** slow-component timing
 and **AMP-2** component balance separate, each at designed complexity **5/5**.
 The prospective joint gate passed at 512 updates with 100% coverage. Initial
 controls already perform strongly; credit the architecture prior. Learned shape
-and reconstruction still need demonstrated progress. Fresh confirmation is next;
-no additional quality seeds are allocated. Follow the
-[current continuation](doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
+and reconstruction still need demonstrated progress. Its fresh confirmation is
+now complete above; preserve the
+[historical screen continuation](doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
 No promotion or default change follows.
 **RPB-v4 remains the formal evaluated reference**, and original saved **RPB-v7**
 and all historical models remain protected.
@@ -101,7 +116,7 @@ MAE. Use each frozen card's two-cohort75%/100%-coverage gate before remaining
 known cohorts; known validation is development evidence, not unseen confirmation.
 The [historical architecture-screen continuation](doc/CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md)
 proposed fresh-data verification, now completed as RPB-v17.alt-01. The subsequent
-RPB-v18 result and newest RPB-v19 screen are linked above; the earlier data-support 2×2
+RPB-v18 result, RPB-v19 screen and fresh confirmation are linked above; the earlier data-support 2×2
 plan remains deferred and preserved. No phase/lag labels, head tuning, stopped-recipe
 rescue or automatic promotion. Preserve original v7 and formal v4.
 
@@ -216,7 +231,7 @@ sealed passed audit. Do not rewrite them to improve a result. The
 prescribed saved TRAIN reliability analysis across all ten instances, with no
 encoder/decoder updates, head refits or held-out analysis inputs. That diagnosis
 and the subsequent milestones are complete; the current next action is recorded
-in the [current continuation](doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md) and next advance plan. Do not tune the heads, deletion rate,
+in the [current continuation](doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md) and next advance plan. Do not tune the heads, deletion rate,
 decoder budget or stopped v9 coefficients.
 
 Older versions remain available for archived evidence, explicit comparisons,

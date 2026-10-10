@@ -1,13 +1,26 @@
 # Embedding version registry
 
-The latest completed development design is [RPB-v19](MULTIBAND_SCREEN_V1.md).
+The latest completed record is [RPB-v19.alt-01](SPECTRAL_CONFIRMATION_V1.md),
+an unchanged-v19 confirmation on fresh masters 930905, 930906 and 930907 for each
+of **TEMPO-4** slow-component timing and **AMP-2** component balance, both at
+designed complexity **5/5**. All 12 prospective conditions pass at native32,
+512 CUDA updates, batch 8, unchanged fixed heads and 100% coverage. Deleted
+Linear/Neural means are 93.23%/93.23% for timing and 94.79%/86.89% for balance.
+Most strength comes from the fixed prior; modest training gains on fresh deleted
+means are not uniform across cohorts. Query VALIDATION MAE is 0.74248 for timing
+and 0.75793 for balance. The next separate architecture is a harmonic linear decoder,
+with the prior, heads and data fixed; it is prospective, with no implementation
+or new quality cohorts allocated. Follow the
+[current continuation](CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).
+
+The preceding completed [RPB-v19 screen](MULTIBAND_SCREEN_V1.md) introduced the design.
 Its native32 contains 20 learned shape coordinates and 12 fixed low/high spectral
 relation coordinates. The two-cohort screen passed the prospective joint gate
 on **TEMPO-4** slow-component timing and separate **AMP-2** component balance,
 each at designed complexity **5/5**, with 100% coverage. Strong initial controls
 credit the architecture prior; learned shape and reconstruction still need
-demonstrated progress. Fresh confirmation is next, with no additional quality
-seeds allocated. Follow the [current continuation](CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
+demonstrated progress. Its fresh confirmation is now complete above; preserve
+the [historical screen continuation](CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
 **RPB-v4 remains the formal evaluated reference**; original saved **RPB-v7** and
 every earlier design and instance remain preserved. No promotion follows.
 
@@ -92,8 +105,15 @@ preserved alongside the successful result.
 The [machine-readable registry](embedding_versions.json) records the same mapping.
 `RPB-v18.alt-01` identifies the new v18 control instances on TEMPO-4 and AMP-2;
 it preserves every original v18 TEMPO-3 checkpoint. `RPB-v19` identifies the
-separate spectral design and its first four task/cohort instances. Future
-unchanged-design confirmation will receive a separate `.alt-01` bundle.
+separate spectral design and its first four task/cohort instances.
+`RPB-v19.alt-01` identifies six new instances of that unchanged design on three
+fresh masters per task. It preserves the original screen checkpoints and is an
+instance bundle, not a new design row.
+
+| Instance bundle | Design | Separate source cohorts | Completed record |
+| --- | --- | --- | --- |
+| RPB-v19.alt-01 | RPB-v19 | 930905, 930906, 930907 for each of TEMPO-4 and AMP-2 (complexity 5/5) | [Fresh spectral confirmation](SPECTRAL_CONFIRMATION_V1.md) |
+
 `RPB-v4.alt-01` names the fresh v4 controls paired with `RPB-v7.alt-01` on
 masters9109/10210/11311/12412/13513. It is an instance-group alias for the
 unchanged v4 design, and does not rename or replace a historical checkpoint.

@@ -6,15 +6,27 @@ candidate is a masked autoencoder whose reconstruction loss passes through the
 served embedding. The baseline API, executable, archive reader and checkpoint
 format remain separate.
 
-The latest completed development design is [RPB-v19](../../../doc/MULTIBAND_SCREEN_V1.md),
+The latest completed record is [RPB-v19.alt-01](../../../doc/SPECTRAL_CONFIRMATION_V1.md),
+an unchanged-v19 confirmation on fresh masters 930905, 930906 and 930907 for each
+of **TEMPO-4** slow-component timing and **AMP-2** component balance, both at
+designed complexity **5/5**. All 12 prospective conditions pass, with 100%
+coverage and the same native32, 512 CUDA updates, batch 8 and fixed heads.
+Deleted Linear/Neural means are 93.23%/93.23% for timing and 94.79%/86.89% for
+balance. Most strength comes from the fixed prior; modest training gains on
+fresh deleted means are not uniform across cohorts. Original query VALIDATION
+MAE is 0.74248 for timing and 0.75793 for balance. The next separate architecture is a
+harmonic linear decoder with the prior, heads and data fixed. It is prospective,
+with no implementation or new quality cohorts allocated. Follow the
+[current continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).
+
+The preceding [RPB-v19 screen](../../../doc/MULTIBAND_SCREEN_V1.md) introduced a model
 serving 20 learned shape coordinates and 12 fixed low/high spectral relation
 coordinates as native32. Its two-cohort screen passed the prospective joint gate
 on **TEMPO-4** slow-component timing and separate **AMP-2** component balance,
 each at designed complexity **5/5**, with 100% coverage. Strong initial controls
 credit the fixed architecture prior; learned shape and reconstruction still need
-demonstrated progress. Fresh confirmation is next, with no additional quality
-seeds allocated. Follow the
-[current continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
+demonstrated progress. Its fresh confirmation is now complete above; preserve
+the [historical screen continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
 No head changes, post-encoder PCA or promotion. **RPB-v4 remains the formal
 evaluated reference**, and original saved **RPB-v7** and all existing models remain preserved.
 

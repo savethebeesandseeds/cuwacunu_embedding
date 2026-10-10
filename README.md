@@ -5,16 +5,30 @@ MTF-JEPA-MAE-VICReg implementation. It converts masked multichannel histories in
 global and per-channel embeddings and trains without the parent project's runtime,
 DSL, registries, graph orchestration, forecasting, trading, or interface components.
 
-The latest completed development design is [RPB-v19](doc/MULTIBAND_SCREEN_V1.md):
+The latest completed record is [RPB-v19.alt-01](doc/SPECTRAL_CONFIRMATION_V1.md):
+unchanged v19 on three fresh masters, 930905, 930906 and 930907, for each of
+**TEMPO-4** slow-component timing and separate **AMP-2** component balance,
+both at designed complexity **5/5**. All 12 prospective conditions pass with
+100% coverage at native32, 512 CUDA updates, batch 8 and unchanged fixed heads.
+Intact Linear/Neural means are 99.48%/98.44% for timing and 99.48%/98.87% for
+balance; deleted means are 93.23%/93.23% and 94.79%/86.89%, respectively.
+Most strength comes from the fixed prior. Modest training gains on fresh deleted
+means are not uniform across cohorts; query VALIDATION MAE remains 0.74248 for
+timing and 0.75793 for balance. The next separate architecture is a harmonic linear decoder,
+keeping the prior, heads and data fixed. It is prospective, with no implementation
+or new quality cohorts allocated. See the
+[current continuation](doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).
+
+The preceding [RPB-v19 development screen](doc/MULTIBAND_SCREEN_V1.md) introduced
 20 learned shape coordinates and 12 fixed low/high spectral relation coordinates,
 served as native32. Its two-cohort screen passed the prospective joint gate on
 **TEMPO-4** slow-component timing and separate **AMP-2** component balance,
 each at designed complexity **5/5**. Trained Linear/Neural deleted accuracy is
 92.97%/94.27% for timing and 94.53%/88.41% for balance, with 100% coverage.
 Strong initial controls credit the architectural prior; learned shape and
-reconstruction still need demonstrated progress. Fresh confirmation is next,
-with no additional quality seeds allocated. See the
-[current continuation](doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
+reconstruction still need demonstrated progress. Its fresh confirmation is now
+complete above; preserve the
+[historical screen continuation](doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
 This is development evidence, with no default promotion.
 **RPB-v4 remains the formal evaluated reference**, and original saved **RPB-v7**
 and every previous model remain preserved.

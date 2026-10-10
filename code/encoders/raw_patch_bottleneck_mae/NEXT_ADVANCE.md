@@ -15,7 +15,25 @@ stays separate from encoder training and decoding.
 
 ## Current completed milestone and next direction
 
-The latest completed development design is [RPB-v19](../../../doc/MULTIBAND_SCREEN_V1.md);
+The latest completed record is [RPB-v19.alt-01](../../../doc/SPECTRAL_CONFIRMATION_V1.md),
+the unchanged v19 design on fresh masters 930905, 930906 and 930907 for each of
+**TEMPO-4** slow-component timing and **AMP-2** component balance, both at
+designed complexity **5/5**. All 12 prospective conditions pass at native32,
+512 CUDA updates, batch 8, unchanged fixed heads and 100% coverage. Intact
+Linear/Neural means are 99.48%/98.44% for timing and 99.48%/98.87% for balance;
+deleted means are 93.23%/93.23% and 94.79%/86.89%, respectively. Most strength
+comes from the fixed prior. Modest training gains on fresh deleted means are
+not uniform across cohorts; query VALIDATION MAE is 0.74248 for timing and
+0.75793 for balance.
+
+The next direction is one separate harmonic linear decoder architecture,
+keeping the fixed prior, data, native32 and heads unchanged. It is prospective:
+the implementation and new quality cohorts are not allocated. Follow the
+[current continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).
+There is no default promotion. Original saved **RPB-v7** and the formal
+**RPB-v4** reference remain protected.
+
+The preceding [RPB-v19 screen](../../../doc/MULTIBAND_SCREEN_V1.md) introduced the design;
 **RPB-v4 remains the formal evaluated reference**, with original saved **RPB-v7**
 protected. V19 keeps 20 learned shape coordinates and 12 fixed low/high spectral
 relation coordinates inside native32. Its two-cohort screen passed the
@@ -25,10 +43,9 @@ Initial controls are already strong; credit the architecture prior rather than
 claiming waveform training learned these relations. Learned shape and
 reconstruction still need demonstrated progress.
 
-The next direction is fresh confirmation under a separate prospective card;
-no additional quality seeds are allocated. Keep native32, the fixed heads and
-the two task populations separate. Follow the
-[current continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
+Its separate fresh confirmation is now complete above. Preserve native32,
+the fixed heads and separate task populations, together with the
+[historical screen continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
 No TEST/stress access or default promotion follows the screen.
 
 The preserved [RPB-v18 result](UNIT_TEMPORAL_RELATION_SCREEN.md) normalizes each
