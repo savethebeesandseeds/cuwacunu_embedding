@@ -14,6 +14,28 @@ stays separate from encoder training and decoding.
 
 ## Current completed milestone and next direction
 
+The [fresh v17 confirmation](FIXED_PRIOR_FRESH_CONFIRMATION.md) and
+[v18 unit-relation screen](UNIT_TEMPORAL_RELATION_SCREEN.md) are complete.
+Both use TEMPO-3, complexity4/5, unchanged native32/.15/B8/512 and fixed heads.
+Fresh RPB-v17.alt-01 reaches100%/100% intact and82.19%/99.90% deleted,
+coverage100%; its one70.31% deleted Linear cohort fails the joint rule.
+V18 normalizes each fixed four-spacing relation group inside the encoder.
+Its prospective two-cohort gate passes, then all five matched known cohorts
+reach100%/100% intact and100%/99.95% deleted, coverage100%. Initial v18
+timing scores are already almost perfect. All comparisons to v17 reuse saved
+scores; no historical model/head or CPU encoder reruns.
+
+Keep the [v18 milestone](../../../doc/MILESTONE_2026-10-10_RPB_V18.md)
+and [continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
+The next concrete direction is the coherent two-component
+[challenge proposal](../../../doc/PROPOSED_TEMPO4_CHALLENGE.md): slow-band
+timing TEMPO-4 and separate component-balance AMP-2, each proposed complexity5/5.
+Freeze the legal-observation generator and information admission before quality.
+Use a small initial-control screen to test a frequency-sensitive candidate and
+whether learned shape adds useful information. Do not repeat a large legacy
+comparison or infer universal quality from near-perfect single-component timing.
+The chronology below preserves the earlier development path.
+
 The [TEMPO-3 comparison](STRUCTURED_HARD_TIMING_DIAGNOSTIC.md) completed once
 and passed its independent audit. This is structured harder timing at designed
 complexity 4/5, with unchanged native32, .15/B8/fixed 512 and heads. Fresh late

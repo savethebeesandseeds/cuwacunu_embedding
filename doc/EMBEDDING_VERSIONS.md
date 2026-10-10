@@ -1,5 +1,19 @@
 # Embedding version registry
 
+[RPB-v17.alt-01](../code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_FRESH_CONFIRMATION.md)
+now records five fresh instances of the unchanged v17 design on TEMPO-3,
+complexity4/5. Intact100%/100%, deleted82.19%/99.90%, coverage100%; the one
+70.31% deleted Linear cohort fails both prospective joint rules. Its Neural
+remains100%. Keep the successful fixed-prior timing result and that limitation
+together; no saved v17 instance is replaced. The separate
+[RPB-v18 screen](../code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md)
+uses generic per-pair unit normalization inside native32, with unchanged fixed
+heads. Its two-cohort gate passes, then all five known cohorts reach100%/100%
+intact and100%/99.95% deleted, coverage100%. This is targeted development,
+not a new fresh confirmation or promotion. Initial timing scores are already
+nearly perfect. The [v17 note](MILESTONE_2026-10-10_RPB_V17.md) and
+[v18 note](MILESTONE_2026-10-10_RPB_V18.md) preserve the results and their limits.
+
 Latest completed architecture screens: [RPB-v14/v15](../code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md),
 [RPB-v16](../code/encoders/raw_patch_bottleneck_mae/PARTITIONED_TEMPORAL_RELATION_SCREEN.md)
 and [RPB-v17](../code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md).
@@ -59,6 +73,7 @@ preserved alongside the successful result.
 | RPB-v15 | Early mixer with label-free dynamics objective | Near52%; failed two-cohort screen; stopped | [Temporal screen](../code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md) |
 | RPB-v16 | Dedicated shape and grouped odd timing coordinates | 100% intact; one deleted neural gate fails; stopped | [Partitioned screen](../code/encoders/raw_patch_bottleneck_mae/PARTITIONED_TEMPORAL_RELATION_SCREEN.md) |
 | RPB-v17 | Learned shape with fixed generic odd relations | 100% intact;99.84% deleted neural; five known cohorts; not promoted | [Fixed-prior screen](../code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md) |
+| RPB-v18 | Learned shape with fixed unit temporal relations | 100% intact;100%/99.95% deleted; five known cohorts; not promoted | [Unit-relation screen](../code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md) |
 
 The [machine-readable registry](embedding_versions.json) records the same mapping.
 `RPB-v4.alt-01` names the fresh v4 controls paired with `RPB-v7.alt-01` on

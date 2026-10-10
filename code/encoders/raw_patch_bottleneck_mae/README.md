@@ -6,6 +6,20 @@ candidate is a masked autoencoder whose reconstruction loss passes through the
 served embedding. The baseline API, executable, archive reader and checkpoint
 format remain separate.
 
+The [fresh RPB-v17.alt-01 confirmation](FIXED_PRIOR_FRESH_CONFIRMATION.md)
+retains five new TEMPO-3 source cohorts, complexity4/5. Intact accuracy is
+100%/100%; deleted is82.19%/99.90%, coverage100%. One70.31% deleted Linear
+cohort fails the joint rule, while the neural timing result replicates strongly.
+The separate [RPB-v18 screen](UNIT_TEMPORAL_RELATION_SCREEN.md) normalizes
+each fixed four-spacing timing group inside the32-number encoder export.
+It passes the initial two-cohort gate and reaches100%/100% intact and
+100%/99.95% deleted across all five matched known cohorts. No new weights,
+head changes or post-encoder PCA. Initial timing scores are already nearly
+perfect; credit the architecture prior. See the
+[saved milestone](../../../doc/MILESTONE_2026-10-10_RPB_V18.md) and
+[current continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
+Existing models, cards, checkpoints and defaults remain preserved.
+
 The [temporal architecture screen](TEMPORAL_ARCHITECTURE_SCREEN.md) tests generic
 cross-channel relations (**RPB-v14**) and an independent label-free dynamics
 objective (**RPB-v15**) on **TEMPO-3**, complexity **4/5**. V14 reaches97.03%/95.10%

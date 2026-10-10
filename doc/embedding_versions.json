@@ -1261,6 +1261,101 @@
       "deleted_linear_accuracy_percent": 52.81249999999999,
       "deleted_neural_accuracy_percent": 50.520833333333336,
       "deleted_coverage_percent": 100.0
+    },
+    {
+      "id": "RPB-v17.alt-01",
+      "encoder_tag": "RPB-v17",
+      "description": "Unchanged fixed-prior v17 on five fresh TEMPO-3 source cohorts",
+      "status": "fresh_source_confirmation_measured_not_promoted",
+      "architecture_id": "early-native20-shape-plus12-fixed-grouped-time-odd-relations-v1",
+      "native_global_width": 32,
+      "parameter_count": 226877,
+      "trainable_parameter_count": 226445,
+      "frozen_parameter_count": 432,
+      "master_seeds": [
+        80787,
+        81888,
+        82989,
+        84090,
+        85191
+      ],
+      "encoder_updates_each": 512,
+      "protocol": "fixed-prior-fresh-confirmation-v1",
+      "dataset_codename": "TEMPO-3",
+      "dataset_recipe_id": "structured-hard-timing-v1",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "capsule": "output/runs/rpb-fixed-prior-fresh-confirmation/admission-3CGpxM/quality",
+      "checkpoint_path_pattern": "output/runs/rpb-fixed-prior-fresh-confirmation/admission-3CGpxM/quality/seed-{master}/point-512/checkpoint.pt",
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_FRESH_CONFIRMATION.md",
+      "measured_record_sha256": "9153bc699536b7bccd9a3863d022cc138a55ae968fb6566f3fc470fb864df840",
+      "durable_summary": "doc/results/fixed_prior_fresh_confirmation_v1.json",
+      "durable_summary_sha256": "6255530c52f710dbb5311e385d7529f878ba3637ce5f5c9101b93864a43bab11",
+      "card": "code/evaluation/cards/fixed_prior_fresh_confirmation_v1.md",
+      "card_sha256": "533afbcd14f03ad373f0dcfb928747d105b008e2e201a11f89f4a85f3d501c02",
+      "source_fingerprint": "9cc2b7dd4f69c54ab0c74360a2c1e01b9ecdcb584724e3d88fc2ea0f1520057c",
+      "report_sha256": "a7db8524b6c51d40dde1ab132f12d8fcfea58f2f614b4df401ff28647b972f28",
+      "saved_check_sha256": "ca61cbe27ad6701c22616a2ec2e59748ad5031de13cf670187f448ceadeda3a7",
+      "inputs_sha256": "4ed94933a5536197949a34f2bb9ad8da291523f11e53487e47a487602e010d2b",
+      "trained_quality": {
+        "validation_intact": {
+          "label": "RPB-v17.alt-01",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 1,
+          "tiny_secondary_mean": 1,
+          "coverage_mean": 1,
+          "ridge_worst": 1,
+          "tiny_secondary_worst": 1
+        },
+        "validation_deleted": {
+          "label": "RPB-v17.alt-01",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 0.821875,
+          "tiny_secondary_mean": 0.9989583333333333,
+          "coverage_mean": 1,
+          "ridge_worst": 0.703125,
+          "tiny_secondary_worst": 0.9947916666666666
+        }
+      },
+      "untrained_quality": {
+        "validation_intact": {
+          "label": "RPB-v17.alt-01",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 1,
+          "tiny_secondary_mean": 1,
+          "coverage_mean": 1,
+          "ridge_worst": 1,
+          "tiny_secondary_worst": 1
+        },
+        "validation_deleted": {
+          "label": "RPB-v17.alt-01",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 0.8203125,
+          "tiny_secondary_mean": 0.9984375,
+          "coverage_mean": 1,
+          "ridge_worst": 0.6875,
+          "tiny_secondary_worst": 0.9973958333333334
+        }
+      },
+      "training": {
+        "label": "RPB-v17.alt-01",
+        "updates": 512,
+        "train_error": 0.705814375303856,
+        "validation_error": 0.7316981980051115,
+        "GPU_training_seconds": 21.819731133999998
+      },
+      "confirmation": {
+        "continuity": false,
+        "strong_capability": false
+      },
+      "CPU_encoder_execution": false,
+      "old_encoder_or_head_refits": 0,
+      "promotion": false,
+      "existing_groups_replaced": false
     }
   ],
   "latest_completed_diagnostic": {
@@ -2586,6 +2681,171 @@
       "trainable_parameter_values": 226445,
       "frozen_parameter_values": 432,
       "encoder_training_recipe_id": "original-waveform-huber1;fixed-grouped-odd-prior432;shape-backbone-decoder-trainable-v1"
+    },
+    {
+      "tag": "RPB-v18",
+      "encoder": "raw_patch_bottleneck_mae",
+      "description": "Learned shape with fixed generic unit temporal relations",
+      "status": "measured_known_development_not_promoted",
+      "architecture_id": "early-native20-shape-plus12-fixed-unit-grouped-time-odd-relations-v1",
+      "native_global_width": 32,
+      "parameter_count_at_C3_H32_F3": 226877,
+      "trainable_parameter_values": 226445,
+      "frozen_parameter_values": 432,
+      "additional_parameter_values_versus_v17": 0,
+      "encoder_updates_each": 512,
+      "protocol": "unit-relation-screen-v1",
+      "dataset_codename": "TEMPO-3",
+      "dataset_recipe_id": "structured-hard-timing-v1",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "evidence_stage": "all_known",
+      "master_seeds": [
+        80787,
+        81888,
+        82989,
+        84090,
+        85191
+      ],
+      "runs": [
+        {
+          "run": "/embedding/output/runs/rpb-unit-relation-screen/admission-DiR2yH/quality-screen",
+          "report_sha256": "9f66e18dac606ba448e900e752cb97f8b0e4a2078156d016d0750b514c3cd713",
+          "saved_check_sha256": "ac700ed9aa4107dd944f33d16041e7c02ff4d0d4ecfbee0ceaf5668cfd10163f",
+          "source_fingerprint": "d82d92864c87abb985fd0b1153927bcded70904b54e9c7ba74b0101cbe850993",
+          "saved_check": {
+            "protocol": "unit-relation-screen-saved-check-v1",
+            "status": "passed",
+            "report_sha256": "9f66e18dac606ba448e900e752cb97f8b0e4a2078156d016d0750b514c3cd713",
+            "reader_sha256": "b480e859e6dca06d6a8427d7c539ca6bda9acacb7cab947c69956f4c08d64f90",
+            "modules_sha256": {
+              "archive_codec.py": "4eb501222fb1d9205ae13c5bc0bf1b5fc96ebd2faef3ed247dd7809fb86a453d",
+              "saved_cpu_math.py": "1993af23915ba8200389727e2810caad175613fae7ead00d5ea0cb5250e303b9",
+              "legacy_implementation.py": "f0c64b9fe67a90a9d95196433e05dec527515778d1635bdc909d1703fa278b68"
+            },
+            "checks": 2333307,
+            "CPU_archive_decodes": 72,
+            "cohorts": [
+              {
+                "master": 80787,
+                "status": "passed"
+              },
+              {
+                "master": 84090,
+                "status": "passed"
+              }
+            ],
+            "fixed_odd_coordinate_values_checked": 12288,
+            "encoder_forwards": 0,
+            "encoder_updates": 0,
+            "head_fits": 0,
+            "PCA_fits": 0
+          }
+        },
+        {
+          "run": "/embedding/output/runs/rpb-unit-relation-screen/admission-DiR2yH/quality-remaining",
+          "report_sha256": "d1808450a09e0f9a66b3f877926d81b31a7980c83b5ce0f64507229370dee579",
+          "saved_check_sha256": "47e3d605bd8b8f4a44a837e17799b34ee4369b0458088fc13e5cf4243a4b1dbc",
+          "source_fingerprint": "d82d92864c87abb985fd0b1153927bcded70904b54e9c7ba74b0101cbe850993",
+          "saved_check": {
+            "protocol": "unit-relation-screen-saved-check-v1",
+            "status": "passed",
+            "report_sha256": "d1808450a09e0f9a66b3f877926d81b31a7980c83b5ce0f64507229370dee579",
+            "reader_sha256": "b480e859e6dca06d6a8427d7c539ca6bda9acacb7cab947c69956f4c08d64f90",
+            "modules_sha256": {
+              "archive_codec.py": "4eb501222fb1d9205ae13c5bc0bf1b5fc96ebd2faef3ed247dd7809fb86a453d",
+              "saved_cpu_math.py": "1993af23915ba8200389727e2810caad175613fae7ead00d5ea0cb5250e303b9",
+              "legacy_implementation.py": "f0c64b9fe67a90a9d95196433e05dec527515778d1635bdc909d1703fa278b68"
+            },
+            "checks": 3499711,
+            "CPU_archive_decodes": 108,
+            "cohorts": [
+              {
+                "master": 81888,
+                "status": "passed"
+              },
+              {
+                "master": 82989,
+                "status": "passed"
+              },
+              {
+                "master": 85191,
+                "status": "passed"
+              }
+            ],
+            "fixed_odd_coordinate_values_checked": 18432,
+            "encoder_forwards": 0,
+            "encoder_updates": 0,
+            "head_fits": 0,
+            "PCA_fits": 0
+          }
+        }
+      ],
+      "measured_record": "code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md",
+      "measured_record_sha256": "f0e5d6b9b284279e4a55eeb886ca4e9b5c34459a022a8bdfdea21a1442575962",
+      "durable_summary": "doc/results/unit_relation_screen_v1.json",
+      "durable_summary_sha256": "48d8beaa9fa0bdfd9440f291d0c8a5046f0dc9c747c7f03475a92ccdf15cc5ba",
+      "card": "code/evaluation/cards/unit_relation_screen_v1.md",
+      "card_sha256": "906b5ab75da3c12d243ebe915316c1f9cb4a46727f32e1896219ff66305997b9",
+      "trained_quality": {
+        "validation_intact": {
+          "label": "RPB-v18",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 1,
+          "tiny_secondary_mean": 1,
+          "coverage_mean": 1,
+          "ridge_worst": 1,
+          "tiny_secondary_worst": 1
+        },
+        "validation_deleted": {
+          "label": "RPB-v18",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 1,
+          "tiny_secondary_mean": 0.9994791666666667,
+          "coverage_mean": 1,
+          "ridge_worst": 1,
+          "tiny_secondary_worst": 0.9973958333333334
+        }
+      },
+      "untrained_quality": {
+        "validation_intact": {
+          "label": "RPB-v18",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 1,
+          "tiny_secondary_mean": 1,
+          "coverage_mean": 1,
+          "ridge_worst": 1,
+          "tiny_secondary_worst": 1
+        },
+        "validation_deleted": {
+          "label": "RPB-v18",
+          "size": 32,
+          "evidence": "new",
+          "ridge_mean": 1,
+          "tiny_secondary_mean": 0.9989583333333333,
+          "coverage_mean": 1,
+          "ridge_worst": 1,
+          "tiny_secondary_worst": 0.9947916666666666
+        }
+      },
+      "training": {
+        "label": "RPB-v18",
+        "updates": 512,
+        "train_error": 0.6926942979271768,
+        "validation_error": 0.7195354405744582,
+        "GPU_training_seconds": 21.894987744599998
+      },
+      "screen_gate_passed": true,
+      "CPU_encoder_execution": false,
+      "old_model_reruns": 0,
+      "baseline_head_refits": 0,
+      "testing_accessed": false,
+      "stress_accessed": false,
+      "promotion": false,
+      "existing_groups_replaced": false
     }
   ],
   "early_mixer_fixed512_diagnostic": {
@@ -21035,6 +21295,28 @@
     "measured_record": "code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md",
     "durable_summary": "doc/results/fixed_prior_relation_screen_v1.json",
     "candidate": "RPB-v17",
+    "quality_trajectories": 5,
+    "encoder_updates": 2560,
+    "CPU_encoder_execution": false,
+    "old_model_reruns": 0,
+    "baseline_head_refits": 0,
+    "promotion": false
+  },
+  "fixed_prior_fresh_confirmation": {
+    "instance_bundle": "RPB-v17.alt-01",
+    "model_design": "RPB-v17",
+    "measured_record": "code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_FRESH_CONFIRMATION.md",
+    "durable_summary": "doc/results/fixed_prior_fresh_confirmation_v1.json",
+    "quality_trajectories": 5,
+    "encoder_updates": 2560,
+    "CPU_encoder_execution": false,
+    "old_encoder_or_head_refits": 0,
+    "promotion": false
+  },
+  "unit_relation_diagnostic": {
+    "candidate": "RPB-v18",
+    "measured_record": "code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md",
+    "durable_summary": "doc/results/unit_relation_screen_v1.json",
     "quality_trajectories": 5,
     "encoder_updates": 2560,
     "CPU_encoder_execution": false,

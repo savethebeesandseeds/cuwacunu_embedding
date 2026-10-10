@@ -5,6 +5,20 @@ MTF-JEPA-MAE-VICReg implementation. It converts masked multichannel histories in
 global and per-channel embeddings and trains without the parent project's runtime,
 DSL, registries, graph orchestration, forecasting, trading, or interface components.
 
+The [saved RPB-v17 milestone](doc/MILESTONE_2026-10-10_RPB_V17.md) now has a
+[fresh-source follow-up](code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_FRESH_CONFIRMATION.md)
+as RPB-v17.alt-01. On TEMPO-3 (complexity4/5), both heads remain100% intact;
+deleted Neural is99.90%, Linear82.19%, coverage100%. One deleted Linear cohort
+is70.31%, so the prospective joint rules fail despite strong neural replication.
+The separate [RPB-v18 screen](code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md)
+normalizes each four-number timing group inside native32. Across those five
+known cohorts it reaches100%/100% intact and100%/99.95% deleted, coverage100%.
+The two-cohort continuation gate passed before the remaining three ran.
+These are development results; initial timing scores are already nearly perfect.
+The [v18 milestone](doc/MILESTONE_2026-10-10_RPB_V18.md) preserves the result,
+fixed-prior credit and limits. V17 and every existing saved model remain intact.
+See [the follow-up continuation](doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
+
 The latest [architecture experiments](code/encoders/raw_patch_bottleneck_mae/TEMPORAL_ARCHITECTURE_SCREEN.md)
 add explicit generic temporal relations on **TEMPO-3**, designed complexity
 **4/5**. RPB-v14 reaches97.03%/95.10% intact linear/neural accuracy across five

@@ -36,6 +36,22 @@ fixed across encoder comparisons; fit their weights separately on training data.
 
 ## Active research version
 
+The latest [fresh RPB-v17.alt-01 record](code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_FRESH_CONFIRMATION.md)
+uses five new TEMPO-3 cohorts at the unchanged .15/B8/512/native32/heads recipe.
+Intact100%/100%, deleted82.19%/99.90%, coverage100%; one70.31% deleted Linear
+cohort fails both joint rules while Neural remains100% there. Preserve all
+initial/trained results and fixed-prior credit. The separate
+[unit-relation card](code/evaluation/cards/unit_relation_screen_v1.md) passed
+its targeted v18 screen on80787/84090 before expanding to three other cohorts.
+[RPB-v18](code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md)
+now records100%/100% intact and100%/99.95% deleted on all five, coverage100%.
+Matched v17 scores reuse saved metadata with no old-model/head execution.
+Initial v18 scores already reach100%/99.90% deleted; credit its fixed timing prior.
+Keep this known-data development stage separate from fresh confirmation, and
+preserve the [v18 milestone](doc/MILESTONE_2026-10-10_RPB_V18.md). Follow the
+[new continuation](doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md); TEMPO-4 is
+currently only a coherent multi-component proposal, not a measured dataset.
+
 The fixed 512
 [TEMPO-3 comparison](code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_DIAGNOSTIC.md)
 for fresh RPB-v7.alt-05/RPB-v10.alt-05: structured harder timing, designed
