@@ -54,3 +54,28 @@ for rescoring; do not run a CPU encoder or train a trajectory again to read it.
 No TEST or market data are accessed. This experiment compares capacity at a
 fixed short budget; improvement or failure does not automatically promote a
 profile, alter cutoffs, or authorize an adaptive seed/budget extension.
+
+The 12 October code review strengthens admission, immutable archive publication,
+original-input and TRAIN-scaler associations, checkpoint settings, and paired
+interval replay. Runtime checks remain active under `python -O`. Regression
+targets are `test-configurable-capacity-data`,
+`test-configurable-capacity-runtime`, and `test-configurable-capacity-audit`.
+New native exports include source IDs and CPU scaler witnesses; older exports
+remain auditable from their preserved checkpoint metadata, without model calls.
+
+To audit a completed historical capsule, build the corrected tools in a separate
+named session. Use a new existing review directory for the arithmetic output and
+a new absent child directory for publisher output:
+
+```sh
+"$review_build/embedding_configurable_capacity_readout" \
+  --audit-only "$original/readouts" --audit-output "$review/arithmetic-audit.json"
+python3 -B code/evaluation/protocols/configurable_capacity_v1/publish.py \
+  --capsule "$original" --arithmetic-audit "$review/arithmetic-audit.json" \
+  --output-directory "$review/published-audit"
+```
+
+This reads saved heads, predictions and tensors without fitting or running an
+encoder. Keep the corrected auditor's source and binary fingerprints separate
+from the original experiment's fingerprint, and verify the original artifact
+manifest afterward. See [the review record](../../../../doc/CODE_REVIEW_2026-10-12.md).

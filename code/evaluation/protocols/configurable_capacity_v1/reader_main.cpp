@@ -3,6 +3,7 @@
 #include "embedding/shared/fixed_feature_readouts.h"
 #include "frozen_role_guard.h"
 #include <torch/torch.h>
+#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <iostream>
@@ -29,7 +30,21 @@ void put(torch::serialize::OutputArchive&a,const std::string&key,const std::stri
 void direct(const fs::path&p,bool file=false){require(p.is_absolute()&&fs::canonical(p)==p&&!fs::is_symlink(p),"direct absolute input: "+p.string());
   if(file){struct stat s{};require(::stat(p.c_str(),&s)==0&&S_ISREG(s.st_mode)&&s.st_nlink==1,"single-link regular input");}}
 void new_leaf(const fs::path&p){require(p.is_absolute()&&p.lexically_normal()==p&&!fs::exists(p)&&!fs::is_symlink(p),"new absolute output");direct(p.parent_path());require(fs::create_directory(p),"reserve output");}
-void save(const fs::path&p,torch::serialize::OutputArchive&a){require(!fs::exists(p),"new archive required");embedding::archive::save_archive(p.string(),a);}
+void save(const fs::path&p,torch::serialize::OutputArchive&a){
+  // link() publishes without replacing even a dangling symlink or a leaf
+  // introduced after the initial check. Keep shared historical I/O untouched.
+  require(!fs::exists(p)&&!fs::is_symlink(p),"new archive required");
+  auto name=(p.string()+".tmp-XXXXXX");std::vector<char> buffer(name.begin(),name.end());buffer.push_back('\0');
+  const int reserved=::mkstemp(buffer.data());require(reserved>=0,"reserve archive temporary");
+  const fs::path temporary(buffer.data());::close(reserved);
+  try{a.save_to(temporary.string());const int fd=::open(temporary.c_str(),O_RDONLY);require(fd>=0,"open saved archive");
+    const int synced=::fsync(fd),closed=::close(fd);require(synced==0&&closed==0,"sync saved archive");
+    require(::link(temporary.c_str(),p.c_str())==0,"archive output must remain new");
+    require(::unlink(temporary.c_str())==0,"remove owned archive temporary");
+    const int directory=::open(p.parent_path().c_str(),O_RDONLY|O_DIRECTORY);require(directory>=0,"open archive parent");
+    const int ds=::fsync(directory),dc=::close(directory);require(ds==0&&dc==0,"sync archive parent");
+  }catch(...){::unlink(temporary.c_str());throw;}
+}
 struct Split{embedding::Batch batch;torch::Tensor labels,source_numeric;std::vector<std::string>ids;};
 std::vector<std::string> source_strings(const std::string&s){
   // Closed producer IDs have no escapes. Reject general JSON rather than guessing.
@@ -76,7 +91,10 @@ ev::FixedFeatureMethod native(const fs::path&p,const std::string&profile,int64_t
   require(text(a,"input_manifest_sha")==input_sha&&text(a,"source_fingerprint")==source_sha&&text(a,"card_sha")==card_sha,"native immutable input/source/card binding");
   const auto surface=[&](const std::string&prefix,const Split&s){ev::FeatureSurface f{read(a,prefix+"_values"),read(a,prefix+"_valid"),std::string(protocol)+"/"+tag+"/master-"+std::to_string(master)+"/point-"+std::to_string(point)+";saved CUDA native export"};
     ev::validate_features(f);require(f.values.scalar_type()==torch::kFloat64&&f.values.sizes()==torch::IntArrayRef({s.labels.size(0),width})&&torch::isfinite(f.values).all().item<bool>(),"saved native CPU64 geometry/finiteness");
-    require(torch::equal(f.valid,s.batch.feature_mask.flatten(1).any(1)),"native validity exact observed support");return f;};
+    require(torch::equal(f.valid,s.batch.feature_mask.flatten(1).any(1)),"native validity exact observed support");
+    const auto keys=a.keys();if(std::find(keys.begin(),keys.end(),prefix+"_source_ids")!=keys.end())
+      require(torch::equal(read(a,prefix+"_source_ids"),s.source_numeric)&&text(a,prefix+"_source_ids_json")==fi::strings(s.ids),"native explicit source row association");
+    return f;};
   return {"native_"+profile+"_"+std::to_string(point),surface("training",c.train),surface("validation",c.val),surface("deleted",c.deleted),false,{}};
 }
 void close(const torch::Tensor&a,const torch::Tensor&b,const std::string&why){require(a.scalar_type()==b.scalar_type()&&a.sizes()==b.sizes(),why+" geometry");
@@ -116,14 +134,52 @@ int64_t audit_directory(const fs::path&root,fs::path output={}){direct(root);int
       }
       replay<<'}';
     }++fits;
-  }require(fits>0,"no saved fitted heads to audit");replay<<"],\"fitted_pairs_replayed\":"<<fits<<"}";if(!output.empty())write_new(output,replay.str()+"\n");return fits;
+  }require(fits>0,"no saved fitted heads to audit");replay<<"],\"pairs\":[";first=true;
+  // Replay each declared capacity comparison from the already saved decisions.
+  // These source-group intervals are separate from the per-method intervals.
+  const std::vector<std::pair<std::string,std::string>> comparisons{
+    {"native_A_0","native_A_512"},{"native_B_0","native_B_512"},
+    {"native_C_0","native_C_512"},{"native_A_512","native_B_512"},
+    {"native_A_512","native_C_512"}};
+  for(const auto master:masters){const auto models=root/("master-"+std::to_string(master))/"models";
+    if(!fs::exists(models))continue; // Artificial admission has no quality matrix.
+    for(const auto&[reference,candidate]:comparisons)for(const auto repetition:repetitions)
+      for(const std::string view:{"validation-intact","validation-deleted"}){
+        const auto rep="rep-"+std::to_string(repetition),pair_id=candidate+"_minus_"+reference;
+        const auto left=models/candidate/rep/(view+"-predictions.pt"),right=models/reference/rep/(view+"-predictions.pt");
+        if(!fs::exists(left)||!fs::exists(right))continue; // Preserve unsupported fits.
+        torch::serialize::InputArchive a,b;a.load_from(left.string(),torch::kCPU);b.load_from(right.string(),torch::kCPU);
+        const auto truth=read(a,"labels_scoring_only");close(truth,read(b,"labels_scoring_only"),"paired scoring labels");
+        require(text(a,"source_ids_json")==text(b,"source_ids_json"),"paired source row association");
+        const auto ids=source_strings(text(a,"source_ids_json"));const auto common=read(a,"valid").logical_and(read(b,"valid"));
+        auto view_name=view;std::replace(view_name.begin(),view_name.end(),'-','_');
+        const auto seed=ev::stream_seed(master,named(pair_id+"/"+rep+"/"+view_name));
+        if(!first){replay<<',';}
+        first=false;
+        replay<<"{\"master\":"<<master<<",\"id\":"<<quote(pair_id)<<",\"repetition\":"<<quote(rep)
+          <<",\"view\":"<<quote(view_name)<<",\"valid_rows\":"<<common.sum().item<int64_t>()
+          <<",\"bootstrap_seed_decimal\":"<<quote(std::to_string(seed))
+          <<",\"ridge\":"<<interval_json(ev::grouped_accuracy_interval(read(a,"ridge"),truth,common,ids,seed,1000,read(b,"ridge")))
+          <<",\"tiny_secondary\":"<<interval_json(ev::grouped_accuracy_interval(read(a,"tiny_secondary"),truth,common,ids,seed,1000,read(b,"tiny_secondary")))<<'}';
+      }
+  }
+  replay<<"],\"fitted_pairs_replayed\":"<<fits<<"}";if(!output.empty())write_new(output,replay.str()+"\n");return fits;
 }
-void self_test(const fs::path&out){new_leaf(out);torch::manual_seed(941000);Cohort c;const auto split=[](int64_t groups,const std::string&prefix){Split s;std::vector<int64_t>label;for(int64_t i=0;i<groups;++i){s.ids.push_back(prefix+std::to_string(i));s.ids.push_back(prefix+std::to_string(i));label.push_back(0);label.push_back(1);}s.labels=torch::tensor(label,torch::kInt64);return s;};c.train=split(8,"train-");c.val=split(4,"val-");c.deleted=c.val;
+void self_test(const fs::path&out){new_leaf(out);torch::manual_seed(941000);
+  torch::serialize::OutputArchive immutable;immutable.write("engineering",torch::ones({1},torch::kFloat64),true);
+  fs::create_symlink("never-created-target",out/"blocked.pt");bool blocked=false;try{save(out/"blocked.pt",immutable);}catch(const std::exception&){blocked=true;}
+  require(blocked&&fs::is_symlink(out/"blocked.pt")&&!fs::exists(out/"never-created-target"),"saved archive preserves a dangling symlink");
+  save(out/"immutable.pt",immutable);const auto before=sha256(bytes(out/"immutable.pt"));blocked=false;
+  try{save(out/"immutable.pt",immutable);}catch(const std::exception&){blocked=true;}
+  require(blocked&&sha256(bytes(out/"immutable.pt"))==before,"saved archive preserves existing leaf bytes");
+  Cohort c;const auto split=[](int64_t groups,const std::string&prefix){Split s;std::vector<int64_t>label;for(int64_t i=0;i<groups;++i){s.ids.push_back(prefix+std::to_string(i));s.ids.push_back(prefix+std::to_string(i));label.push_back(0);label.push_back(1);}s.labels=torch::tensor(label,torch::kInt64);return s;};c.train=split(8,"train-");c.val=split(4,"val-");c.deleted=c.val;
   const auto f=[](const Split&s){auto x=torch::randn({s.labels.size(0),4},torch::kFloat64);x.select(1,0).add_(s.labels.to(torch::kFloat64)*2-1);return ev::FeatureSurface{x,torch::ones({s.labels.size(0)},torch::kBool),"artificial CPU readout engineering only"};};auto t=f(c.train),v=f(c.val),d=v;d.values=v.values.clone();d.values.select(1,1).zero_();auto r=heads(out/"readouts",941000,c);r.methods.push_back({"engineering",t,v,d,false,{}});ev::run_fixed_feature_readouts(r);require(audit_directory(out)==3,"three engineering fitted repetitions");std::cout<<"CPU saved-feature engineering passed; 3 fits replayed, no encoder calls\n";}
 }
 int main(int argc,char**argv){try{torch::set_num_threads(1);std::map<std::string,std::string>a;for(int i=1;i<argc;i+=2)require(i+1<argc&&a.emplace(argv[i],argv[i+1]).second,"unique CLI key/value");
   if(a.count("--self-test")){require(a.size()==1,"closed self-test CLI");self_test(a.at("--self-test"));return 0;}
-  if(a.count("--audit-only")){require(a.size()==1,"closed audit CLI");std::cout<<"Saved CPU arithmetic audit passed: "<<audit_directory(a.at("--audit-only"))<<" fits, no fitting or encoder calls\n";return 0;}
+  if(a.count("--audit-only")){require(a.size()==1||(a.size()==2&&a.count("--audit-output")),"closed audit CLI");
+    fs::path audit_output;if(a.count("--audit-output")){audit_output=a.at("--audit-output");require(audit_output.is_absolute()&&audit_output.lexically_normal()==audit_output&&!fs::exists(audit_output)&&!fs::is_symlink(audit_output),"new direct audit output");direct(audit_output.parent_path());}
+    std::cout<<"Saved CPU arithmetic audit passed: "<<audit_directory(a.at("--audit-only"),audit_output)<<" fits, no fitting or encoder calls\n";return 0;}
   const std::set<std::string>required{"--data-root","--producer-root","--output","--inputs-sha256","--sources-sha256","--card-sha256"};require(a.size()==required.size(),"closed quality CLI");for(const auto&k:required)require(a.count(k),"missing CLI "+k);
   const fs::path data=a.at("--data-root"),producer=a.at("--producer-root"),output=a.at("--output");direct(data);direct(producer);const auto input_sha=sha256(bytes(a.at("--inputs-sha256"))),source_sha=sha256(bytes(a.at("--sources-sha256"))),card_sha=a.at("--card-sha256");
   require(fi::is_sha(card_sha)&&card_sha==CONFIGURABLE_CAPACITY_CARD_SHA256&&source_sha==CONFIGURABLE_CAPACITY_SOURCE_ID,"compiled prospective source/card SHA");std::map<std::string,fs::path>roles;for(const auto master:masters)for(const std::string view:{"training","validation","validation-deleted"}){const auto name="master-"+std::to_string(master)+"/"+view+".pt";roles[name]=data/name;}fi::Guard guard(a.at("--inputs-sha256"),roles);

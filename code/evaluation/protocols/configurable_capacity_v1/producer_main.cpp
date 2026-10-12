@@ -325,12 +325,15 @@ FeatureViews feature_views(const Cohort &data, rpb::LoadedConfigurableSpectralEn
   return {extract(data.training, loaded), extract(data.validation, loaded), extract(data.deleted, loaded)};
 }
 void write_features(const fs::path &path, const FeatureViews &features, const Binding &binding,
-    int64_t point, const rpb::Config &c, const std::string &scaler_id) {
+    int64_t point, const rpb::Config &c, const std::string &scaler_id, const Cohort &data) {
   torch::serialize::OutputArchive a; binding.write(a, point, c, scaler_id);
   text(a, "artifact_kind", "configurable_capacity_native_feature_views_v1");
   for (const auto &entry : std::vector<std::pair<std::string, Features>>{{"training", features.training}, {"validation", features.validation}, {"deleted", features.deleted}}) {
     a.write(entry.first + "_values", entry.second.values, true);
     a.write(entry.first + "_valid", entry.second.valid, true);
+    const auto &split = entry.first == "training" ? data.training : entry.first == "validation" ? data.validation : data.deleted;
+    a.write(entry.first + "_source_ids", split.source_ids, true);
+    text(a, entry.first + "_source_ids_json", cap::source_ids_json(split));
   }
   text(a, "provenance", std::string(protocol) + "/" + binding.model_tag + "/master-" + std::to_string(binding.master) +
       "/point-" + std::to_string(point) + "; exact native CUDA export; no post-encoder PCA");
@@ -437,6 +440,22 @@ void save_training_state(const fs::path &path, Trainer &trainer) {
   save_archive(path, a);
 }
 
+void save_scaler_witness(const fs::path &path, Trainer &trainer, const cap::Split &training) {
+  // CPU statistics only: audits can establish the TRAIN fitting population
+  // without constructing or forwarding the CUDA model.
+  torch::serialize::OutputArchive a;
+  trainer.binding.write(a, int64_t(trainer.trace.size()), trainer.c, trainer.scaler.identity());
+  text(a, "artifact_kind", "configurable_capacity_train_scaler_witness_v1");
+  for (const auto &entry : std::vector<std::pair<std::string, torch::Tensor>>{
+      {"mean", trainer.scaler.mean}, {"scale", trainer.scaler.scale}, {"count", trainer.scaler.count},
+      {"channel_ids", trainer.scaler.channel_ids}, {"floor_applied", trainer.scaler.floor_applied}})
+    a.write(entry.first, cpu(entry.second), true);
+  a.write("scale_floor", torch::tensor(trainer.scaler.scale_floor, torch::kFloat64), true);
+  a.write("training_source_ids", training.source_ids, true);
+  text(a, "training_source_ids_json", cap::source_ids_json(training));
+  save_archive(path, a);
+}
+
 void engineering(const fs::path &output, const fs::path &settings, bool &owned) {
   require(torch::cuda::is_available(), "CUDA admission mandatory"); new_leaf(output); owned = true;
   const auto development = cap::make_development(8, 4, 941000);
@@ -460,7 +479,7 @@ void engineering(const fs::path &output, const fs::path &settings, bool &owned) 
     require(loaded.training_updates == 2 && loaded.scaler.identity() == trainer.scaler.identity(), "typed immutable checkpoint metadata");
     const auto after = extract(fixture.validation, loaded);
     require(exact(before.to(torch::kFloat64), after.values), "bit-exact CUDA checkpoint native reload");
-    const auto features = feature_views(fixture, loaded); write_features(dir / "features.pt", features, binding, 2, c, trainer.scaler.identity());
+    const auto features = feature_views(fixture, loaded); write_features(dir / "features.pt", features, binding, 2, c, trainer.scaler.identity(), fixture);
     const auto query = write_queries(dir / "reconstruction-validation.pt", fixture.validation, loaded, binding);
     io::write_new(dir / "progress.json", trainer.progress() + '\n');
     io::write_new(dir / "query.json", query + '\n');
@@ -523,10 +542,11 @@ int main(int argc, char **argv) {
       if (point) { trainer.train_to(point); require(trainer.changed() && trainer.trace.size() == quality_budget, "complete changed CUDA quality trajectory"); }
       const auto directory = output / ("point-" + std::to_string(point)); require(fs::create_directory(directory), "new retained point");
       start = Clock::now(); trainer.save(directory / "checkpoint.pt"); save_training_state(directory / "optimizer-witness.pt", trainer);
+      save_scaler_witness(directory / "scaler-witness.pt", trainer, data.training);
       auto loaded = rpb::load_configurable_spectral_checkpoint((directory / "checkpoint.pt").string(), c.device, &c);
       require(loaded.training_updates == point && loaded.scaler.identity() == trainer.scaler.identity(), "served checkpoint metadata/scaler"); binding_seconds += seconds(start);
       start = Clock::now(); const auto features = feature_views(data, loaded);
-      write_features(directory / "features.pt", features, binding, point, c, loaded.scaler.identity()); torch::cuda::synchronize(0); feature_seconds += seconds(start);
+      write_features(directory / "features.pt", features, binding, point, c, loaded.scaler.identity(), data); torch::cuda::synchronize(0); feature_seconds += seconds(start);
       if (!point) initial_features = features;
       else learned_movement = unchanged_fixed_features(initial_features, features, c);
       start = Clock::now();

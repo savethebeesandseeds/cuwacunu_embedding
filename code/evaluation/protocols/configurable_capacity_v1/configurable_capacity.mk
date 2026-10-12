@@ -14,7 +14,7 @@ CC_CARD_SHA := $(shell sha256sum $(CC_CARD) | cut -d ' ' -f1)
 CC_CPPFLAGS := $(COMMON_CPPFLAGS) -isystem /usr/local/cuda/include -I$(RPB_ROOT)/include -I$(CC_DATA) -I$(CODE_ROOT)/evaluation/include -DCONFIGURABLE_CAPACITY_SOURCE_ID=\"$(CC_SOURCE_ID)\" -DCONFIGURABLE_CAPACITY_CARD_SHA256=\"$(CC_CARD_SHA)\"
 CC_SHARED_NAMES := data evaluation feature_harness feature_evaluation feature_stress archive_readout native_curve paired_pooling fixed_feature_readouts
 CC_SHARED_OBJECTS := $(addprefix $(OBJECT_DIR)/shared/,$(addsuffix .o,$(CC_SHARED_NAMES)))
-.PHONY: configurable-capacity configurable-capacity-data configurable-capacity-readout test-configurable-capacity-data print-configurable-capacity-sources
+.PHONY: configurable-capacity configurable-capacity-data configurable-capacity-readout test-configurable-capacity-data test-configurable-capacity-runtime test-configurable-capacity-audit print-configurable-capacity-sources
 configurable-capacity: $(CC_BIN) $(CC_WRITER) $(CC_READER) $(CC_TEST)
 configurable-capacity-data: $(CC_WRITER)
 configurable-capacity-readout: $(CC_READER)
@@ -45,4 +45,10 @@ $(CC_TEST): $(CC_DIR)/generator_test.o $(CC_DIR)/configurable_capacity.o $(CC_DI
 	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
 test-configurable-capacity-data: $(CC_TEST)
 	$(CC_TEST)
+test-configurable-capacity-runtime:
+	python3 -B $(CC_ROOT)/capsule_runtime_test.py
+	python3 -B -O $(CC_ROOT)/capsule_runtime_test.py
+test-configurable-capacity-audit:
+	python3 -B $(CC_ROOT)/evaluation_audit_test.py
+	python3 -B -O $(CC_ROOT)/evaluation_audit_test.py
 -include $(wildcard $(CC_DIR)/*.d)

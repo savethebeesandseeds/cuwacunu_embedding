@@ -81,3 +81,6 @@ doc/CONFIGURABLE_CAPACITY_V1.md text eol=lf
 doc/CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md text eol=lf
 # Evidence captures retain original line endings/whitespace rather than being reformatted.
 doc/results/configurable_capacity_v1/** -text -whitespace
+doc/results/configurable_capacity_review_2026_10_12/** -text -whitespace
+doc/results/configurable_capacity_review_2026_10_12.json text eol=lf
+doc/CODE_REVIEW_2026-10-12.md text eol=lf

@@ -47,7 +47,7 @@ Evidence information(const fs::path &path,const cc::Split &split) {
   out.write("labels_scoring_only",split.scoring_labels,true);out.write("source_ids",split.source_ids,true);
   out.write("source_ids_json",embedding::archive::text_tensor(cc::source_ids_json(split)),true);
   out.write("cpu_information_seconds",torch::tensor(seconds,torch::kFloat64),true);
-  require(!fs::exists(path),"information archive exists");embedding::archive::save_archive(path.string(),out);
+  cc::publish_archive(path.string(),out);
   return score;
 }
 bool master(const fs::path &root,uint64_t seed,int64_t history,std::ostream &report,bool first) {

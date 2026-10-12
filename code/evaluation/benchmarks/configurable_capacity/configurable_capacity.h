@@ -41,6 +41,9 @@ Development make_development(std::size_t training_pairs, std::size_t validation_
     uint64_t master, Dimensions dimensions = {});
 Split delete_observations(const Split &source, double probability, uint64_t seed);
 std::string source_ids_json(const Split &source);
+// Immutable no-replace publication for this benchmark's observation/information
+// evidence. An existing file, directory or dangling symlink is preserved.
+void publish_archive(const std::string &path,torch::serialize::OutputArchive &archive);
 void save_split_archive(const std::string &path, const Split &source, const std::string &role,
     uint64_t master, double additional_deletion = 0);
 Split load_split_archive(const std::string &path);

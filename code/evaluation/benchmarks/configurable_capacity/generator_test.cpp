@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: MIT
 #include "configurable_capacity.h"
+#include "embedding/shared/data.h"
+#include <atomic>
+#include <barrier>
 #include <cmath>
 #include <cstdlib>
 #include <filesystem>
@@ -7,6 +10,7 @@
 #include <limits>
 #include <set>
 #include <stdexcept>
+#include <thread>
 #include <utility>
 #include <unistd.h>
 
@@ -111,6 +115,8 @@ void archive_and_rejection_contract() {
   rejects([&]{(void)cc::delete_observations(data.validation,std::numeric_limits<double>::quiet_NaN(),941000);},"NaN deletion accepted");
   auto partial=data.validation;partial.scoring_labels=data.validation.scoring_labels.clone();partial.scoring_labels[0]=partial.scoring_labels[1];
   rejects([&]{cc::validate(partial);},"same-label pair accepted");
+  auto odd=data.training;odd.source_ids=data.training.source_ids+1;
+  rejects([&]{cc::validate(odd);},"nonzero source variant bit accepted");
   const auto parent=std::getenv("TMPDIR");fs::path base=parent?parent:"/tmp";
   std::string pattern=(base/"capacity-generator-test-XXXXXX").string();std::vector<char> writable(pattern.begin(),pattern.end());writable.push_back(0);
   const auto created=::mkdtemp(writable.data());check(created!=nullptr,"cannot create owned temporary fixture");fs::path directory=created;
@@ -121,7 +127,36 @@ void archive_and_rejection_contract() {
     check(torch::equal(loaded.observed,data.training.observed)&&torch::equal(loaded.mask,data.training.mask)&&
         torch::equal(loaded.scoring_labels,data.training.scoring_labels)&&torch::equal(loaded.source_ids,data.training.source_ids),"archive changed legal data or row metadata");
     rejects([&]{cc::save_split_archive(path.string(),data.training,"TRAIN",941000);},"existing archive overwritten");
-    fs::remove(path);fs::remove(directory);
+    // Loading a known subset is insufficient: undeclared latent fields must
+    // fail before this archive can reach a producer or analytic admission.
+    const auto extra=directory/"extra-key.pt";
+    torch::serialize::OutputArchive expanded;
+    expanded.write("observed",data.training.observed,true);expanded.write("feature_mask",data.training.mask,true);
+    expanded.write("labels_scoring_only",data.training.scoring_labels,true);expanded.write("source_ids",data.training.source_ids,true);
+    expanded.write("source_ids_json",embedding::archive::text_tensor(cc::source_ids_json(data.training)),true);
+    expanded.write("latent_periods",torch::ones({data.training.observed.size(0)},torch::kFloat64),true);
+    expanded.save_to(extra.string());
+    rejects([&]{(void)cc::load_split_archive(extra.string());},"undeclared latent archive field accepted");
+    const auto link=directory/"existing-link.pt",target=directory/"missing-target";
+    fs::create_symlink(target,link);
+    rejects([&]{cc::save_split_archive(link.string(),data.training,"TRAIN",941000);},"dangling observation destination replaced");
+    check(fs::is_symlink(link)&&fs::read_symlink(link)==target&&!fs::exists(target),"rejected symlink changed");
+    const auto raced=directory/"concurrent.pt";
+    std::atomic<int> published=0;std::barrier ready(3);
+    const auto writer=[&] {
+      ready.arrive_and_wait();
+      try {cc::save_split_archive(raced.string(),data.training,"TRAIN",941000);++published;}
+      catch(const std::exception &) {} // Exactly one competing publisher wins.
+    };
+    std::thread left(writer),right(writer);ready.arrive_and_wait();left.join();right.join();
+    check(published==1,"competing publishers replaced an observation archive");
+    const auto winner=cc::load_split_archive(raced.string());
+    check(torch::equal(winner.observed,data.training.observed),"concurrent publication produced incomplete archive");
+    const auto wrong_master=directory/"wrong-master.pt",odd_path=directory/"odd-source.pt";
+    rejects([&]{cc::save_split_archive(wrong_master.string(),data.training,"TRAIN",941001);},"incorrect archive master accepted");
+    rejects([&]{cc::save_split_archive(odd_path.string(),odd,"TRAIN",941000);},"odd packed source identity published");
+    check(!fs::exists(wrong_master)&&!fs::exists(odd_path),"rejected metadata published an archive");
+    fs::remove(raced);fs::remove(link);fs::remove(extra);fs::remove(path);fs::remove(directory);
   } catch(...) { throw; } // Keep failed evidence, including the owned directory.
 }
 }

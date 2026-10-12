@@ -14,6 +14,10 @@ bash code/scripts/task.sh rpb-v20-capacity -j2 configurable-capacity >"$capsule/
 exec 9>"$build/.task.lock"
 flock -n 9 || { printf '%s\n' 'Capacity build session is busy.' >&2; exit 1; }
 python3 -B "$protocol/capsule.py" freeze "$capsule" --build "$build" >"$capsule/freeze.log"
+python3 -B "$protocol/capsule_runtime_test.py" >"$capsule/runtime-test.log" 2>&1
+python3 -B -O "$protocol/capsule_runtime_test.py" >"$capsule/runtime-test-optimized.log" 2>&1
+python3 -B "$protocol/evaluation_audit_test.py" >"$capsule/evaluation-audit-test.log" 2>&1
+python3 -B -O "$protocol/evaluation_audit_test.py" >"$capsule/evaluation-audit-test-optimized.log" 2>&1
 python3 -B code/scripts/install-libtorch.py --check >"$capsule/sdk-proof.json"
 nvidia-smi --query-gpu=name,uuid,driver_version,memory.total --format=csv,noheader >"$capsule/gpu-proof.csv"
 g++ --version >"$capsule/compiler-proof.txt"

@@ -11,6 +11,7 @@ protocol=code/evaluation/protocols/configurable_capacity_v1
 build=/opt/cuwacunu_embedding/build/rpb-v20-capacity
 exec 9>"$build/.task.lock"
 flock -n 9 || { printf '%s\n' 'Capacity build session is busy.' >&2; exit 1; }
+python3 -B "$protocol/capsule.py" verify-admission "$capsule" >"$capsule/admission-before-quality.log"
 sha256sum -c "$capsule/freeze/sources.sha256" >"$capsule/source-before-quality.log"
 sha256sum -c "$capsule/freeze/binaries.sha256" >"$capsule/binary-before-quality.log"
 source_id=$(sha256sum "$capsule/freeze/sources.sha256" | cut -d ' ' -f1)
@@ -36,5 +37,6 @@ done
 python3 -B "$protocol/publish.py" --capsule "$capsule" >"$capsule/publish.log" 2>&1
 sha256sum -c "$capsule/freeze/sources.sha256" >"$capsule/source-after-quality.log"
 sha256sum -c "$capsule/freeze/binaries.sha256" >"$capsule/binary-after-quality.log"
+(cd -- "$capsule/quality-data"; sha256sum -c "$capsule/freeze/inputs.sha256") >"$capsule/inputs-after-quality.log"
 sha256sum -c "$capsule/freeze/information.sha256" >"$capsule/information-after-quality.log"
 python3 -B "$protocol/capsule.py" finish "$capsule"

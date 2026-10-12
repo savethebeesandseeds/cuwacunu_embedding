@@ -69,18 +69,72 @@ def tensor(archive, name, dtype, shape):
     return list(item['values'])
 
 
-def query_error(codec, path, input_path, metadata, point, rows):
+def audit_pairs(pairs, master, replay, checked):
+    for pair in pairs:
+        if pair['status'] == 'unsupported_fit':
+            continue
+        key = (master, pair['id'], pair['repetition'], pair['view'])
+        check(key in replay and key not in checked, 'every declared paired comparison replayed once')
+        checked.add(key)
+        actual = replay[key]
+        check(pair['bootstrap_seed_decimal'] == actual['bootstrap_seed_decimal']
+              and pair['common_population']['valid_rows'] == actual['valid_rows'], 'paired bootstrap seed/common support')
+        for head in ('ridge', 'tiny_secondary'):
+            check(pair[head]['source_groups'] == actual[head]['source_groups'], 'paired source-group population')
+            for field in ('estimate', 'lower', 'upper'):
+                close(pair[head][field], actual[head][field], 'paired comparison replay ' + field)
+
+
+def checkpoint_settings(codec, checkpoint, profile, width, point):
+    expected_text = dict(
+        artifact_kind='rpb_configurable_inference_checkpoint_v1', model_tag='RPB-v20',
+        architecture_id='early-configurable-shape-plus-fixed-two-band-complex-relations-v1',
+        native_layout=('learned-D-minus-four-per-semantic-pair;fixed-four-per-semantic-pair;'
+                       'canonical-all-channel-pairs;ReLow-ImLow-ReHigh-ImHigh;'
+                       'q1-3-low-q4-8-high;original-H;feature-pair-mean;pair-unit-L2-floor1e-12'),
+        dtype='float32', training_device='cuda:0')
+    for key, expected in expected_text.items():
+        check(codec.text(checkpoint[key]) == expected, 'frozen checkpoint schema text ' + key)
+    check(tensor(checkpoint, 'training_updates', 'LongStorage', []) == [point]
+          and tensor(checkpoint, 'config_integer_v1', 'LongStorage', [15]) ==
+              [3, 128, 9, 8, 128 if profile == 'B' else 64, width, 3, 4, 1, 1, 2, 0, 0, 256, 128],
+          'frozen checkpoint point and resolved integer geometry')
+    check(tensor(checkpoint, 'config_number_v1', 'DoubleStorage', [6]) ==
+              [0., 1e-5, .25, 1., 1e-6, 1.],
+          'frozen checkpoint dropout epsilon masking Huber scaler floor and sampling interval')
+    check(tensor(checkpoint, 'channel_ids', 'LongStorage', [3]) == [0, 1, 2],
+          'frozen checkpoint semantic channel identity')
+
+
+def query_error(codec, path, input_path, metadata, point, rows, scaler, binding):
     remember(path)
     remember(input_path)
     query, original = codec.load(path), codec.load(input_path)
+    for key, expected in binding.items():
+        if isinstance(expected, str):
+            check(codec.text(query[key]) == expected, 'fixed query binding ' + key)
+        else:
+            check(tensor(query, key, 'LongStorage', []) == [expected], 'fixed query binding ' + key)
+    check(codec.text(query['artifact_kind']) == 'configurable_capacity_compact_original_query_bank_v1',
+          'fixed query artifact schema')
     prediction = tensor(query, 'standardized_prediction', 'DoubleStorage', [rows, 3, 128, 9])
     target = tensor(query, 'standardized_target', 'DoubleStorage', [rows, 3, 128, 9])
     mask = tensor(query, 'target_mask', 'BoolStorage', [rows, 3, 128, 9])
     original_mask = tensor(original, 'feature_mask', 'BoolStorage', [rows, 3, 128, 9])
+    original_values = tensor(original, 'observed', 'DoubleStorage', [rows, 3, 128, 9])
+    means, scales = scaler
+    # The input scaler performs CPU float64 arithmetic and then casts to CUDA
+    # float32. Targets are that float32 value exported back as float64. Require
+    # this exact cast, rather than widening the reconstruction error tolerance.
+    for i, (actual, supported) in enumerate(zip(target, mask)):
+        coordinate = (i // 1152 % 3) * 9 + i % 9
+        expected = SCALER_AUDIT.float32((original_values[i] - means[coordinate]) / scales[coordinate]) if supported else 0
+        check(actual == expected, 'query target comes from original observation and frozen TRAIN scaler')
     check(tensor(query, 'original_observed_mask', 'BoolStorage', [rows, 3, 128, 9]) == original_mask
           and tensor(query, 'requested_observed_target_mask', 'BoolStorage', [rows, 3, 128, 9]) == original_mask,
           'fixed query belongs to exact original legal observations')
     check(codec.text(query['source_ids_json']) == codec.text(original['source_ids_json'])
+          and tensor(query, 'source_ids', 'LongStorage', [rows]) == tensor(original, 'source_ids', 'LongStorage', [rows])
           and tensor(query, 'point', 'LongStorage', []) == [point]
           and tensor(query, 'trial_index_for_time', 'LongStorage', [128]) == [h // 8 for h in range(128)]
           and tensor(query, 'patch_length', 'LongStorage', []) == [8], 'original query context/source/point binding')
@@ -117,22 +171,39 @@ def query_error(codec, path, input_path, metadata, point, rows):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--capsule', required=True, type=Path)
+    parser.add_argument('--output-directory', type=Path,
+                        help='new direct directory for a saved-only review; preserve original capsule outputs')
+    parser.add_argument('--arithmetic-audit', type=Path,
+                        help='new saved-only C++ replay including paired intervals')
     args = parser.parse_args()
     check(args.capsule.is_absolute() and args.capsule.resolve(strict=True) == args.capsule
           and args.capsule.is_relative_to(ROOT / 'output/runs/rpb-v20-capacity') and not args.capsule.is_symlink(), 'direct capacity capsule')
     args.readouts = args.capsule / 'readouts'
     args.producer_root = args.capsule
-    args.output = args.capsule / 'summary.json'
-    args.markdown = args.capsule / 'report.md'
+    destination = args.capsule
+    if args.output_directory:
+        destination = args.output_directory
+        check(destination.is_absolute() and destination == destination.resolve(strict=False)
+              and destination.parent.resolve(strict=True) == destination.parent
+              and not destination.exists() and not destination.is_symlink(), 'new direct review directory')
+        destination.mkdir()
+    args.output = destination / 'summary.json'
+    args.markdown = destination / 'report.md'
     for path in (args.output, args.markdown):
         check(path.is_absolute() and not path.exists() and path.parent.resolve(strict=True) == path.parent, 'new direct output')
     check(remember(CODEC) == CODEC_SHA, 'unchanged independently reviewed saved archive codec')
     spec = importlib.util.spec_from_file_location('capacity_saved_codec', CODEC)
     codec = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(codec)
+    helper_path = Path(__file__).resolve().with_name('saved_audit.py')
+    remember(helper_path)
+    helper_spec = importlib.util.spec_from_file_location('capacity_saved_scaler_audit', helper_path)
+    global SCALER_AUDIT
+    SCALER_AUDIT = importlib.util.module_from_spec(helper_spec)
+    helper_spec.loader.exec_module(SCALER_AUDIT)
     report = document(args.readouts / 'report.json')
     complete = document(args.readouts / 'complete.json')
-    audit = document(args.readouts / 'arithmetic-audit.json')
+    audit = document(args.arithmetic_audit or args.readouts / 'arithmetic-audit.json')
     check(report['protocol'] == complete['protocol'] == 'configurable-capacity-v1'
           and complete['status'] == 'complete' and complete['report_sha256'] == sha(args.readouts / 'report.json'), 'completed report binding')
     check(report['dataset'] == 'TEMPO-5' and report['masters'] == [941101, 941102, 941103]
@@ -141,6 +212,9 @@ def main():
           and audit['fitted_pairs_replayed'] == complete['saved_arithmetic_fits_replayed'], 'saved arithmetic replay scope')
     replay = {r['prediction']: r for r in audit['records']}
     check(len(replay) == len(audit['records']), 'unique complete replay roles')
+    pair_replay = {(r['master'], r['id'], r['repetition'], r['view']): r for r in audit['pairs']}
+    check(len(pair_replay) == len(audit['pairs']), 'unique paired comparison replay roles')
+    checked_pairs = set()
     expected_recipe = dict(ridge_penalty=1, tiny_hidden=16, tiny_steps=100, tiny_learning_rate=.01,
                           probe_seed_policy='stream_seed(repetition,width);same_equal_width_methods',
                           validation_fits=0, encoder_calls=0, pca_fits=0)
@@ -150,6 +224,11 @@ def main():
         master = cohort['master']
         check(master in report['masters'], 'declared master')
         base = args.readouts / f'master-{master}'
+        originals = {}
+        for view, role in [('training', 'training'), ('validation_intact', 'validation'), ('validation_deleted', 'validation-deleted')]:
+            original_path = args.capsule / 'quality-data' / f'master-{master}' / (role + '.pt')
+            remember(original_path)
+            originals[view] = codec.load(original_path)
         sections = [('raw', base / 'baselines/raw/readouts', cohort['raw']),
                     ('pca32', base / 'baselines/pca32/readouts', cohort['pca32']),
                     ('pca64', base / 'baselines/pca64/readouts', cohort['pca64']),
@@ -166,6 +245,31 @@ def main():
                 for view, population, rows in [('training', 'training_population', 512),
                                                ('validation_intact', 'validation_intact_population', 256),
                                                ('validation_deleted', 'validation_deleted_population', 256)]:
+                    surface_path = method_root / (view.replace('_', '-') + '-features.pt')
+                    remember(surface_path)
+                    surface = codec.load(surface_path)
+                    original = originals[view]
+                    check(tensor(surface, 'labels_scoring_only', 'LongStorage', [rows])
+                          == tensor(original, 'labels_scoring_only', 'LongStorage', [rows])
+                          and codec.text(surface['source_ids_json']) == codec.text(original['source_ids_json']),
+                          'readout surface scoring labels/source rows belong to original role')
+                    if section == 'models':
+                        _, profile, point_text = method['method'].split('_')
+                        point = int(point_text)
+                        producer_path = args.capsule / 'profiles' / profile / f'master-{master}' / f'point-{point}' / 'features.pt'
+                        remember(producer_path)
+                        producer_features = codec.load(producer_path)
+                        prefix = dict(training='training', validation_intact='validation', validation_deleted='deleted')[view]
+                        check(tensor(surface, 'features', 'DoubleStorage', [rows, method['size']])
+                              == tensor(producer_features, prefix + '_values', 'DoubleStorage', [rows, method['size']])
+                              and tensor(surface, 'valid', 'BoolStorage', [rows])
+                              == tensor(producer_features, prefix + '_valid', 'BoolStorage', [rows]),
+                              'readout native surface exact saved CUDA row association')
+                        if prefix + '_source_ids' in producer_features:
+                            check(tensor(producer_features, prefix + '_source_ids', 'LongStorage', [rows])
+                                  == tensor(original, 'source_ids', 'LongStorage', [rows])
+                                  and codec.text(producer_features[prefix + '_source_ids_json']) == codec.text(original['source_ids_json']),
+                                  'explicit native export source row witness')
                     values['views'][view] = dict(coverage=method[population]['coverage'])
                     scores = {'ridge': [], 'tiny_secondary': []}
                     for repetition in method['repetitions']:
@@ -182,6 +286,10 @@ def main():
                         labels = tensor(saved, 'labels_scoring_only', 'LongStorage', [rows])
                         valid = tensor(saved, 'valid', 'BoolStorage', [rows])
                         ids = json.loads(codec.text(saved['source_ids_json']))
+                        check(labels == tensor(original, 'labels_scoring_only', 'LongStorage', [rows])
+                              and codec.text(saved['source_ids_json']) == codec.text(original['source_ids_json'])
+                              and valid == tensor(surface, 'valid', 'BoolStorage', [rows]),
+                              'saved decisions original role labels/source/support association')
                         groups = set(ids)
                         check(len(groups) == rows // 2 and len(ids) == rows, 'source grouped scored population')
                         classes = [sum(bool(ok) and label == k for ok, label in zip(valid, labels)) for k in (0, 1)]
@@ -212,7 +320,9 @@ def main():
                         values['views'][view][head] = average(scores_for_head)
                         values['views'][view][head + '_repetitions'] = scores_for_head
                 collected.setdefault(key, []).append(values)
+            audit_pairs(metadata['pairs'], master, pair_replay, checked_pairs)
     check(checked_predictions == 3 * complete['saved_arithmetic_fits_replayed'] == len(replay), 'entire persisted prediction matrix audited')
+    check(checked_pairs == set(pair_replay), 'entire saved paired comparison matrix audited')
     for feature in report['saved_feature_inputs']:
         check(remember(Path(feature['path'])) == feature['sha256'], 'saved CUDA feature bytes unchanged')
     summaries = []
@@ -245,6 +355,23 @@ def main():
             remember(initial_path)
             remember(final_path)
             initial, final = codec.load(initial_path), codec.load(final_path)
+            expected_binding = dict(protocol='configurable-capacity-v1', dataset_id='TEMPO-5', profile=profile,
+                model_tag=f'RPB-v20.alt-0{number}', master=master, native_width=width,
+                source_fingerprint=report['source_fingerprint'], card_sha=report['card_sha'],
+                input_manifest_sha=report['input_manifest_sha'], config_sha=producer['config_sha'])
+            for point, features in [(0, initial), (512, final)]:
+                for key, expected in dict(expected_binding, point=point).items():
+                    if isinstance(expected, str):
+                        check(codec.text(features[key]) == expected, 'native feature binding ' + key)
+                    else:
+                        check(tensor(features, key, 'LongStorage', []) == [expected], 'native feature binding ' + key)
+            for prefix, rows in [('training', 512), ('validation', 256), ('deleted', 256)]:
+                initial_view = tensor(initial, prefix + '_values', 'DoubleStorage', [rows, width])
+                final_view = tensor(final, prefix + '_values', 'DoubleStorage', [rows, width])
+                check(all(initial_view[b * width + d] == final_view[b * width + d]
+                          for b in range(rows) for d in range(width - 12, width))
+                      and tensor(initial, prefix + '_valid', 'BoolStorage', [rows]) == tensor(final, prefix + '_valid', 'BoolStorage', [rows]),
+                      'independent unchanged fixed spectral coordinates/support for every view')
             initial_values = tensor(initial, 'training_values', 'DoubleStorage', [512, width])
             final_values = tensor(final, 'training_values', 'DoubleStorage', [512, width])
             differences = [abs(final_values[b * width + d] - initial_values[b * width + d])
@@ -263,13 +390,41 @@ def main():
                       and row['dynamics_loss'] == 0 and math.isfinite(row['gradient_norm']) and row['gradient_norm'] > 0
                       and row['context_requested'] == row['context_actual'] + row['context_restored'], 'finite contiguous original CUDA trace')
             errors = {}
+            training_path = args.capsule / 'quality-data' / f'master-{master}' / 'training.pt'
+            remember(training_path)
+            original_training = codec.load(training_path)
             for point in (0, 512):
+                checkpoint_path = base / f'point-{point}' / 'checkpoint.pt'
+                remember(checkpoint_path)
+                checkpoint, checkpoint_scaler = SCALER_AUDIT.checkpoint_scaler(codec, checkpoint_path)
+                checkpoint_settings(codec, checkpoint, profile, width, point)
+                identity = SCALER_AUDIT.scaler_identity(checkpoint_scaler)
+                check(identity == codec.text(checkpoint['scaler_identity']) == progress['scaler_identity'], 'frozen checkpoint scaler content identity')
+                scaler = SCALER_AUDIT.audit_train_scaler(codec, checkpoint_scaler, original_training, check, close, tensor)
+                expected_binding['scaler_identity'] = identity
+                witness_path = base / f'point-{point}' / 'scaler-witness.pt'
+                if witness_path.exists():
+                    remember(witness_path)
+                    witness = codec.load(witness_path)
+                    for key, expected in dict(expected_binding, point=point).items():
+                        if isinstance(expected, str):
+                            check(codec.text(witness[key]) == expected, 'CPU scaler witness binding ' + key)
+                        else:
+                            check(tensor(witness, key, 'LongStorage', []) == [expected], 'CPU scaler witness binding ' + key)
+                    for key in ('mean', 'scale', 'count', 'channel_ids', 'floor_applied', 'scale_floor'):
+                        check(witness[key]['dtype'] == checkpoint_scaler[key]['dtype']
+                              and witness[key]['shape'] == checkpoint_scaler[key]['shape']
+                              and witness[key]['raw'] == checkpoint_scaler[key]['raw'], 'CPU scaler witness exact checkpoint statistics')
+                    check(codec.text(witness['training_source_ids_json']) == codec.text(original_training['source_ids_json'])
+                          and tensor(witness, 'training_source_ids', 'LongStorage', [512]) == tensor(original_training, 'source_ids', 'LongStorage', [512]),
+                          'CPU scaler witness original TRAIN source population')
                 for role, rows in [('training', 512), ('validation', 256)]:
                     prefix = 'initial_' if point == 0 else ''
                     errors[prefix + role] = query_error(codec,
                         base / f'point-{point}' / ('reconstruction-' + role + '.pt'),
                         args.capsule / 'quality-data' / f'master-{master}' / (role + '.pt'),
-                        producer[prefix + role + '_reconstruction'], point, rows)
+                        producer[prefix + role + '_reconstruction'], point, rows, scaler,
+                        dict(expected_binding, point=point))
             cohorts.append(dict(master=master, updates=512, train_error=errors['training'], validation_error=errors['validation'],
                                 GPU_training_seconds=progress['training_seconds'],
                                 peak_allocated_MiB=progress['training_peak_allocated_bytes'] / 1048576,
@@ -286,6 +441,7 @@ def main():
                   stage='development', TEST_access=False, post_encoder_PCA=False, encoder_calls=0,
                   aggregation='mean of three fixed head repetitions within each master, then equal mean across all three masters; no discarded unsupported values',
                   predictions_checked=checked_predictions, saved_arithmetic_fits_replayed=complete['saved_arithmetic_fits_replayed'],
+                  paired_comparisons_checked=len(checked_pairs), review_arithmetic_audit=str(args.arithmetic_audit) if args.arithmetic_audit else None,
                   source_fingerprint=report['source_fingerprint'], card_sha=report['card_sha'], input_manifest_sha=report['input_manifest_sha'],
                   summaries=summaries, training=training,
                   intervals='Full within-master, conditional-on-fitted-head source-group95% intervals retained in readouts and independently replayed; master mean ranges in compact table are not confidence intervals',

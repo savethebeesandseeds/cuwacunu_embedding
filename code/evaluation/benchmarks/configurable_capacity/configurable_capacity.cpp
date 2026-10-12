@@ -3,13 +3,20 @@
 #include "embedding/shared/data.h"
 #include "embedding/shared/feature_harness.h"
 #include <algorithm>
+#include <cerrno>
 #include <cmath>
+#include <cstring>
 #include <filesystem>
+#include <fcntl.h>
+#include <linux/fs.h>
 #include <map>
 #include <numeric>
 #include <random>
+#include <set>
 #include <sstream>
 #include <stdexcept>
+#include <sys/syscall.h>
+#include <unistd.h>
 
 namespace embedding::evaluation::configurable_capacity {
 namespace {
@@ -17,6 +24,56 @@ constexpr double tau=6.283185307179586476925286766559;
 void require(bool condition,const char *why) {
   if(!condition)throw std::runtime_error(std::string("[configurable-capacity] ")+why);
 }
+// Observation archives are immutable evidence. The historical shared publisher
+// intentionally replaces files; keep this protocol's exclusive publication
+// local to the benchmark, with no dependency on an encoder implementation.
+class StagedObservation {
+public:
+  explicit StagedObservation(const std::string &destination):destination_(destination) {
+    const auto target=std::filesystem::path(destination);
+    require(!destination.empty()&&!target.filename().empty(),"observation filename required");
+    const auto parent=target.parent_path().empty()?std::filesystem::path("."):target.parent_path();
+    std::filesystem::create_directories(parent);
+    auto pattern=(parent/(target.filename().string()+".tmp-XXXXXX")).string();
+    std::vector<char> name(pattern.begin(),pattern.end());name.push_back('\0');
+    descriptor_=::mkstemp(name.data());
+    require(descriptor_>=0,"cannot reserve observation staging file");staged_=name.data();
+  }
+  StagedObservation(const StagedObservation &)=delete;
+  StagedObservation &operator=(const StagedObservation &)=delete;
+  ~StagedObservation() {
+    if(descriptor_>=0)::close(descriptor_);
+    if(!staged_.empty())::unlink(staged_.c_str());
+  }
+  void write(torch::serialize::OutputArchive &archive) {
+    archive.save_to([this](const void *data,size_t size) {
+      const auto *bytes=static_cast<const char *>(data);size_t offset=0;
+      while(offset<size) {
+        const auto count=::write(descriptor_,bytes+offset,std::min(size-offset,size_t(1024*1024)));
+        if(count<0&&errno==EINTR)continue;
+        require(count>0,"observation staging write failed");offset+=static_cast<size_t>(count);
+      }
+      return size;
+    });
+    require(::fsync(descriptor_)==0,"cannot sync staged observation");
+    const auto descriptor=descriptor_;descriptor_=-1;
+    require(::close(descriptor)==0,"cannot close staged observation");
+    if(::syscall(SYS_renameat2,AT_FDCWD,staged_.c_str(),AT_FDCWD,destination_.c_str(),RENAME_NOREPLACE)==0) {
+      staged_.clear();return;
+    }
+    const auto error=errno;
+    if(error==ENOSYS||error==EINVAL||error==EOPNOTSUPP) {
+      // The complete staging inode and destination share a filesystem. Link
+      // refuses existing files and dangling symlinks on Windows Docker binds.
+      require(::link(staged_.c_str(),destination_.c_str())==0,"observation destination exists or publication failed");
+      return;
+    }
+    throw std::runtime_error(std::string("[configurable-capacity] immutable observation publication failed: ")+std::strerror(error));
+  }
+private:
+  std::string destination_,staged_;
+  int descriptor_=-1;
+};
 double uniform53(std::mt19937_64 &rng) {
   return static_cast<double>(rng()>>11)*(1.0/9007199254740992.0);
 }
@@ -133,7 +190,8 @@ void validate(const Split &source) {
   std::map<int64_t,std::vector<int64_t>> groups;
   auto y=labels.accessor<int64_t,1>(),s=ids.accessor<int64_t,1>();
   for(int64_t row=0;row<x.size(0);++row) {
-    require(s[row]>=0&&(y[row]==0||y[row]==1),"nonnegative source IDs and binary labels required");
+    require(s[row]>=0&&(s[row]&1)==0&&(y[row]==0||y[row]==1),
+        "nonnegative packed source IDs with zero variant bit and binary labels required");
     groups[s[row]].push_back(row);
   }
   for(const auto &[id,pair]:groups) {
@@ -173,10 +231,14 @@ std::string source_ids_json(const Split &source) {
   }
   out<<']';return out.str();
 }
+void publish_archive(const std::string &path,torch::serialize::OutputArchive &archive) {
+  require(!std::filesystem::exists(path)&&!std::filesystem::is_symlink(path),"evidence archive already exists");
+  StagedObservation(path).write(archive);
+}
 void save_split_archive(const std::string &path,const Split &source,const std::string &role,
     uint64_t master,double additional_deletion) {
   validate(source);
-  require(!std::filesystem::exists(path),"observation archive already exists");
+  require(!std::filesystem::exists(path)&&!std::filesystem::is_symlink(path),"observation archive already exists");
   require(role=="TRAIN"||role=="VALIDATION"||role=="VALIDATION_DELETED","explicit data role required");
   require(master<(uint64_t(1)<<32)&&std::isfinite(additional_deletion)&&additional_deletion>=0&&additional_deletion<=1,
       "archive seed/deletion metadata invalid");
@@ -186,10 +248,14 @@ void save_split_archive(const std::string &path,const Split &source,const std::s
   out.write("observed",source.observed,true);out.write("feature_mask",source.mask,true);
   out.write("labels_scoring_only",source.scoring_labels,true);out.write("source_ids",source.source_ids,true);
   out.write("source_ids_json",archive::text_tensor(source_ids_json(source)),true);
-  archive::save_archive(path,out);
+  publish_archive(path,out);
 }
 Split load_split_archive(const std::string &path) {
   torch::serialize::InputArchive in;in.load_from(path,torch::kCPU);Split s;
+  const auto keys=in.keys();
+  require(std::set<std::string>(keys.begin(),keys.end())==std::set<std::string>{
+      "observed","feature_mask","labels_scoring_only","source_ids","source_ids_json"},
+      "exact five-key legal observation schema required");
   in.read("observed",s.observed,true);in.read("feature_mask",s.mask,true);
   in.read("labels_scoring_only",s.scoring_labels,true);in.read("source_ids",s.source_ids,true);
   validate(s);
