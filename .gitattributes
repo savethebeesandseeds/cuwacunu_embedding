@@ -71,3 +71,13 @@ code/shared/config/IMPORT.md text eol=lf
 code/encoders/raw_patch_bottleneck_mae/config/configurable_spectral.conf text eol=lf
 code/encoders/raw_patch_bottleneck_mae/configurable_spectral.mk text eol=lf
 code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md text eol=lf
+# Preserve the configurable capacity recipe, runner and measured records.
+code/evaluation/protocols/configurable_capacity_v1/** text eol=lf
+code/evaluation/cards/configurable_capacity_v1.md text eol=lf
+doc/configurable_capacity_dataset_registry.json text eol=lf
+doc/configurable_capacity_embedding_versions.json text eol=lf
+doc/results/configurable_capacity_v1.json text eol=lf
+doc/CONFIGURABLE_CAPACITY_V1.md text eol=lf
+doc/CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md text eol=lf
+# Evidence captures retain original line endings/whitespace rather than being reformatted.
+doc/results/configurable_capacity_v1/** -text -whitespace

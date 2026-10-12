@@ -13,6 +13,7 @@ complexity. Historical frozen reports/cards/source captures stay unchanged.
 | AMP-1 | Amplitude contrast | 1/5 | Period16 sine scaled0.5×/2× | Original separate task implemented and measured |
 | TEMPO-4 | Slow-component timing lead/lag | 5/5 | Two coherent rhythms; slow lag sign, unrelated fast lag, gains/offsets and gaps | Implemented; information admission and separate two-cohort CUDA encoder screen completed |
 | AMP-2 | Relative component balance | 5/5 | Swap slow/fast strength at equal component energy; gains/offsets and gaps | Implemented; information admission and separate two-cohort CUDA encoder screen completed |
+| TEMPO-5 | Slow-component timing lead/lag | 5/5 | C3/H128/F9; slow/fast feature groups, structured distractors, gains/offsets and 5-tick gaps | Information admission and three-cohort/nine-trajectory CUDA capacity experiment completed |
 
 Complexity is an **ordinal designed challenge level on1–5**, assigned before
 measurement. It is not measured entropy, information content, accuracy,
@@ -33,7 +34,20 @@ The [completed multiband screen](MULTIBAND_SCREEN_V1.md) compares new
 RPB-v18.alt-01 and RPB-v19 instances on the same four quality cohorts. Its
 joint prospective continuation gate passes; this remains development evidence.
 
-The codenames apply to the closed C3/H32/F3 recipes below. Altering the signal
+TEMPO-5 is separately specified in the
+[configurable capacity registry](configurable_capacity_dataset_registry.json)
+and [prospective card](../code/evaluation/cards/configurable_capacity_v1.md).
+All nine quality role/view archives pass the observed-only information gate:
+3,072 decisions,100% correct and supported. The known signal-family rule is
+a solvability witness, not an encoder score. The
+[completed capacity comparison](CONFIGURABLE_CAPACITY_V1.md) tests W64/D32,
+W128/D32 and W64/D64 on the same three fresh cohorts. H256 has engineering
+information admission only; no H256 encoder quality is measured. Longer history
+can supply more cycles and aid observability, so larger tensor size alone does
+not establish a harder learning task.
+
+The original codenames below apply to closed C3/H32/F3 recipes; TEMPO-5 instead
+has its own declared C3/H128/F9 geometry. Altering the signal
 law, shape, noise or natural observation mechanism requires an explicit new
 recipe identity before generation. New seeds or split counts identify new
 cohorts of the same recipe. An additional scored deletion view is recorded
@@ -114,6 +128,7 @@ Place these immediately beside each applicable result table:
 - `Dataset: AMP-1 · amplitude · complexity1/5 · 0.5×/2× sine; extra30% deletion VALIDATION.`
 - `Dataset: TEMPO-4 · slow-component timing · complexity5/5 · two rhythms, gains/offsets and gaps; intact VALIDATION.`
 - `Dataset: AMP-2 · component balance · complexity5/5 · relative slow/fast strength; extra30% deletion VALIDATION.`
+- `Dataset: TEMPO-5 · slow lead/lag, nine grouped features and structured distractors · complexity5/5 · intact VALIDATION.`
 - `Fit: TEMPO-1(1/5); score: AMP-1(1/5); timing encoder frozen.`
 
 Always state split/source counts and classifier/update budgets separately.

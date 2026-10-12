@@ -1207,3 +1207,6 @@ evaluate-early-mixer-confirmation: $(EARLY_MIXER_CONFIRMATION_BIN)
 
 # Portable configurable encoder; independent of market ingestion and evaluation.
 include $(RPB_ROOT)/configurable_spectral.mk
+
+# New dimension-aware synthetic capacity experiment; separate CUDA producer and CPU reader.
+include $(EVALUATION_ROOT)/protocols/configurable_capacity_v1/configurable_capacity.mk
