@@ -14,7 +14,12 @@ improve final classification at that budget. Initial alt-01 already gives
 94.01%/93.23% intact Linear/Neural accuracy; trained means are94.66%/94.31%
 intact and90.10%/88.72% deleted, all at100% coverage. See
 [the configurable module](../code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md).
-Follow the [current continuation](CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md).
+The [saved-coordinate diagnostic](CONFIGURABLE_BRANCH_V1.md) adds no encoder
+version: its12/20-coordinate inputs are diagnostic slices of the same native32
+RPB-v20.alt-01. Fixed12 supplies nearly all demonstrated timing usefulness;
+learned20 remains near chance with these heads. Complete32 scores, instances
+and checkpoints are preserved. Follow the
+[current continuation](CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_BRANCH.md).
 
 The earlier completed record is [RPB-v19.alt-01](SPECTRAL_CONFIRMATION_V1.md),
 an unchanged-v19 confirmation on fresh masters 930905, 930906 and 930907 for each

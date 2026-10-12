@@ -2,9 +2,9 @@
 
 Start with [CURRENT_STATUS.md](CURRENT_STATUS.md), reviewed on 12 October 2026.
 RPB-v20 is implemented as a configurable spectral API with recorded engineering
-checks and the latest completed synthetic capacity experiment.
+checks, the completed synthetic capacity experiment and saved-coordinate diagnostic.
 RPB-v4 remains the formal evaluated reference and original RPB-v7 is preserved.
-This documentation refresh reports no new experiment.
+The latest diagnostic fits subset heads to saved arrays and executes no encoder.
 
 ## Using the repository
 
@@ -37,6 +37,14 @@ The latest completed quality report is
 It compares compact, wider-backbone and larger-output RPB-v20 instances on
 TEMPO-5 at C3/H128/F9/P8, complexity 5/5 and a fixed 512-update budget.
 H256 encoder quality and market quality remain unmeasured.
+
+[CONFIGURABLE_BRANCH_V1.md](CONFIGURABLE_BRANCH_V1.md) and its
+[saved record](results/configurable_branch_v1.json) separate the usefulness of
+fixed12 and learned20 while reusing complete32 results. The encoder remains
+unchanged and all15 reusable file pairs match the `cuwacunu` integration.
+Use the [latest continuation](CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_BRANCH.md)
+for the focused learned-path investigation; retain the capacity continuation as
+the preceding milestone.
 
 The preserved [SPECTRAL_CONFIRMATION_V1.md](SPECTRAL_CONFIRMATION_V1.md) and
 [saved result](results/spectral_confirmation_v1.json) record RPB-v19.alt-01. The preceding

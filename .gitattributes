@@ -84,3 +84,8 @@ doc/results/configurable_capacity_v1/** -text -whitespace
 doc/results/configurable_capacity_review_2026_10_12/** -text -whitespace
 doc/results/configurable_capacity_review_2026_10_12.json text eol=lf
 doc/CODE_REVIEW_2026-10-12.md text eol=lf
+code/evaluation/protocols/configurable_branch_v1/** text eol=lf
+code/evaluation/cards/configurable_branch_v1.md text eol=lf
+doc/CONFIGURABLE_BRANCH_V1.md text eol=lf
+doc/results/configurable_branch_v1.json text eol=lf
+doc/results/configurable_branch_v1/** -text -whitespace

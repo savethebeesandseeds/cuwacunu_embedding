@@ -1210,3 +1210,6 @@ include $(RPB_ROOT)/configurable_spectral.mk
 
 # New dimension-aware synthetic capacity experiment; separate CUDA producer and CPU reader.
 include $(EVALUATION_ROOT)/protocols/configurable_capacity_v1/configurable_capacity.mk
+
+# Saved-coordinate usefulness diagnostic; no encoder construction or execution.
+include $(EVALUATION_ROOT)/protocols/configurable_branch_v1/configurable_branch.mk

@@ -1,16 +1,15 @@
 # Current repository status
 
-Reviewed on 12 October 2026 against the `9123891` reusable backport and the
-subsequently published configurable-capacity evidence in this checkout.
-This is a documentation refresh: no new experiment, training, head fitting or
-quality measurement. Engineering and quality statements below reuse the completed
-backport, stability review and separately completed capacity experiment.
+Updated on 12 October 2026 after the reusable backport, code review, capacity
+experiment and completed saved-coordinate diagnostic. The latest diagnostic
+fits only its declared subset heads to existing arrays; it executes and trains
+no encoder. Original capacity measurements and checkpoints remain preserved.
 
 ## Implemented code and measured evidence
 
 | Track | Status | Entry point |
 | --- | --- | --- |
-| RPB-v20 | Implemented configurable spectral API and completed synthetic capacity experiment | [API](../code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md) and [capacity report](CONFIGURABLE_CAPACITY_V1.md) |
+| RPB-v20 | Implemented configurable spectral API, completed capacity experiment and saved-coordinate diagnostic | [API](../code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md), [capacity](CONFIGURABLE_CAPACITY_V1.md) and [coordinate diagnostic](CONFIGURABLE_BRANCH_V1.md) |
 | RPB-v19.alt-01 | Preserved fresh synthetic confirmation of unchanged RPB-v19 | [Confirmation report](SPECTRAL_CONFIRMATION_V1.md) and [saved summary](results/spectral_confirmation_v1.json) |
 | RPB-v4 | Formal evaluated reference, retained under its original protocol | [Native curve record](../code/encoders/raw_patch_bottleneck_mae/NATIVE_CURVE_ADVANCE.md) |
 | RPB-v7 | Original five-instance reference bundle, preserved with its scalers and readouts | [Version and instance registry](EMBEDDING_VERSIONS.md) |
@@ -23,8 +22,13 @@ RPB-v20.alt-01 (W64/D32), alt-02 (W128/D32) and alt-03 (W64/D64), all at
 C3/H128/F9/P8 and the same fixed 512-update budget. W is the internal encoder width.
 Alt-01 is retained as the compact continuation configuration; larger profiles
 show no consistent final classification benefit at that budget. Initial controls
-are already strong. Saved features still need a separate branch ablation to
-attribute usefulness between fixed coordinates and initialized/learned coordinates.
+are already strong. The completed [saved-coordinate diagnostic](CONFIGURABLE_BRANCH_V1.md)
+finds fixed12 alone gives95.18%/94.66% intact and89.97%/89.54% deleted
+Linear/Neural means, while learned20 alone remains near50% before and after
+training, all at100% coverage. Complete32 scores are reused unchanged. This
+measures usefulness under the fixed heads, not intrinsic information or a perfect
+causal attribution. The same RPB-v20.alt-01 native32 encoder remains preserved;
+no subset becomes a new serving model or design tag.
 The [instance registry](configurable_capacity_embedding_versions.json) and
 [saved summary](results/configurable_capacity_v1.json) identify the exact bundles.
 
@@ -103,10 +107,11 @@ heads/PCA baselines, or audit saved arithmetic inside the managed container.
 
 ## Open work
 
-Follow the [12 October research continuation](CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md):
-declare a saved-feature diagnostic of fixed, learned and complete coordinates;
-then predeclare matched H128/H256 quality work and, if needed, a feature-specific
-challenge. These follow-ups are prospective. The capacity experiment already
+Follow the [latest 12 October continuation](CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_BRANCH.md):
+predeclare a small saved-TRAIN study of learned-coordinate variation, normalization
+and decoder use before selecting one architecture change. Keep the working fixed
+prior and fixed heads. Matched H128/H256 quality work and a feature-specific
+challenge remain later prospective steps. The capacity experiment already
 records descriptive costs at its three configurations; it does not establish
 maximum input size, controlled performance scaling or H256 encoder quality.
 Market quality and bounded streaming scaler fitting remain unmeasured/unimplemented,
