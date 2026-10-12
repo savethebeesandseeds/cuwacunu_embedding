@@ -2,6 +2,7 @@
 #pragma once
 
 #include "embedding/encoders/raw_patch_bottleneck_mae/configurable_spectral_model.h"
+#include "embedding/encoders/raw_patch_bottleneck_mae/configurable_spectral_checkpoint_io.h"
 #include <string>
 
 namespace embedding::encoders::raw_patch_bottleneck_mae {
@@ -81,7 +82,7 @@ inline void save_configurable_spectral_checkpoint(const std::string &path,
   TORCH_CHECK(model && updates >= 0, "[rpb-v20 checkpoint] model and nonnegative updates required");
   const auto &c = model->config();
   validate_configurable_spectral_config(c);
-  model->validate_fixed_prior();
+  model->validate_state();
   scaler.validate(configurable_spectral_input_config(c));
   namespace d = configurable_checkpoint_detail;
   torch::serialize::OutputArchive a, m, s;
@@ -98,7 +99,7 @@ inline void save_configurable_spectral_checkpoint(const std::string &path,
   a.write("scaler_identity", d::text_tensor(scaler.identity()), true);
   model->save(m); scaler.save(s);
   a.write("model", m); a.write("scaler", s);
-  a.save_to(path);
+  d::publish_checkpoint(a, path);
 }
 
 inline LoadedConfigurableSpectralEncoder load_configurable_spectral_checkpoint(

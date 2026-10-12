@@ -28,7 +28,7 @@ public:
   }
 
   [[nodiscard]] std::string string(std::string_view key) const {
-    return piaabo::parse::simple_kv::required(value_, std::string(key));
+    return piaabo::parse::simple_kv::required(value_, normalize(key));
   }
   [[nodiscard]] std::string string_or(std::string_view key,
                                     std::string fallback) const {
@@ -107,6 +107,7 @@ class Document {
 public:
   [[nodiscard]] static Document
   parse(const std::string &text, std::filesystem::path origin = {}) {
+    validate_comment_termination(text);
     Document result;
     if (!origin.empty())
       result.source_path_ = std::filesystem::absolute(origin).lexically_normal();
@@ -165,6 +166,25 @@ public:
   }
 
 private:
+  // Keep the imported unquoted comment rules, but do not accept a truncated
+  // file as a complete document. Comment markers inside line comments are inert.
+  static void validate_comment_termination(const std::string &text) {
+    for (std::size_t i = 0; i < text.size();) {
+      if (text[i] == '#' ||
+          (i + 1 < text.size() && text[i] == '/' && text[i + 1] == '/')) {
+        while (i < text.size() && text[i] != '\n')
+          ++i;
+      } else if (i + 1 < text.size() && text[i] == '/' && text[i + 1] == '*') {
+        const auto end = text.find("*/", i + 2);
+        if (end == std::string::npos)
+          throw std::runtime_error("[config] unclosed block comment");
+        i = end + 2;
+      } else {
+        ++i;
+      }
+    }
+  }
+
   std::vector<Block> blocks_;
   std::filesystem::path source_path_;
 };

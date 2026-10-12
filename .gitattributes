@@ -65,3 +65,9 @@ code/evaluation/cards/spectral_confirmation_v1.md text eol=lf
 doc/results/spectral_confirmation_v1.json text eol=lf
 doc/SPECTRAL_CONFIRMATION_V1.md text eol=lf
 doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md text eol=lf
+# Keep the reusable v20 file-pair hashes stable on fresh Windows checkouts.
+code/shared/config/README.md text eol=lf
+code/shared/config/IMPORT.md text eol=lf
+code/encoders/raw_patch_bottleneck_mae/config/configurable_spectral.conf text eol=lf
+code/encoders/raw_patch_bottleneck_mae/configurable_spectral.mk text eol=lf
+code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md text eol=lf

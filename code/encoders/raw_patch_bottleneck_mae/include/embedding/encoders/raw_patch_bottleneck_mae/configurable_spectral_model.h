@@ -128,6 +128,8 @@ struct ConfigurableSpectralModelImpl : torch::nn::Module {
     native_shape_projection->to(c.device, c.dtype);
     grouped_odd_relation_projection->to(c.device, c.dtype);
     freeze_and_validate_prior();
+    parameter_contract_ = capture_contract(named_parameters());
+    buffer_contract_ = capture_contract(named_buffers());
   }
 
   const Config &config() const { return config_; }
@@ -176,6 +178,15 @@ struct ConfigurableSpectralModelImpl : torch::nn::Module {
   void load(torch::serialize::InputArchive &archive) override {
     torch::nn::Module::load(archive);
     freeze_and_validate_prior();
+    validate_state();
+  }
+
+  // LibTorch's recursive load can replace a tensor with one of another shape.
+  // Check against this instance's original architecture before accepting it.
+  void validate_state() const {
+    check_contract(named_parameters(), parameter_contract_);
+    check_contract(named_buffers(), buffer_contract_);
+    validate_fixed_prior();
   }
 
   void validate_fixed_prior() const {
@@ -193,6 +204,32 @@ struct ConfigurableSpectralModelImpl : torch::nn::Module {
   ConfigurableGroupedSpectralProjection grouped_odd_relation_projection{nullptr};
 
 private:
+  struct TensorContract {
+    std::string name;
+    std::vector<int64_t> shape;
+    torch::Dtype dtype;
+    torch::Device device;
+  };
+  using TensorMap = torch::OrderedDict<std::string, torch::Tensor>;
+  static std::vector<TensorContract> capture_contract(const TensorMap &state) {
+    std::vector<TensorContract> out;
+    out.reserve(state.size());
+    for (const auto &entry : state)
+      out.push_back({entry.key(), entry.value().sizes().vec(),
+                     entry.value().scalar_type(), entry.value().device()});
+    return out;
+  }
+  static void check_contract(const TensorMap &state, const std::vector<TensorContract> &contract) {
+    TORCH_CHECK(state.size() == contract.size(), "[rpb-v20] model state count mismatch");
+    for (const auto &expected : contract) {
+      const auto *tensor = state.find(expected.name);
+      TORCH_CHECK(tensor && tensor->defined() && tensor->sizes().vec() == expected.shape &&
+                      tensor->scalar_type() == expected.dtype && tensor->device() == expected.device,
+                  "[rpb-v20] model tensor geometry/dtype/device mismatch: ", expected.name);
+      TORCH_CHECK(!tensor->is_floating_point() || torch::isfinite(*tensor).all().item<bool>(),
+                  "[rpb-v20] nonfinite model tensor: ", expected.name);
+    }
+  }
   void freeze_and_validate_prior() {
     auto &w = grouped_odd_relation_projection->weight;
     TORCH_CHECK(torch::equal(w, literal_configurable_spectral_prior(config_, w.options())),
@@ -202,6 +239,8 @@ private:
     validate_fixed_prior();
   }
   Config config_;
+  // Plain metadata, never serialized or registered; no new parameters or RNG draws.
+  std::vector<TensorContract> parameter_contract_, buffer_contract_;
 };
 TORCH_MODULE(ConfigurableSpectralModel);
 

@@ -40,6 +40,10 @@ int main() {
     encoder.reject_unknown_keys({"history_length", "embedding_size", "device",
                                  "enabled", "rate", "channel_ids"});
     check(encoder.integer("history_length") == 128, "integer parsing");
+    check(encoder.contains(" history_length ") &&
+              encoder.integer(" history_length ") == 128 &&
+              encoder.integer_or(" history_length ", 8) == 128,
+          "getters normalize key whitespace consistently");
     check(encoder.integer_or("missing", 8) == 8, "integer default");
     check(encoder.string("device") == "cuda", "string parsing");
     check(encoder.boolean("enabled"), "boolean parsing");
@@ -57,6 +61,22 @@ int main() {
     rejects([] { Document::parse("A {} a {}"); }, "duplicate block");
     for (const auto text : {"A X = 1;", "A { X 1; }", "A { X = 1;"})
       rejects([&] { Document::parse(text); }, "malformed syntax");
+    for (const auto text : {"/*", "A {} /* unfinished",
+                           "A { X = 1; } /*\nB { X = 2; }",
+                           "A {} /* closed */ /* unfinished"})
+      rejects([&] { Document::parse(text); },
+              "unterminated block comment must reject the whole document");
+    const auto line_comments = Document::parse(R"(
+      A {
+        X = 1; # Ignore a block opener /* in this line comment.
+        Y = 2; // Ignore another /* through the newline.
+        /* # and // inside a closed block comment stay comment text. */
+      }
+      // A final line comment can contain /* without a closing marker.
+    )");
+    check(line_comments.block("A").integer("X") == 1 &&
+              line_comments.block("A").integer("Y") == 2,
+          "comment preflight preserves imported line and block rules");
     for (const auto value : {"12tail", "1.2", "9223372036854775808"})
       rejects([&] { Document::parse(std::string("A { X = ") + value + "; }")
                         .block("A").integer("X"); }, "malformed integer");

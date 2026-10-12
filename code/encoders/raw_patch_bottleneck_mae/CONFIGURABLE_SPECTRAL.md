@@ -25,6 +25,7 @@ Portable headers under `include/embedding/encoders/raw_patch_bottleneck_mae/`:
 - `configurable_spectral_model.h`: CUDA model, masks and scaler helpers.
 - `configurable_spectral_settings.h`: core file/settings binding.
 - `configurable_spectral_checkpoint.h`: full resolved model/scaler inference archive.
+- `configurable_spectral_checkpoint_io.h`: staged, atomic publication to a new filename.
 
 The core stdlib-only file module lives under `code/shared/include/cuwacunu/config/`
 and the original parser under `code/shared/include/piaabo/parse/`. See
@@ -51,6 +52,11 @@ Training masks hide full patches, including a partial final patch. Channels with
 fewer than three observed patches are ineligible; skip batches with no eligible
 examples. The inference archive saves every configuration field, stable channel
 IDs, scaler identity and update count; it does not claim optimizer/RNG resume.
+Saving requires a new filename and never replaces an existing file. The managed
+Linux runtime stages beside the destination and publishes atomically. Loading
+and saving reject nonfinite weights and tensor shapes/dtypes/devices that do
+not match the declared architecture. These checks preserve model arithmetic
+and archive schema; they do not promise power-loss durability.
 
 Inside the existing managed `cuwacunu_embedding` container:
 
@@ -59,8 +65,9 @@ source /etc/profile.d/embedding.sh
 bash code/scripts/task.sh rpb-v20 -j2 test-rpb-v20
 ```
 
-The three checks pass: core config syntax, CUDA model/old-shape parity, and
-typed configuration/scaler/checkpoint round trip. Tested shapes include C1–4,
+The four checks cover core config syntax, CUDA model/old-shape parity,
+typed configuration/scaler/checkpoint round trip, and malformed model state
+with overwrite protection. Tested shapes include C1–4,
 H17/65/129/130/257, F3/F9 and D8/16/32/48/64. Each model test makes one disposable
 optimizer update to verify CUDA gradients and unchanged literal frozen weights;
 it does not repeat historical quality training. No maximum VRAM capacity is claimed.
