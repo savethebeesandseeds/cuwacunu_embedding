@@ -2,6 +2,11 @@
 
 Date: 2026-10-05
 
+Scope: preserved initial engineering guidance. Later RPB designs have separate
+contracts and frozen evidence. Start with [current status](../../../doc/CURRENT_STATUS.md)
+and [RPB-v20 API](CONFIGURABLE_SPECTRAL.md); an extension called planned below
+does not override a later implemented, versioned module.
+
 Status: Engineering plan with an implemented first independent-channel core and
 encoder adapters for shared feature evaluation and held-out reconstruction. See
 [current implementation](README.md) for commands and

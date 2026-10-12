@@ -1,298 +1,68 @@
 # Raw Patch Bottleneck MAE (RPB-MAE)
 
-RPB-MAE implements a compact raw-patch time-series encoder alongside the existing
-[MTF-JEPA-MAE-VICReg encoder](../mtf_jepa_mae_vicreg/README.md). Its initial
-candidate is a masked autoencoder whose reconstruction loss passes through the
-served embedding. The baseline API, executable, archive reader and checkpoint
-format remain separate.
+This folder owns the RPB model family, preprocessing, training/checkpoint
+adapters and the configurable spectral API. Read
+[current repository status](../../../doc/CURRENT_STATUS.md) before choosing a
+version or an experiment.
 
-The separate engineering backport **RPB-v20** adds configurable channels,
-history, feature count and native embedding size, plus core file settings and
-full model/scaler inference archives. Its default is C3/H128/F9/D32; actual
-CUDA checks pass, with no new quality score or replacement of confirmed v19
-instances. See [CONFIGURABLE_SPECTRAL.md](CONFIGURABLE_SPECTRAL.md) for the API
-and `test-rpb-v20` target. Existing CLI/defaults and quality drivers remain fixed.
+## Configurable spectral API: RPB-v20
 
-The latest completed record is [RPB-v19.alt-01](../../../doc/SPECTRAL_CONFIRMATION_V1.md),
-an unchanged-v19 confirmation on fresh masters 930905, 930906 and 930907 for each
-of **TEMPO-4** slow-component timing and **AMP-2** component balance, both at
-designed complexity **5/5**. All 12 prospective conditions pass, with 100%
-coverage and the same native32, 512 CUDA updates, batch 8 and fixed heads.
-Deleted Linear/Neural means are 93.23%/93.23% for timing and 94.79%/86.89% for
-balance. Most strength comes from the fixed prior; modest training gains on
-fresh deleted means are not uniform across cohorts. Original query VALIDATION
-MAE is 0.74248 for timing and 0.75793 for balance. The next proposed quality architecture is a
-harmonic linear decoder with the prior, heads and data fixed. It is prospective,
-with no implementation or new quality cohorts allocated. Follow the
-[current continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).
+[RPB-v20](CONFIGURABLE_SPECTRAL.md) is the separate reusable engineering backport
+from `cuwacunu`. It accepts values and observation masks `[B,C,H,F]` and returns
+native global `[B,D]`; the model-only file defaults to C3/H128/F9/P8/D32.
+C/H/F/D and semantic IDs are fixed per model/checkpoint, while batch size varies.
+H>=17 and D>4×channel-pair count are required. Private padding supports histories
+that do not divide into complete patches. Every feature reaches the learned
+backbone and every feature pair reaches the fixed spectral mean.
 
-The preceding [RPB-v19 screen](../../../doc/MULTIBAND_SCREEN_V1.md) introduced a model
-serving 20 learned shape coordinates and 12 fixed low/high spectral relation
-coordinates as native32. Its two-cohort screen passed the prospective joint gate
-on **TEMPO-4** slow-component timing and separate **AMP-2** component balance,
-each at designed complexity **5/5**, with 100% coverage. Strong initial controls
-credit the fixed architecture prior; learned shape and reconstruction still need
-demonstrated progress. Its fresh confirmation is now complete above; preserve
-the [historical screen continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_MULTIBAND.md).
-No head changes, post-encoder PCA or promotion. **RPB-v4 remains the formal
-evaluated reference**, and original saved **RPB-v7** and all existing models remain preserved.
+Its CUDA float32 model, configurable TRAIN scaler, typed file binding and immutable
+inference checkpoint API have recorded engineering checks. A separate
+[completed capacity experiment](../../../doc/CONFIGURABLE_CAPACITY_V1.md)
+measures three profiles at C3/H128/F9/P8 on TEMPO-5, complexity 5/5.
+Compact RPB-v20.alt-01 (W64/D32) is the continuation configuration; wider-backbone
+alt-02 and larger-output alt-03 show no consistent final classification benefit
+at the fixed budget. H256 encoder quality and market quality remain unmeasured.
+`rpb-v20` builds four check executables;
+`test-rpb-v20` runs them. These targets do not build a v20 training/serving CLI.
+The [API guide](CONFIGURABLE_SPECTRAL.md) is the contract for this model.
 
-The preserved [RPB-v18 TEMPO-3 result](UNIT_TEMPORAL_RELATION_SCREEN.md)
-retains five known cohorts (designed complexity 4/5): 100%/100% intact and
-100%/99.95% deleted Linear/Neural accuracy, with 100% coverage. Its two-cohort
-gate passed before the remaining three ran. Nearly perfect initial timing
-scores credit the prior.
-The preceding [fresh RPB-v17.alt-01 confirmation](FIXED_PRIOR_FRESH_CONFIRMATION.md)
-retains five new source cohorts: 100%/100% intact and 82.19%/99.90% deleted,
-with 100% coverage. One 70.31% deleted Linear cohort fails both joint rules.
-V18 reuses those saved matched scores without refitting v17. See the
-[v18 milestone](../../../doc/MILESTONE_2026-10-10_RPB_V18.md) and its
-[historical continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_FRESH_V17.md).
+## Completed quality and preserved references
 
-The [temporal architecture screen](TEMPORAL_ARCHITECTURE_SCREEN.md) tests generic
-cross-channel relations (**RPB-v14**) and an independent label-free dynamics
-objective (**RPB-v15**) on **TEMPO-3**, complexity **4/5**. V14 reaches97.03%/95.10%
-intact accuracy on five known cohorts; deleted accuracy is72.97%/75.21%.
-Its untrained prior is stronger. V15 stays near52% and stops after two cohorts.
-[RPB-v16](PARTITIONED_TEMPORAL_RELATION_SCREEN.md) dedicates native32 to20 shape+12
-odd relations, reaching100% intact but failing the fixed deleted-view gate on one
-starting cohort. [RPB-v17](FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md) preserves that
-layout and freezes only432 generic odd projection values while training the
-226,445 remaining parameters. Five-cohort intact accuracy is100%/100%; deleted
-accuracy is85.94%/99.84%, all at100% coverage. Its timing strength is a fixed architecture prior;
-waveform shape and reconstruction remain learned through the sole native32.
+[Configurable capacity](../../../doc/CONFIGURABLE_CAPACITY_V1.md) is the latest
+completed quality record; follow its
+[12 October continuation](../../../doc/CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md).
+The preserved [RPB-v19.alt-01](../../../doc/SPECTRAL_CONFIRMATION_V1.md) record
+confirms unchanged v19 on fresh TEMPO-4 slow-component timing
+and AMP-2 component balance, each at designed complexity 5/5. These are synthetic
+development measurements at the report's fixed geometry and budgets. Most strength
+comes from the fixed prior; the report retains initial controls and all cohorts.
+No new experiment is measured by this guide.
 
-All screens use separate model tags/checkpoints/output sessions, the same
-B8/.15/512 CUDA training budget and shared fixed classifier heads, with no PCA
-after an encoder. Weak designs stop after the two-cohort gate; passing designs
-advance only to the three other known cohorts. These are development results,
-not unseen confirmation. [The historical architecture-screen continuation](../../../doc/CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md)
-records the earlier plan, now completed by fresh v17 and the v18 screen. Preserve original saved **RPB-v7**, formal **RPB-v4**,
-TEMPO-1 **RPB-v10.alt-03**, frozen cards and all historical artifacts. No promotion
-or legacy loader/default change. The earlier TRAIN-size proposal stays deferred.
+**RPB-v4** remains the formal evaluated reference. The original **RPB-v7** instances,
+all historical checkpoints/scalers/readouts, and every frozen card remain protected.
+Use the [version registry](../../../doc/EMBEDDING_VERSIONS.md) for stable design
+and instance tags. The harmonic decoder remains a prospective idea in the
+[dated continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).
 
-**Formal evaluated reference: RPB-v4 — Learned global bottleneck**, through
-[learned_global.conf](config/learned_global.conf). Its native 32-number global
-export is the sole reconstruction signal. The completed
-[native curve advance](NATIVE_CURVE_ADVANCE.md) gives fresh timing TEST means of
-94.01% linear-head and 96.09% neural-head accuracy, versus 51.82% / 79.51% for
-standalone raw PCA32, all at 100% coverage. Native linear VALIDATION selected 512
-updates before TEST; 2048 improved reconstruction but reduced classification
-validation accuracy. Consistency and moderate missingness remain measured gaps.
-The [native baseline comparison](NATIVE_BASELINE_COMPARISON.md) preserves the
-separate archived TRAIN/VALIDATION milestone. Use the
-[version registry](../../../doc/EMBEDDING_VERSIONS.md),
-[reporting standard](../../../doc/RESULTS_REPORTING_STANDARD.md), and
-[next advance plan](NEXT_ADVANCE.md). Primary comparisons apply no PCA
-after an encoder; PCA remains a standalone raw-data baseline. Historical drivers
-and the validation chronology below retain their original recipes. Mode-0
-loader/configuration defaults remain compatible, and this research designation
-does not assert consumer acceptance.
+Historical records include the [v19 screen](../../../doc/MULTIBAND_SCREEN_V1.md),
+[v18 unit-relation screen](UNIT_TEMPORAL_RELATION_SCREEN.md),
+[fresh v17 confirmation](FIXED_PRIOR_FRESH_CONFIRMATION.md),
+[architecture screen](TEMPORAL_ARCHITECTURE_SCREEN.md),
+[visible-difference diagnostic](VISIBLE_DIFFERENCE_DIAGNOSTIC.md),
+[native curve](NATIVE_CURVE_ADVANCE.md), [global bottleneck](GLOBAL_BOTTLENECK_ADVANCE.md)
+and [channel mixer](CHANNEL_MIXER_ADVANCE.md).
+Their dates, cards, source captures and evidence stages govern those results.
 
-The [current research journal](../../../doc/RESEARCH_SESSION_2026-10-09.md)
-tracks the working RPB-v7 direction and preserved original five-instance group.
-The completed [amplitude transfer diagnostic](FROZEN_AMPLITUDE_TRANSFER_DIAGNOSTIC.md)
-uses unchanged v4.alt-01/v7.alt-01 encoders, original timing scalers and new
-amplitude classifiers. A feature-only CUDA adapter exposes the shared evaluation
-contract without retraining or reconstruction callbacks. The frozen
-[RPB-v10 card](../../evaluation/cards/early_mixer_reliability_v1.md) moves the
-existing aligned mixer before temporal blocks while retaining an independent
-local path, native32 and all225,805 parameters. It compares a separate fresh
-RPB-v7.alt-02 group at the same training budget. New checkpoints carry an explicit
-architecture identity; ordinary defaults and historical loaders remain intact.
-The [verified diagnostic](EARLY_MIXER_RELIABILITY_DIAGNOSTIC.md) improves mean
-and worst-cohort timing accuracy, but two timing cohorts and amplitude deletion
-accuracy worsen. V10 remains experimental. The completed
-[paired learning curve](EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md) uses fresh
-RPB-v7.alt-03/RPB-v10.alt-01 groups, retaining every 0/512/1024/2048 point.
-At 2048, late/early timing linear means are 92.1875%/92.65625% intact and
-87.8125%/91.71875% under additional deletion, all at 100% coverage. Reconstruction
-improves in both groups as training continues, but timing classification does
-not improve monotonically; early mixing also loses amplitude-transfer quality.
-The audit passed 141,317,815 checks. Fixed heads, one-time quality exports and
-all five pairs remain preserved, with no best-point selection or promotion.
-Existing saved groups remain unchanged.
+## Historical CLI model and adapters
 
-The completed [matched-target gain diagnostic](MATCHED_TARGET_GAIN_DIAGNOSTIC.md)
-compares fresh RPB-v10.alt-02/RPB-v11 at fixed 512. Timing linear means fall
-from 96.40625% to 95.3125% intact and 92.5% to 84.6875% under extra deletion;
-all coverage remains 100%. All six numeric guards fail and all five original-query
-MAEs worsen. The gain recipe is stopped without range/rate/budget/head rescue.
-The completed [pooled-context diagnostic](POOLED_CONTEXT_DIAGNOSTIC.md)
-compares the compact early RPB-v10.alt-03 with RPB-v12 at the same 512 budget.
-Compact/pooled timing linear means are 98.28125%/90.9375% intact and
-97.03125%/83.125% under additional deletion; every paired cohort loses in both
-views. Both mean reconstruction guards pass, all four timing guards fail, and
-coverage stays 100%. Strong separate untrained amplitude controls and all four
-seven-method panels remain explicit. Route and first-layer capacity change
-together; this does not identify an isolated projection-loss cause. The sole
-audit passed 96,170,207 checks. Stop wider pooled width and gain without rescue.
-The fresh fixed 512 compact early-v10 confirmation selected by this milestone
-is now complete as linked above. The [next direction](NEXT_ADVANCE.md) keeps
-both designs for the separately engineered harder timing benchmark, with no
-harder encoder result or promotion claimed. See
-the [historical pooled continuation](../../../doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
-and [portable source tools](../../evaluation/tools/pooled_context_v1/README.md).
+The sections below describe the preserved `embedding_raw_patch_bottleneck_mae`
+CLI and its adapters. They do not configure the separate v20 API.
+Shared evaluation owns datasets, splits, fixed heads, populations and reports;
+model-specific training, inference and decoding stay in this folder.
+Use [current status](../../../doc/CURRENT_STATUS.md) for active work and
+[NEXT_ADVANCE.md](NEXT_ADVANCE.md) for the preserved development chronology.
 
-The [RPB-v5 comparison](PAIRED_POOLING_ADVANCE.md) and
-[optimization diagnostic](OPTIMIZATION_DIAGNOSTIC.md) are complete. Direct patch
-pooling did not improve the fixed-budget linear primaries; additional training
-improved reconstruction without improving mean linear validation accuracy.
-The measured candidate is **RPB-v6 — Global bottleneck with context deletion**.
-It keeps the RPB-v4 architecture and serves the same native32 vector, while
-training with fewer visible coordinates and unchanged reconstruction targets.
-Its original audited [measured advance](CONTEXT_DELETION_ADVANCE.md) improves both linear accuracy
-primaries with full coverage, but reconstruction worsens and promotion remains
-blocked by the declared guard. Its [separate card](../../evaluation/cards/context_deletion_v1.md)
-fixed the recipe before scoring. Policy-tagged checkpoints remain normal inference
-checkpoints; ordinary training rejects their resume to prevent losing the
-training view silently. The dedicated experiment currently starts fresh.
-
-Its completed [context optimization diagnostic](CONTEXT_OPTIMIZATION_DIAGNOSTIC.md)
-replays the audited 512 state and continues the same training policy to 1024
-and 2048 on TRAIN and known VALIDATION only. No measured budget both reaches
-the v4 fixed-512 reconstruction reference and preserves v6's 512-update linear
-accuracy in intact and fixed-deletion validation views. At 2048, mean
-TRAIN/VALIDATION MAE is 0.035736/0.035845, while linear accuracy falls to
-96.875% intact and 95.3125% with additional 30% deletion. No TEST was opened and
-RPB-v4 remains active.
-
-The completed [five-master replication](CONTEXT_REPLICATION_ADVANCE.md) pairs
-fresh v4/v6 training at 512 updates on 4404/5505/6606/7707/8808. Mean linear gains
-are +1.71875 percentage points intact and +8.125 under additional 30% coordinate
-deletion, with equal 100% coverage. Mean TRAIN and VALIDATION reconstruction
-guards still fail. Independent archive audit v3 passed 103,787,020 checks;
-failed v1/v2 reader attempts and their corrections remain preserved. This
-repeats the accuracy/reconstruction tradeoff rather
-than promoting v6.
-
-**RPB-v7 — Global bottleneck with lighter context deletion** keeps the same
-mode2/mixer1/native32 architecture, optimizer, loss and heads while reducing the
-extra TRAIN request to 0.15 at 512 updates. The completed
-[five-master validation diagnostic](CONTEXT_LIGHTER_VALIDATION_DIAGNOSTIC.md)
-improves mean linear accuracy over v6 by 2.65625 points intact and 1.25 with
-additional deletion, at 100% coverage. Mean reconstruction improves over v6,
-but remains worse than v4 in every master. Neural means decline, and master
-8808 loses deletion accuracy. Both reconstruction guards fail; v7 is not
-promoted and v4 remains active. Independent archive audit v3 passed 67,097,380 checks.
-
-The frozen [lighter-policy card](../../evaluation/cards/context_lighter_validation_v1.md)
-and explicit `rpb-training-context-deletion-015-v1` identity govern these known
-TRAIN/VALIDATION results. The encoder owns the training recipe; shared evaluation
-owns fixed fits, views, support and scores. CUDA admission also passes exact
-live-trainer continuation across saved snapshots and unchanged v6 default/replay.
-No TEST/stress or checkpoint selection occurred. Save the measured milestone
-and passed audit before the next bounded training-view change in the
-[next plan](NEXT_ADVANCE.md).
-
-**RPB-v8 — Global bottleneck with balanced context views** is implemented and
-measured under the frozen [balanced-view card](../../evaluation/cards/context_balanced_validation_v1.md).
-It alternates 256 ordinary and 256 deletion-0.30 attempts at 512 completed updates,
-with unchanged mode2/mixer1/native32 architecture, original targets/loss and heads.
-The [five-master diagnostic](CONTEXT_BALANCED_VALIDATION_DIAGNOSTIC.md) reports
-mean native linear accuracy of 95.93750% intact and
-91.71875% under the exact saved v7 additional-deletion view,
-at 100% coverage. Mean TRAIN/VALIDATION MAE is
-0.085022/0.087620.
-The predeclared joint development guard **failed**. Independent archive audit v2
-passed 67,099,959 checks; actual CUDA admission and prior-policy regressions passed.
-V8 is not promoted, and RPB-v4 remains active. No TEST/stress, checkpoint selection,
-head tuning or post-encoder PCA occurred. Five new v8 trajectories use ten
-retained v4/v7 references; all five masters and both heads remain in the report.
-
-The completed [TRAIN objective diagnostic](TRAINING_OBJECTIVE_DIAGNOSTIC.md)
-uses fifteen retained v4/v7/v8 instances, with zero encoder updates and zero
-head refits. An all-pair residual-difference loss helps the local fixed-Ridge
-gradient direction on two v7 masters and worsens it on three, failing its fixed
-rule. CUDA admission and independent saved-arithmetic audit passed; do not
-train or tune that auxiliary. These are TRAIN mechanism results, with no new
-quality score. The failed reader and its CPU/GPU correction remain recorded.
-
-**RPB-v9 — Global bottleneck with native view agreement** is implemented and
-measured in the [five-run diagnostic](NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md).
-It adds same-row native32 agreement and a variance safeguard to ordinary
-reconstruction, with unchanged inference and fixed shared heads. Actual CUDA
-admission and the independent audit passed, but all six numeric guards failed:
-linear means are 59.21875% intact / 57.03125% with extra deletion; mean standardized
-TRAIN/VALIDATION MAE is 29.194490 / 29.371655. One run is especially unstable,
-and the other four also reconstruct much worse than v4. RPB-v4 remains active.
-The [prospective plan](NATIVE_VIEW_AGREEMENT_PLAN.md) and quality card remain the
-frozen design record. Stop this mechanism without weight/rate/budget rescue.
-The original [continuation](../../../doc/CONTINUATION_2026-10-08.md) is preserved.
-Its [saved-TRAIN scale diagnosis](NATIVE_VIEW_LOSS_SCALE_TRAIN_DIAGNOSTIC.md) is
-complete, with no scale-floor hits and later agreement growth in all five runs.
-
-An earlier milestone continued from preserved RPB-v7. The [decoder-calibration diagnosis](V7_DECODER_CALIBRATION_DIAGNOSTIC.md)
-freezes its encoder/scaler and trains only the existing decoder for 128 CUDA
-updates. Mean TRAIN/known-VALIDATION MAE is 0.054039/0.056989, below each paired
-v4 reference, with exact unchanged native32 outputs. Cached classification is
-retained without refits. Actual CUDA admission and independent arithmetic audit
-passed. This creates no new embedding tag or promotion. Its
-[dated continuation](../../../doc/CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
-preserves the prospective equal-budget plan.
-
-The completed [fresh v4/v7 replication](FRESH_DECODER_REPLICATION_DIAGNOSTIC.md)
-uses five new paired TRAIN/VALIDATION cohorts, encoder512 and frozen decoder128
-for both policies. V7/v4 linear means are 92.96875%/92.34375% intact and
-89.84375%/82.03125% under extra deletion, with 100% coverage. V7's intact
-worst-master score is lower and its intact mean effect interval crosses zero.
-The equal-decoder MAE guards also fail, although recovery against pre-calibration
-v4 passes. Independent saved-evidence audit passed 67,932,331 checks. Native
-exports remain exact across calibration; classification fits and scores are
-reused afterward. No new tag, TEST/stress access or promotion. The
-[historical continuation](../../../doc/CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md)
-prescribed saved TRAIN reliability across all ten instances, now completed before
-the later comparisons above. Generalized frozen-decoder calibration stays in this encoder; the new
-tensor-only fixed-head evaluator stays in shared code.
-
-The [embedding evaluation policy](../../../doc/EMBEDDING_EVALUATION_POLICY.md)
-governs shared protocols, reporting and acceptance. The
-[architecture and evaluation specification](RPB_MAE_architecture_and_evaluation_spec.md)
-states the research hypotheses; the
-[implementation guidelines](RPB_MAE_implementation_guidelines.md) define tensor,
-support, precision and extension contracts.
-
-**Validation chronology:** core/workflow checks and archived protocol-v1 comparisons
-are recorded in [validation evidence](IMPLEMENTATION_STATUS.md). The feature
-evaluator refactor passed its container isolation, adapter, repeated-card and
-regression checks; see the [shared review](../../../doc/EVALUATION_IMPLEMENTATION_REVIEW.md).
-The v1 scores do not establish protocol-v2 results, and the short archived
-training run did not establish an advantage over its untrained control.
-The [held-out reconstruction track](DECODER_RELIANCE.md) passed container checks
-and completed 12 runs with matched 128-update model/control budgets. Every run
-beat metadata-only decoding and degraded under source-group shuffling, with
-positive paired intervals. This supplies synthetic decoder reliance evidence;
-it does not establish frozen-feature quality or consumer acceptance.
-The [stronger frozen-probe comparison](FROZEN_PROBE_ADVANCE.md) completed 12
-development runs with 128 updates. Compact lag-sign ridge gains remain
-inconclusive across the three seeds; native channel concatenation exposes lag
-information to the fixed nonlinear probe. These results motivate a separate
-contextual channel-mixer ablation and do not promote the encoder.
-The [completed mixer ablation](CHANNEL_MIXER_ADVANCE.md) improves compact lag-sign
-ridge accuracy to 90.63%, 76.56% and 63.28% versus the same independent control's
-52.34%, 48.44% and 52.34%. All three nominal within-run paired intervals favor
-the mixer. Tests cover both modes, legacy checkpoints and CPU/CUDA CLI operation;
-nonlinear results vary, and confirmation, costs and consumer acceptance remain open.
-The [five fresh seeds and fixed-readout sweep](FRESH_SEEDS_AND_STRESS.md) add
-development replication and shared missingness evaluation. Compact lag ridge
-means are 79.69% versus 48.75%, with four positive intervals and one crossing
-zero; heavy corruption erodes the benefit. Both encoders pass the same shared path.
-The [GPU learning curve](LEARNING_CURVE.md) completes continuous paths at
-128/512/2,048 updates for three new masters. Validation selects 128 updates;
-fresh compact lag ridge means are 72.92% versus 51.82%. Longer training improves
-reconstruction and some native-width nonlinear probes, while compact/global lag
-readouts remain limited. This is development evidence, not consumer acceptance.
-The [compression and global bottleneck experiments](GLOBAL_BOTTLENECK_ADVANCE.md)
-add optional mean/learned global reconstruction modes and independent shared
-diagnostics. The first fresh comparison improves learned-global lag readouts,
-with uneven seed evidence and worse reconstruction. The completed fixed-budget
-source matrix reaches 100% native-global / 98.70% PCA12 nonlinear lag accuracy
-for learned pooling with 128 training pairs. PCA12 linear accuracy remains 76.56%.
-Matched-size probe refits show that additional encoder sources alone do not
-uniformly explain the gain. The record retains all comparisons and tradeoffs;
-the learned configuration stays opt-in.
-
-## Implemented model
+## Preserved CLI model
 
 The smoke configuration uses `[B,C,32,F]` histories, non-overlapping eight-step
 patches, encoder width 64, three pre-normalized temporal attention blocks with
@@ -337,8 +107,10 @@ diagnostic surfaces. The mixer configurations are
 retain their previous behavior. See the
 [global bottleneck experiments](GLOBAL_BOTTLENECK_ADVANCE.md).
 
-Multiscale/frequency branches, forecasting, JEPA/EMA, VICReg, codebooks and
-specialist banks remain future experiments. The local surface has different
+The later v19/v20 designs add a fixed spectral relation bank through their own
+modules; see [the configurable API](CONFIGURABLE_SPECTRAL.md). Forecasting,
+JEPA/EMA, VICReg, codebooks and specialist banks remain separate proposals for
+RPB. The local surface has different
 semantics from the baseline's contextualized per-channel output, even when their
 tensor shapes match.
 
@@ -353,16 +125,22 @@ code/encoders/raw_patch_bottleneck_mae/
     config.h types.h preprocessing.h tokenization.h masking.h
     encoder.h model.h objectives.h workflow.h training_utils.h
     evaluation_adapter.h reconstruction_adapter.h learning_curve_adapter.h
+    configurable_spectral_config.h configurable_spectral_relation.h
+    configurable_spectral_model.h configurable_spectral_settings.h
+    configurable_spectral_checkpoint.h configurable_spectral_checkpoint_io.h
   src/
     main.cpp workflow.cpp evaluation_adapter.cpp reconstruction_adapter.cpp
     learning_curve_adapter.cpp
   config/
     smoke.conf evaluation.conf channel_mixer.conf mean_global.conf learned_global.conf
+    configurable_spectral.conf
   tests/
     preprocessing_test.cpp numerics_test.cpp masking_test.cpp model_test.cpp
     workflow_test.cpp evaluation_adapter_test.cpp reconstruction_adapter_test.cpp
     learning_curve_adapter_test.cpp legacy_checkpoint_parity_test.cpp
     cli_smoke.sh periodic_checkpoint.sh
+    configurable_spectral_test.cpp configurable_checkpoint_test.cpp checkpoint_integrity_test.cpp
+  configurable_spectral.mk       # Separate v20 engineering targets
 ```
 
 The model and preprocessing core are header-only. Workflow code owns raw/scaler
@@ -371,6 +149,8 @@ archives, checkpoints and CLI operations. Its evaluation adapter implements the
 Comparison orchestration and CLI dispatch live in the shared engine and
 [independent evaluation integration](../../evaluation/README.md); the standalone
 minimum harness does not link the RPB-MAE model.
+The configurable headers have their own file binding and inference archive API;
+their config-document check is owned by `code/shared/tests/config_document_test.cpp`.
 The reconstruction adapter supplies exact local exports, raw predictions and a
 separately fitted mask/metadata control through the
 [shared reconstruction interface](../../shared/include/embedding/shared/reconstruction_evaluation.h).
@@ -398,7 +178,6 @@ Windows, build and run through the named `rpb-mae` session:
 
 ```powershell
 .\container.ps1 -Action exec -Command @('bash', 'code/scripts/task.sh', 'rpb-mae', '-j2', 'rpb-mae', 'evaluation', 'feature-harness', 'test-rpb-mae', 'test-feature-harness')
-.\container.ps1 -Action exec -Command @('bash', 'code/scripts/task.sh', 'rpb-mae', 'smoke-rpb-mae')
 .\container.ps1 -Action exec -Command @('bash', 'code/scripts/task.sh', 'rpb-mae', 'smoke-rpb-mae-cuda')
 .\container.ps1 -Action exec -Command @('bash', 'code/scripts/task.sh', 'rpb-mae', 'periodic-rpb-mae')
 ```
@@ -407,7 +186,6 @@ The corresponding commands in a container shell at `/embedding` are:
 
 ```bash
 bash code/scripts/task.sh rpb-mae -j2 rpb-mae evaluation feature-harness test-rpb-mae test-feature-harness
-bash code/scripts/task.sh rpb-mae smoke-rpb-mae
 bash code/scripts/task.sh rpb-mae smoke-rpb-mae-cuda
 bash code/scripts/task.sh rpb-mae periodic-rpb-mae
 ```
@@ -479,11 +257,11 @@ rpb_run="$(mktemp -d "$PWD/output/runs/rpb-mae/manual-XXXXXX")"
 "$rpb_bin" synthetic --config "$rpb_config" --output "$rpb_run/raw.pt" --samples 32
 "$rpb_bin" prepare --config "$rpb_config" --input "$rpb_run/raw.pt" --output "$rpb_run/scaler.pt"
 "$rpb_bin" train --config "$rpb_config" --input "$rpb_run/raw.pt" --scaler "$rpb_run/scaler.pt" \
-  --checkpoint "$rpb_run/model.pt" --steps 8 --attempt-limit 1000 --checkpoint-every 4 --device cpu
+  --checkpoint "$rpb_run/model.pt" --steps 8 --attempt-limit 1000 --checkpoint-every 4 --device cuda
 "$rpb_bin" train --resume "$rpb_run/model.pt" --input "$rpb_run/raw.pt" \
-  --checkpoint "$rpb_run/resumed.pt" --steps 2 --device cpu
+  --checkpoint "$rpb_run/resumed.pt" --steps 2 --device cuda
 "$rpb_bin" embed --checkpoint "$rpb_run/resumed.pt" --input "$rpb_run/raw.pt" \
-  --output "$rpb_run/embeddings.pt" --batch-size 4 --device cpu
+  --output "$rpb_run/embeddings.pt" --batch-size 4 --device cuda
 ```
 
 `synthetic` creates a deterministic float64 fixture and accepts `--seed`,
@@ -498,7 +276,9 @@ policy. An ineligible batch performs no optimizer update or weight decay.
 checkpoint and returns an error. `--checkpoint-every` counts attempts, including
 skips. CPU continuation targets exact parity under unchanged execution settings.
 Resume requires the same dataset identity and training batch size; configuration,
-seed and scaler come from the checkpoint. `--device cpu|cuda` selects execution.
+seed and scaler come from the checkpoint. The historical CLI supports
+`--device cpu|cuda`; use explicit CUDA for research model execution. CPU replay
+descriptions above are compatibility history, not a second training instruction.
 
 Checkpoints contain explicit encoder/format/output-semantic IDs, canonical
 settings, model and AdamW state, frozen scaler, schema/dataset identities and both

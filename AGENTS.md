@@ -34,18 +34,41 @@ standalone raw-data baseline labelled exactly "PCA only — no encoder".
 Keep classifier architectures, training budgets, and declared seed policies
 fixed across encoder comparisons; fit their weights separately on training data.
 
-## Active research version
+## Current status and preserved research versions
 
-The separate engineering integration is **RPB-v20**, documented in
+Read [current repository status](doc/CURRENT_STATUS.md) before selecting work.
+RPB-v20 is the implemented configurable API with the latest completed capacity
+quality record. RPB-v4 remains the formal evaluated reference
+and the original RPB-v7 bundle remains protected. Historical CLI defaults stay
+fixed. Update live status/registry pointers when new evidence is complete.
+
+The summaries below preserve earlier research decisions and stopped-recipe
+restrictions. Their proposed next actions are local to the linked milestone;
+use CURRENT_STATUS.md for present direction. In particular, the harmonic decoder
+is a preserved proposal, not an implemented or scheduled default next action.
+
+The newest completed experiment is [configurable RPB-v20 capacity](doc/CONFIGURABLE_CAPACITY_V1.md):
+three fresh TEMPO-5 cohorts, C3/H128/F9, complexity5/5, and nine independent
+CUDA trajectories at512 updates/B8. **RPB-v20.alt-01** is W64/D32;
+**RPB-v20.alt-02** is W128/D32; **RPB-v20.alt-03** is W64/D64.
+Alt-01 is the compact continuation configuration: intact Linear/Neural means
+94.66%/94.31%, deleted90.10%/88.72%, with100% coverage. Larger configurations
+show no consistent final classification gain at this budget. Initial alt-01
+already reaches94.01%/93.23% intact; most strength predates training.
+Keep the frozen checkpoints and fixed heads; do not rerun them to read scores.
+Follow the [current continuation](doc/CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md).
+No TEST, market evidence, default change or historical instance replacement.
+
+The reusable integration is **RPB-v20**, documented in
 [the configurable spectral module](code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md).
 It backports the user's requested configurable C/H/F/D, all-feature model,
 core file settings and inference checkpoint API from `../cuwacunu`. CUDA
-engineering checks pass; quality is not measured and no historical trained
-instance is replaced. The market loader and application adapter stay outside
+engineering checks and the separate quality experiment above pass; no historical
+trained instance is replaced. The market loader and application adapter stay outside
 this repository. Historical CLI defaults and evaluation protocols stay fixed.
-The harmonic decoder below remains a distinct future research proposal.
+The harmonic decoder remains a distinct future research proposal.
 
-The newest completed record is [RPB-v19.alt-01](doc/SPECTRAL_CONFIRMATION_V1.md),
+The earlier completed record is [RPB-v19.alt-01](doc/SPECTRAL_CONFIRMATION_V1.md),
 an unchanged-v19 confirmation on fresh masters 930905, 930906 and 930907 for each
 of **TEMPO-4** slow-component timing and **AMP-2** component balance, both at
 designed complexity **5/5**. Native32, batch 8, 512 CUDA updates and the fixed
@@ -55,10 +78,10 @@ three-repetition heads are unchanged. All 12 prospective conditions pass with
 training gains on fresh deleted means are not uniform across cohorts. Original
 query VALIDATION MAE is 0.74248 for timing and 0.75793 for balance, so
 reconstruction remains work to do.
-The next proposed quality research architecture is a harmonic linear decoder, retaining the
+Its proposed quality research architecture was a harmonic linear decoder, retaining the
 prior, heads and data; it is prospective, with no implementation or new quality
 cohorts allocated. Follow the
-[current continuation](doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).
+[historical continuation](doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).
 
 The preceding completed [RPB-v19 screen](doc/MULTIBAND_SCREEN_V1.md) introduced
 20 learned shape coordinates and 12 fixed low/high spectral relation coordinates
@@ -141,7 +164,7 @@ when comparing the groups; do not describe replication scores as a decline
 of the original saved encoder. Any architecture, objective or training recipe
 change gets a new design tag and separate outputs, leaving the original v7 intact.
 
-RPB-v4, the learned global bottleneck, is the active experimental encoder.
+RPB-v4, the learned global bottleneck, is the formal evaluated reference.
 RPB-v5, the direct patch global bottleneck, failed the fixed 512 comparison under
 paired-pooling-v1 and is not promoted. This rejects that measured advance, not
 the design under every budget. Its separately frozen TRAIN/VALIDATION-only
@@ -216,7 +239,7 @@ was the fresh fixed 512 confirmation against late v7, now completed as linked
 above. Preserve every group and curve point, original working v7 and active v4.
 The [historical pooled continuation](doc/CONTINUATION_2026-10-09_AFTER_POOLED_CONTEXT.md)
 records that decision and its container-only gates.
-The user's current working direction is RPB-v7, with
+The earlier working direction was RPB-v7, with
 RPB-v4 retained as the active reference. The separate
 [saved-TRAIN v9 scale lesson](code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_LOSS_SCALE_TRAIN_DIAGNOSTIC.md)
 and [v7 decoder calibration](code/encoders/raw_patch_bottleneck_mae/V7_DECODER_CALIBRATION_DIAGNOSTIC.md)
@@ -239,8 +262,10 @@ sealed passed audit. Do not rewrite them to improve a result. The
 [historical continuation](doc/CONTINUATION_2026-10-08_AFTER_FRESH_DECODER_REPLICATION.md)
 prescribed saved TRAIN reliability analysis across all ten instances, with no
 encoder/decoder updates, head refits or held-out analysis inputs. That diagnosis
-and the subsequent milestones are complete; the current next action is recorded
-in the [current continuation](doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md) and next advance plan. Do not tune the heads, deletion rate,
+and the subsequent milestones are complete; present direction is recorded in
+[current status](doc/CURRENT_STATUS.md) and the
+[12 October continuation](doc/CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md).
+Do not tune the heads, deletion rate,
 decoder budget or stopped v9 coefficients.
 
 Older versions remain available for archived evidence, explicit comparisons,

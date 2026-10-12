@@ -1,11 +1,20 @@
 # RPB evaluation and development plan
 
-Date: 2026-10-10
+Live direction reviewed: 2026-10-12. Research chronology below: through 2026-10-10.
 
-Continue developing RPB-MAE through separate architecture experiments and fresh
-confirmation on the declared datasets.
+The configurable RPB-v20 API and separate TEMPO-5 capacity experiment are
+implemented. Read [current status](../../../doc/CURRENT_STATUS.md), the
+[capacity report](../../../doc/CONFIGURABLE_CAPACITY_V1.md) and its
+[12 October continuation](../../../doc/CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md).
+The compact RPB-v20.alt-01 configuration is retained for continuation.
+Next proposed research identifies learned versus fixed-coordinate usefulness
+from saved features, then predeclares matched H128/H256 quality work and, if
+needed, a feature-specific challenge. Those follow-ups are not measured here.
+Market preparation remains in the sibling integration repository.
 Preserve original **RPB-v7** and the formal **RPB-v4** reference. Use
-native 32-number embedding and fixed classifier heads. PCA is a standalone raw-data baseline.
+native exports at each card's declared width and fixed classifier head recipes.
+PCA is a standalone raw-data baseline. The historical native32 budgets below
+belong to their original cards, not a universal v20 dimension restriction.
 Older encoder designs remain archived references and compatibility inputs;
 routine research does not retrain every historical variant.
 
@@ -13,9 +22,10 @@ Use [the reporting standard](../../../doc/RESULTS_REPORTING_STANDARD.md) and
 [the version registry](../../../doc/EMBEDDING_VERSIONS.md). Shared evaluation
 stays separate from encoder training and decoding.
 
-## Current completed milestone and next direction
+## Preserved 10 October spectral milestone and proposed direction
 
-The latest completed record is [RPB-v19.alt-01](../../../doc/SPECTRAL_CONFIRMATION_V1.md),
+The latest completed quality record at that milestone was
+[RPB-v19.alt-01](../../../doc/SPECTRAL_CONFIRMATION_V1.md),
 the unchanged v19 design on fresh masters 930905, 930906 and 930907 for each of
 **TEMPO-4** slow-component timing and **AMP-2** component balance, both at
 designed complexity **5/5**. All 12 prospective conditions pass at native32,
@@ -26,10 +36,10 @@ comes from the fixed prior. Modest training gains on fresh deleted means are
 not uniform across cohorts; query VALIDATION MAE is 0.74248 for timing and
 0.75793 for balance.
 
-The next direction is one separate harmonic linear decoder architecture,
+The proposed next direction at that milestone was a separate harmonic linear decoder architecture,
 keeping the fixed prior, data, native32 and heads unchanged. It is prospective:
 the implementation and new quality cohorts are not allocated. Follow the
-[current continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).
+[historical continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).
 There is no default promotion. Original saved **RPB-v7** and the formal
 **RPB-v4** reference remain protected.
 
@@ -115,8 +125,9 @@ That architecture-screen milestone proposed fresh-source verification of v17.
 The five-cohort RPB-v17.alt-01 follow-up is now complete, and the subsequent
 v18 development screen improves deleted Linear accuracy on those known cohorts.
 The [historical architecture-screen continuation](../../../doc/CONTINUATION_2026-10-10_ARCHITECTURE_SCREEN.md)
-preserves the earlier decision. Use the current continuation and two-component
-challenge linked above for the next direction; no TEST/stress or default promotion.
+preserves the earlier decision. That milestone used the dated continuation and
+two-component challenge linked above; present direction is at the top of this
+document. No TEST/stress or default promotion followed.
 The earlier [independent TRAIN-support proposal](../../../doc/CONTINUATION_2026-10-10_AFTER_VISIBLE_DIFFERENCE.md)
 is deferred and preserved, not measured. Avoid expanded comparisons of weak
 candidates and do not rescue v15/v16 by tuning their frozen recipes.

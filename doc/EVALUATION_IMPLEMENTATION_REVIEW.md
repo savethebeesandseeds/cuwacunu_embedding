@@ -1,9 +1,16 @@
 # Evaluation separation and policy review
 
+Historical review of the evaluator refactor and its original development tracks.
+For the configurable RPB-v20 API and latest completed capacity quality
+record, read [current status](CURRENT_STATUS.md) and the
+[evaluation integration guide](../code/evaluation/README.md). RPB-v4 remains
+the formal evaluated reference; the dated validation below retains its original
+scope and is not a fresh audit of every later protocol.
+
 Date: 2026-10-07
 
 The agreed [reporting standard](RESULTS_REPORTING_STANDARD.md) and
-[version registry](EMBEDDING_VERSIONS.md) designate RPB-v4 as active research.
+[version registry](EMBEDDING_VERSIONS.md) retain RPB-v4 as the formal evaluated reference.
 Primary comparisons use native exports without PCA afterward, fixed
 heads, and standalone raw/PCA controls. This is policy version 1.2. Existing
 drivers/cards remain pinned to their historical protocols. The new shared

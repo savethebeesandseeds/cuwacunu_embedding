@@ -4,6 +4,13 @@ This folder contains reusable code that compiles without any encoder headers.
 Both encoders use these components directly; they are not duplicated
 model implementations.
 
+The reusable core settings module also supports the separate
+[RPB-v20 API](../encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md).
+See [current status](../../doc/CURRENT_STATUS.md) for model/evidence scope.
+The table and examples below describe shared utilities; protocol-specific
+information-admission and frozen research drivers additionally live under
+`code/evaluation/benchmarks/` and `code/evaluation/protocols/`.
+
 The [embedding evaluation policy](../../doc/EMBEDDING_EVALUATION_POLICY.md)
 defines the shared harness, task/protocol, encoder-adapter, and report boundaries.
 Encoder-specific training losses and structural contracts stay with their encoder;
@@ -89,7 +96,7 @@ validation-only common-budget selection before generating fresh testing sources,
 and supports a separately preregistered fixed budget with nested training-source
 prefixes and an independent validation stream. Protocol tests use dummy providers.
 The [RPB experiment record](../encoders/raw_patch_bottleneck_mae/GLOBAL_BOTTLENECK_ADVANCE.md)
-declares the current integration recipe and limits.
+preserves that historical integration recipe and its limits.
 
 `saved_feature_reliability.h/.cpp` analyzes explicitly supplied saved TRAIN
 features, normalizers, classifier weights/predictions and optimization traces.

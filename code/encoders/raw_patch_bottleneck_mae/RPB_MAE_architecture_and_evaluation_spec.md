@@ -1,7 +1,12 @@
 # Raw Patch Bottleneck MAE (RPB-MAE): compact, information-preserving time-series representations
 
 Date: 2026-10-04
-Status: Research-informed proposal. Not implemented or experimentally validated.
+Original status (4 October): research-informed proposal, before implementation.
+Preserved proposal: the RPB family has since been implemented and evaluated in
+separate stages. Use [current status](../../../doc/CURRENT_STATUS.md), the
+[model guide](README.md) and [RPB-v20 API](CONFIGURABLE_SPECTRAL.md) for supported
+code and measured evidence. The proposal below is not the v20 API specification;
+unimplemented extensions retain their prospective status.
 
 Shared evaluation and claim requirements are governed by the
 [embedding evaluation policy](../../../doc/EMBEDDING_EVALUATION_POLICY.md).

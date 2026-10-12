@@ -1,12 +1,22 @@
 # Embedding version registry
 
-The newest engineering design is **RPB-v20**: configurable spectral geometry,
-file settings and model/scaler checkpoints, backported from the unified project.
-Its CUDA checks pass, but no new quality data is measured. See
-[the configurable module](../code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md).
-RPB-v19.alt-01 remains the newest completed quality record.
+Read [current status](CURRENT_STATUS.md) for supported APIs, completed evidence
+and prospective work. The historical JSON registry and additive capacity-instance
+extension below preserve original model/receipt identities.
 
-The latest completed record is [RPB-v19.alt-01](SPECTRAL_CONFIRMATION_V1.md),
+The newest measured design is **RPB-v20**: configurable spectral geometry,
+file settings and model/scaler checkpoints, backported from the unified project.
+Its [completed capacity experiment](CONFIGURABLE_CAPACITY_V1.md) measures three
+fresh TEMPO-5 cohorts at C3/H128/F9, complexity5/5, 512 CUDA updates/B8 and
+fixed heads. **RPB-v20.alt-01** (W64/D32) is the compact continuation
+configuration; **alt-02** (W128/D32) and **alt-03** (W64/D64) do not consistently
+improve final classification at that budget. Initial alt-01 already gives
+94.01%/93.23% intact Linear/Neural accuracy; trained means are94.66%/94.31%
+intact and90.10%/88.72% deleted, all at100% coverage. See
+[the configurable module](../code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md).
+Follow the [current continuation](CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md).
+
+The earlier completed record is [RPB-v19.alt-01](SPECTRAL_CONFIRMATION_V1.md),
 an unchanged-v19 confirmation on fresh masters 930905, 930906 and 930907 for each
 of **TEMPO-4** slow-component timing and **AMP-2** component balance, both at
 designed complexity **5/5**. All 12 prospective conditions pass at native32,
@@ -14,10 +24,10 @@ designed complexity **5/5**. All 12 prospective conditions pass at native32,
 Linear/Neural means are 93.23%/93.23% for timing and 94.79%/86.89% for balance.
 Most strength comes from the fixed prior; modest training gains on fresh deleted
 means are not uniform across cohorts. Query VALIDATION MAE is 0.74248 for timing
-and 0.75793 for balance. The next proposed quality architecture is a harmonic linear decoder,
+and 0.75793 for balance. Its proposed quality architecture was a harmonic linear decoder,
 with the prior, heads and data fixed; it is prospective, with no implementation
 or new quality cohorts allocated. Follow the
-[current continuation](CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).
+[historical continuation](CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).
 
 The preceding completed [RPB-v19 screen](MULTIBAND_SCREEN_V1.md) introduced the design.
 Its native32 contains 20 learned shape coordinates and 12 fixed low/high spectral
@@ -62,7 +72,8 @@ v18 development screen. TEMPO-1
 RPB-v10.alt-03 remains separate preserved evidence; the data-support2×2 plan
 is deferred and preserved.
 
-RPB-v4 is the formal evaluated reference; v19 is the latest development design. RPB-v5's claimed advance failed the
+RPB-v4 is the formal evaluated reference; v20 is the latest implemented design.
+RPB-v19 remains the preceding confirmed spectral design. RPB-v5's claimed advance failed the
 fixed 512 comparison. Retained versions provide historical evidence and compatible
 loaders; routine experiments need not retrain all of them.
 RPB-v6 keeps the v4 inference architecture with a fixed training policy that
@@ -107,9 +118,12 @@ preserved alongside the successful result.
 | RPB-v17 | Learned shape with fixed generic odd relations | 100% intact;99.84% deleted neural; five known cohorts; not promoted | [Fixed-prior screen](../code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md) |
 | RPB-v18 | Learned shape with fixed unit temporal relations | 100% intact;100%/99.95% deleted; five known cohorts; not promoted | [Unit-relation screen](../code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md) |
 | RPB-v19 | Learned shape with fixed low/high complex spectral relations | Two-task/two-cohort gate passed; not promoted | [Multiband card](../code/evaluation/cards/multiband_screen_v1.md) |
-| RPB-v20 | Configurable spectral geometry | CUDA engineering checks pass; quality unmeasured | [Configurable settings](../code/encoders/raw_patch_bottleneck_mae/config/configurable_spectral.conf) |
+| RPB-v20 | Configurable spectral geometry | TEMPO-5 capacity measured; compact W64/D32 retained for continuation; not promoted | [Configurable settings](../code/encoders/raw_patch_bottleneck_mae/config/configurable_spectral.conf) |
 
-The [machine-readable registry](embedding_versions.json) records the same mapping.
+The [machine registry](embedding_versions.json) records designs and live pointers
+while preserving historical receipts;
+the [capacity instance extension](configurable_capacity_embedding_versions.json)
+records the three newly measured v20 bundles without rewriting historical scores.
 `RPB-v18.alt-01` identifies the new v18 control instances on TEMPO-4 and AMP-2;
 it preserves every original v18 TEMPO-3 checkpoint. `RPB-v19` identifies the
 separate spectral design and its first four task/cohort instances.
@@ -119,6 +133,9 @@ instance bundle, not a new design row.
 
 | Instance bundle | Design | Separate source cohorts | Completed record |
 | --- | --- | --- | --- |
+| RPB-v20.alt-01 | RPB-v20 W64/D32 | 941101, 941102, 941103 on TEMPO-5 (complexity 5/5) | [Capacity experiment](CONFIGURABLE_CAPACITY_V1.md) |
+| RPB-v20.alt-02 | RPB-v20 W128/D32 | Same three matched cohorts; separate weights | [Capacity experiment](CONFIGURABLE_CAPACITY_V1.md) |
+| RPB-v20.alt-03 | RPB-v20 W64/D64 | Same three matched cohorts; separate weights | [Capacity experiment](CONFIGURABLE_CAPACITY_V1.md) |
 | RPB-v19.alt-01 | RPB-v19 | 930905, 930906, 930907 for each of TEMPO-4 and AMP-2 (complexity 5/5) | [Fresh spectral confirmation](SPECTRAL_CONFIRMATION_V1.md) |
 
 `RPB-v4.alt-01` names the fresh v4 controls paired with `RPB-v7.alt-01` on
@@ -130,7 +147,8 @@ the checkpoint format version.
 
 ## Exact interpretation
 
-The RPB templates share a native 32-number global export. Their training paths
+The historical RPB templates share a native 32-number global export; the
+separate configurable v20 API permits other declared D values. Their training paths
 differ:
 
 | Tag | Channel mixer layers | Global bottleneck mode | Reconstruction signal | Historical report name |

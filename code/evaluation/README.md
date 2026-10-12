@@ -1,5 +1,16 @@
 # Reusable embedding evaluation
 
+Start with [current status](../../doc/CURRENT_STATUS.md) for the implemented
+RPB-v20 API and the latest completed
+[configurable capacity record](../../doc/CONFIGURABLE_CAPACITY_V1.md).
+The [capacity producer/reader](protocols/configurable_capacity_v1/README.md)
+is an experiment-specific entry point separate from the historical
+`embedding_evaluate` registry. It trains v20 on CUDA and reuses this repository's
+shared fixed heads on saved native features; it imports no market loader.
+The [v20 instance extension](../../doc/configurable_capacity_embedding_versions.json)
+identifies the exact measured bundles. Arbitrary geometry and market quality
+do not follow from that synthetic record.
+
 This folder composes encoder adapters with the encoder-independent evaluation
 engine. The [evaluation policy](../../doc/EMBEDDING_EVALUATION_POLICY.md) defines
 the evidence and acceptance rules; the
@@ -10,11 +21,12 @@ New result summaries follow the
 [reporting standard](../../doc/RESULTS_REPORTING_STANDARD.md) and
 [version registry](../../doc/EMBEDDING_VERSIONS.md). Primary encoder rows use
 native exports without PCA afterward; the standalone raw-data row is labelled
-"PCA only — no encoder". RPB-v4 is the active experimental recipe.
+"PCA only — no encoder". RPB-v4 remains the formal evaluated reference.
 The [next advance plan](../encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md)
-uses the new validation-only [archive protocol](cards/archive_readout_v1.md);
-the new [native-only curve](cards/native_curve_v1.md) provides a separate
-training/selection protocol. Historical drivers
+preserves the development chronology. Its validation-only
+[archive protocol](cards/archive_readout_v1.md) and
+[native-only curve](cards/native_curve_v1.md) provide separate historical
+training/selection protocols. Historical drivers
 still compute their compressed tiers, and the global driver selects using
 PCA12. A native-looking table does not change that selection rule. Older cards
 and results remain governed by their original declared versions.
@@ -73,6 +85,11 @@ bash code/scripts/task.sh rpb-paired-pooling evaluate-context-lighter-validation
 The admission script owns its named task calls; run it directly rather than
 nesting it inside `task.sh`. The evaluation target freezes compiled source and
 admission evidence and allocates a unique capsule. It accepts no recipe overrides.
+
+The sections below document historical driver contracts and completed stages.
+Use each frozen card's version and evidence for reproduction, and the current
+status/continuation links above for new work. Do not repeat a completed encoder
+run to recover already saved scores.
 
 ## Ownership
 

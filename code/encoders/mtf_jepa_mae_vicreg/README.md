@@ -8,6 +8,10 @@ Its stable design tag is **MTF-v1 — Multiscale JEPA and reconstruction** in th
 [version registry](../../../doc/EMBEDDING_VERSIONS.md). It remains a retained
 reference; active RPB development does not routinely retrain this encoder.
 
+See [current repository status](../../../doc/CURRENT_STATUS.md) for RPB-v20's
+separate API and the latest completed quality record. This folder's CLI and
+checkpoint format remain MTF-v1.
+
 The [embedding evaluation policy](../../../doc/EMBEDDING_EVALUATION_POLICY.md)
 defines shared evidence, protocol, reporting, and acceptance rules. The retained
 baseline evaluator and historical reports keep their original protocol and
@@ -33,7 +37,7 @@ From the repository root inside the managed container:
 
 ```bash
 bash code/scripts/task.sh baseline -j2 all test baseline
-bash code/scripts/task.sh baseline smoke smoke-cuda periodic-check
+bash code/scripts/task.sh baseline smoke-cuda
 ```
 
 For reusable evaluation, build `evaluation` to obtain `embedding_evaluate` with

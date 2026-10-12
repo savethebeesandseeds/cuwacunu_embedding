@@ -5,6 +5,11 @@
   "active_research_tag": "RPB-v4",
   "working_encoder_tag": "RPB-v7",
   "working_instance_bundle": "RPB-v7",
+  "working_reference_scope": "Preserved original RPB-v7 bundle; not the latest implemented or measured design",
+  "current_status_record": "doc/CURRENT_STATUS.md",
+  "latest_engineering_tag": "RPB-v20",
+  "current_continuation_instance_bundle": "RPB-v20.alt-01",
+  "quality_instance_registry_extension": "doc/configurable_capacity_embedding_versions.json",
   "instance_bundles": [
     {
       "id": "RPB-v7",
@@ -5975,6 +5980,17 @@
     }
   ],
   "latest_completed_diagnostic": {
+    "protocol": "configurable-capacity-v1",
+    "encoder_tag": "RPB-v20",
+    "instance_groups": ["RPB-v20.alt-01", "RPB-v20.alt-02", "RPB-v20.alt-03"],
+    "dataset_codename": "TEMPO-5",
+    "measured_record": "doc/CONFIGURABLE_CAPACITY_V1.md",
+    "durable_summary": "doc/results/configurable_capacity_v1.json",
+    "instance_registry": "doc/configurable_capacity_embedding_versions.json",
+    "promotion": false,
+    "existing_groups_replaced": false
+  },
+  "historical_latest_completed_diagnostic_2026_10_10": {
     "protocol": "visible-difference-v1",
     "dataset_codename": "TEMPO-3",
     "dataset_recipe_id": "structured-hard-timing-v1",
@@ -6258,9 +6274,14 @@
     "testing_accessed": false,
     "stress_accessed": false
   },
-  "bounded_candidate_tag": "RPB-v13",
-  "bounded_candidate_status": "measured_descriptive_TEMPO3_no_promotion",
-  "last_measured_candidate_tag": "RPB-v13",
+  "historical_candidate_status_2026_10_10": {
+    "bounded_candidate_tag": "RPB-v13",
+    "bounded_candidate_status": "measured_descriptive_TEMPO3_no_promotion",
+    "last_measured_candidate_tag": "RPB-v13"
+  },
+  "bounded_candidate_tag": "RPB-v20",
+  "bounded_candidate_status": "measured_TEMPO5_compact_continuation_no_promotion",
+  "last_measured_candidate_tag": "RPB-v20",
   "training_objective_diagnostic": {
     "protocol": "training-objective-diagnostic-v1",
     "status": "completed_null_auxiliary_rejected",
@@ -6282,12 +6303,14 @@
       "tag": "RPB-v20",
       "encoder": "raw_patch_bottleneck_mae",
       "description": "Configurable learned shape with fixed low/high complex spectral relations",
-      "status": "cuda_engineering_validated_quality_unmeasured",
+      "status": "cuda_engineering_and_tempo5_capacity_measured_development",
       "architecture_id": "early-configurable-shape-plus-fixed-two-band-complex-relations-v1",
       "default_geometry": { "C": 3, "H": 128, "F": 9, "P": 8, "D": 32 },
       "config_template": "code/encoders/raw_patch_bottleneck_mae/config/configurable_spectral.conf",
       "engineering_record": "code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md",
-      "trained_quality_instance_allocated": false,
+      "quality_record": "doc/CONFIGURABLE_CAPACITY_V1.md",
+      "quality_instance_extension": "doc/configurable_capacity_embedding_versions.json",
+      "trained_quality_instance_allocated": true,
       "historical_instances_replaced": false,
       "promotion": false
     },

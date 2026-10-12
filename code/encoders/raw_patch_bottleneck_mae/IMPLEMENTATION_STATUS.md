@@ -1,4 +1,11 @@
-# RPB-MAE implementation and validation
+# RPB-MAE implementation and validation history
+
+This file preserves engineering stages recorded from 6 October 2026, through
+the balanced-view RPB-v8 milestone below. It is not the current status of the
+model family. RPB-v20 is implemented separately with a completed capacity
+quality record. See [current status](../../../doc/CURRENT_STATUS.md)
+and the [configurable API](CONFIGURABLE_SPECTRAL.md). Original measurements and
+their protocol semantics remain unchanged.
 
 Date: 2026-10-06
 
@@ -377,7 +384,7 @@ prediction heads, EMA/JEPA/VICReg objectives, external pretrained controls and
 specialist banks remain separate experiments. The original architecture
 specification describes that broader direction.
 
-## Current milestone: balanced context views
+## Historical milestone: balanced context views
 
 **RPB-v8 — Global bottleneck with balanced context views** is implemented and
 measured under the frozen [balanced-view card](../../evaluation/cards/context_balanced_validation_v1.md).

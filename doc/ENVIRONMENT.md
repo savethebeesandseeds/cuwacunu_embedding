@@ -6,7 +6,10 @@ products separate while sharing the source tree and installed dependencies.
 Encoder implementations are isolated under `code/encoders/`, while reusable code
 lives under `code/shared/`. Documentation is in `doc/`, and persisted generated
 artifacts are in `output/`. Both the baseline and RPB-MAE have explicit build,
-test and workflow targets in the same managed container.
+test and workflow targets in the same managed container. RPB-v20 additionally
+has explicit configurable-API engineering targets; it does not replace either
+historical CLI. Read [current status](CURRENT_STATUS.md) before choosing an
+experiment or interpreting a dated command below.
 
 ## Start and run tasks
 
@@ -16,7 +19,8 @@ From PowerShell in the repository root, use the authoritative launcher:
 .\container.ps1 status
 .\container.ps1 up
 .\container.ps1 -Action exec -Command @('bash', 'code/scripts/task.sh', 'baseline', '-j2', 'all', 'test', 'baseline')
-.\container.ps1 -Action exec -Command @('bash', 'code/scripts/task.sh', 'baseline', 'smoke', 'smoke-cuda', 'periodic-check')
+.\container.ps1 -Action exec -Command @('bash', 'code/scripts/task.sh', 'baseline', 'smoke-cuda')
+.\container.ps1 -Action exec -Command @('bash', 'code/scripts/task.sh', 'docs-v20', '-j2', 'test-rpb-v20')
 ```
 
 `up` reuses the matching container, including when it is stopped. The task
@@ -29,10 +33,11 @@ Inside the container, the same commands are:
 ```bash
 cd /embedding
 bash code/scripts/task.sh baseline -j2 all test baseline
-bash code/scripts/task.sh baseline smoke smoke-cuda periodic-check
+bash code/scripts/task.sh baseline smoke-cuda
 bash code/scripts/task.sh baseline evaluate
 bash code/scripts/task.sh rpb-mae -j2 rpb-mae test-rpb-mae
-bash code/scripts/task.sh rpb-mae smoke-rpb-mae smoke-rpb-mae-cuda periodic-rpb-mae
+bash code/scripts/task.sh rpb-mae smoke-rpb-mae-cuda
+bash code/scripts/task.sh docs-v20 -j2 test-rpb-v20
 bash code/scripts/task.sh comparison -j2 evaluation feature-harness test-feature-harness
 bash code/scripts/task.sh comparison evaluate-minimum
 bash code/scripts/task.sh comparison evaluate-rpb-mae
@@ -51,6 +56,13 @@ The session name selects isolation, not an architecture. `all`/`test` select the
 baseline; `rpb-mae`/`test-rpb-mae` select the new encoder, and `feature-harness`
 builds a minimum comparison driver that registers only the baseline adapter.
 `evaluation` builds the separate full driver with baseline and RPB adapters.
+`rpb-v20` builds four configurable config/model/checkpoint/integrity check
+executables; `test-rpb-v20` runs them. They are engineering targets, not a general
+v20 training/serving CLI. Experiment-specific producers and saved-feature readers
+live under `code/evaluation/protocols/`; see the
+[capacity protocol guide](../code/evaluation/protocols/configurable_capacity_v1/README.md)
+and its [completed report](CONFIGURABLE_CAPACITY_V1.md). Reuse saved results for
+reporting instead of rerunning completed trajectories.
 The corresponding executables are `embedding`, `embedding_raw_patch_bottleneck_mae`,
 `feature_harness` and `embedding_evaluate` under the selected build directory.
 `test-feature-evaluation` uses dummy providers to test the engine independently;
@@ -146,8 +158,10 @@ and measured results. Shared code, the Makefile, common evaluation, setup/runner
 and repository documentation affect every encoder; coordinate those changes
 between active chats. During a structural refactor, pause source edits and builds
 until the validating session hands the paths back. Already-built jobs can
-continue using their private inputs and output destinations. As of 2026-10-08,
-the other project chat is stopped, so the active chat can complete shared changes.
+continue using their private inputs and output destinations. A dated claim that
+another chat is stopped is not an ownership guarantee for later work. Check
+current activity and preserve concurrent edits; do not take over shared files
+based on a historical session note.
 
 All sessions share the same container's CPU, memory and GPU capacity. Keep build
 parallelism modest while another session compiles, and coordinate GPU runs when

@@ -1,124 +1,81 @@
-# MTF-JEPA-MAE-VICReg: research and development brief
+# Documentation index
 
-For container setup, named task sessions and coordination, see
-[the development environment](ENVIRONMENT.md).
+Start with [CURRENT_STATUS.md](CURRENT_STATUS.md), reviewed on 12 October 2026.
+RPB-v20 is implemented as a configurable spectral API with recorded engineering
+checks and the latest completed synthetic capacity experiment.
+RPB-v4 remains the formal evaluated reference and original RPB-v7 is preserved.
+This documentation refresh reports no new experiment.
 
-Latest completed work is the [RPB-v13 TEMPO-3 experiment](../code/encoders/raw_patch_bottleneck_mae/VISIBLE_DIFFERENCE_DIAGNOSTIC.md),
-designed complexity 4/5. Visible adjacent differences improve mean reconstruction
-without improving timing classification consistently. The independent audit
-passed 17,152,339 checks on 280 CPU witness archives; no CPU encoder execution
-occurred. The [saved-TRAIN diagnosis](../code/encoders/raw_patch_bottleneck_mae/STRUCTURED_HARD_TIMING_TRAIN_DIAGNOSTIC.md)
-is also complete without model/head/PCA fitting. The
-[current continuation](CONTINUATION_2026-10-10_AFTER_VISIBLE_DIFFERENCE.md)
-specifies a fresh comparison of 128 versus512 independent TRAIN source pairs,
-with common validation and unchanged heads. The
-[session record](RESEARCH_SESSION_2026-10-10.md) preserves the failed admission,
-launch and reader attempts. Historical results and the original saved encoders
-remain unchanged; no promotion occurred.
+## Using the repository
 
-The [embedding evaluation policy](EMBEDDING_EVALUATION_POLICY.md) is the shared
-reference for evaluating any encoder, separating correctness, optimization,
-representation evidence, and acceptance decisions.
-The [implementation review](EVALUATION_IMPLEMENTATION_REVIEW.md) records current
-policy coverage and gaps. The separate [evaluation integration](../code/evaluation/README.md)
-documents shared provider/card contracts, the `embedding_evaluate` command,
-minimum `feature_harness` controls and encoder registration. Its controlled
-protocol v2 produces development evidence; historical baseline reports preserve
-their original protocol and measurements.
+| Document | Use |
+| --- | --- |
+| [Current status](CURRENT_STATUS.md) | Implemented contracts, measured evidence, repository boundaries and open work |
+| [Root guide](../README.md) | Build entry points, retained CLI and source layout |
+| [Environment](ENVIRONMENT.md) | Existing managed container, named task sessions and artifact locations |
+| [RPB guide](../code/encoders/raw_patch_bottleneck_mae/README.md) | RPB family, historical CLI and adapters |
+| [Configurable spectral API](../code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md) | RPB-v20 C/H/F/D, masks, scaler, file binding and immutable inference checkpoints |
+| [Core settings](../code/shared/config/README.md) | Reusable file/settings syntax and parser provenance |
+| [MTF-v1 guide](../code/encoders/mtf_jepa_mae_vicreg/README.md) | Retained multiscale JEPA/MAE/VICReg encoder |
+| [Shared components](../code/shared/README.md) | Architecture-independent utilities and engine ownership |
+| [Evaluation integration](../code/evaluation/README.md) | Adapter registration, historical drivers and protocol-specific entry points |
 
-Use the [results reporting standard](RESULTS_REPORTING_STANDARD.md) for compact
-quality/training tables and plain explanations. The
-[embedding version registry](EMBEDDING_VERSIONS.md) gives stable tags and short
-descriptions. **RPB-v4 — Learned global bottleneck** is the active experimental
-version; its [next advance plan](../code/encoders/raw_patch_bottleneck_mae/NEXT_ADVANCE.md)
-uses native encoder outputs and standalone raw/PCA baselines. The
-[completed native baseline comparison](../code/encoders/raw_patch_bottleneck_mae/NATIVE_BASELINE_COMPARISON.md)
-fills the missing controls without retraining the encoder or opening TEST inputs.
-The separate [completed native curve](../code/encoders/raw_patch_bottleneck_mae/NATIVE_CURVE_ADVANCE.md)
-trains fresh RPB-v4 instances on verified CUDA, selects 512 updates on native
-linear VALIDATION, and reports fresh synthetic TEST plus fixed-readout stress.
-It introduces no post-encoder PCA or classifier tuning. Current work continues
-from RPB-v7. Its separate [decoder calibration](../code/encoders/raw_patch_bottleneck_mae/V7_DECODER_CALIBRATION_DIAGNOSTIC.md)
-improves reconstruction with an exact unchanged encoder and cached quality.
-The [dated continuation](CONTINUATION_2026-10-08_AFTER_DECODER_CALIBRATION.md)
-preserves that prospective replication plan; the fresh-source replication and
-subsequent saved-TRAIN diagnosis are now complete. Current work is recorded in
-the [9 October research journal](RESEARCH_SESSION_2026-10-09.md). The completed
-[frozen amplitude check](../code/encoders/raw_patch_bottleneck_mae/FROZEN_AMPLITUDE_TRANSFER_DIAGNOSTIC.md)
-uses new data and heads with retained encoders. The separately frozen
-[early-mixer comparison](../code/evaluation/cards/early_mixer_reliability_v1.md)
-implements RPB-v10 against fresh RPB-v7.alt-02. Its
-[verified result](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_RELIABILITY_DIAGNOSTIC.md)
-improves mean and worst-cohort timing accuracy with mixed cohort and amplitude
-tradeoffs. The completed [paired learning curve](../code/encoders/raw_patch_bottleneck_mae/EARLY_MIXER_LEARNING_CURVE_DIAGNOSTIC.md)
-retains every 0/512/1024/2048 point. The completed [matched-target gain diagnostic](../code/encoders/raw_patch_bottleneck_mae/MATCHED_TARGET_GAIN_DIAGNOSTIC.md)
-fails all six numeric guards and is stopped. The [historical end-window continuation](CONTINUATION_2026-10-09_AFTER_MATCHED_TARGET_GAIN.md)
-records protected evidence and the engineering-first next direction.
+## Versions, protocols and completed evidence
 
-`representation-encoder.pdf` is the one-page outreach brief. Editable sources are
-`representation-encoder.tex` and `references.bib`.
+Use [EMBEDDING_VERSIONS.md](EMBEDDING_VERSIONS.md) and its
+[machine-readable registry](embedding_versions.json) for design tags; the
+[capacity registry extension](configurable_capacity_embedding_versions.json)
+identifies the new v20 instance bundles.
+[DATASET_REGISTRY.md](DATASET_REGISTRY.md) defines dataset codenames and designed
+complexity. New reporting follows [RESULTS_REPORTING_STANDARD.md](RESULTS_REPORTING_STANDARD.md);
+evaluation follows [EMBEDDING_EVALUATION_POLICY.md](EMBEDDING_EVALUATION_POLICY.md).
 
-The format follows the supplied Cryptographic Electronics white paper: the
-unmodified IEEEtran conference class, US Letter paper, default body size and
-margins, two columns, numbered sections, and IEEE references. The author/contact
-line follows that reference. This is a research and development brief, not a claim
-of IEEE publication or endorsement.
+The latest completed quality report is
+[CONFIGURABLE_CAPACITY_V1.md](CONFIGURABLE_CAPACITY_V1.md), with its
+[saved result](results/configurable_capacity_v1.json) and
+[12 October continuation](CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md).
+It compares compact, wider-backbone and larger-output RPB-v20 instances on
+TEMPO-5 at C3/H128/F9/P8, complexity 5/5 and a fixed 512-update budget.
+H256 encoder quality and market quality remain unmeasured.
 
-The manuscript uses the encoder's established name, MTF-JEPA-MAE-VICReg, and
-describes the implemented sensor-history encoder. It concludes with the
-readiness of the working core, the capability demonstrated by the implementation,
-and the support sought to refine it through completion. The encoder name is the
-title, with the world-model description as a smaller subtitle. A numbered Source
-Code section before the references provides the supplied repository link and a
-note on the implementation and workflow. The input rank and dimensions are
-defined individually; MTF, JEPA, MAE, and VICReg are spelled out. Embeddings,
-tokens, learning objectives, and the dynamics equation are explained in plain
-language. Action-conditioned
-dynamics and robotics evaluation remain proposed
-work; the brief does not claim measured robotics performance or real-time deployment.
+The preserved [SPECTRAL_CONFIRMATION_V1.md](SPECTRAL_CONFIRMATION_V1.md) and
+[saved result](results/spectral_confirmation_v1.json) record RPB-v19.alt-01. The preceding
+[MULTIBAND_SCREEN_V1.md](MULTIBAND_SCREEN_V1.md) and
+[TWO_COMPONENT_INFORMATION_V1.md](TWO_COMPONENT_INFORMATION_V1.md) retain the
+screen and information admission. Synthetic confirmation does not establish
+arbitrary-geometry or market quality.
 
-## Build
+[EVALUATION_IMPLEMENTATION_REVIEW.md](EVALUATION_IMPLEMENTATION_REVIEW.md) and
+[RPB implementation history](../code/encoders/raw_patch_bottleneck_mae/IMPLEMENTATION_STATUS.md)
+preserve earlier engineering stages; their dated contents are not the latest
+repository status. Dated `CONTINUATION_*`, `MILESTONE_*`, `RESEARCH_SESSION_*`,
+experiment reports, frozen cards and saved JSON receipts retain their original
+meaning. Use current status for the next direction; do not run an old recipe
+merely because its historical note says "next".
 
-Reuse the existing environment; the paper builder does not create containers:
+## Preserved MTF-v1 outreach brief
+
+`representation-encoder.pdf` is the one-page MTF-JEPA-MAE-VICReg research brief.
+Editable sources are `representation-encoder.tex`, `ieee-preamble.tex` and
+`references.bib`. It describes the retained sensor-history encoder; it is not
+an RPB-v19/v20 overview or a market/robotics performance report.
+
+The unmodified IEEEtran conference class supplies US Letter, two columns,
+numbered sections and IEEE references. This is a research brief, not a claim
+of IEEE publication or endorsement. The bibliography cites original JEPA,
+masked-autoencoder and VICReg papers as methodological background; their image
+benchmarks are not measurements for this encoder.
+See [vendor provenance](vendor/PROVENANCE.md).
+
+From this `doc/` directory, reuse the existing paper environment:
 
 ```powershell
 & C:\Work\documents\cv.ps1 start
 .\build.ps1 -Render
 ```
 
-This uses the installed latexmk/pdfLaTeX, Poppler and qpdf in `documents-latex`.
-Sources are copied to a unique container `/tmp` snapshot; the final PDF and
-build/preview files are copied back here. The script requires a one-page result.
-No LaTeX packages are added to the embedding runtime container.
-
-## Sources
-
-Implementation claims were checked against `../code/encoders/mtf_jepa_mae_vicreg/include/embedding/encoders/mtf_jepa_mae_vicreg/` and the
-project's documented validation results. The three bibliography entries link to
-the original JEPA, masked-autoencoder and VICReg papers as methodological
-background; their image benchmarks are not results for this encoder.
-
-See `vendor/PROVENANCE.md` for the formatting dependency.
-
-The implementation is organized under [code](../code/encoders/mtf_jepa_mae_vicreg/README.md),
-with [shared components](../code/shared/README.md) and the
-[RPB-MAE encoder](../code/encoders/raw_patch_bottleneck_mae/README.md).
-Its separate [implementation guidelines](../code/encoders/raw_patch_bottleneck_mae/RPB_MAE_implementation_guidelines.md)
-define architecture contracts, reuse boundaries and evaluation gates.
-See [environment coordination](ENVIRONMENT.md) for development commands from
-the repository root. Paper build commands above run from this `doc/` directory.
-
-The [balanced-view RPB-v8 diagnostic](../code/encoders/raw_patch_bottleneck_mae/CONTEXT_BALANCED_VALIDATION_DIAGNOSTIC.md)
-and [durable result summary](results/context_balanced_validation_v1.json) record
-the completed independently audited TRAIN/known-VALIDATION comparison.
-RPB-v4 remains active; no TEST/stress or promotion occurred.
-
-The subsequent [TRAIN objective diagnosis](../code/encoders/raw_patch_bottleneck_mae/TRAINING_OBJECTIVE_DIAGNOSTIC.md)
-and [durable diagnostic summary](results/training_objective_diagnostic_v1.json)
-reject the proposed all-pair residual-difference auxiliary under its prospective
-rule, with zero encoder updates and zero head refits. The independent saved-arithmetic
-audit passed. The completed [RPB-v9 diagnostic](../code/encoders/raw_patch_bottleneck_mae/NATIVE_VIEW_AGREEMENT_VALIDATION_DIAGNOSTIC.md)
-and [durable summary](results/native_view_agreement_validation_v1.json) record
-a severe failed experiment, with passed implementation admission and independent
-audit. RPB-v4 remains active. The [continuation note](CONTINUATION_2026-10-08.md)
-defines tomorrow's saved-evidence diagnosis; no new training is scheduled.
+The builder requires the existing `documents-latex` container with
+latexmk/pdfLaTeX, Poppler and qpdf. It snapshots the paper sources into container
+`/tmp`, copies the PDF and previews back, and requires exactly one page.
+Paper packages are separate from the managed embedding environment.
+The outreach source/PDF is preserved during this documentation refresh.
