@@ -1,0 +1,73 @@
+# RPB-v20 configurable spectral encoder
+
+This is the reusable backport from the clean `cuwacunu` integration project,
+requested to keep representation research independent of market ingestion.
+The v19 source and every historical checkpoint/card remain unchanged. RPB-v20
+has new engineering checks, with no new quality score or trained market instance.
+
+Default geometry is `[B,3,128,9] -> [B,32]`. Configurable C/H/F/D are fixed per
+constructed model and saved checkpoint; B can vary between calls. H must be
+at least 17. Native D contains four fixed spectral coordinates for each of
+C(C−1)/2 semantic channel pairs; the remaining coordinates are learned, so
+D must be greater than four times the number of pairs. C1 has only learned
+coordinates. The default keeps 20 learned + 12 fixed, without PCA afterward.
+
+All F features reach the learned backbone and all F² feature pairs enter the
+fixed mean. H need not be a multiple of P: H129/P8 pads the private backbone to
+H136, masks the extra cells, retains original-H harmonics and crops decoder
+output back to H129. Harmonic q1–8 frequencies are relative to the requested
+history, so changed geometry still needs separate quality evaluation.
+
+Portable headers under `include/embedding/encoders/raw_patch_bottleneck_mae/`:
+
+- `configurable_spectral_config.h`: configuration, dimension constraints and widths.
+- `configurable_spectral_relation.h`: mask-aware generalized spectral bank.
+- `configurable_spectral_model.h`: CUDA model, masks and scaler helpers.
+- `configurable_spectral_settings.h`: core file/settings binding.
+- `configurable_spectral_checkpoint.h`: full resolved model/scaler inference archive.
+
+The core stdlib-only file module lives under `code/shared/include/cuwacunu/config/`
+and the original parser under `code/shared/include/piaabo/parse/`. See
+[core config syntax/provenance](../../shared/config/README.md).
+
+```cpp
+#include "embedding/encoders/raw_patch_bottleneck_mae/configurable_spectral_settings.h"
+#include "embedding/encoders/raw_patch_bottleneck_mae/configurable_spectral_checkpoint.h"
+namespace rpb = embedding::encoders::raw_patch_bottleneck_mae;
+auto c = rpb::read_configurable_spectral_settings(config_file);
+auto scaler = rpb::fit_configurable_spectral_scaler(training_input, c);
+auto scaled = rpb::transform_configurable_spectral_input(scaler, input, c);
+rpb::ConfigurableSpectralModel model(c);
+auto native = model->encode(scaled).z_contextual_global;
+rpb::save_configurable_spectral_checkpoint(new_path, model, scaler, updates);
+auto loaded = rpb::load_configurable_spectral_checkpoint(new_path, c.device, &c);
+```
+
+Edit [config/configurable_spectral.conf](config/configurable_spectral.conf).
+Actual CUDA float32 execution is required. Use the configurable scaler helper
+for nondivisible H, since preserved direct scaler methods validate the older
+patch divisibility rule. Fit only on TRAIN; streaming fitting remains future work.
+Training masks hide full patches, including a partial final patch. Channels with
+fewer than three observed patches are ineligible; skip batches with no eligible
+examples. The inference archive saves every configuration field, stable channel
+IDs, scaler identity and update count; it does not claim optimizer/RNG resume.
+
+Inside the existing managed `cuwacunu_embedding` container:
+
+```bash
+source /etc/profile.d/embedding.sh
+bash code/scripts/task.sh rpb-v20 -j2 test-rpb-v20
+```
+
+The three checks pass: core config syntax, CUDA model/old-shape parity, and
+typed configuration/scaler/checkpoint round trip. Tested shapes include C1–4,
+H17/65/129/130/257, F3/F9 and D8/16/32/48/64. Each model test makes one disposable
+optimizer update to verify CUDA gradients and unchanged literal frozen weights;
+it does not repeat historical quality training. No maximum VRAM capacity is claimed.
+
+The new model remains an explicit API; historical CLI flags, defaults, readers,
+research/evaluation drivers and measured reports keep their original semantics.
+There is no market loader dependency here. The integration repository's
+`doc/CONFIGURABLE_ENCODER_BACKPORT.json` records identical reusable file hashes.
+The next market work belongs there: select a common candle grid, streaming TRAIN
+statistics, chronological evaluation and a bounded GPU pilot before long training.

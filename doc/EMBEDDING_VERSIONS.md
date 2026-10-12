@@ -1,5 +1,11 @@
 # Embedding version registry
 
+The newest engineering design is **RPB-v20**: configurable spectral geometry,
+file settings and model/scaler checkpoints, backported from the unified project.
+Its CUDA checks pass, but no new quality data is measured. See
+[the configurable module](../code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md).
+RPB-v19.alt-01 remains the newest completed quality record.
+
 The latest completed record is [RPB-v19.alt-01](SPECTRAL_CONFIRMATION_V1.md),
 an unchanged-v19 confirmation on fresh masters 930905, 930906 and 930907 for each
 of **TEMPO-4** slow-component timing and **AMP-2** component balance, both at
@@ -8,7 +14,7 @@ designed complexity **5/5**. All 12 prospective conditions pass at native32,
 Linear/Neural means are 93.23%/93.23% for timing and 94.79%/86.89% for balance.
 Most strength comes from the fixed prior; modest training gains on fresh deleted
 means are not uniform across cohorts. Query VALIDATION MAE is 0.74248 for timing
-and 0.75793 for balance. The next separate architecture is a harmonic linear decoder,
+and 0.75793 for balance. The next proposed quality architecture is a harmonic linear decoder,
 with the prior, heads and data fixed; it is prospective, with no implementation
 or new quality cohorts allocated. Follow the
 [current continuation](CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).
@@ -101,6 +107,7 @@ preserved alongside the successful result.
 | RPB-v17 | Learned shape with fixed generic odd relations | 100% intact;99.84% deleted neural; five known cohorts; not promoted | [Fixed-prior screen](../code/encoders/raw_patch_bottleneck_mae/FIXED_PRIOR_TEMPORAL_RELATION_SCREEN.md) |
 | RPB-v18 | Learned shape with fixed unit temporal relations | 100% intact;100%/99.95% deleted; five known cohorts; not promoted | [Unit-relation screen](../code/encoders/raw_patch_bottleneck_mae/UNIT_TEMPORAL_RELATION_SCREEN.md) |
 | RPB-v19 | Learned shape with fixed low/high complex spectral relations | Two-task/two-cohort gate passed; not promoted | [Multiband card](../code/evaluation/cards/multiband_screen_v1.md) |
+| RPB-v20 | Configurable spectral geometry | CUDA engineering checks pass; quality unmeasured | [Configurable settings](../code/encoders/raw_patch_bottleneck_mae/config/configurable_spectral.conf) |
 
 The [machine-readable registry](embedding_versions.json) records the same mapping.
 `RPB-v18.alt-01` identifies the new v18 control instances on TEMPO-4 and AMP-2;

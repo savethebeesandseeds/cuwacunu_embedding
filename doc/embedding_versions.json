@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "registered_date": "2026-10-07",
-  "last_updated_date": "2026-10-10",
+  "last_updated_date": "2026-10-12",
   "active_research_tag": "RPB-v4",
   "working_encoder_tag": "RPB-v7",
   "working_instance_bundle": "RPB-v7",
@@ -6278,6 +6278,19 @@
   },
   "tag_scope": "encoder design and frozen training-view milestones; exact trained-instance identity is recorded separately",
   "versions": [
+    {
+      "tag": "RPB-v20",
+      "encoder": "raw_patch_bottleneck_mae",
+      "description": "Configurable learned shape with fixed low/high complex spectral relations",
+      "status": "cuda_engineering_validated_quality_unmeasured",
+      "architecture_id": "early-configurable-shape-plus-fixed-two-band-complex-relations-v1",
+      "default_geometry": { "C": 3, "H": 128, "F": 9, "P": 8, "D": 32 },
+      "config_template": "code/encoders/raw_patch_bottleneck_mae/config/configurable_spectral.conf",
+      "engineering_record": "code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md",
+      "trained_quality_instance_allocated": false,
+      "historical_instances_replaced": false,
+      "promotion": false
+    },
     {
       "tag": "MTF-v1",
       "family": "mtf_jepa_mae_vicreg",

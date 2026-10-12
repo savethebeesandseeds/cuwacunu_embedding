@@ -1204,3 +1204,6 @@ test-rpb-early-mixer-confirmation-adapter: $(RPB_TEST_DIR)/early_mixer_confirmat
 
 evaluate-early-mixer-confirmation: $(EARLY_MIXER_CONFIRMATION_BIN)
 	@EARLY_MIXER_CONFIRMATION_BIN="$(abspath $(EARLY_MIXER_CONFIRMATION_BIN))" EARLY_MIXER_CONFIRMATION_SOURCE_INPUTS="$(EARLY_MIXER_CONFIRMATION_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-early-mixer-confirmation.sh
+
+# Portable configurable encoder; independent of market ingestion and evaluation.
+include $(RPB_ROOT)/configurable_spectral.mk

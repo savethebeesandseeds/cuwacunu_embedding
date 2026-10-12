@@ -6,6 +6,13 @@ candidate is a masked autoencoder whose reconstruction loss passes through the
 served embedding. The baseline API, executable, archive reader and checkpoint
 format remain separate.
 
+The separate engineering backport **RPB-v20** adds configurable channels,
+history, feature count and native embedding size, plus core file settings and
+full model/scaler inference archives. Its default is C3/H128/F9/D32; actual
+CUDA checks pass, with no new quality score or replacement of confirmed v19
+instances. See [CONFIGURABLE_SPECTRAL.md](CONFIGURABLE_SPECTRAL.md) for the API
+and `test-rpb-v20` target. Existing CLI/defaults and quality drivers remain fixed.
+
 The latest completed record is [RPB-v19.alt-01](../../../doc/SPECTRAL_CONFIRMATION_V1.md),
 an unchanged-v19 confirmation on fresh masters 930905, 930906 and 930907 for each
 of **TEMPO-4** slow-component timing and **AMP-2** component balance, both at
@@ -14,7 +21,7 @@ coverage and the same native32, 512 CUDA updates, batch 8 and fixed heads.
 Deleted Linear/Neural means are 93.23%/93.23% for timing and 94.79%/86.89% for
 balance. Most strength comes from the fixed prior; modest training gains on
 fresh deleted means are not uniform across cohorts. Original query VALIDATION
-MAE is 0.74248 for timing and 0.75793 for balance. The next separate architecture is a
+MAE is 0.74248 for timing and 0.75793 for balance. The next proposed quality architecture is a
 harmonic linear decoder with the prior, heads and data fixed. It is prospective,
 with no implementation or new quality cohorts allocated. Follow the
 [current continuation](../../../doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).

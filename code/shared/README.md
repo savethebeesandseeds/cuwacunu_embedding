@@ -11,6 +11,7 @@ common fitting, scoring, coverage, and acceptance rules follow that policy.
 
 | File group | Responsibility |
 | --- | --- |
+| `include/cuwacunu/config/document.h`, `include/piaabo/parse/simple_kv_block.h` | Core owning file/settings parser, standard library only; [syntax/provenance](config/README.md) |
 | `include/embedding/shared/types.h` | Explicit input dimensions/device/dtype, data/mask tensors and VICReg loss result types |
 | `include/embedding/shared/tensor_ops.h` | Input canonicalization, masked pooling/MSE and channel validity/pooling |
 | `include/embedding/shared/objectives.h` | Pure VICReg loss calculation |

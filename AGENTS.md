@@ -36,6 +36,15 @@ fixed across encoder comparisons; fit their weights separately on training data.
 
 ## Active research version
 
+The separate engineering integration is **RPB-v20**, documented in
+[the configurable spectral module](code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md).
+It backports the user's requested configurable C/H/F/D, all-feature model,
+core file settings and inference checkpoint API from `../cuwacunu`. CUDA
+engineering checks pass; quality is not measured and no historical trained
+instance is replaced. The market loader and application adapter stay outside
+this repository. Historical CLI defaults and evaluation protocols stay fixed.
+The harmonic decoder below remains a distinct future research proposal.
+
 The newest completed record is [RPB-v19.alt-01](doc/SPECTRAL_CONFIRMATION_V1.md),
 an unchanged-v19 confirmation on fresh masters 930905, 930906 and 930907 for each
 of **TEMPO-4** slow-component timing and **AMP-2** component balance, both at
@@ -46,7 +55,7 @@ three-repetition heads are unchanged. All 12 prospective conditions pass with
 training gains on fresh deleted means are not uniform across cohorts. Original
 query VALIDATION MAE is 0.74248 for timing and 0.75793 for balance, so
 reconstruction remains work to do.
-The next separate architecture is a harmonic linear decoder, retaining the
+The next proposed quality research architecture is a harmonic linear decoder, retaining the
 prior, heads and data; it is prospective, with no implementation or new quality
 cohorts allocated. Follow the
 [current continuation](doc/CONTINUATION_2026-10-10_AFTER_SPECTRAL_CONFIRMATION.md).
