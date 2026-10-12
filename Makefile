@@ -1208,8 +1208,14 @@ evaluate-early-mixer-confirmation: $(EARLY_MIXER_CONFIRMATION_BIN)
 # Portable configurable encoder; independent of market ingestion and evaluation.
 include $(RPB_ROOT)/configurable_spectral.mk
 
+# Separate zero-start learned relation candidate; v20 defaults remain fixed.
+include $(RPB_ROOT)/learned_ordered_relation.mk
+
 # New dimension-aware synthetic capacity experiment; separate CUDA producer and CPU reader.
 include $(EVALUATION_ROOT)/protocols/configurable_capacity_v1/configurable_capacity.mk
 
 # Saved-coordinate usefulness diagnostic; no encoder construction or execution.
 include $(EVALUATION_ROOT)/protocols/configurable_branch_v1/configurable_branch.mk
+
+# Separately tagged learned ordered relation screen; saved controls are reused.
+include $(EVALUATION_ROOT)/protocols/configurable_learned_relation_v1/configurable_learned_relation.mk

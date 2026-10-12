@@ -12,6 +12,7 @@ completed measurements, preserved references and proposed work.
 
 | Track | What is available | Guide |
 | --- | --- | --- |
+| RPB-v21.alt-01 | Separate learned relation candidate; completed screen learns timing but fails extra-deletion protection | [Measured report](doc/CONFIGURABLE_LEARNED_RELATION_V1.md) |
 | RPB-v20 | Configurable spectral API; latest completed quality experiment compares three capacity profiles on TEMPO-5 | [API](code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md) and [capacity report](doc/CONFIGURABLE_CAPACITY_V1.md) |
 | RPB-v19.alt-01 | Preserved confirmation of unchanged v19 on fresh synthetic timing and component-balance sources | [Confirmation](doc/SPECTRAL_CONFIRMATION_V1.md) |
 | RPB-v4 / RPB-v7 | Formal evaluated reference / preserved original five-instance bundle | [Versions and instances](doc/EMBEDDING_VERSIONS.md) |
@@ -31,8 +32,9 @@ runs them. RPB-v20 is a C++ API; it is not selected by the historical
 The latest recorded config/model/checkpoint/integrity checks passed in the
 managed container. The separate completed capacity experiment retains compact
 RPB-v20.alt-01 (W64/D32) for continuation; larger profiles show no consistent
-final classification benefit at the fixed budget. This documentation refresh
-reuses saved evidence; it runs no new quality experiment.
+final classification benefit at the fixed budget. The separate RPB-v21 screen
+improves intact accuracy but fails deletion protection, so v20 remains the
+working configuration. Its original measurements and checkpoints are preserved.
 
 RPB-v19's confirmed scores apply to its declared synthetic datasets and fixed
 geometry. They do not measure the separate v20 profiles. Market quality remains

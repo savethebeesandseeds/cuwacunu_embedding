@@ -4,7 +4,15 @@ Read [current status](CURRENT_STATUS.md) for supported APIs, completed evidence
 and prospective work. The historical JSON registry and additive capacity-instance
 extension below preserve original model/receipt identities.
 
-The newest measured design is **RPB-v20**: configurable spectral geometry,
+The newest measured candidate is **RPB-v21.alt-01**: a zero-start learned
+ordered relation route with the unchanged spectral prior. Its
+[two-cohort screen](CONFIGURABLE_LEARNED_RELATION_V1.md) improves intact
+complete32 and learned20 timing, but fails extra-deletion protection.
+The frozen recipe is stopped; no third cohort or working default change follows.
+The [additive instance registry](configurable_learned_relation_embedding_versions.json)
+pins its two new checkpoint bundles. Its weights do not replace any v20 bundle.
+
+The working design remains **RPB-v20**: configurable spectral geometry,
 file settings and model/scaler checkpoints, backported from the unified project.
 Its [completed capacity experiment](CONFIGURABLE_CAPACITY_V1.md) measures three
 fresh TEMPO-5 cohorts at C3/H128/F9, complexity5/5, 512 CUDA updates/B8 and
@@ -19,7 +27,7 @@ version: its12/20-coordinate inputs are diagnostic slices of the same native32
 RPB-v20.alt-01. Fixed12 supplies nearly all demonstrated timing usefulness;
 learned20 remains near chance with these heads. Complete32 scores, instances
 and checkpoints are preserved. Follow the
-[current continuation](CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_BRANCH.md).
+[current continuation](CONTINUATION_2026-10-13_AFTER_LEARNED_RELATION.md).
 
 The earlier completed record is [RPB-v19.alt-01](SPECTRAL_CONFIRMATION_V1.md),
 an unchanged-v19 confirmation on fresh masters 930905, 930906 and 930907 for each

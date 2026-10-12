@@ -1,21 +1,32 @@
 # Current repository status
 
-Updated on 12 October 2026 after the reusable backport, code review, capacity
-experiment and completed saved-coordinate diagnostic. The latest diagnostic
-fits only its declared subset heads to existing arrays; it executes and trains
-no encoder. Original capacity measurements and checkpoints remain preserved.
+Updated on 13 October 2026 after the saved TRAIN diagnosis and completed
+learned ordered relation screen. RPB-v21 learned useful timing but failed
+missing-value robustness, so RPB-v20.alt-01 remains the working configuration.
+Original measurements, checkpoints and the unified v20 API remain preserved.
 
 ## Implemented code and measured evidence
 
 | Track | Status | Entry point |
 | --- | --- | --- |
+| RPB-v21.alt-01 | Implemented learned relation candidate; completed two-cohort screen fails deletion guards and is stopped | [Report](CONFIGURABLE_LEARNED_RELATION_V1.md), [module](../code/encoders/raw_patch_bottleneck_mae/LEARNED_ORDERED_RELATION.md) |
 | RPB-v20 | Implemented configurable spectral API, completed capacity experiment and saved-coordinate diagnostic | [API](../code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md), [capacity](CONFIGURABLE_CAPACITY_V1.md) and [coordinate diagnostic](CONFIGURABLE_BRANCH_V1.md) |
 | RPB-v19.alt-01 | Preserved fresh synthetic confirmation of unchanged RPB-v19 | [Confirmation report](SPECTRAL_CONFIRMATION_V1.md) and [saved summary](results/spectral_confirmation_v1.json) |
 | RPB-v4 | Formal evaluated reference, retained under its original protocol | [Native curve record](../code/encoders/raw_patch_bottleneck_mae/NATIVE_CURVE_ADVANCE.md) |
 | RPB-v7 | Original five-instance reference bundle, preserved with its scalers and readouts | [Version and instance registry](EMBEDDING_VERSIONS.md) |
 | MTF-v1 | Retained multiscale JEPA/MAE/VICReg encoder and historical CLI | [Encoder guide](../code/encoders/mtf_jepa_mae_vicreg/README.md) |
 
-The latest completed quality record is [configurable-capacity-v1](CONFIGURABLE_CAPACITY_V1.md)
+The latest completed quality screen is
+[configurable-learned-relation-v1](CONFIGURABLE_LEARNED_RELATION_V1.md).
+On the same two known TEMPO-5 cohorts, its complete32 intact Linear/Neural
+means improve to 97.85%/96.48%, and learned20 reaches 62.50%/61.00%.
+Extra-deletion complete32 falls to 65.43%/78.06%, compared with matched saved
+v20 controls 88.67%/87.89%; all coverage is 100%. Nine of 54 declared conditions
+fail. No third cohort or default replacement follows. The preceding
+[TRAIN-only diagnosis](LEARNED_TRAIN_V1.md) found varying learned coordinates
+with weak paired timing separation, without any model execution or head fit.
+
+The working quality record remains [configurable-capacity-v1](CONFIGURABLE_CAPACITY_V1.md)
 on TEMPO-5 slow lead/lag beneath fast rhythms, nine grouped features and structured
 distractors, at designed complexity 5/5. Three fresh source cohorts compare
 RPB-v20.alt-01 (W64/D32), alt-02 (W128/D32) and alt-03 (W64/D64), all at
@@ -107,9 +118,10 @@ heads/PCA baselines, or audit saved arithmetic inside the managed container.
 
 ## Open work
 
-Follow the [latest 12 October continuation](CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_BRANCH.md):
-predeclare a small saved-TRAIN study of learned-coordinate variation, normalization
-and decoder use before selecting one architecture change. Keep the working fixed
+Follow the [latest 13 October continuation](CONTINUATION_2026-10-13_AFTER_LEARNED_RELATION.md):
+investigate mask-induced shifts in the learned relation inputs on TRAIN before
+declaring a separate architecture test. The v21 frozen recipe is stopped;
+preserve its learned-timing gain and its deletion failure. Keep the working fixed
 prior and fixed heads. Matched H128/H256 quality work and a feature-specific
 challenge remain later prospective steps. The capacity experiment already
 records descriptive costs at its three configurations; it does not establish

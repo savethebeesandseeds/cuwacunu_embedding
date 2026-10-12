@@ -1,10 +1,11 @@
 # Documentation index
 
-Start with [CURRENT_STATUS.md](CURRENT_STATUS.md), reviewed on 12 October 2026.
+Start with [CURRENT_STATUS.md](CURRENT_STATUS.md), reviewed on 13 October 2026.
 RPB-v20 is implemented as a configurable spectral API with recorded engineering
 checks, the completed synthetic capacity experiment and saved-coordinate diagnostic.
 RPB-v4 remains the formal evaluated reference and original RPB-v7 is preserved.
-The latest diagnostic fits subset heads to saved arrays and executes no encoder.
+The completed RPB-v21 learned relation candidate fails missing-value protection;
+RPB-v20.alt-01 remains the working configuration.
 
 ## Using the repository
 
@@ -30,7 +31,16 @@ identifies the new v20 instance bundles.
 complexity. New reporting follows [RESULTS_REPORTING_STANDARD.md](RESULTS_REPORTING_STANDARD.md);
 evaluation follows [EMBEDDING_EVALUATION_POLICY.md](EMBEDDING_EVALUATION_POLICY.md).
 
-The latest completed quality report is
+The latest completed candidate is
+[CONFIGURABLE_LEARNED_RELATION_V1.md](CONFIGURABLE_LEARNED_RELATION_V1.md),
+with its [saved result](results/configurable_learned_relation_v1.json),
+[instance registry](configurable_learned_relation_embedding_versions.json) and
+[13 October continuation](CONTINUATION_2026-10-13_AFTER_LEARNED_RELATION.md).
+Its learned timing improves, but its two-cohort deletion gate fails. The preceding
+[LEARNED_TRAIN_V1.md](LEARNED_TRAIN_V1.md) diagnoses saved TRAIN variation without
+model execution or head fitting.
+
+The working completed quality report remains
 [CONFIGURABLE_CAPACITY_V1.md](CONFIGURABLE_CAPACITY_V1.md), with its
 [saved result](results/configurable_capacity_v1.json) and
 [12 October continuation](CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md).
@@ -42,7 +52,7 @@ H256 encoder quality and market quality remain unmeasured.
 [saved record](results/configurable_branch_v1.json) separate the usefulness of
 fixed12 and learned20 while reusing complete32 results. The encoder remains
 unchanged and all15 reusable file pairs match the `cuwacunu` integration.
-Use the [latest continuation](CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_BRANCH.md)
+Use the [historical coordinate continuation](CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_BRANCH.md)
 for the focused learned-path investigation; retain the capacity continuation as
 the preceding milestone.
 
