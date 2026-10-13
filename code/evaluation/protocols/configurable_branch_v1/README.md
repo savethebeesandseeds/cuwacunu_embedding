@@ -24,6 +24,6 @@ runs small engineering regressions, then fits only the declared branch heads.
 It audits the persisted classifier arithmetic and independently publishes the
 agreed tables. Original heads, quality data, checkpoints and reports are retained.
 
-Reusable encoder/config files remain byte-identical with `../cuwacunu`. This
+Reusable encoder/config files remain byte-identical with `../cuwacunu_dev`. This
 diagnostic belongs to the separate evaluation repository and needs no market
 loader or application dependency.

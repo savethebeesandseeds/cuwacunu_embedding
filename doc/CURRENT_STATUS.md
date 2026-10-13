@@ -45,8 +45,8 @@ the explicit `config/encoder_v22.conf` is also retained. The focused primary-ent
 GPU check passed in the managed `cuwacunu` container: full W64/H128 mmap initialized
 inference and typed reload, H129 with one actual CUDA update, and five preserved
 v20/config/integrity checks. All 21 portable file pairs remain byte-exact. See the sibling
-[primary selection record](../../cuwacunu/doc/PRIMARY_ENCODER_SELECTION.md)
-and [API sync manifest](../../cuwacunu/doc/CONTENT_ENCODER_SYNC.json).
+[primary selection record](../../cuwacunu_dev/doc/PRIMARY_ENCODER_SELECTION.md)
+and [API sync manifest](../../cuwacunu_dev/doc/CONTENT_ENCODER_SYNC.json).
 No synthetic trained checkpoint is selected for market use. Architecture and
 saved quality are unchanged; there is no new confirmation or TEST measurement.
 
@@ -124,7 +124,7 @@ owns its experiment-specific CUDA producer and saved-feature evaluator.
 ## Repository boundary and validation
 
 `cuwacunu_embedding` owns reusable representation models, core settings and
-evaluation research. Its sibling `../cuwacunu` owns the market loader,
+evaluation research. Its sibling `../cuwacunu_dev` owns the market loader,
 CSV/cache/mmap storage, time-grid alignment and application adapter.
 Reusable encoder improvements return here; market ingestion stays there.
 
@@ -133,9 +133,9 @@ Recorded checks cover strict config parsing, configurable CUDA shapes/masks,
 exact old-shape v19 parity, typed model/scaler checkpoint round trip and immutable
 checkpoint integrity. Tested shapes are correctness witnesses, not a maximum
 input size or measured throughput/VRAM capacity.
-The sibling [backport manifest](../../cuwacunu/doc/CONFIGURABLE_ENCODER_BACKPORT.json),
-[engineering validation](../../cuwacunu/doc/CONFIGURABLE_ENCODER_VALIDATION.md) and
-[stability review](../../cuwacunu/doc/STABILITY_REVIEW_2026-10-12.md) retain receipts.
+The sibling [backport manifest](../../cuwacunu_dev/doc/CONFIGURABLE_ENCODER_BACKPORT.json),
+[engineering validation](../../cuwacunu_dev/doc/CONFIGURABLE_ENCODER_VALIDATION.md) and
+[stability review](../../cuwacunu_dev/doc/STABILITY_REVIEW_2026-10-12.md) retain receipts.
 Those sibling links require this workspace layout; the standalone API guide is
 self-contained.
 
@@ -172,7 +172,7 @@ is a preserved prospective architecture idea. It has no implementation or measur
 quality and is not the default next action after the v20 integration.
 
 Market preparation continues separately in the sibling
-[integration continuation](../../cuwacunu/doc/CONTINUATION.md): select sources and
+[integration continuation](../../cuwacunu_dev/doc/CONTINUATION.md): select sources and
 a common cadence, declare chronological splits, implement streaming TRAIN
 statistics, measure RAM/GPU use and run a bounded pilot. This status refresh
 does not launch those experiments.

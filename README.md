@@ -53,7 +53,7 @@ The user has selected its RPB-v22 architecture as the primary encoder in
 sibling `cuwacunu`: the public application API and `config/encoder.conf` now
 select v22. V20 remains an explicit reference, and `config/encoder_v22.conf`
 remains available as a version-specific settings file. See the sibling
-[primary selection record](../cuwacunu/doc/PRIMARY_ENCODER_SELECTION.md).
+[primary selection record](../cuwacunu_dev/doc/PRIMARY_ENCODER_SELECTION.md).
 The focused primary-entry GPU check passed, covering initialized inference,
 typed reload, an actual CUDA update and preserved v20/config integrity checks.
 The earlier optional API sync check also passed. No trained market checkpoint

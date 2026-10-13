@@ -57,7 +57,7 @@ unmeasured. The portable v22 API is synced to `cuwacunu`; its public primary API
 and `config/encoder.conf` now select v22 by the user's explicit choice.
 The original v20 settings are preserved byte-for-byte as `config/encoder_v20.conf`;
 the explicit `config/encoder_v22.conf` and all historical instances remain.
-Read the sibling [primary selection record](../cuwacunu/doc/PRIMARY_ENCODER_SELECTION.md).
+Read the sibling [primary selection record](../cuwacunu_dev/doc/PRIMARY_ENCODER_SELECTION.md).
 The focused primary-entry GPU check passed, including initialized inference,
 typed reload, an actual CUDA update and preserved v20/config integrity checks;
 the earlier optional API sync check passed separately. No trained market
@@ -86,7 +86,7 @@ No TEST, market evidence, default change or historical instance replacement.
 The reusable integration is **RPB-v20**, documented in
 [the configurable spectral module](code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md).
 It backports the user's requested configurable C/H/F/D, all-feature model,
-core file settings and inference checkpoint API from `../cuwacunu`. CUDA
+core file settings and inference checkpoint API from `../cuwacunu_dev`. CUDA
 engineering checks and the separate quality experiment above pass; no historical
 trained instance is replaced. The market loader and application adapter stay outside
 this repository. Historical CLI defaults and evaluation protocols stay fixed.

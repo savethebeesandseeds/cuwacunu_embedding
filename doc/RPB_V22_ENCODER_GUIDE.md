@@ -16,7 +16,7 @@ learned embedding.
 The user has selected this RPB-v22 architecture as the primary encoder in
 sibling `cuwacunu`. Its public application API and `config/encoder.conf` select
 v22; v20 remains an explicit reference through `config/encoder_v20.conf`.
-See the [primary selection record](../../cuwacunu/doc/PRIMARY_ENCODER_SELECTION.md).
+See the [primary selection record](../../cuwacunu_dev/doc/PRIMARY_ENCODER_SELECTION.md).
 This changes application selection, not the architecture or saved quality
 experiment. It does not choose one synthetic trained checkpoint for market use.
 The focused primary-entry GPU check passed, including initialized inference,
@@ -382,8 +382,8 @@ H129 with one actual CUDA update, and five preserved v20/config/integrity checks
 All 21 portable file pairs remain byte-exact. The earlier sync check is a separate
 completed witness. These engineering checks ran no quality evaluation,
 classifier fit or market training.
-See the sibling [primary selection record](../../cuwacunu/doc/PRIMARY_ENCODER_SELECTION.md)
-and [sync manifest](../../cuwacunu/doc/CONTENT_ENCODER_SYNC.json).
+See the sibling [primary selection record](../../cuwacunu_dev/doc/PRIMARY_ENCODER_SELECTION.md)
+and [sync manifest](../../cuwacunu_dev/doc/CONTENT_ENCODER_SYNC.json).
 No trained market checkpoint has been selected. Standalone encoder APIs, saved
 quality evidence and historical CLI defaults retain their existing semantics.
 

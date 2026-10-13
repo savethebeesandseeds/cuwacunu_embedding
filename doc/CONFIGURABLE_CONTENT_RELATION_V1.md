@@ -148,8 +148,8 @@ Conditional source-group intervals measure uncertainty under each saved fitted h
 
 The portable v22 API belongs to the encoder; this runner/data challenge/evaluation
 belongs to cuwacunu_embedding. The optional v22 API is now mirrored into
-[cuwacunu](../../cuwacunu/code/encoders/rpb_content/README.md), with
-[six exact file pairs](../../cuwacunu/doc/CONTENT_ENCODER_SYNC.json) and a passed
+[cuwacunu](../../cuwacunu_dev/code/encoders/rpb_content/README.md), with
+[six exact file pairs](../../cuwacunu_dev/doc/CONTENT_ENCODER_SYNC.json) and a passed
 focused CUDA input/mask/checkpoint test. Selected v20 settings remain preserved;
 these development results do not select a market checkpoint or promote a default.
 The original test succeeded; a shell-wrapper footer reported a carriage-return
