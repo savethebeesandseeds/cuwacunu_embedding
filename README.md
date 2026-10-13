@@ -14,7 +14,7 @@ output, architecture and training in plain words.
 
 | Track | What is available | Guide |
 | --- | --- | --- |
-| RPB-v22.alt-01 | Latest completed quality experiment; content-only relation API passes both development stages | [Encoder guide](doc/RPB_V22_ENCODER_GUIDE.md) and [measured report](doc/CONFIGURABLE_CONTENT_RELATION_V1.md) |
+| RPB-v22.alt-01 | Content-only relation API selected as primary in `cuwacunu`; both completed development stages pass | [Encoder guide](doc/RPB_V22_ENCODER_GUIDE.md) and [measured report](doc/CONFIGURABLE_CONTENT_RELATION_V1.md) |
 | RPB-v21.alt-01 | Stopped candidate: learned timing improves, but extra-deletion protection fails | [Preserved report](doc/CONFIGURABLE_LEARNED_RELATION_V1.md) |
 | RPB-v20 | Preserved configurable spectral API and three-profile TEMPO-5 capacity record | [API](code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md) and [capacity report](doc/CONFIGURABLE_CAPACITY_V1.md) |
 | RPB-v19.alt-01 | Preserved confirmation of unchanged v19 on fresh synthetic timing and component-balance sources | [Confirmation](doc/SPECTRAL_CONFIRMATION_V1.md) |
@@ -37,8 +37,9 @@ runs them. RPB-v20 is a C++ API; it is not selected by the historical
 Its recorded config/model/checkpoint/integrity checks passed in the managed
 container. The preserved capacity study retains compact RPB-v20.alt-01
 (W64/D32); larger profiles show no consistent final classification benefit at
-its fixed budget. Selected v20 settings in the unified repository, original
-measurements and checkpoints remain preserved. Historical CLI defaults stay fixed.
+its fixed budget. Original v20 measurements and checkpoints remain preserved;
+its sibling application settings are retained as `config/encoder_v20.conf`.
+Historical standalone CLI defaults stay fixed.
 
 The latest completed RPB-v22 content-only relation experiment passes its two-cohort
 screen and third development check, retaining learned timing gains and recovering
@@ -48,7 +49,17 @@ from the relation projection. See the [content module](code/encoders/raw_patch_b
 and [continuation](doc/CONTINUATION_2026-10-13_AFTER_CONTENT_RELATION.md).
 The `rpb-v22` and `test-rpb-v22` targets build/run its separate artificial CUDA
 engineering check, rather than selecting it through the historical CLI.
-Its portable API is also available as an explicit option in `cuwacunu`.
+The user has selected its RPB-v22 architecture as the primary encoder in
+sibling `cuwacunu`: the public application API and `config/encoder.conf` now
+select v22. V20 remains an explicit reference, and `config/encoder_v22.conf`
+remains available as a version-specific settings file. See the sibling
+[primary selection record](../cuwacunu/doc/PRIMARY_ENCODER_SELECTION.md).
+The focused primary-entry GPU check passed, covering initialized inference,
+typed reload, an actual CUDA update and preserved v20/config integrity checks.
+The earlier optional API sync check also passed. No trained market checkpoint
+is selected.
+This is an application choice; encoder architecture and saved quality remain
+unchanged, with no new TEST or confirmation evidence.
 These results use known development data; unchanged-v22 fresh synthetic
 confirmation is proposed, and market quality remains unmeasured. The stopped
 RPB-v21 recipe and all of its failed-stage evidence remain preserved.

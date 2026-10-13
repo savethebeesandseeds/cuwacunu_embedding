@@ -38,8 +38,9 @@ fixed across encoder comparisons; fit their weights separately on training data.
 
 Read [current repository status](doc/CURRENT_STATUS.md) before selecting work.
 RPB-v22 is the implemented content-only ordered relation API with the latest
-completed known-development quality record. RPB-v20 remains its configurable
-base and the preserved selected unified configuration. RPB-v4 remains the formal
+completed known-development quality record. The user has selected RPB-v22 as
+the primary application encoder in sibling `cuwacunu`; RPB-v20 remains its
+configurable base and an explicit preserved reference. RPB-v4 remains the formal
 evaluated reference and the original RPB-v7 bundle remains protected.
 Historical CLI defaults stay fixed. Update live status/registry pointers when
 new evidence is complete.
@@ -52,8 +53,17 @@ unchanged classifiers. RPB-v21's failed deletion recipe remains stopped.
 Follow the [latest continuation](doc/CONTINUATION_2026-10-13_AFTER_CONTENT_RELATION.md)
 and [plain encoder guide](doc/RPB_V22_ENCODER_GUIDE.md). Fresh unchanged-v22
 synthetic confirmation is proposed; TEST, H256 and market quality remain
-unmeasured. The optional portable v22 API is synced to `cuwacunu`, with selected
-v20 settings/defaults and all historical instances preserved.
+unmeasured. The portable v22 API is synced to `cuwacunu`; its public primary API
+and `config/encoder.conf` now select v22 by the user's explicit choice.
+The original v20 settings are preserved byte-for-byte as `config/encoder_v20.conf`;
+the explicit `config/encoder_v22.conf` and all historical instances remain.
+Read the sibling [primary selection record](../cuwacunu/doc/PRIMARY_ENCODER_SELECTION.md).
+The focused primary-entry GPU check passed, including initialized inference,
+typed reload, an actual CUDA update and preserved v20/config integrity checks;
+the earlier optional API sync check passed separately. No trained market
+checkpoint has been selected. This application selection changes no encoder
+arithmetic and adds no quality
+evidence. Standalone historical CLI defaults and frozen evidence remain fixed.
 
 The summaries below preserve earlier research decisions and stopped-recipe
 restrictions. Their proposed next actions are local to the linked milestone;

@@ -1,16 +1,17 @@
 # Current repository status
 
 Updated on 13 October 2026 after the completed content-only ordered relation
-experiment. RPB-v22.alt-01 passes the two-cohort screen and third development
-check. It retains useful learned timing and complete-embedding missing-value
-protection. Selected v20 settings, original checkpoints and all earlier
-measurements remain preserved; there is no automatic serving default change.
+experiment and the user's application selection. RPB-v22.alt-01 passes the
+two-cohort screen and third development check. The user has selected its RPB-v22
+architecture as the primary encoder in sibling `cuwacunu`; v20 remains an
+explicit reference. Original checkpoints and all earlier measurements remain
+preserved. This application choice selects no trained market checkpoint.
 
 ## Implemented code and measured evidence
 
 | Track | Status | Entry point |
 | --- | --- | --- |
-| RPB-v22.alt-01 | Implemented content-only relation candidate; two-cohort screen and third development check pass | [Report](CONFIGURABLE_CONTENT_RELATION_V1.md), [module](../code/encoders/raw_patch_bottleneck_mae/CONTENT_ORDERED_RELATION.md) |
+| RPB-v22.alt-01 | Content-only relation API selected as primary in `cuwacunu`; completed screen and third development check pass | [Report](CONFIGURABLE_CONTENT_RELATION_V1.md), [module](../code/encoders/raw_patch_bottleneck_mae/CONTENT_ORDERED_RELATION.md) |
 | RPB-v21.alt-01 | Implemented learned relation candidate; completed two-cohort screen fails deletion guards and is stopped | [Report](CONFIGURABLE_LEARNED_RELATION_V1.md), [module](../code/encoders/raw_patch_bottleneck_mae/LEARNED_ORDERED_RELATION.md) |
 | RPB-v20 | Implemented configurable spectral API, completed capacity experiment and saved-coordinate diagnostic | [API](../code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md), [capacity](CONFIGURABLE_CAPACITY_V1.md) and [coordinate diagnostic](CONFIGURABLE_BRANCH_V1.md) |
 | RPB-v19.alt-01 | Preserved fresh synthetic confirmation of unchanged RPB-v19 | [Confirmation report](SPECTRAL_CONFIRMATION_V1.md) and [saved summary](results/spectral_confirmation_v1.json) |
@@ -36,11 +37,18 @@ the separate classifier evaluation. RPB-v22.alt-01's three-cohort intact
 Linear/Neural means are 97.14%/95.96%, with 100% coverage; these reuse the
 completed report, not a new measurement or universal encoder ranking.
 
-The optional portable v22 API has also been synced into sibling `cuwacunu`
-and passed its focused artificial CUDA integration check. Selected v20 settings
-remain unchanged and no synthetic trained checkpoint is selected for market
-use. The sibling [sync manifest](../../cuwacunu/doc/CONTENT_ENCODER_SYNC.json)
-records that engineering evidence separately from synthetic quality.
+The portable v22 API is synced into sibling `cuwacunu` and has passed its
+focused artificial CUDA integration check. The user's subsequent primary
+selection routes the public application API and `config/encoder.conf` to RPB-v22.
+The original v20 settings are retained byte-for-byte as `config/encoder_v20.conf`;
+the explicit `config/encoder_v22.conf` is also retained. The focused primary-entry
+GPU check passed in the managed `cuwacunu` container: full W64/H128 mmap initialized
+inference and typed reload, H129 with one actual CUDA update, and five preserved
+v20/config/integrity checks. All 21 portable file pairs remain byte-exact. See the sibling
+[primary selection record](../../cuwacunu/doc/PRIMARY_ENCODER_SELECTION.md)
+and [API sync manifest](../../cuwacunu/doc/CONTENT_ENCODER_SYNC.json).
+No synthetic trained checkpoint is selected for market use. Architecture and
+saved quality are unchanged; there is no new confirmation or TEST measurement.
 
 The preceding [configurable-learned-relation-v1](CONFIGURABLE_LEARNED_RELATION_V1.md)
 screen remains stopped.
@@ -77,13 +85,15 @@ Those v19 scores do not measure the separate v20 capacity profiles. Neither
 experiment establishes market representation quality, H256 encoder quality or
 arbitrary geometry/capacity. No reference promotion or CLI default change follows.
 
-## RPB-v20 contract
+## Shared configurable v20/v22 geometry
 
 Input values and observation masks have shape `[B,C,H,F]`; the served native global
 embedding has shape `[B,D]`. B is the batch size, C the semantic channel count,
 H the history length, F the features per tick, and D the embedding width.
-The checked-in settings use C3/H128/F9/P8/D32, where P is the patch length.
-These are model defaults, not a chosen market dataset or candle interval.
+Both portable model settings use C3/H128/F9/P8/D32, where P is the patch length.
+The sibling application's primary settings now select the v22 architecture at
+that geometry. These are model settings, not a chosen market dataset or candle
+interval; the standalone v20 settings and historical CLI defaults stay fixed.
 
 C/H/F/D and channel IDs are fixed per constructed model and checkpoint; B can
 vary. H must be at least 17 and may be nondivisible by P. The learned backbone

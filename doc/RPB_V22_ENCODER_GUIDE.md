@@ -13,6 +13,15 @@ representation combines 20 learned coordinates with 12 fixed-formula frequency
 relationship coordinates. It is a hybrid representation, rather than a wholly
 learned embedding.
 
+The user has selected this RPB-v22 architecture as the primary encoder in
+sibling `cuwacunu`. Its public application API and `config/encoder.conf` select
+v22; v20 remains an explicit reference through `config/encoder_v20.conf`.
+See the [primary selection record](../../cuwacunu/doc/PRIMARY_ENCODER_SELECTION.md).
+This changes application selection, not the architecture or saved quality
+experiment. It does not choose one synthetic trained checkpoint for market use.
+The focused primary-entry GPU check passed, including initialized inference,
+typed reload, an actual CUDA update and preserved v20/config integrity checks.
+
 ## Saved results and their scope
 
 No new experiment. The values below reuse the
@@ -363,11 +372,20 @@ The inference checkpoint binds the scaler, geometry, semantic IDs, architecture
 layout and completed update count; it is not an optimizer/RNG resume checkpoint.
 
 `cuwacunu_embedding` owns reusable encoders and evaluation research. The sibling
-`cuwacunu` owns market loading and its past-only adapter. The optional v22 API
-has been synced and passed a focused artificial CUDA integration check there;
-its selected v20 settings remain unchanged, and no synthetic trained checkpoint
-has been chosen for markets. See the sibling
-[sync manifest](../../cuwacunu/doc/CONTENT_ENCODER_SYNC.json).
+`cuwacunu` owns market loading and its past-only adapter. Its v22 API sync has
+passed a focused artificial CUDA integration check. The user has now chosen
+v22 as the primary application encoder. `config/encoder.conf` selects v22;
+the original v20 settings are preserved as `config/encoder_v20.conf`, and
+the explicit `config/encoder_v22.conf` remains available. The focused primary-entry
+GPU check passed: full W64/H128 mmap initialized inference and typed reload,
+H129 with one actual CUDA update, and five preserved v20/config/integrity checks.
+All 21 portable file pairs remain byte-exact. The earlier sync check is a separate
+completed witness. These engineering checks ran no quality evaluation,
+classifier fit or market training.
+See the sibling [primary selection record](../../cuwacunu/doc/PRIMARY_ENCODER_SELECTION.md)
+and [sync manifest](../../cuwacunu/doc/CONTENT_ENCODER_SYNC.json).
+No trained market checkpoint has been selected. Standalone encoder APIs, saved
+quality evidence and historical CLI defaults retain their existing semantics.
 
 The next quality direction is an unchanged-v22 fresh synthetic confirmation,
 specified prospectively before allocating data. It has not been implemented
