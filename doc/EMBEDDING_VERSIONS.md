@@ -4,6 +4,15 @@ Read [current status](CURRENT_STATUS.md) for supported APIs, completed evidence
 and prospective work. The historical JSON registry and additive capacity-instance
 extension below preserve original model/receipt identities.
 
+**RPB-v22.market-01** is the unchanged v22 architecture trained separately on
+MKT-HIST-1 in sibling integration. **RPB-v22.market-01.init** names its0-update
+control. Native32 remains20 learned+12 fixed; no original synthetic bundle
+changes. The [market result](../../cuwacunu_dev/doc/MARKET_HISTORY_PILOT_RESULTS.md)
+and [instance receipt](../../cuwacunu_dev/doc/results/market_history_pilot_v1/completion.json)
+identify the512-update checkpoint, source/split/config/binary identities and
+engineering replay. It is a development historical-representation pilot with
+weak trend readouts, not a new universally best model or serving default.
+
 The newest measured candidate is **RPB-v22.alt-01**: a zero-start content-only
 ordered relation route with the unchanged spectral prior. Its
 [completed development experiment](CONFIGURABLE_CONTENT_RELATION_V1.md) passes

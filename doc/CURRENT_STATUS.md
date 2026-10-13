@@ -1,5 +1,18 @@
 # Current repository status
 
+Latest additive milestone,13 October 2026: bounded streaming TRAIN statistics
+and distinct v22 model/scaler/AdamW/counter resume headers/tests are locally
+mirrored from `cuwacunu_dev`; the [portable support guide](STREAMING_TRAINING_SUPPORT.md)
+records passing checks and exact pairs. The integration's first
+[MKT-HIST-1 market pilot](../../cuwacunu_dev/doc/MARKET_HISTORY_PILOT_RESULTS.md)
+is complete, without changing the v22 architecture or synthetic records.
+RPB-v22.market-01 is a separate market instance: good linear volatility/activity
+results, weak past trend, mixed neural heads,100% coverage. Its loader, targets,
+data and runner stay in integration; no post-encoder PCA or new market default.
+These private additions are synchronized locally and not published to the
+public embedding remote. The next encoder candidate should focus on observed
+changes while preserving the good level/activity representation.
+
 Updated on 13 October 2026 after the completed content-only ordered relation
 experiment and the user's application selection. RPB-v22.alt-01 passes the
 two-cohort screen and third development check. The user has selected its RPB-v22
@@ -162,8 +175,8 @@ prior and classifiers. Matched H128/H256 quality work and a feature-specific
 challenge remain later prospective steps. The capacity experiment already
 records descriptive costs at its three configurations; it does not establish
 maximum input size, controlled performance scaling or H256 encoder quality.
-Market quality and bounded streaming scaler fitting remain unmeasured/unimplemented,
-respectively. Record each new experiment with its frozen card, source/config
+Market evidence is now limited to the separate MKT-HIST-1 pilot, and bounded
+streaming scaler fitting is implemented. Record each new experiment with its frozen card, source/config
 receipts, instance tags and saved report before updating status or registry pointers.
 
 The harmonic linear decoder in the
@@ -171,11 +184,11 @@ The harmonic linear decoder in the
 is a preserved prospective architecture idea. It has no implementation or measured
 quality and is not the default next action after the v20 integration.
 
-Market preparation continues separately in the sibling
-[integration continuation](../../cuwacunu_dev/doc/CONTINUATION.md): select sources and
-a common cadence, declare chronological splits, implement streaming TRAIN
-statistics, measure RAM/GPU use and run a bounded pilot. This status refresh
-does not launch those experiments.
+Market work continues separately in the sibling
+[integration continuation](../../cuwacunu_dev/doc/CONTINUATION.md). Source/split
+selection, streaming statistics, RAM/GPU measurements and a bounded pilot are
+complete there; preserve the admitted market control and target its weak trend
+information in a separately specified candidate.
 
 ## How to read and maintain the docs
 

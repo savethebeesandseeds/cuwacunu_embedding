@@ -14,6 +14,7 @@ complexity. Historical frozen reports/cards/source captures stay unchanged.
 | TEMPO-4 | Slow-component timing lead/lag | 5/5 | Two coherent rhythms; slow lag sign, unrelated fast lag, gains/offsets and gaps | Implemented; information admission and separate two-cohort CUDA encoder screen completed |
 | AMP-2 | Relative component balance | 5/5 | Swap slow/fast strength at equal component energy; gains/offsets and gaps | Implemented; information admission and separate two-cohort CUDA encoder screen completed |
 | TEMPO-5 | Slow-component timing lead/lag | 5/5 | C3/H128/F9; slow/fast feature groups, structured distractors, gains/offsets and 5-tick gaps | Information admission and three-cohort/nine-trajectory CUDA capacity experiment completed |
+| MKT-HIST-1 | Four past-history regressions | 4/5 | BTC/ETH/SOL January2024 minute candles, nine raw features, H128, chronological TRAIN/VALIDATION | Bounded pilot in sibling integration; [card](../../cuwacunu_dev/doc/MARKET_HISTORY_PILOT_CARD.md), [results](../../cuwacunu_dev/doc/MARKET_HISTORY_PILOT_RESULTS.md); no forecasting |
 
 Complexity is an **ordinal designed challenge level on1–5**, assigned before
 measurement. It is not measured entropy, information content, accuracy,

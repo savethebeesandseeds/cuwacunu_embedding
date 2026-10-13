@@ -1,6 +1,6 @@
 # Embedding results reporting standard
 
-Standard version: 1.1
+Standard version: 1.2
 
 Agreed: 2026-10-06
 
@@ -10,6 +10,19 @@ historical frozen reports, cards and source captures.
 Report what the encoder contributes through fixed classifier heads. Show task
 performance separately from reconstruction progress and training cost. Use
 [stable model tags](EMBEDDING_VERSIONS.md) with short descriptions.
+
+Continuous-target extension: 13 October 2026, prospectively specified by the
+separate MKT-HIST-1 card before fitting. Preserve frozen classification reports
+and cards. For regression use **Linear head R²** and **Neural head R²** in the
+same five-column quality layout; do not manufacture classification accuracy.
+R²=1 is perfect, R²=0 equals the scoring population's constant mean, and negative
+R² is worse. Constant scoring targets are N/A. Report physical unit MAE
+separately in the detailed report and keep each task in its own table. Coverage
+remains valid/declared scoring rows. TRAIN-only feature/target scaling and fixed
+head recipes still apply. Explicitly disclose a training time that includes
+checkpoint I/O or describes only a resumed segment; it is not the standard
+compute-only cumulative time. Three head fits on one encoder/split remain head
+variation, without independent market-cohort uncertainty.
 
 ## Report structure
 

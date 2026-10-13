@@ -5,6 +5,11 @@ adapters and the configurable spectral/content relation APIs. Read
 [current repository status](../../../doc/CURRENT_STATUS.md) before choosing a
 version or an experiment.
 
+The additive [streaming TRAIN and resume support](../../../doc/STREAMING_TRAINING_SUPPORT.md)
+provides a bounded statistics accumulator and a separate v22 AdamW continuation
+archive. The matched portable headers/tests are shared with `cuwacunu_dev`;
+focused CUDA engineering checks change no historical model or inference format.
+
 ## Content-only ordered relation API: RPB-v22
 
 [RPB-v22](CONTENT_ORDERED_RELATION.md) is the separately tagged content-only
@@ -37,8 +42,9 @@ The [completed RPB-v22.alt-01 experiment](../../../doc/CONFIGURABLE_CONTENT_RELA
 passes the two-cohort screen and third known development check on TEMPO-5,
 designed complexity 5/5, at the unchanged 512-update/B8 budget. This is synthetic
 development evidence, not fresh confirmation or market quality. The portable
-API is an explicit optional module in `cuwacunu`; selected v20 settings and
-all historical instances/defaults remain preserved.
+API is the primary architecture in sibling `cuwacunu_dev`; v20 remains an
+explicit reference. All historical instances and standalone CLI defaults remain
+preserved.
 
 ## Configurable spectral API: RPB-v20
 
