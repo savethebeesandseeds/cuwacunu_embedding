@@ -4,8 +4,9 @@ Start with [CURRENT_STATUS.md](CURRENT_STATUS.md), reviewed on 13 October 2026.
 RPB-v20 is implemented as a configurable spectral API with recorded engineering
 checks, the completed synthetic capacity experiment and saved-coordinate diagnostic.
 RPB-v4 remains the formal evaluated reference and original RPB-v7 is preserved.
-The completed RPB-v21 learned relation candidate fails missing-value protection;
-RPB-v20.alt-01 remains the working configuration.
+The completed RPB-v22 content-only relation candidate passes its two-cohort
+screen and third development check. The preceding RPB-v21 remains stopped.
+Selected v20 settings and every historical checkpoint remain preserved.
 
 ## Using the repository
 
@@ -22,6 +23,13 @@ RPB-v20.alt-01 remains the working configuration.
 | [Evaluation integration](../code/evaluation/README.md) | Adapter registration, historical drivers and protocol-specific entry points |
 
 ## Versions, protocols and completed evidence
+
+The latest [content-only relation report](CONFIGURABLE_CONTENT_RELATION_V1.md),
+[instance registry](configurable_content_relation_embedding_versions.json),
+[saved result](results/configurable_content_relation_v1.json) and
+[continuation](CONTINUATION_2026-10-13_AFTER_CONTENT_RELATION.md) retain the three
+RPB-v22.alt-01 development cohorts, exact gates and independent audits.
+Fresh synthetic confirmation is proposed and has not been allocated.
 
 Use [EMBEDDING_VERSIONS.md](EMBEDDING_VERSIONS.md) and its
 [machine-readable registry](embedding_versions.json) for design tags; the

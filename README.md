@@ -12,6 +12,7 @@ completed measurements, preserved references and proposed work.
 
 | Track | What is available | Guide |
 | --- | --- | --- |
+| RPB-v22.alt-01 | Content-only learned relation candidate; passed the two-cohort screen and third development check | [Measured report](doc/CONFIGURABLE_CONTENT_RELATION_V1.md) |
 | RPB-v21.alt-01 | Separate learned relation candidate; completed screen learns timing but fails extra-deletion protection | [Measured report](doc/CONFIGURABLE_LEARNED_RELATION_V1.md) |
 | RPB-v20 | Configurable spectral API; latest completed quality experiment compares three capacity profiles on TEMPO-5 | [API](code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md) and [capacity report](doc/CONFIGURABLE_CAPACITY_V1.md) |
 | RPB-v19.alt-01 | Preserved confirmation of unchanged v19 on fresh synthetic timing and component-balance sources | [Confirmation](doc/SPECTRAL_CONFIRMATION_V1.md) |
@@ -34,7 +35,15 @@ managed container. The separate completed capacity experiment retains compact
 RPB-v20.alt-01 (W64/D32) for continuation; larger profiles show no consistent
 final classification benefit at the fixed budget. The separate RPB-v21 screen
 improves intact accuracy but fails deletion protection, so v20 remains the
-working configuration. Its original measurements and checkpoints are preserved.
+selected configuration. Its original measurements and checkpoints are preserved.
+
+The separate RPB-v22 content-only relation experiment passes its two-cohort
+screen and third development check, retaining learned timing gains and recovering
+missing-value protection. Its API keeps the same configurable dimensions,
+scaler, masks and decoder while excluding additive observation counts from the
+learned projection. See the [content module](code/encoders/raw_patch_bottleneck_mae/CONTENT_ORDERED_RELATION.md)
+and [continuation](doc/CONTINUATION_2026-10-13_AFTER_CONTENT_RELATION.md).
+These results use known development data; fresh synthetic confirmation is next.
 
 RPB-v19's confirmed scores apply to its declared synthetic datasets and fixed
 geometry. They do not measure the separate v20 profiles. Market quality remains

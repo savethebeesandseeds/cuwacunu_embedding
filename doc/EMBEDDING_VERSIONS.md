@@ -4,7 +4,17 @@ Read [current status](CURRENT_STATUS.md) for supported APIs, completed evidence
 and prospective work. The historical JSON registry and additive capacity-instance
 extension below preserve original model/receipt identities.
 
-The newest measured candidate is **RPB-v21.alt-01**: a zero-start learned
+The newest measured candidate is **RPB-v22.alt-01**: a zero-start content-only
+ordered relation route with the unchanged spectral prior. Its
+[completed development experiment](CONFIGURABLE_CONTENT_RELATION_V1.md) passes
+the exact two-cohort gate and the predeclared third-cohort check. Observation
+counts remain in normalization and validity, but have no additive learned
+projection columns. The [instance registry](configurable_content_relation_embedding_versions.json)
+pins all three new checkpoint bundles; no historical weights or selected v20
+settings are replaced. Follow the
+[content-only continuation](CONTINUATION_2026-10-13_AFTER_CONTENT_RELATION.md).
+
+The preceding measured candidate is **RPB-v21.alt-01**: a zero-start learned
 ordered relation route with the unchanged spectral prior. Its
 [two-cohort screen](CONFIGURABLE_LEARNED_RELATION_V1.md) improves intact
 complete32 and learned20 timing, but fails extra-deletion protection.

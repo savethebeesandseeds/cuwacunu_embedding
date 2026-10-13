@@ -1219,3 +1219,7 @@ include $(EVALUATION_ROOT)/protocols/configurable_branch_v1/configurable_branch.
 
 # Separately tagged learned ordered relation screen; saved controls are reused.
 include $(EVALUATION_ROOT)/protocols/configurable_learned_relation_v1/configurable_learned_relation.mk
+
+# Separate content-only relation candidate; measured v20/v21 sources stay fixed.
+include $(RPB_ROOT)/content_ordered_relation.mk
+include $(EVALUATION_ROOT)/protocols/configurable_content_relation_v1/configurable_content_relation.mk

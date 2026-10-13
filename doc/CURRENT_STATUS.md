@@ -1,14 +1,16 @@
 # Current repository status
 
-Updated on 13 October 2026 after the saved TRAIN diagnosis and completed
-learned ordered relation screen. RPB-v21 learned useful timing but failed
-missing-value robustness, so RPB-v20.alt-01 remains the working configuration.
-Original measurements, checkpoints and the unified v20 API remain preserved.
+Updated on 13 October 2026 after the completed content-only ordered relation
+experiment. RPB-v22.alt-01 passes the two-cohort screen and third development
+check. It retains useful learned timing and complete-embedding missing-value
+protection. Selected v20 settings, original checkpoints and all earlier
+measurements remain preserved; there is no automatic serving default change.
 
 ## Implemented code and measured evidence
 
 | Track | Status | Entry point |
 | --- | --- | --- |
+| RPB-v22.alt-01 | Implemented content-only relation candidate; two-cohort screen and third development check pass | [Report](CONFIGURABLE_CONTENT_RELATION_V1.md), [module](../code/encoders/raw_patch_bottleneck_mae/CONTENT_ORDERED_RELATION.md) |
 | RPB-v21.alt-01 | Implemented learned relation candidate; completed two-cohort screen fails deletion guards and is stopped | [Report](CONFIGURABLE_LEARNED_RELATION_V1.md), [module](../code/encoders/raw_patch_bottleneck_mae/LEARNED_ORDERED_RELATION.md) |
 | RPB-v20 | Implemented configurable spectral API, completed capacity experiment and saved-coordinate diagnostic | [API](../code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md), [capacity](CONFIGURABLE_CAPACITY_V1.md) and [coordinate diagnostic](CONFIGURABLE_BRANCH_V1.md) |
 | RPB-v19.alt-01 | Preserved fresh synthetic confirmation of unchanged RPB-v19 | [Confirmation report](SPECTRAL_CONFIRMATION_V1.md) and [saved summary](results/spectral_confirmation_v1.json) |
@@ -16,8 +18,18 @@ Original measurements, checkpoints and the unified v20 API remain preserved.
 | RPB-v7 | Original five-instance reference bundle, preserved with its scalers and readouts | [Version and instance registry](EMBEDDING_VERSIONS.md) |
 | MTF-v1 | Retained multiscale JEPA/MAE/VICReg encoder and historical CLI | [Encoder guide](../code/encoders/mtf_jepa_mae_vicreg/README.md) |
 
-The latest completed quality screen is
-[configurable-learned-relation-v1](CONFIGURABLE_LEARNED_RELATION_V1.md).
+The latest completed quality experiment is
+[configurable-content-relation-v1](CONFIGURABLE_CONTENT_RELATION_V1.md).
+It removes additive observation-density projection inputs, while retaining
+counts for normalization/validity and the exact v21 odd/even content moments.
+All three known TEMPO-5 cohorts and all fixed head repetitions are retained;
+both prospective stages pass. Native32 and its diagnostic learned20 slice,
+original-query errors and separate GPU costs are recorded in the report.
+This is development evidence, not fresh confirmation, TEST or market quality.
+Follow the [content-only continuation](CONTINUATION_2026-10-13_AFTER_CONTENT_RELATION.md).
+
+The preceding [configurable-learned-relation-v1](CONFIGURABLE_LEARNED_RELATION_V1.md)
+screen remains stopped.
 On the same two known TEMPO-5 cohorts, its complete32 intact Linear/Neural
 means improve to 97.85%/96.48%, and learned20 reaches 62.50%/61.00%.
 Extra-deletion complete32 falls to 65.43%/78.06%, compared with matched saved
@@ -118,11 +130,11 @@ heads/PCA baselines, or audit saved arithmetic inside the managed container.
 
 ## Open work
 
-Follow the [latest 13 October continuation](CONTINUATION_2026-10-13_AFTER_LEARNED_RELATION.md):
-investigate mask-induced shifts in the learned relation inputs on TRAIN before
-declaring a separate architecture test. The v21 frozen recipe is stopped;
-preserve its learned-timing gain and its deletion failure. Keep the working fixed
-prior and fixed heads. Matched H128/H256 quality work and a feature-specific
+Follow the [latest 13 October continuation](CONTINUATION_2026-10-13_AFTER_CONTENT_RELATION.md):
+declare an unchanged-v22 fresh synthetic confirmation before allocating new
+quality sources. The content-only architecture passes all known development
+cohorts; preserve its complete record and the stopped v21 recipe. Keep the fixed
+prior and classifiers. Matched H128/H256 quality work and a feature-specific
 challenge remain later prospective steps. The capacity experiment already
 records descriptive costs at its three configurations; it does not establish
 maximum input size, controlled performance scaling or H256 encoder quality.
