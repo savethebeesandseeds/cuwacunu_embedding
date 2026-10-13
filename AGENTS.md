@@ -37,17 +37,30 @@ fixed across encoder comparisons; fit their weights separately on training data.
 ## Current status and preserved research versions
 
 Read [current repository status](doc/CURRENT_STATUS.md) before selecting work.
-RPB-v20 is the implemented configurable API with the latest completed capacity
-quality record. RPB-v4 remains the formal evaluated reference
-and the original RPB-v7 bundle remains protected. Historical CLI defaults stay
-fixed. Update live status/registry pointers when new evidence is complete.
+RPB-v22 is the implemented content-only ordered relation API with the latest
+completed known-development quality record. RPB-v20 remains its configurable
+base and the preserved selected unified configuration. RPB-v4 remains the formal
+evaluated reference and the original RPB-v7 bundle remains protected.
+Historical CLI defaults stay fixed. Update live status/registry pointers when
+new evidence is complete.
+
+The latest completed experiment is
+[RPB-v22.alt-01 content-only relations](doc/CONFIGURABLE_CONTENT_RELATION_V1.md):
+the two-cohort screen and third known TEMPO-5 development check both pass.
+Keep its native32, exact fixed spectral tail, all initial/trained artifacts and
+unchanged classifiers. RPB-v21's failed deletion recipe remains stopped.
+Follow the [latest continuation](doc/CONTINUATION_2026-10-13_AFTER_CONTENT_RELATION.md)
+and [plain encoder guide](doc/RPB_V22_ENCODER_GUIDE.md). Fresh unchanged-v22
+synthetic confirmation is proposed; TEST, H256 and market quality remain
+unmeasured. The optional portable v22 API is synced to `cuwacunu`, with selected
+v20 settings/defaults and all historical instances preserved.
 
 The summaries below preserve earlier research decisions and stopped-recipe
 restrictions. Their proposed next actions are local to the linked milestone;
 use CURRENT_STATUS.md for present direction. In particular, the harmonic decoder
 is a preserved proposal, not an implemented or scheduled default next action.
 
-The newest completed experiment is [configurable RPB-v20 capacity](doc/CONFIGURABLE_CAPACITY_V1.md):
+The preserved capacity experiment is [configurable RPB-v20 capacity](doc/CONFIGURABLE_CAPACITY_V1.md):
 three fresh TEMPO-5 cohorts, C3/H128/F9, complexity5/5, and nine independent
 CUDA trajectories at512 updates/B8. **RPB-v20.alt-01** is W64/D32;
 **RPB-v20.alt-02** is W128/D32; **RPB-v20.alt-03** is W64/D64.
@@ -56,7 +69,8 @@ Alt-01 is the compact continuation configuration: intact Linear/Neural means
 show no consistent final classification gain at this budget. Initial alt-01
 already reaches94.01%/93.23% intact; most strength predates training.
 Keep the frozen checkpoints and fixed heads; do not rerun them to read scores.
-Follow the [current continuation](doc/CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md).
+Its [dated continuation](doc/CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md)
+records that milestone.
 No TEST, market evidence, default change or historical instance replacement.
 
 The reusable integration is **RPB-v20**, documented in

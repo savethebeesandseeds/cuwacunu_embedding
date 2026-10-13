@@ -1,9 +1,44 @@
 # Raw Patch Bottleneck MAE (RPB-MAE)
 
 This folder owns the RPB model family, preprocessing, training/checkpoint
-adapters and the configurable spectral API. Read
+adapters and the configurable spectral/content relation APIs. Read
 [current repository status](../../../doc/CURRENT_STATUS.md) before choosing a
 version or an experiment.
+
+## Content-only ordered relation API: RPB-v22
+
+[RPB-v22](CONTENT_ORDERED_RELATION.md) is the separately tagged content-only
+relation API. Start with the [plain encoder guide](../../../doc/RPB_V22_ENCODER_GUIDE.md)
+for its input/output contract, architecture and training explanation.
+It accepts values and masks `[B,C,H,F]` and serves native `[B,D]`, using the
+same configurable geometry, TRAIN scaler, masks and waveform decoder as v20.
+Default C3/H128/F9/P8/D32 allocates 20 learned coordinates and an unchanged
+12-coordinate fixed spectral tail.
+
+All configured channel/feature pairs contribute normalized odd/even moments
+at original tick lags 1/2/4/8. Common counts normalize and validate those
+comparisons; they are not additive learned inputs. A bias-free, zero-start
+20x1944 projection adds their content to the learned coordinates without
+consuming initialization RNG. Changing masks can still alter moment estimates
+or remove information; the model does not guarantee arbitrary deletion invariance.
+
+Construct `ContentOrderedRelationModel` from
+`read_content_ordered_relation_settings` and
+[content_ordered_relation.conf](config/content_ordered_relation.conf).
+The separate `save_content_ordered_relation_checkpoint` and
+`load_content_ordered_relation_checkpoint` functions bind its tag, layout,
+geometry, scaler and update count, with immutable filenames. V20/v21/v22
+typed settings and checkpoints are distinct. The sole training objective is
+masked waveform Huber reconstruction; classifier heads remain in evaluation.
+
+`rpb-v22` builds its artificial CUDA checker; `test-rpb-v22` runs it.
+These targets provide engineering checks, not a general training/serving CLI.
+The [completed RPB-v22.alt-01 experiment](../../../doc/CONFIGURABLE_CONTENT_RELATION_V1.md)
+passes the two-cohort screen and third known development check on TEMPO-5,
+designed complexity 5/5, at the unchanged 512-update/B8 budget. This is synthetic
+development evidence, not fresh confirmation or market quality. The portable
+API is an explicit optional module in `cuwacunu`; selected v20 settings and
+all historical instances/defaults remain preserved.
 
 ## Configurable spectral API: RPB-v20
 
@@ -19,7 +54,7 @@ Its CUDA float32 model, configurable TRAIN scaler, typed file binding and immuta
 inference checkpoint API have recorded engineering checks. A separate
 [completed capacity experiment](../../../doc/CONFIGURABLE_CAPACITY_V1.md)
 measures three profiles at C3/H128/F9/P8 on TEMPO-5, complexity 5/5.
-Compact RPB-v20.alt-01 (W64/D32) is the continuation configuration; wider-backbone
+Compact RPB-v20.alt-01 (W64/D32) remains the preserved capacity configuration; wider-backbone
 alt-02 and larger-output alt-03 show no consistent final classification benefit
 at the fixed budget. H256 encoder quality and market quality remain unmeasured.
 `rpb-v20` builds four check executables;
@@ -28,9 +63,15 @@ The [API guide](CONFIGURABLE_SPECTRAL.md) is the contract for this model.
 
 ## Completed quality and preserved references
 
-[Configurable capacity](../../../doc/CONFIGURABLE_CAPACITY_V1.md) is the latest
-completed quality record; follow its
-[12 October continuation](../../../doc/CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md).
+[Content-only relations](../../../doc/CONFIGURABLE_CONTENT_RELATION_V1.md) is
+the latest completed quality record; follow the
+[13 October continuation](../../../doc/CONTINUATION_2026-10-13_AFTER_CONTENT_RELATION.md).
+The unchanged-v22 fresh synthetic confirmation is proposed, not launched.
+The [RPB-v21.alt-01 screen](../../../doc/CONFIGURABLE_LEARNED_RELATION_V1.md)
+is stopped after its deletion gate fails; keep its recipe and evidence intact.
+[Configurable capacity](../../../doc/CONFIGURABLE_CAPACITY_V1.md) and its
+[12 October continuation](../../../doc/CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md)
+remain the preserved v20 milestone.
 The preserved [RPB-v19.alt-01](../../../doc/SPECTRAL_CONFIRMATION_V1.md) record
 confirms unchanged v19 on fresh TEMPO-4 slow-component timing
 and AMP-2 component balance, each at designed complexity 5/5. These are synthetic
@@ -56,7 +97,7 @@ Their dates, cards, source captures and evidence stages govern those results.
 ## Historical CLI model and adapters
 
 The sections below describe the preserved `embedding_raw_patch_bottleneck_mae`
-CLI and its adapters. They do not configure the separate v20 API.
+CLI and its adapters. The configurable v20/v22 APIs above have their own entry points.
 Shared evaluation owns datasets, splits, fixed heads, populations and reports;
 model-specific training, inference and decoding stay in this folder.
 Use [current status](../../../doc/CURRENT_STATUS.md) for active work and
@@ -128,19 +169,24 @@ code/encoders/raw_patch_bottleneck_mae/
     configurable_spectral_config.h configurable_spectral_relation.h
     configurable_spectral_model.h configurable_spectral_settings.h
     configurable_spectral_checkpoint.h configurable_spectral_checkpoint_io.h
+    content_ordered_relation_config.h content_ordered_relation_bank.h
+    content_ordered_relation_model.h content_ordered_relation_settings.h
+    content_ordered_relation_checkpoint.h
   src/
     main.cpp workflow.cpp evaluation_adapter.cpp reconstruction_adapter.cpp
     learning_curve_adapter.cpp
   config/
     smoke.conf evaluation.conf channel_mixer.conf mean_global.conf learned_global.conf
-    configurable_spectral.conf
+    configurable_spectral.conf content_ordered_relation.conf
   tests/
     preprocessing_test.cpp numerics_test.cpp masking_test.cpp model_test.cpp
     workflow_test.cpp evaluation_adapter_test.cpp reconstruction_adapter_test.cpp
     learning_curve_adapter_test.cpp legacy_checkpoint_parity_test.cpp
     cli_smoke.sh periodic_checkpoint.sh
     configurable_spectral_test.cpp configurable_checkpoint_test.cpp checkpoint_integrity_test.cpp
+    content_ordered_relation_test.cpp
   configurable_spectral.mk       # Separate v20 engineering targets
+  content_ordered_relation.mk    # Separate v22 engineering targets
 ```
 
 The model and preprocessing core are header-only. Workflow code owns raw/scaler

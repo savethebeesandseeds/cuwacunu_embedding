@@ -9,41 +9,49 @@ repository.
 Start with [current status](doc/CURRENT_STATUS.md) and the
 [documentation index](doc/README.md). They distinguish implemented APIs,
 completed measurements, preserved references and proposed work.
+The [RPB-v22 encoder guide](doc/RPB_V22_ENCODER_GUIDE.md) explains the input,
+output, architecture and training in plain words.
 
 | Track | What is available | Guide |
 | --- | --- | --- |
-| RPB-v22.alt-01 | Content-only learned relation candidate; passed the two-cohort screen and third development check | [Measured report](doc/CONFIGURABLE_CONTENT_RELATION_V1.md) |
-| RPB-v21.alt-01 | Separate learned relation candidate; completed screen learns timing but fails extra-deletion protection | [Measured report](doc/CONFIGURABLE_LEARNED_RELATION_V1.md) |
-| RPB-v20 | Configurable spectral API; latest completed quality experiment compares three capacity profiles on TEMPO-5 | [API](code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md) and [capacity report](doc/CONFIGURABLE_CAPACITY_V1.md) |
+| RPB-v22.alt-01 | Latest completed quality experiment; content-only relation API passes both development stages | [Encoder guide](doc/RPB_V22_ENCODER_GUIDE.md) and [measured report](doc/CONFIGURABLE_CONTENT_RELATION_V1.md) |
+| RPB-v21.alt-01 | Stopped candidate: learned timing improves, but extra-deletion protection fails | [Preserved report](doc/CONFIGURABLE_LEARNED_RELATION_V1.md) |
+| RPB-v20 | Preserved configurable spectral API and three-profile TEMPO-5 capacity record | [API](code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md) and [capacity report](doc/CONFIGURABLE_CAPACITY_V1.md) |
 | RPB-v19.alt-01 | Preserved confirmation of unchanged v19 on fresh synthetic timing and component-balance sources | [Confirmation](doc/SPECTRAL_CONFIRMATION_V1.md) |
 | RPB-v4 / RPB-v7 | Formal evaluated reference / preserved original five-instance bundle | [Versions and instances](doc/EMBEDDING_VERSIONS.md) |
 | MTF-v1 | Retained multiscale JEPA, reconstruction and VICReg encoder; historical CLI | [Baseline guide](code/encoders/mtf_jepa_mae_vicreg/README.md) |
 
-RPB-v20 accepts values/masks `[B,C,H,F]` and serves native `[B,D]`.
-Its settings default to C3/H128/F9/P8/D32. Geometry and semantic IDs are fixed
+RPB-v20 and the separate RPB-v22 API accept values/masks `[B,C,H,F]` and serve
+native `[B,D]`. Both settings default to C3/H128/F9/P8/D32. Geometry and semantic IDs are fixed
 per checkpoint; B can vary. H must be at least 17, may be nondivisible by P,
 and D must exceed four times the semantic channel-pair count. All F features
 reach the learned path and fixed spectral bank. Execution requires CUDA float32.
-Use TRAIN-fitted scaling and the explicit
-[model-only settings](code/encoders/raw_patch_bottleneck_mae/config/configurable_spectral.conf).
+Use TRAIN-fitted scaling and the explicit model-only
+[v20 settings](code/encoders/raw_patch_bottleneck_mae/config/configurable_spectral.conf)
+or [v22 settings](code/encoders/raw_patch_bottleneck_mae/config/content_ordered_relation.conf)
+for the corresponding API.
 
 The `rpb-v20` target builds engineering check executables and `test-rpb-v20`
 runs them. RPB-v20 is a C++ API; it is not selected by the historical
 `embedding_raw_patch_bottleneck_mae` CLI or the MTF `embedding` CLI.
-The latest recorded config/model/checkpoint/integrity checks passed in the
-managed container. The separate completed capacity experiment retains compact
-RPB-v20.alt-01 (W64/D32) for continuation; larger profiles show no consistent
-final classification benefit at the fixed budget. The separate RPB-v21 screen
-improves intact accuracy but fails deletion protection, so v20 remains the
-selected configuration. Its original measurements and checkpoints are preserved.
+Its recorded config/model/checkpoint/integrity checks passed in the managed
+container. The preserved capacity study retains compact RPB-v20.alt-01
+(W64/D32); larger profiles show no consistent final classification benefit at
+its fixed budget. Selected v20 settings in the unified repository, original
+measurements and checkpoints remain preserved. Historical CLI defaults stay fixed.
 
-The separate RPB-v22 content-only relation experiment passes its two-cohort
+The latest completed RPB-v22 content-only relation experiment passes its two-cohort
 screen and third development check, retaining learned timing gains and recovering
 missing-value protection. Its API keeps the same configurable dimensions,
-scaler, masks and decoder while excluding additive observation counts from the
-learned projection. See the [content module](code/encoders/raw_patch_bottleneck_mae/CONTENT_ORDERED_RELATION.md)
+scaler, masks and decoder while excluding additive observation-density fractions
+from the relation projection. See the [content module](code/encoders/raw_patch_bottleneck_mae/CONTENT_ORDERED_RELATION.md)
 and [continuation](doc/CONTINUATION_2026-10-13_AFTER_CONTENT_RELATION.md).
-These results use known development data; fresh synthetic confirmation is next.
+The `rpb-v22` and `test-rpb-v22` targets build/run its separate artificial CUDA
+engineering check, rather than selecting it through the historical CLI.
+Its portable API is also available as an explicit option in `cuwacunu`.
+These results use known development data; unchanged-v22 fresh synthetic
+confirmation is proposed, and market quality remains unmeasured. The stopped
+RPB-v21 recipe and all of its failed-stage evidence remain preserved.
 
 RPB-v19's confirmed scores apply to its declared synthetic datasets and fixed
 geometry. They do not measure the separate v20 profiles. Market quality remains

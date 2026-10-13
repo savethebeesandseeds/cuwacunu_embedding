@@ -28,6 +28,20 @@ original-query errors and separate GPU costs are recorded in the report.
 This is development evidence, not fresh confirmation, TEST or market quality.
 Follow the [content-only continuation](CONTINUATION_2026-10-13_AFTER_CONTENT_RELATION.md).
 
+For the strongest complete encoder in this matched TEMPO-5 development
+comparison, read [RPB-v22 explained](RPB_V22_ENCODER_GUIDE.md). It documents
+rank-4 values/masks `[B,C,H,F]`, one rank-2 native embedding `[B,D]` per window,
+the learned20/fixed12 composition at C3/D32, training reconstruction and
+the separate classifier evaluation. RPB-v22.alt-01's three-cohort intact
+Linear/Neural means are 97.14%/95.96%, with 100% coverage; these reuse the
+completed report, not a new measurement or universal encoder ranking.
+
+The optional portable v22 API has also been synced into sibling `cuwacunu`
+and passed its focused artificial CUDA integration check. Selected v20 settings
+remain unchanged and no synthetic trained checkpoint is selected for market
+use. The sibling [sync manifest](../../cuwacunu/doc/CONTENT_ENCODER_SYNC.json)
+records that engineering evidence separately from synthetic quality.
+
 The preceding [configurable-learned-relation-v1](CONFIGURABLE_LEARNED_RELATION_V1.md)
 screen remains stopped.
 On the same two known TEMPO-5 cohorts, its complete32 intact Linear/Neural
@@ -38,7 +52,7 @@ fail. No third cohort or default replacement follows. The preceding
 [TRAIN-only diagnosis](LEARNED_TRAIN_V1.md) found varying learned coordinates
 with weak paired timing separation, without any model execution or head fit.
 
-The working quality record remains [configurable-capacity-v1](CONFIGURABLE_CAPACITY_V1.md)
+The preceding capacity record is [configurable-capacity-v1](CONFIGURABLE_CAPACITY_V1.md)
 on TEMPO-5 slow lead/lag beneath fast rhythms, nine grouped features and structured
 distractors, at designed complexity 5/5. Three fresh source cohorts compare
 RPB-v20.alt-01 (W64/D32), alt-02 (W128/D32) and alt-03 (W64/D64), all at

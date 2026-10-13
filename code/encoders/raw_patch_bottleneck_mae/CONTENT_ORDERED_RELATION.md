@@ -7,6 +7,13 @@ its normalized odd/even content. Common counts determine normalization and
 validity; observation fractions never become additive projection inputs.
 V20 and the stopped v21 model, settings, checkpoints and results are preserved.
 
+For a plain explanation of the input/output ranks, additional metadata, three
+architecture routes, exact training targets and separate evaluation, see
+[RPB-v22 explained](../../../doc/RPB_V22_ENCODER_GUIDE.md). The
+[completed development report](../../../doc/CONFIGURABLE_CONTENT_RELATION_V1.md)
+records RPB-v22.alt-01's passed screen and third check; the guide reuses those
+measurements and performs no new experiment.
+
 This tests a hypothesis suggested by the exploratory TRAIN support audit:
 v21's additive support input can produce an offset when observation density
 changes. Removing that route does not guarantee deletion invariance. The

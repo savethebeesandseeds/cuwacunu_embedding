@@ -16,6 +16,8 @@ Selected v20 settings and every historical checkpoint remain preserved.
 | [Root guide](../README.md) | Build entry points, retained CLI and source layout |
 | [Environment](ENVIRONMENT.md) | Existing managed container, named task sessions and artifact locations |
 | [RPB guide](../code/encoders/raw_patch_bottleneck_mae/README.md) | RPB family, historical CLI and adapters |
+| [RPB-v22 explained](RPB_V22_ENCODER_GUIDE.md) | Plain input/output ranks, added metadata, hybrid architecture, training targets and separate evaluation |
+| [Content-only relation API](../code/encoders/raw_patch_bottleneck_mae/CONTENT_ORDERED_RELATION.md) | RPB-v22 formulas, configurable native export, settings and typed inference checkpoints |
 | [Configurable spectral API](../code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md) | RPB-v20 C/H/F/D, masks, scaler, file binding and immutable inference checkpoints |
 | [Core settings](../code/shared/config/README.md) | Reusable file/settings syntax and parser provenance |
 | [MTF-v1 guide](../code/encoders/mtf_jepa_mae_vicreg/README.md) | Retained multiscale JEPA/MAE/VICReg encoder |
@@ -39,7 +41,7 @@ identifies the new v20 instance bundles.
 complexity. New reporting follows [RESULTS_REPORTING_STANDARD.md](RESULTS_REPORTING_STANDARD.md);
 evaluation follows [EMBEDDING_EVALUATION_POLICY.md](EMBEDDING_EVALUATION_POLICY.md).
 
-The latest completed candidate is
+The preceding stopped candidate is
 [CONFIGURABLE_LEARNED_RELATION_V1.md](CONFIGURABLE_LEARNED_RELATION_V1.md),
 with its [saved result](results/configurable_learned_relation_v1.json),
 [instance registry](configurable_learned_relation_embedding_versions.json) and
@@ -48,7 +50,7 @@ Its learned timing improves, but its two-cohort deletion gate fails. The precedi
 [LEARNED_TRAIN_V1.md](LEARNED_TRAIN_V1.md) diagnoses saved TRAIN variation without
 model execution or head fitting.
 
-The working completed quality report remains
+The preceding completed capacity report is
 [CONFIGURABLE_CAPACITY_V1.md](CONFIGURABLE_CAPACITY_V1.md), with its
 [saved result](results/configurable_capacity_v1.json) and
 [12 October continuation](CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_CAPACITY.md).
