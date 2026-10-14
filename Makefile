@@ -1226,3 +1226,4 @@ include $(EVALUATION_ROOT)/protocols/configurable_content_relation_v1/configurab
 include $(RPB_ROOT)/streaming_scaler.mk
 include $(RPB_ROOT)/training_state.mk
 include $(RPB_ROOT)/consecutive_change.mk
+include code/encoders/raw_patch_bottleneck_mae/frozen_level.mk

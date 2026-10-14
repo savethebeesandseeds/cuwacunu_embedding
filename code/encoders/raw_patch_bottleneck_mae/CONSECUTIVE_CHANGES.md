@@ -29,3 +29,10 @@ Read the [integration module](../../../../cuwacunu_dev/code/encoders/rpb_changes
 and [prospective card](../../../../cuwacunu_dev/doc/MARKET_CONSECUTIVE_CHANGE_CARD.md)
 for exact formulas, masks and the single matched market development recipe.
 Fresh chronological confirmation and synthetic quality remain separate work.
+
+The additive [frozen-level recipe](FROZEN_LEVEL_TRAINING.md) imports a trained
+v22 child, preserves its complete state and updates only the change projection.
+It uses the same v23 inference arithmetic and a distinct instance/recipe.
+Its test-rpb-v23-frozen target is separate; integration's CUDA gate passed.
+The [market result](../../../../cuwacunu_dev/doc/MARKET_FROZEN_CHANGE_RESULTS.md)
+misses the full goal; keep the original fresh v23 instance and v22 primary.

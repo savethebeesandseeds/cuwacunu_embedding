@@ -1,5 +1,14 @@
 # Embedding version registry
 
+**RPB-v23.market-01.alt-01**: trained v22 level/relation child and decoder held
+fixed; only the zero-start change projection learns. Same native32 design,
+2048 new branch updates after2048 inherited parent updates. Its
+[completed result](../../cuwacunu_dev/doc/MARKET_FROZEN_CHANGE_RESULTS.md) fails
+the full development preference and leaves primary RPB-v22 selected. The
+[new instance registry](frozen_change_embedding_versions.json) pins lineage,
+checkpoint hashes and the two locally mirrored portable additions. Preserve
+the earlier fresh RPB-v23.market-01 and all v22 instances.
+
 Read [current status](CURRENT_STATUS.md) for supported APIs, completed evidence
 and prospective work. The historical JSON registry and additive capacity-instance
 extension below preserve original model/receipt identities.

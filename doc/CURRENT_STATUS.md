@@ -1,5 +1,22 @@
 # Current repository status
 
+Latest completed variation,14 October2026: **RPB-v23.market-01.alt-01** holds
+trained RPB-v22.market-02's level/relation encoder and decoder exactly fixed
+while learning only its new change projection for2048 additional CUDA updates.
+The [result](../../cuwacunu_dev/doc/MARKET_FROZEN_CHANGE_RESULTS.md) misses the
+development goal:4of8 conditions pass; trend remains negative and linear
+volatility/relation fall. Activity/neural relation improve. Keep v22 primary.
+All parent/previous artifacts and native32 contracts remain preserved.
+
+The new [portable freeze helper](../code/encoders/raw_patch_bottleneck_mae/FROZEN_LEVEL_TRAINING.md)
+and fixture match integration; the focused CUDA protection/resume gate passes.
+No second standalone fixture or synthetic confirmation was run. Its
+[instance registry](frozen_change_embedding_versions.json) records the parent
+and new checkpoint hashes. Next propose separate level/change coordinates,
+preserving the old32 block exactly, with a declared larger dimension and
+independent reconstruction path. Follow the integration continuation; this
+architecture is not implemented. Earlier completed records follow.
+
 Latest completed candidate,14 October2026: **RPB-v23.market-01** adds a
 zero-start observed consecutive-change bank to unchanged v22 paths. The
 [matched market experiment](../../cuwacunu_dev/doc/MARKET_CONSECUTIVE_CHANGE_RESULTS.md)

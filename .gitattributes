@@ -108,3 +108,7 @@ doc/consecutive_change_embedding_versions.json text eol=lf
 code/encoders/raw_patch_bottleneck_mae/content_ordered_relation.mk text eol=lf
 code/encoders/raw_patch_bottleneck_mae/CONTENT_ORDERED_RELATION.md text eol=lf
 doc/results/configurable_content_relation_v1/** -text -whitespace
+code/encoders/raw_patch_bottleneck_mae/frozen_level.mk text eol=lf
+doc/frozen_change_embedding_versions.json text eol=lf
+
+code/encoders/raw_patch_bottleneck_mae/FROZEN_LEVEL_TRAINING.md text eol=lf
