@@ -116,3 +116,4 @@ code/encoders/raw_patch_bottleneck_mae/separated_change.mk text eol=lf
 code/encoders/raw_patch_bottleneck_mae/config/separated_changes.conf text eol=lf
 code/encoders/raw_patch_bottleneck_mae/SEPARATED_CHANGES.md text eol=lf
 doc/separated_change_embedding_versions.json text eol=lf
+doc/HANDOFF_2026-10-14.md text eol=lf

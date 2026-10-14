@@ -1,5 +1,8 @@
 # Current repository status
 
+For a new session, read the [14 October handoff](HANDOFF_2026-10-14.md) and its
+full integration counterpart before choosing work or loading checkpoints.
+
 Latest completed attempt,14 October2026: **RPB-v24.market-01** appends8 learned
 change coordinates and a separate residual decoder to an exact frozen trained
 v22 native32 prefix, yielding native40. Its [market result](../../cuwacunu_dev/doc/MARKET_SEPARATE_CHANGE_RESULTS.md)
