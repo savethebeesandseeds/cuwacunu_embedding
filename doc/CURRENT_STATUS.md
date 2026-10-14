@@ -1,5 +1,17 @@
 # Current repository status
 
+Latest completed candidate,14 October2026: **RPB-v23.market-01** adds a
+zero-start observed consecutive-change bank to unchanged v22 paths. The
+[matched market experiment](../../cuwacunu_dev/doc/MARKET_CONSECUTIVE_CHANGE_RESULTS.md)
+improves linear trend−0.384→0.387 and both relation heads; activity stays close.
+Neural trend remains negative and volatility loses more than the predeclared
+.05 allowance, so the full development preference fails and primary RPB-v22
+remains selected. Six reusable headers, the CUDA fixture and settings match
+integration; [portable guide](../code/encoders/raw_patch_bottleneck_mae/CONSECUTIVE_CHANGES.md)
+records the optional API and checked contracts. Next protect useful level/
+volatility information while retaining this change information under a new
+prospective recipe. No old weights, data or head fits were replaced.
+
 Latest completed milestone,14 October2026: integration's
 [market duration/dimension study](../../cuwacunu_dev/doc/MARKET_TRAINING_STUDY_RESULTS.md)
 finished five CUDA segments with independent saved-feature readouts. A512→2048

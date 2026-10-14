@@ -36,6 +36,13 @@ fixed across encoder comparisons; fit their weights separately on training data.
 
 ## Current status and preserved research versions
 
+RPB-v23 is an optional consecutive-change candidate, locally mirrored from
+integration. Its matched MKT-HIST-2 experiment is complete: useful linear-trend
+gain, but neural trend and volatility retention fail the full development goal.
+Primary RPB-v22 remains selected. Read CURRENT_STATUS.md and the integration
+consecutive-change report/continuation before choosing the next candidate.
+Preserve both versions, their typed archives and all original measurements.
+
 Read [current repository status](doc/CURRENT_STATUS.md) before selecting work.
 RPB-v22 is the implemented content-only ordered relation API with the latest
 completed known-development quality record. The user has selected RPB-v22 as

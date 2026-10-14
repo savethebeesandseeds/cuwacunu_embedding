@@ -1225,3 +1225,4 @@ include $(RPB_ROOT)/content_ordered_relation.mk
 include $(EVALUATION_ROOT)/protocols/configurable_content_relation_v1/configurable_content_relation.mk
 include $(RPB_ROOT)/streaming_scaler.mk
 include $(RPB_ROOT)/training_state.mk
+include $(RPB_ROOT)/consecutive_change.mk

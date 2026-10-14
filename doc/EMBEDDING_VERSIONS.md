@@ -4,6 +4,17 @@ Read [current status](CURRENT_STATUS.md) for supported APIs, completed evidence
 and prospective work. The historical JSON registry and additive capacity-instance
 extension below preserve original model/receipt identities.
 
+**RPB-v23** is the separately tagged consecutive-change design. Its fresh
+**RPB-v23.market-01** instance uses C3/H128/F9/W64/D32 and2048 GPU updates on
+the exact MKT-HIST-2 bank. **RPB-v23.market-01.init** has zero added projection
+and matches the saved v22 matched initialization, including feature validity/
+row associations. The [completed comparison](../../cuwacunu_dev/doc/MARKET_CONSECUTIVE_CHANGE_RESULTS.md)
+improves linear trend and relation, with a volatility tradeoff and negative
+neural trend; it is retained without primary promotion. Its
+[instance registry](consecutive_change_embedding_versions.json) pins geometry,
+checkpoints and all eight source pairs. The input/output
+contract, native32 and fixed12 tail remain; no post-encoder PCA is used.
+
 The completed [market study](../../cuwacunu_dev/doc/MARKET_TRAINING_STUDY_RESULTS.md)
 adds separately saved instances of the unchanged RPB-v22 design:
 **RPB-v22.market-01.alt-01** continues the original512 state to2048 updates;

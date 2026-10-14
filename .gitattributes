@@ -101,6 +101,10 @@ doc/results/configurable_learned_relation_v1/** -text -whitespace
 code/evaluation/protocols/configurable_content_relation_v1/** text eol=lf
 code/evaluation/cards/configurable_content_relation_v1.md text eol=lf
 code/encoders/raw_patch_bottleneck_mae/config/content_ordered_relation.conf text eol=lf
+code/encoders/raw_patch_bottleneck_mae/config/consecutive_changes.conf text eol=lf
+code/encoders/raw_patch_bottleneck_mae/consecutive_change.mk text eol=lf
+code/encoders/raw_patch_bottleneck_mae/CONSECUTIVE_CHANGES.md text eol=lf
+doc/consecutive_change_embedding_versions.json text eol=lf
 code/encoders/raw_patch_bottleneck_mae/content_ordered_relation.mk text eol=lf
 code/encoders/raw_patch_bottleneck_mae/CONTENT_ORDERED_RELATION.md text eol=lf
 doc/results/configurable_content_relation_v1/** -text -whitespace
