@@ -1,5 +1,18 @@
 # Current repository status
 
+Latest completed milestone,14 October2026: integration's
+[market duration/dimension study](../../cuwacunu_dev/doc/MARKET_TRAINING_STUDY_RESULTS.md)
+finished five CUDA segments with independent saved-feature readouts. A512→2048
+continuation did not solve trend and weakened volatility/relation. On the
+separate matched MKT-HIST-2 panel, W128 improves several linear readouts;
+D64/H256 show no consistent gain, and every trained configuration still has
+negative trend R². No original instance or primary architecture changed.
+Next investigate observed consecutive-candle changes while preserving the
+useful level/activity paths and native32, under a new candidate tag and fixed
+heads. The [integration continuation](../../cuwacunu_dev/doc/CONTINUATION.md)
+defines that direction. The [25-pair check](../../cuwacunu_dev/doc/MARKET_STUDY_BACKPORT_CHECK.json)
+passes; the new application runner/data helper stays outside this repository.
+
 Latest additive milestone,13 October 2026: bounded streaming TRAIN statistics
 and distinct v22 model/scaler/AdamW/counter resume headers/tests are locally
 mirrored from `cuwacunu_dev`; the [portable support guide](STREAMING_TRAINING_SUPPORT.md)

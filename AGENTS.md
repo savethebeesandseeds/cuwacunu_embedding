@@ -50,10 +50,13 @@ The latest completed experiment is
 the two-cohort screen and third known TEMPO-5 development check both pass.
 Keep its native32, exact fixed spectral tail, all initial/trained artifacts and
 unchanged classifiers. RPB-v21's failed deletion recipe remains stopped.
-Follow the [latest continuation](doc/CONTINUATION_2026-10-13_AFTER_CONTENT_RELATION.md)
+Follow [current status](doc/CURRENT_STATUS.md) for the completed14 October market
+duration/dimension study and next direction. The earlier synthetic
+[continuation](doc/CONTINUATION_2026-10-13_AFTER_CONTENT_RELATION.md)
 and [plain encoder guide](doc/RPB_V22_ENCODER_GUIDE.md). Fresh unchanged-v22
-synthetic confirmation is proposed; TEST, H256 and market quality remain
-unmeasured. The portable v22 API is synced to `cuwacunu`; its public primary API
+synthetic confirmation is proposed; TEST and synthetic H256 quality remain
+unmeasured. Separate H128/H256 market development results are recorded in the
+integration study; no serving checkpoint is selected. The portable v22 API is synced to `cuwacunu`; its public primary API
 and `config/encoder.conf` now select v22 by the user's explicit choice.
 The original v20 settings are preserved byte-for-byte as `config/encoder_v20.conf`;
 the explicit `config/encoder_v22.conf` and all historical instances remain.

@@ -4,6 +4,17 @@ Read [current status](CURRENT_STATUS.md) for supported APIs, completed evidence
 and prospective work. The historical JSON registry and additive capacity-instance
 extension below preserve original model/receipt identities.
 
+The completed [market study](../../cuwacunu_dev/doc/MARKET_TRAINING_STUDY_RESULTS.md)
+adds separately saved instances of the unchanged RPB-v22 design:
+**RPB-v22.market-01.alt-01** continues the original512 state to2048 updates;
+**RPB-v22.market-02** is the fresh matched H128/W64/D32 baseline;
+**RPB-v22.market-02.alt-01** uses W128;
+**RPB-v22.market-02.alt-02** uses D64;
+**RPB-v22.market-02.alt-03** uses H256. Each fresh instance has an `.init`
+control. Tags declare geometry/lineage, not a new universal ranking. The
+continuation uses MKT-HIST-1; fresh profiles use MKT-HIST-2, with different
+panels/scalers. All original checkpoints and synthetic instances stay fixed.
+
 **RPB-v22.market-01** is the unchanged v22 architecture trained separately on
 MKT-HIST-1 in sibling integration. **RPB-v22.market-01.init** names its0-update
 control. Native32 remains20 learned+12 fixed; no original synthetic bundle
