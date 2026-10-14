@@ -117,3 +117,10 @@ code/encoders/raw_patch_bottleneck_mae/config/separated_changes.conf text eol=lf
 code/encoders/raw_patch_bottleneck_mae/SEPARATED_CHANGES.md text eol=lf
 doc/separated_change_embedding_versions.json text eol=lf
 doc/HANDOFF_2026-10-14.md text eol=lf
+# Keep native36 portable pairs and the saved transfer documentation stable.
+code/encoders/raw_patch_bottleneck_mae/config/separated_changes_native36.conf text eol=lf
+code/encoders/raw_patch_bottleneck_mae/separated_change_native36.mk text eol=lf
+doc/separated_change_native36_embedding_versions.json text eol=lf
+doc/SEPARATED_CHANGE_NATIVE36.md text eol=lf
+doc/MARKET_ENCODER_SYNTHETIC_TRANSFER.md text eol=lf
+doc/MILESTONE_2026-10-14_NATIVE36_TRANSFER.md text eol=lf

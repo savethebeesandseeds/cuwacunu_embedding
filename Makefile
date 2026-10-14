@@ -1228,3 +1228,4 @@ include $(RPB_ROOT)/training_state.mk
 include $(RPB_ROOT)/consecutive_change.mk
 include code/encoders/raw_patch_bottleneck_mae/frozen_level.mk
 include code/encoders/raw_patch_bottleneck_mae/separated_change.mk
+include code/encoders/raw_patch_bottleneck_mae/separated_change_native36.mk

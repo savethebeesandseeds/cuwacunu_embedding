@@ -1,5 +1,17 @@
 # Embedding version registry
 
+**RPB-v24.market-01.alt-01**: separately declared native36 variation preserving
+the entire trained v22 native32 prefix and adding four learned change
+coordinates with the same residual decoder design. Its `.init` control already
+contains the trained parent. The [completed market result](../../cuwacunu_dev/doc/MARKET_SEPARATE_CHANGE_NATIVE36_RESULTS.md)
+reaches trend R² 0.655 linear / 0.134 mean neural and passes 8/9 conditions;
+linear volatility retention fails. Keep v22 primary and all v23/native40/native36
+instances. The [new instance registry](separated_change_native36_embedding_versions.json)
+pins the exact checkpoints and two new portable pairs; the
+[native36 guide](SEPARATED_CHANGE_NATIVE36.md) records contracts and the proposed
+saved-TRAIN-only diagnosis. No promotion, fresh cohort or standalone fixture
+execution is claimed. The preserved entries below retain their original stage.
+
 **RPB-v24.market-01**: exact frozen trained v22 native32 prefix plus8 separate
 learned change coordinates and a small residual decoder, native40.
 **RPB-v24.market-01.init** retains the same trained parent and initializes only

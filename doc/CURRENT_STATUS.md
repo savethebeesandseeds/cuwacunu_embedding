@@ -1,5 +1,65 @@
 # Current repository status
 
+Saved milestone, 14 October 2026: **RPB-v24.market-01.alt-01 native36 is the
+leading research candidate; RPB-v22 remains the primary encoder.** Read
+[the milestone](MILESTONE_2026-10-14_NATIVE36_TRANSFER.md) for completed evidence,
+verified local checkpoints and the next saved-TRAIN-only volatility diagnosis.
+The user requested documentation, commits and pushes of this completed work to
+both existing remotes, including this public repository. That authorization
+supersedes earlier local-only wording for this payload; licenses, visibility,
+primary selection and ignored checkpoint storage stay unchanged.
+No new experiment was run while saving this milestone.
+
+Latest completed milestone, 14 October 2026: the exact frozen market-trained
+**RPB-v24.market-01.alt-01**, native36, performs strongly on **TEMPO-5,
+complexity 5/5**. With the original saved synthetic TRAIN scalers, mean
+linear/neural accuracy is 98.96%/97.74% intact and 93.36%/92.53% under the saved
+additional 30% erasure. Both heads and views exceed the reused synthetic-trained
+RPB-v22.alt-01 results. The separately declared unchanged market-scaler view
+reaches 100%/99.52% intact and 96.09%/95.05% deleted. Coverage is 100% throughout.
+Three known cohorts each contain 512 TRAIN/256 VALIDATION examples; one exact
+market checkpoint supplies B8 CUDA features, with three unchanged head repetitions.
+There were zero encoder updates, scaler refits or old control reruns; all
+model values, 91 protected files and 15 saved feature files remain unchanged.
+Read the [transfer guide](MARKET_ENCODER_SYNTHETIC_TRANSFER.md) and
+[full results](../../cuwacunu_dev/doc/MARKET_SYNTHETIC_TRANSFER_RESULTS.md).
+Keep RPB-v22 primary, all checkpoints and the separate market volatility
+failure. TEMPO-4/AMP-2 remain unmeasured for this checkpoint because their
+C3/H32/F3 geometry differs. The next priority is the saved-TRAIN volatility
+diagnosis; a new compatible hard family remains a separate future option.
+Earlier sections preserve the evidence and next-action wording of each milestone.
+
+Latest completed variation, 14 October 2026: **RPB-v24.market-01.alt-01**
+preserves the trained v22 native32 prefix exactly and appends four learned
+change coordinates, native36. Its [market result](../../cuwacunu_dev/doc/MARKET_SEPARATE_CHANGE_NATIVE36_RESULTS.md)
+reaches trend R² 0.655 linear / 0.134 mean neural, with all three neural fits
+positive. Eight of nine unchanged conditions pass; only linear volatility
+retention fails (0.446 versus v22's 0.728). Keep RPB-v22 primary and every
+v22/v23/native40/native36 checkpoint. This is a useful trend reference, not an
+overall winner or promotion, forecasting, TEST or fresh cohort confirmation.
+
+One CUDA trajectory completed 2048 new updates/B8 after 2048 parent updates,
+with the same MKT-HIST-2 bank/scaler/targets. New initial/final saved banks use
+the predeclared D36 fixed heads; all older results are reused. Training took
+93.377385897 GPU seconds including checkpoint I/O. All 45 portable pairs
+match locally, with one integration CUDA fixture proving masking, exact prefix,
+actual learning and typed resume. No standalone fixture execution is claimed;
+the later frozen synthetic transfer is recorded above. The [native36 guide](SEPARATED_CHANGE_NATIVE36.md) and
+[new instance registry](separated_change_native36_embedding_versions.json)
+record geometry, settings, evidence and local checkpoint hashes; the original
+[native40 registry](separated_change_embedding_versions.json) remains intact.
+
+**Next proposed work:** saved-TRAIN-only diagnosis using existing level/change
+covariance and fitted linear contribution/prediction archives to investigate
+the linear volatility loss. No encoder updates, head refits, old replays or
+VALIDATION/TEST diagnostic inputs. Declare a separate new objective or branch
+design only after that diagnosis; no width, rate, budget or head rescue.
+Fresh chronology follows a useful balanced candidate. This diagnosis is not
+measured or scheduled. The earlier next-action wording below is milestone-local;
+follow [integration continuation](../../cuwacunu_dev/doc/CONTINUATION.md).
+The save authorization above covers the completed source/docs/evidence payload;
+checkpoint weights remain local and ignored.
+
 For a new session, read the [14 October handoff](HANDOFF_2026-10-14.md) and its
 full integration counterpart before choosing work or loading checkpoints.
 

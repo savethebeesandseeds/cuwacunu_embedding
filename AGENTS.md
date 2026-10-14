@@ -337,3 +337,31 @@ v22 primary and all v22/v23/v24 reference checkpoints intact. Read
 CURRENT_STATUS.md and separated_change_embedding_versions.json for current
 direction. Next smaller-block work needs its own declared instance/card;
 do not extend this stopped card or tune heads. No synthetic quality is implied.
+
+Latest completed variation: RPB-v24.market-01.alt-01 preserves parent32 and
+appends4/native36. Trend reaches R²0.655/0.134;8/9 conditions pass, with linear
+volatility retention failing. Keep v22 primary and all old/native40/native36
+checkpoints. Read doc/CURRENT_STATUS.md, doc/SEPARATED_CHANGE_NATIVE36.md and
+doc/separated_change_native36_embedding_versions.json. Next propose a
+saved-TRAIN-only covariance and fitted-linear-contribution diagnosis; no model
+updates, head refits, old replays or held-out diagnostic inputs. No width/rate/
+budget/head rescue. All45 portable pairs match locally; only the integration
+CUDA fixture ran. Publication authorization is recorded separately below.
+
+Frozen market-to-synthetic transfer is now measured: the exact saved
+RPB-v24.market-01.alt-01 checkpoint performs strongly on TEMPO-5 complexity 5/5
+with zero encoder updates. Read [the transfer result](../cuwacunu_dev/doc/MARKET_SYNTHETIC_TRANSFER_RESULTS.md)
+and [the transfer guide](doc/MARKET_ENCODER_SYNTHETIC_TRANSFER.md) for both declared scaler policies
+and fixed-head repetitions. This is scoped to C3/H128/F9; TEMPO-4/AMP-2 remain
+unmeasured. Keep RPB-v22 primary, every artifact and the market volatility failure.
+
+Save milestone, 14 October 2026: native36 is the leading research candidate;
+RPB-v22 remains primary. Read
+[the milestone](doc/MILESTONE_2026-10-14_NATIVE36_TRANSFER.md) before the next
+saved-TRAIN-only volatility diagnosis. The user explicitly requested updated
+docs, commits and pushes for this completed native36 and frozen-transfer work
+to both existing remotes. This authorizes this source, documentation and
+nonbinary evidence payload to this public embedding remote and the private
+integration remote, superseding earlier local-only wording for this payload.
+Preserve licenses, visibility, primary selection and ignored local checkpoints.
+This is not standing publication authorization for later work.
