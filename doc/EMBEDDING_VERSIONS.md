@@ -1,5 +1,15 @@
 # Embedding version registry
 
+**RPB-v24.market-01**: exact frozen trained v22 native32 prefix plus8 separate
+learned change coordinates and a small residual decoder, native40.
+**RPB-v24.market-01.init** retains the same trained parent and initializes only
+the new path; it is not a fully untrained encoder. The [completed result](../../cuwacunu_dev/doc/MARKET_SEPARATE_CHANGE_RESULTS.md)
+has the strongest tested market trend score0.599 linear/0.066 neural mean in
+this development sequence, with volatility/relation tradeoffs. Keep v22 primary,
+v23's useful native32 reference and every original checkpoint. The
+[instance registry](separated_change_embedding_versions.json) pins parent,
+initial/final archives, geometry and all eight portable pairs.
+
 **RPB-v23.market-01.alt-01**: trained v22 level/relation child and decoder held
 fixed; only the zero-start change projection learns. Same native32 design,
 2048 new branch updates after2048 inherited parent updates. Its

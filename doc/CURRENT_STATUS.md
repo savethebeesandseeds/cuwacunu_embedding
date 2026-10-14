@@ -1,5 +1,24 @@
 # Current repository status
 
+Latest completed attempt,14 October2026: **RPB-v24.market-01** appends8 learned
+change coordinates and a separate residual decoder to an exact frozen trained
+v22 native32 prefix, yielding native40. Its [market result](../../cuwacunu_dev/doc/MARKET_SEPARATE_CHANGE_RESULTS.md)
+improves linear trend to0.599 and neural mean to0.066, exceeding the useful
+v23 linear-trend reference0.387. Activity improves. Volatility/relation miss
+retention;5of9 preferences pass, so keep RPB-v22 primary and all instances
+intact. Training improves trend markedly versus the initialized new block.
+D40 changes head counts/width-derived seeds; initial/final share those settings.
+No new TEST, forecasting, synthetic quality or cohort confirmation.
+
+Six portable headers, settings and the focused fixture match integration;
+its CUDA gate checks exact parent32/native40, masking/semantic order, actual
+branch learning and exact typed resume. No second standalone fixture run is
+claimed. The [portable guide](../code/encoders/raw_patch_bottleneck_mae/SEPARATED_CHANGES.md)
+and [instance registry](separated_change_embedding_versions.json) identify
+contracts and checkpoints. Next propose a separately declared smaller change
+block, retaining the saved v24 trend result; follow integration continuation.
+This is not implemented or scheduled. Earlier completed records follow.
+
 Latest completed variation,14 October2026: **RPB-v23.market-01.alt-01** holds
 trained RPB-v22.market-02's level/relation encoder and decoder exactly fixed
 while learning only its new change projection for2048 additional CUDA updates.

@@ -329,3 +329,11 @@ routine scoring; frozen inference is for extracting needed features or an
 explicit correctness/parity witness. Do not rerun encoders merely to repeat
 already captured measurements. Keep training, inference, head fitting and
 archive-audit time separate in reports.
+
+RPB-v24.market-01 is the latest separate-change market candidate, locally
+mirrored from integration. Its exact frozen v22 prefix32 plus learned8 exports
+native40, with stronger trend but failed volatility/relation retention. Keep
+v22 primary and all v22/v23/v24 reference checkpoints intact. Read
+CURRENT_STATUS.md and separated_change_embedding_versions.json for current
+direction. Next smaller-block work needs its own declared instance/card;
+do not extend this stopped card or tune heads. No synthetic quality is implied.
