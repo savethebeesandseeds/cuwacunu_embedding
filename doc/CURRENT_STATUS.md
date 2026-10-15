@@ -1,3 +1,59 @@
+# Current selection and publication — 15 October 2026
+
+The user selected **CPB-v3.market-01** as the sole active encoder in
+`cuwacunu_dev` and authorized committing and pushing all pending source and
+documentation in both repositories. Checkpoints and datasets stay local and
+ignored. This instruction supersedes historical v1 application selection and
+local-only publication wording below. No new encoder training or quality test
+is part of this integration.
+
+V3 is the completed clean causal baseline: all learned weights started fresh
+(seed943001), with fresh TRAIN-only input/bank statistics and optimizer,
+source_updates=0 and causal_updates=2048. Its native36 checkpoint SHA256 is
+`50e1d6514076ab34dcfa1194d8f0d97296f176e76174a78efadc97c5c0d1c34e`.
+The full owned v3 implementation is synchronized byte for byte into dev.
+Read the [integration record](../../cuwacunu_dev/doc/CAUSAL_PRIMARY_INTEGRATION.md)
+and [research results](CAUSAL_FRESH_V3_RESULTS.md).
+
+CPB-v1/v2 retain pretrained noncausal weight ancestry and remain historical
+references only; their scores are never oracle targets or clean quality floors.
+V3 has mixed task quality and is not an overall winner. Preserve every historical
+source, result and local checkpoint. The former dev v1 source/settings are
+[archived exactly](../archive/cuwacunu_dev/2026-10-15-before-cpb-v3-primary/README.md).
+Before changing live status metadata, all50 earlier finalization metadata pins
+were preserved under the local integration prior-metadata snapshot.
+The next research direction remains saved TRAIN-only relation/variance diagnosis;
+no later experiment is started by this cutover.
+
+---
+# Active causal research continuation — 15 October 2026
+
+The causal application update is published: integration
+`486886c361fe124b97659ba16c22857aae303d6d`, research
+`e6bdd56ea16ddbb82444283e984158948e69032e`. The user explicitly requested renewed
+causal research with **CPB-v1.market-01 kept as the baseline**. Dev continues to
+select only that pinned v1 checkpoint. The separately declared
+[CPB-v2 card](CAUSAL_FINETUNE_V2_CARD.md) tested end-to-end causal fine-tuning from
+the exact saved weights, with no architecture change or head tuning. The single
+2048-update/B8 CUDA trajectory and final fixed-head evaluation are complete.
+**V2 failed advancement; v1 remains selected.** Original market8/9, strict7/8,
+v1 market retention2/8, positive neural trend2/3 and stronger TEMPO-5 retention3/8
+pass, with full coverage. Volatility and relation fell; linear trend, neural
+activity and three deleted-view timing measures improved. Fixed-query TRAIN MAE
+improved but known VALIDATION MAE worsened. Read the
+[complete per-task report](CAUSAL_FINETUNE_V2_RESULTS.md),
+[review/next direction](CAUSAL_FINETUNE_V2_REVIEW.md),
+[live catalog](../code/encoders/causal_patch_bottleneck_mae/versions/current.json)
+and [causal-only ledger](causal_encoder_research_ledger.json).
+
+All source, proofs, saved embeddings, heads and five main checkpoints are
+preserved locally; initial quality was reused only after exact native parity.
+Independent training, quality and preservation audits are linked by the
+[finalization receipt](causal_finetune_v2/finalization.json). No later experiment
+is running or scheduled. The next proposed comparison freezes the entire v1
+parent32 and adapts only the change branch/residual/variance blocks; declare it
+separately before execution. Historical research decisions remain preserved below.
+
 # Current application selection — 15 October 2026
 
 **CPB-v1.market-01 is now the user-selected sole active encoder in

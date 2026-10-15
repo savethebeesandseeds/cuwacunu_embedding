@@ -1,7 +1,25 @@
+Current status (15 October 2026): **CPB-v3.market-01 is the clean from-scratch research baseline**, with mixed task quality. See [results](../../../doc/CAUSAL_FRESH_V3_RESULTS.md), [review](../../../doc/CAUSAL_FRESH_V3_REVIEW.md), [live catalog](versions/current.json) and [measured instance](versions/instances/CPB-v3.market-01.json). CPB-v3 is now also the sole dev application selection. CPB-v1 remains the pretrained historical reference; v1/v2 scores impose no gates. The frozen-v1-parent proposal is withdrawn.
+
 # Causal patch bottleneck MAE
 
 Copyright (c) 2026 Waajacu. All rights reserved. Preserve the inherited notices
 inside the copied implementation.
+
+## Research continuation — 15 October 2026
+
+**Historical v2 stage: CPB-v1.market-01 was the pretrained reference and application selection. The current clean baseline and dev encoder is CPB-v3.market-01.**
+The separately owned **CPB-v2.market-01** experiment adapted its learned encoder
+and decoder under causal execution. Its single 2048-update CUDA run is complete
+and stopped after failing the frozen advancement criteria. Read the
+[measured report](../../../doc/CAUSAL_FINETUNE_V2_RESULTS.md) and
+[review/next direction](../../../doc/CAUSAL_FINETUNE_V2_REVIEW.md). Its
+[prospective card](../../../doc/CAUSAL_FINETUNE_V2_CARD.md) remains unchanged.
+Each version owns its full implementation.
+Use the [live catalog](versions/current.json), the per-design
+[v2 declaration](versions/CPB-v2.json),
+[measured v2 instance](versions/instances/CPB-v2.market-01.json) and physical
+[v2 directory](versions/v2/).
+The original `versions/index.json` remains its frozen v1 admission snapshot.
 
 CPB-v1 is a separately owned causal encoder derived from the saved V30 design.
 Its first instance, CPB-v1.market-01, imports the pinned V30 weights and frozen
@@ -12,7 +30,7 @@ but only 2/3 neural trend fits are positive and only 3/8 TEMPO-5 retention floor
 pass. These remain measured quality limitations; the application selection below
 does not declare an overall research winner.
 
-## Current application selection — 15 October 2026
+## Historical v1 application selection — superseded by v3
 
 The user selected **CPB-v1.market-01** as the sole active application encoder in
 cuwacunu_dev. Its [integration record](../../../../cuwacunu_dev/doc/CAUSAL_PRIMARY_INTEGRATION.md)

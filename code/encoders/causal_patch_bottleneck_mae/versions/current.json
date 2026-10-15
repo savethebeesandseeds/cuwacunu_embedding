@@ -1,0 +1,51 @@
+{
+  "kind": "causal_encoder_live_catalog_v1",
+  "date": "2026-10-15",
+  "research_candidate": {
+    "instance": "CPB-v2.market-01",
+    "design_file": "CPB-v2.json",
+    "physical_version_root": "v2",
+    "stage": "complete_stopped_failed_frozen_gate",
+    "measured_instance_file": "instances/CPB-v2.market-01.json",
+    "advancement_passed": false
+  },
+  "historical_index": "index.json",
+  "historical_index_policy": "Preserved v1 prospective admission snapshot; later status lives in this catalog and additive instance records",
+  "training_provenance_correction": "doc/CAUSAL_TRAINING_PROVENANCE_CORRECTION_2026-10-15.md",
+  "clean_causal_training_baseline": {
+    "instance": "CPB-v3.market-01",
+    "design_file": "CPB-v3.json",
+    "measured_instance_file": "instances/CPB-v3.market-01.json",
+    "physical_version_root": "v3",
+    "checkpoint": "output/baselines/CPB-v3.market-01/inference.pt",
+    "checkpoint_sha256": "50e1d6514076ab34dcfa1194d8f0d97296f176e76174a78efadc97c5c0d1c34e",
+    "status": "complete_fresh_causal_reference_mixed_task_quality",
+    "pretrained_ancestor": "none",
+    "source_updates": 0,
+    "causal_updates": 2048,
+    "overall_winner": false
+  },
+  "fresh_research_candidate": {
+    "instance": "CPB-v3.market-01",
+    "design_file": "CPB-v3.json",
+    "physical_version_root": "v3",
+    "stage": "complete_fresh_causal_baseline_established",
+    "pretrained_ancestor": "none",
+    "historical_reference_is_quality_gate": false,
+    "measured_instance_file": "instances/CPB-v3.market-01.json"
+  },
+  "historical_reference_and_application": {
+    "instance": "CPB-v1.market-01",
+    "design_file": "CPB-v1.json",
+    "measured_instance_file": "instances/CPB-v1.market-01.json",
+    "physical_version_root": "v1",
+    "checkpoint_sha256": "54c06e1c9af9215bd3477c343579feb63bce092c0f7dedf3c7355fc21d761895",
+    "research_local_checkpoint": "output/baselines/CPB-v1.market-01/inference.pt",
+    "role": "pretrained_historical_reference_only_former_application",
+    "clean_training_eligible": false,
+    "quality_gate_for_clean_candidates": false
+  },
+  "active_application": "CPB-v3.market-01",
+  "interpretation": "CPB-v3 is the clean causal baseline and sole selected dev application encoder; v1/v2 are preserved historical references, never oracle targets; no overall quality winner",
+  "application_selection_record": "../../../../../cuwacunu_dev/doc/CAUSAL_PRIMARY_INTEGRATION.md"
+}

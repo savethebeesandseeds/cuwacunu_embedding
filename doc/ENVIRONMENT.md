@@ -1,5 +1,13 @@
 # Shared embedding development environment
 
+For the 15 October causal continuation, the explicit user execution constraint
+is **only the existing GPU-enabled `cuwacunu` container**. The research checkout
+is not mounted there. Stage an exclusive, hash-verified source capsule under
+`/opt/cuwacunu/research/`, read existing `/cuwacunu` inputs without mutation and
+copy new exclusive run outputs back to research storage. Preserve the container,
+mounts and active dev source. The historical separate-container commands below
+do not apply to this experiment.
+
 This repository uses the existing managed `cuwacunu_embedding` Linux container
 for compilation, tests and training. Named task sessions keep their build
 products separate while sharing the source tree and installed dependencies.

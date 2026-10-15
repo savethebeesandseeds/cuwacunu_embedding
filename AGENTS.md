@@ -1,3 +1,55 @@
+# Current selection and publication — 15 October 2026
+
+The user selected **CPB-v3.market-01** as the sole active encoder in
+`cuwacunu_dev` and authorized committing and pushing all pending source and
+documentation in both repositories. Checkpoints and datasets stay local and
+ignored. This instruction supersedes historical v1 application selection and
+local-only publication wording below. No new encoder training or quality test
+is part of this integration.
+
+V3 is the completed clean causal baseline: all learned weights started fresh
+(seed943001), with fresh TRAIN-only input/bank statistics and optimizer,
+source_updates=0 and causal_updates=2048. Its native36 checkpoint SHA256 is
+`50e1d6514076ab34dcfa1194d8f0d97296f176e76174a78efadc97c5c0d1c34e`.
+The full owned v3 implementation is synchronized byte for byte into dev.
+Read the [integration record](../cuwacunu_dev/doc/CAUSAL_PRIMARY_INTEGRATION.md)
+and [research results](doc/CAUSAL_FRESH_V3_RESULTS.md).
+
+CPB-v1/v2 retain pretrained noncausal weight ancestry and remain historical
+references only; their scores are never oracle targets or clean quality floors.
+V3 has mixed task quality and is not an overall winner. Preserve every historical
+source, result and local checkpoint. The former dev v1 source/settings are
+[archived exactly](archive/cuwacunu_dev/2026-10-15-before-cpb-v3-primary/README.md).
+Before changing live status metadata, all50 earlier finalization metadata pins
+were preserved under the local integration prior-metadata snapshot.
+The next research direction remains saved TRAIN-only relation/variance diagnosis;
+no later experiment is started by this cutover.
+
+---
+# Authorized causal research continuation — 15 October 2026
+
+The user requested publication of the causal application update in both existing
+repositories (dev `486886c`, research `e6bdd56`); both pushes are complete. The
+user then explicitly requested improving the causal encoder with
+**CPB-v1.market-01 preserved as the baseline**. This supersedes stopped-search
+wording in historical sections below. The bounded
+[CPB-v2.market-01](doc/CAUSAL_FINETUNE_V2_CARD.md) experiment is complete and
+stopped: end-to-end causal fine-tuning failed advancement. Read the
+[measured report](doc/CAUSAL_FINETUNE_V2_RESULTS.md),
+[review and next direction](doc/CAUSAL_FINETUNE_V2_REVIEW.md) and
+[causal ledger](doc/causal_encoder_research_ledger.json). It passes original
+market8/9, strict7/8, v1 market retention2/8, positive neural trend2/3 and
+stronger TEMPO-5 retention3/8, with full coverage. Preserve its scoped gains and
+all checkpoints; do not rescue this frozen recipe or promote v2. Preserve all
+v1 bytes/artifacts and dev's sole selected v1 encoder; research candidates stay
+here. New research remains local until separately authorized publication.
+
+Use only the existing GPU `cuwacunu` container through a verified research source
+capsule inside its filesystem. The older separate-container commands do not
+apply to this continuation. Freeze source before invocation; prove CUDA
+learning, causality and typed resume before quality; retain failures and keep
+fixed heads and numerical advancement criteria unchanged.
+
 # Current integration selection — 15 October 2026
 
 The user explicitly selected **CPB-v1.market-01** as the sole active application

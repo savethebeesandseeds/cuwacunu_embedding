@@ -1,0 +1,497 @@
+{
+  "kind": "clean_causal_encoder_research_ledger_v1",
+  "created_utc": "2026-10-15T11:07:38.2708506Z",
+  "scope": "Only models with clean causal training ancestry; inherited v1/v2 measurements remain in their preserved historical ledger",
+  "baseline": "CPB-v3.market-01",
+  "baseline_checkpoint": {
+    "path": "output/baselines/CPB-v3.market-01/inference.pt",
+    "bytes": 1290625,
+    "sha256": "50e1d6514076ab34dcfa1194d8f0d97296f176e76174a78efadc97c5c0d1c34e"
+  },
+  "historical_reference": "CPB-v1.market-01",
+  "historical_reference_is_quality_gate": false,
+  "overall_winner": false,
+  "candidates": [
+    {
+      "instance": "CPB-v3.market-01",
+      "stage": "complete_clean_baseline",
+      "pretrained_ancestor": "none",
+      "source_updates": 0,
+      "new_causal_updates": 2048,
+      "report": {
+        "path": "doc/CAUSAL_FRESH_V3_RESULTS.md",
+        "bytes": 19714,
+        "sha256": "6007f6c2521ee509ce8b60a51acb162523cdd91e09d7f6e3d0edb67740c7e3de"
+      },
+      "instance_record": "code/encoders/causal_patch_bottleneck_mae/versions/instances/CPB-v3.market-01.json",
+      "full_coverage": true,
+      "quality": "Mixed: strong volatility and timing gains; neural trend/relation weak; no oracle targets"
+    }
+  ],
+  "stage_leaders": [
+    {
+      "dataset_id": "MKT-HIST-2",
+      "task": "past_activity",
+      "recipe_id": "causal-fresh-v3",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "view": "intact chronological VALIDATION",
+      "metric": "linear_r2",
+      "method": "CPB-v3.market-01",
+      "score": 0.8628403110608782,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "linear_r2": 0.16845197492995934,
+          "neural_mean_r2": 0.6075124846714213
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "linear_r2": 0.8628403110608782,
+          "neural_mean_r2": 0.541426055582653
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; final2048 baseline was selected before quality"
+    },
+    {
+      "dataset_id": "MKT-HIST-2",
+      "task": "past_activity",
+      "recipe_id": "causal-fresh-v3",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "view": "intact chronological VALIDATION",
+      "metric": "neural_mean_r2",
+      "method": "CPB-v3.market-01.init",
+      "score": 0.6075124846714213,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "linear_r2": 0.16845197492995934,
+          "neural_mean_r2": 0.6075124846714213
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "linear_r2": 0.8628403110608782,
+          "neural_mean_r2": 0.541426055582653
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; final2048 baseline was selected before quality"
+    },
+    {
+      "dataset_id": "MKT-HIST-2",
+      "task": "past_relation",
+      "recipe_id": "causal-fresh-v3",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "view": "intact chronological VALIDATION",
+      "metric": "linear_r2",
+      "method": "CPB-v3.market-01.init",
+      "score": 0.08343718254161314,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "linear_r2": 0.08343718254161314,
+          "neural_mean_r2": -0.1061789698145782
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "linear_r2": -0.00700444683432222,
+          "neural_mean_r2": -0.08556567147059875
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; final2048 baseline was selected before quality"
+    },
+    {
+      "dataset_id": "MKT-HIST-2",
+      "task": "past_relation",
+      "recipe_id": "causal-fresh-v3",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "view": "intact chronological VALIDATION",
+      "metric": "neural_mean_r2",
+      "method": "CPB-v3.market-01",
+      "score": -0.08556567147059875,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "linear_r2": 0.08343718254161314,
+          "neural_mean_r2": -0.1061789698145782
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "linear_r2": -0.00700444683432222,
+          "neural_mean_r2": -0.08556567147059875
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; final2048 baseline was selected before quality"
+    },
+    {
+      "dataset_id": "MKT-HIST-2",
+      "task": "past_trend",
+      "recipe_id": "causal-fresh-v3",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "view": "intact chronological VALIDATION",
+      "metric": "linear_r2",
+      "method": "CPB-v3.market-01",
+      "score": 0.2631329634696965,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "linear_r2": -0.7904225769179378,
+          "neural_mean_r2": -1.2910130549534284
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "linear_r2": 0.2631329634696965,
+          "neural_mean_r2": -0.2539790011410479
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; final2048 baseline was selected before quality"
+    },
+    {
+      "dataset_id": "MKT-HIST-2",
+      "task": "past_trend",
+      "recipe_id": "causal-fresh-v3",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "view": "intact chronological VALIDATION",
+      "metric": "neural_mean_r2",
+      "method": "CPB-v3.market-01",
+      "score": -0.2539790011410479,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "linear_r2": -0.7904225769179378,
+          "neural_mean_r2": -1.2910130549534284
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "linear_r2": 0.2631329634696965,
+          "neural_mean_r2": -0.2539790011410479
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; final2048 baseline was selected before quality"
+    },
+    {
+      "dataset_id": "MKT-HIST-2",
+      "task": "past_volatility",
+      "recipe_id": "causal-fresh-v3",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "view": "intact chronological VALIDATION",
+      "metric": "linear_r2",
+      "method": "CPB-v3.market-01",
+      "score": 0.964673433811061,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "linear_r2": 0.4516155042650637,
+          "neural_mean_r2": 0.2715856784269441
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "linear_r2": 0.964673433811061,
+          "neural_mean_r2": 0.4630519227215611
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; final2048 baseline was selected before quality"
+    },
+    {
+      "dataset_id": "MKT-HIST-2",
+      "task": "past_volatility",
+      "recipe_id": "causal-fresh-v3",
+      "designed_complexity_level": 4,
+      "complexity_scale_max": 5,
+      "view": "intact chronological VALIDATION",
+      "metric": "neural_mean_r2",
+      "method": "CPB-v3.market-01",
+      "score": 0.4630519227215611,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "linear_r2": 0.4516155042650637,
+          "neural_mean_r2": 0.2715856784269441
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "linear_r2": 0.964673433811061,
+          "neural_mean_r2": 0.4630519227215611
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; final2048 baseline was selected before quality"
+    },
+    {
+      "dataset_id": "TEMPO-5",
+      "task": "lag_sign",
+      "recipe_id": "tempo-5-slow-fast-nine-feature-v1",
+      "designed_complexity_level": 5,
+      "complexity_scale_max": 5,
+      "view": "validation_intact",
+      "input_policy": "synthetic_train",
+      "metric": "linear_head_accuracy",
+      "method": "CPB-v3.market-01",
+      "score": 0.96484375,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "size": 36,
+          "checkpoint_stage": "initial",
+          "reused": false,
+          "linear_head_accuracy": 0.9401041666666666,
+          "neural_head_accuracy": 0.927517361111111,
+          "coverage": 1
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "size": 36,
+          "checkpoint_stage": "final",
+          "reused": false,
+          "linear_head_accuracy": 0.96484375,
+          "neural_head_accuracy": 0.95703125,
+          "coverage": 1
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; never a checkpoint-selection rule"
+    },
+    {
+      "dataset_id": "TEMPO-5",
+      "task": "lag_sign",
+      "recipe_id": "tempo-5-slow-fast-nine-feature-v1",
+      "designed_complexity_level": 5,
+      "complexity_scale_max": 5,
+      "view": "validation_intact",
+      "input_policy": "synthetic_train",
+      "metric": "neural_head_accuracy",
+      "method": "CPB-v3.market-01",
+      "score": 0.95703125,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "size": 36,
+          "checkpoint_stage": "initial",
+          "reused": false,
+          "linear_head_accuracy": 0.9401041666666666,
+          "neural_head_accuracy": 0.927517361111111,
+          "coverage": 1
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "size": 36,
+          "checkpoint_stage": "final",
+          "reused": false,
+          "linear_head_accuracy": 0.96484375,
+          "neural_head_accuracy": 0.95703125,
+          "coverage": 1
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; never a checkpoint-selection rule"
+    },
+    {
+      "dataset_id": "TEMPO-5",
+      "task": "lag_sign",
+      "recipe_id": "tempo-5-slow-fast-nine-feature-v1",
+      "designed_complexity_level": 5,
+      "complexity_scale_max": 5,
+      "view": "validation_deleted",
+      "input_policy": "synthetic_train",
+      "metric": "linear_head_accuracy",
+      "method": "CPB-v3.market-01",
+      "score": 0.9114583333333334,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "size": 36,
+          "checkpoint_stage": "initial",
+          "reused": false,
+          "linear_head_accuracy": 0.8854166666666666,
+          "neural_head_accuracy": 0.8589409722222222,
+          "coverage": 1
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "size": 36,
+          "checkpoint_stage": "final",
+          "reused": false,
+          "linear_head_accuracy": 0.9114583333333334,
+          "neural_head_accuracy": 0.9175347222222222,
+          "coverage": 1
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; never a checkpoint-selection rule"
+    },
+    {
+      "dataset_id": "TEMPO-5",
+      "task": "lag_sign",
+      "recipe_id": "tempo-5-slow-fast-nine-feature-v1",
+      "designed_complexity_level": 5,
+      "complexity_scale_max": 5,
+      "view": "validation_deleted",
+      "input_policy": "synthetic_train",
+      "metric": "neural_head_accuracy",
+      "method": "CPB-v3.market-01",
+      "score": 0.9175347222222222,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "size": 36,
+          "checkpoint_stage": "initial",
+          "reused": false,
+          "linear_head_accuracy": 0.8854166666666666,
+          "neural_head_accuracy": 0.8589409722222222,
+          "coverage": 1
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "size": 36,
+          "checkpoint_stage": "final",
+          "reused": false,
+          "linear_head_accuracy": 0.9114583333333334,
+          "neural_head_accuracy": 0.9175347222222222,
+          "coverage": 1
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; never a checkpoint-selection rule"
+    },
+    {
+      "dataset_id": "TEMPO-5",
+      "task": "lag_sign",
+      "recipe_id": "tempo-5-slow-fast-nine-feature-v1",
+      "designed_complexity_level": 5,
+      "complexity_scale_max": 5,
+      "view": "validation_intact",
+      "input_policy": "market_scaler",
+      "metric": "linear_head_accuracy",
+      "method": "CPB-v3.market-01",
+      "score": 0.9934895833333334,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "size": 36,
+          "checkpoint_stage": "initial",
+          "reused": false,
+          "linear_head_accuracy": 0.9479166666666666,
+          "neural_head_accuracy": 0.9357638888888888,
+          "coverage": 1
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "size": 36,
+          "checkpoint_stage": "final",
+          "reused": false,
+          "linear_head_accuracy": 0.9934895833333334,
+          "neural_head_accuracy": 0.9817708333333334,
+          "coverage": 1
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; never a checkpoint-selection rule"
+    },
+    {
+      "dataset_id": "TEMPO-5",
+      "task": "lag_sign",
+      "recipe_id": "tempo-5-slow-fast-nine-feature-v1",
+      "designed_complexity_level": 5,
+      "complexity_scale_max": 5,
+      "view": "validation_intact",
+      "input_policy": "market_scaler",
+      "metric": "neural_head_accuracy",
+      "method": "CPB-v3.market-01",
+      "score": 0.9817708333333334,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "size": 36,
+          "checkpoint_stage": "initial",
+          "reused": false,
+          "linear_head_accuracy": 0.9479166666666666,
+          "neural_head_accuracy": 0.9357638888888888,
+          "coverage": 1
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "size": 36,
+          "checkpoint_stage": "final",
+          "reused": false,
+          "linear_head_accuracy": 0.9934895833333334,
+          "neural_head_accuracy": 0.9817708333333334,
+          "coverage": 1
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; never a checkpoint-selection rule"
+    },
+    {
+      "dataset_id": "TEMPO-5",
+      "task": "lag_sign",
+      "recipe_id": "tempo-5-slow-fast-nine-feature-v1",
+      "designed_complexity_level": 5,
+      "complexity_scale_max": 5,
+      "view": "validation_deleted",
+      "input_policy": "market_scaler",
+      "metric": "linear_head_accuracy",
+      "method": "CPB-v3.market-01",
+      "score": 0.94921875,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "size": 36,
+          "checkpoint_stage": "initial",
+          "reused": false,
+          "linear_head_accuracy": 0.8815104166666666,
+          "neural_head_accuracy": 0.8394097222222222,
+          "coverage": 1
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "size": 36,
+          "checkpoint_stage": "final",
+          "reused": false,
+          "linear_head_accuracy": 0.94921875,
+          "neural_head_accuracy": 0.9427083333333334,
+          "coverage": 1
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; never a checkpoint-selection rule"
+    },
+    {
+      "dataset_id": "TEMPO-5",
+      "task": "lag_sign",
+      "recipe_id": "tempo-5-slow-fast-nine-feature-v1",
+      "designed_complexity_level": 5,
+      "complexity_scale_max": 5,
+      "view": "validation_deleted",
+      "input_policy": "market_scaler",
+      "metric": "neural_head_accuracy",
+      "method": "CPB-v3.market-01",
+      "score": 0.9427083333333334,
+      "initial_and_final": [
+        {
+          "method": "CPB-v3.market-01.init",
+          "size": 36,
+          "checkpoint_stage": "initial",
+          "reused": false,
+          "linear_head_accuracy": 0.8815104166666666,
+          "neural_head_accuracy": 0.8394097222222222,
+          "coverage": 1
+        },
+        {
+          "method": "CPB-v3.market-01",
+          "size": 36,
+          "checkpoint_stage": "final",
+          "reused": false,
+          "linear_head_accuracy": 0.94921875,
+          "neural_head_accuracy": 0.9427083333333334,
+          "coverage": 1
+        }
+      ],
+      "selection_policy": "Descriptive stage comparison only; never a checkpoint-selection rule"
+    }
+  ],
+  "next_direction": {
+    "status": "proposal_only_no_later_run",
+    "action": "Saved TRAIN-only diagnosis of cross-channel relation representation and variance objective before one separately declared controlled change",
+    "validation_in_diagnosis": false,
+    "head_tuning": false,
+    "pretrained_v1_parent_reuse": false
+  },
+  "checkpoint_deletion_allowed": false
+}

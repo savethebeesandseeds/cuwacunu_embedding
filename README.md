@@ -1,3 +1,5 @@
+Current causal research: [CPB-v3.market-01](doc/CAUSAL_FRESH_V3_REVIEW.md) is the first clean from-scratch baseline; see its [per-task results](doc/CAUSAL_FRESH_V3_RESULTS.md) and [current status](doc/CURRENT_STATUS.md). CPB-v3 is also the sole selected dev application encoder. The user authorized publication of all pending source/docs; weights stay local. CPB-v1 remains a pretrained historical reference, with no oracle quality floors for new models. Historical selections below are milestone records.
+
 # cuwacunu_embedding
 
 Standalone C++20/LibTorch representation models and independent evaluation
