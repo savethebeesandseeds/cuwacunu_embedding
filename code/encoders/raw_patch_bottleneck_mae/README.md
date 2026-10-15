@@ -1,3 +1,4 @@
+> Current physical source navigation: [version index](versions/README.md) and [shared components](shared/README.md). Canonical implementations now live under versions/vN/ or shared/. Older source-layout descriptions below name preserved public include/config compatibility paths. The current folder move changes no encoder behavior, defaults, primary selection or historical evidence.
 # Raw Patch Bottleneck MAE (RPB-MAE)
 
 This folder owns the RPB model family, preprocessing, training/checkpoint

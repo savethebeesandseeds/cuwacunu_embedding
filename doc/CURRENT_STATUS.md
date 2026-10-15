@@ -1,3 +1,33 @@
+# Current application selection — 15 October 2026
+
+**CPB-v1.market-01 is now the user-selected sole active encoder in
+cuwacunu_dev.** This is an operational choice for strict causality, not a
+claim that it satisfies every research robustness/retention condition or
+replaces all recorded leaders. Read the
+[integration record](../../cuwacunu_dev/doc/CAUSAL_PRIMARY_INTEGRATION.md)
+for current runtime settings, selected artifact and verification status.
+
+The application selects the saved native36 typed CPB checkpoint, with frozen
+scaler/normalizer and zero new causal training. Its API/CLI requires genuine
+raw F64 values, actual close-time timestamps, masks and explicit cutoffs.
+The selected local ignored artifact remains at
+../../cuwacunu_dev/output/engineering/causal-patch-bottleneck-mae-v1/attempt-002/proof/inference.pt,
+SHA256 54c06e1c9af9215bd3477c343579feb63bce092c0f7dedf3c7355fc21d761895.
+
+Retired dev RPB source/drivers/settings are preserved in the exact
+[source archive](../archive/cuwacunu_dev/2026-10-15-before-causal-primary/README.md);
+the [manifest](../archive/cuwacunu_dev/2026-10-15-before-causal-primary/manifest.json)
+maps580 preserved files to their original dev paths. Historical results,
+checkpoints and the research implementations here remain intact.
+
+Preserve the frozen causal reference, native36 balanced reference, each
+scoped task/head leader and every historical candidate. The research search
+remains stopped; this integration selection starts no training, quality
+comparison or publication. The older primary-selection statements and proposed
+next actions below are historical and do not override this application choice.
+
+---
+
 # Current repository status
 
 ## Latest completed task: causal conversion, 15 October 2026

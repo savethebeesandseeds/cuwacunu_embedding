@@ -339,7 +339,7 @@ def admit_quality(args):
     log_path = canonical(target / 'build-and-tests.log')
     log = log_path.read_text()
     require(all(marker in log for marker in QUALITY_MARKERS), 'all actual CUDA/readout/role gates')
-    old_root = 'code/encoders/raw_patch_bottleneck_mae/src/'
+    old_root = 'code/encoders/raw_patch_bottleneck_mae/shared/src/'
     old_objects = binary.parent / 'code/encoders/raw_patch_bottleneck_mae'
     new_objects = binary.parent / 'code/protocols/structured_hard_timing_v1'
     required = [(old_root + 'workflow.cpp', old_objects / 'workflow.o'), (old_root + 'learning_curve_adapter.cpp', old_objects / 'learning_curve_adapter.o'),

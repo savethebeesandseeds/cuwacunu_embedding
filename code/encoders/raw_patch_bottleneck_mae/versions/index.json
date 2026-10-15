@@ -266,5 +266,931 @@
       "description": "Unchanged raw-relative native36 and V28 normalizer; unmodulated mean plus change-conditioned diagonal Gaussian waveform variance and proper NLL64"
     }
   ],
-  "scope": "Browseable design/instance provenance only; no new measurements or retroactive causal claim"
+  "scope": "Browseable design/instance provenance only; no new measurements or retroactive causal claim",
+  "live_layout": {
+    "schema": "rpb_current_source_layout_v1",
+    "source_layout_only": true,
+    "historical_fields_preserved": true,
+    "historical_design_records_unchanged": true,
+    "primary_selection": "RPB-v22",
+    "balanced_reference": "RPB-v24.market-01.alt-01",
+    "causal_family_unchanged": true,
+    "path_map": "code/scripts/rpb-layout-plan.json",
+    "canonical_source_roots": [
+      "code/encoders/raw_patch_bottleneck_mae/shared",
+      "code/encoders/raw_patch_bottleneck_mae/versions/vN"
+    ],
+    "compatibility": "Old public include roots remain forwarding headers. Existing application configuration paths preserve primary/default selections. Original evidence/source/config hashes are historical pins, not rewritten runtime receipts.",
+    "version_entries": [
+      {
+        "number": 1,
+        "registered_tag": "RPB-v1",
+        "navigation_directory": "versions/v1",
+        "entry_symbol": "Model",
+        "source_scope": "Current shared Model; independent-channel configuration.",
+        "shared_dependencies": [
+          "shared Model",
+          "shared Config/types/preprocessing/masking/tokenization/objectives",
+          "v13 visible-difference helper"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/shared/config/evaluation.conf",
+              "code/encoders/raw_patch_bottleneck_mae/shared/config/smoke.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": null
+          },
+          "integration": {
+            "availability": "shared current component; original experiment adapter/recipe closure is not asserted",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/model.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": null
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 2,
+        "registered_tag": "RPB-v2",
+        "navigation_directory": "versions/v2",
+        "entry_symbol": "Model",
+        "source_scope": "Current shared Model with the existing channel-mixer recipe.",
+        "shared_dependencies": [
+          "shared Model/core",
+          "v13 visible-difference helper"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v2/config/channel_mixer.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v2"
+          },
+          "integration": {
+            "availability": "shared current component; original experiment adapter/recipe closure is not asserted",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/model.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": null
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 3,
+        "registered_tag": "RPB-v3-mean",
+        "navigation_directory": "versions/v3",
+        "entry_symbol": "Model",
+        "source_scope": "Current shared Model with the existing mean-global recipe; registered tag remains RPB-v3-mean.",
+        "shared_dependencies": [
+          "shared Model/core",
+          "v13 visible-difference helper"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v3/config/mean_global.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v3"
+          },
+          "integration": {
+            "availability": "shared current component; original experiment adapter/recipe closure is not asserted",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/model.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": null
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 4,
+        "registered_tag": "RPB-v4",
+        "navigation_directory": "versions/v4",
+        "entry_symbol": "Model",
+        "source_scope": "Current shared Model with the existing learned-global recipe.",
+        "shared_dependencies": [
+          "shared Model/core",
+          "v13 visible-difference helper"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v4/config/learned_global.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v4"
+          },
+          "integration": {
+            "availability": "shared current component; original experiment adapter/recipe closure is not asserted",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/model.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": null
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 5,
+        "registered_tag": "RPB-v5",
+        "navigation_directory": "versions/v5",
+        "entry_symbol": "Model",
+        "source_scope": "Current shared Model with the existing learned-patch-global recipe.",
+        "shared_dependencies": [
+          "shared Model/core",
+          "v13 visible-difference helper"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v5/config/learned_patch_global.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v5"
+          },
+          "integration": {
+            "availability": "shared current component; original experiment adapter/recipe closure is not asserted",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/model.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": null
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 6,
+        "registered_tag": "RPB-v6",
+        "navigation_directory": "versions/v6",
+        "entry_symbol": "context_deletion::descriptor",
+        "source_scope": "Existing coordinate30 recipe. The context-deletion implementation is shared with v7/v8.",
+        "shared_dependencies": [
+          "shared Model/core, context_deletion and training_utils"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v4/config/learned_global.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v6"
+          },
+          "integration": {
+            "availability": "shared current component; original experiment adapter/recipe closure is not asserted",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": null
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 7,
+        "registered_tag": "RPB-v7",
+        "navigation_directory": "versions/v7",
+        "entry_symbol": "context_deletion::descriptor",
+        "source_scope": "Existing coordinate15 recipe. Embedding also owns the existing decoder-only calibration/frozen-native components here.",
+        "shared_dependencies": [
+          "shared Model/core and context_deletion",
+          "shared workflow",
+          "embedding v7 calibration helpers"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v4/config/learned_global.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v7"
+          },
+          "integration": {
+            "availability": "shared current component; original experiment adapter/recipe closure is not asserted",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": null
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 8,
+        "registered_tag": "RPB-v8",
+        "navigation_directory": "versions/v8",
+        "entry_symbol": "context_deletion::descriptor",
+        "source_scope": "Existing balanced30 recipe. The context-deletion implementation is shared with v6/v7.",
+        "shared_dependencies": [
+          "shared Model/core and context_deletion"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v4/config/learned_global.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v8"
+          },
+          "integration": {
+            "availability": "shared current component; original experiment adapter/recipe closure is not asserted",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": null
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 9,
+        "registered_tag": "RPB-v9",
+        "navigation_directory": "versions/v9",
+        "entry_symbol": "native_view_agreement::training_forward",
+        "source_scope": "Existing native-view-agreement training recipe and source implementation.",
+        "shared_dependencies": [
+          "shared Model/core, context_deletion and workflow"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v9/include/embedding/encoders/raw_patch_bottleneck_mae/native_view_agreement.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v9",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v9"
+          },
+          "integration": {
+            "availability": "absent; not reconstructed",
+            "entry_header": null,
+            "configuration_templates": [],
+            "implementation_owner_directory": null,
+            "owned_component_directory": null
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 10,
+        "registered_tag": "RPB-v10",
+        "navigation_directory": "versions/v10",
+        "entry_symbol": "Model",
+        "source_scope": "Current shared Model exposes channel_mixer_placement. Cross-version early-mixer comparison adapters stay shared; focused architecture tests belong here in embedding.",
+        "shared_dependencies": [
+          "shared Model/core",
+          "shared early_mixer and confirmation adapters in embedding"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/model.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v10"
+          },
+          "integration": {
+            "availability": "shared current component; original experiment adapter/recipe closure is not asserted",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/model.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": null
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 11,
+        "registered_tag": "RPB-v11",
+        "navigation_directory": "versions/v11",
+        "entry_symbol": "training_source_gain",
+        "source_scope": "Existing TRAIN source-gain mechanism. The matched-target comparison adapter remains shared.",
+        "shared_dependencies": [
+          "shared Model/core and workflow",
+          "shared matched_target_gain adapter in embedding"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v11/include/embedding/encoders/raw_patch_bottleneck_mae/training_source_gain.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v11",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v11"
+          },
+          "integration": {
+            "availability": "absent; not reconstructed",
+            "entry_header": null,
+            "configuration_templates": [],
+            "implementation_owner_directory": null,
+            "owned_component_directory": null
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 12,
+        "registered_tag": "RPB-v12",
+        "navigation_directory": "versions/v12",
+        "entry_symbol": "Model",
+        "source_scope": "Current shared Model exposes global_pool_input_source. Cross-version pooled-context adapters stay shared; focused model tests and their old-model reference belong here in embedding.",
+        "shared_dependencies": [
+          "shared Model/core",
+          "shared pooled_context comparison adapter in embedding"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/model.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v12"
+          },
+          "integration": {
+            "availability": "shared current component; original experiment adapter/recipe closure is not asserted",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/shared/include/embedding/encoders/raw_patch_bottleneck_mae/model.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/shared",
+            "owned_component_directory": null
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 13,
+        "registered_tag": "RPB-v13",
+        "navigation_directory": "versions/v13",
+        "entry_symbol": "visible_first_differences",
+        "source_scope": "Existing visible-difference helper remains included by shared Model. Embedding additionally owns its focused adapter/source/tests.",
+        "shared_dependencies": [
+          "shared tokenization/types/core",
+          "shared Model consumes this helper"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v13/include/embedding/encoders/raw_patch_bottleneck_mae/visible_difference.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v13",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v13"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v13/include/embedding/encoders/raw_patch_bottleneck_mae/visible_difference.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v13",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v13"
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 14,
+        "registered_tag": "RPB-v14",
+        "navigation_directory": "versions/v14",
+        "entry_symbol": "TemporalRelationModel",
+        "source_scope": "Existing generic temporal-relation implementation.",
+        "shared_dependencies": [
+          "shared Model/core"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v14/include/embedding/encoders/raw_patch_bottleneck_mae/temporal_relation_bank.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v14",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v14"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v14/include/embedding/encoders/raw_patch_bottleneck_mae/temporal_relation_bank.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v14",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v14"
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 15,
+        "registered_tag": "RPB-v15",
+        "navigation_directory": "versions/v15",
+        "entry_symbol": "temporal_dynamics_targets",
+        "source_scope": "Existing temporal-dynamics objective helper; no separate reconstructed Model body.",
+        "shared_dependencies": [
+          "shared types/core"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v15/include/embedding/encoders/raw_patch_bottleneck_mae/temporal_dynamics_objective.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v15",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v15"
+          },
+          "integration": {
+            "availability": "absent; not reconstructed",
+            "entry_header": null,
+            "configuration_templates": [],
+            "implementation_owner_directory": null,
+            "owned_component_directory": null
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 16,
+        "registered_tag": "RPB-v16",
+        "navigation_directory": "versions/v16",
+        "entry_symbol": "PartitionedTemporalRelationModel",
+        "source_scope": "Existing partitioned temporal-relation implementation.",
+        "shared_dependencies": [
+          "v14 temporal-relation implementation",
+          "shared Model/core"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v16/include/embedding/encoders/raw_patch_bottleneck_mae/partitioned_temporal_relation.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v16",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v16"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v16/include/embedding/encoders/raw_patch_bottleneck_mae/partitioned_temporal_relation.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v16",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v16"
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 17,
+        "registered_tag": "RPB-v17",
+        "navigation_directory": "versions/v17",
+        "entry_symbol": "FixedPriorTemporalRelationModel",
+        "source_scope": "Existing fixed-prior temporal-relation implementation.",
+        "shared_dependencies": [
+          "v16 partitioned implementation, transitively v14 and shared Model/core"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v17/include/embedding/encoders/raw_patch_bottleneck_mae/fixed_prior_temporal_relation.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v17",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v17"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v17/include/embedding/encoders/raw_patch_bottleneck_mae/fixed_prior_temporal_relation.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v17",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v17"
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 18,
+        "registered_tag": "RPB-v18",
+        "navigation_directory": "versions/v18",
+        "entry_symbol": "UnitTemporalRelationModel",
+        "source_scope": "Existing unit temporal-relation implementation.",
+        "shared_dependencies": [
+          "v17 fixed-prior implementation, transitively v16/v14 and shared Model/core"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v18/include/embedding/encoders/raw_patch_bottleneck_mae/unit_temporal_relation.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v18",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v18"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v18/include/embedding/encoders/raw_patch_bottleneck_mae/unit_temporal_relation.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v18",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v18"
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 19,
+        "registered_tag": "RPB-v19",
+        "navigation_directory": "versions/v19",
+        "entry_symbol": "SpectralTemporalRelationModel",
+        "source_scope": "Existing spectral temporal-relation implementation and spectral bank. Integration retains the original rpb_v19 import provenance at its original paths.",
+        "shared_dependencies": [
+          "v18 unit implementation, transitively v17/v16/v14 and shared Model/core",
+          "own spectral_relation_bank"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v19/include/embedding/encoders/raw_patch_bottleneck_mae/spectral_temporal_relation.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v19",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v19"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v19/include/embedding/encoders/raw_patch_bottleneck_mae/spectral_temporal_relation.h",
+            "configuration_templates": [],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v19",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v19"
+          }
+        },
+        "historical_mapping": "Exact equivalence to every historical training definition is not established by this current locator. Preserve original design record, registries and frozen capsules."
+      },
+      {
+        "number": 20,
+        "registered_tag": "RPB-v20",
+        "navigation_directory": "versions/v20",
+        "entry_symbol": "ConfigurableSpectralModel",
+        "source_scope": "Existing configurable spectral API and typed inference checkpoint/settings implementation.",
+        "shared_dependencies": [
+          "shared Model/preprocessing/core",
+          "shared parser/config utilities",
+          "shared StreamingScaler remains separate support"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v20/include/embedding/encoders/raw_patch_bottleneck_mae/configurable_spectral_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v20/config/configurable_spectral.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v20",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v20"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v20/include/embedding/encoders/raw_patch_bottleneck_mae/configurable_spectral_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v20/config/configurable_spectral.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v20",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v20"
+          }
+        },
+        "historical_mapping": "Current source entry only; original instance registries, checkpoint pins and frozen receipts remain authoritative."
+      },
+      {
+        "number": 21,
+        "registered_tag": "RPB-v21",
+        "navigation_directory": "versions/v21",
+        "entry_symbol": "LearnedOrderedRelationModel",
+        "source_scope": "Existing learned ordered-relation API, settings and typed checkpoint implementation.",
+        "shared_dependencies": [
+          "v20 configurable spectral model/config/checkpoint",
+          "shared core/parser"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v21/include/embedding/encoders/raw_patch_bottleneck_mae/learned_ordered_relation_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v21/config/learned_ordered_relation.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v21",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v21"
+          },
+          "integration": {
+            "availability": "absent; not reconstructed",
+            "entry_header": null,
+            "configuration_templates": [],
+            "implementation_owner_directory": null,
+            "owned_component_directory": null
+          }
+        },
+        "historical_mapping": "Current source entry only; original instance registries, checkpoint pins and frozen receipts remain authoritative."
+      },
+      {
+        "number": 22,
+        "registered_tag": "RPB-v22",
+        "navigation_directory": "versions/v22",
+        "entry_symbol": "ContentOrderedRelationModel",
+        "source_scope": "Existing content-only ordered-relation API and v22 training_state support. Primary selection stays RPB-v22.",
+        "shared_dependencies": [
+          "v20 configurable spectral model/config/checkpoint",
+          "shared core/parser",
+          "own content bank"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v22/include/embedding/encoders/raw_patch_bottleneck_mae/content_ordered_relation_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v22/config/content_ordered_relation.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v22",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v22"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v22/include/embedding/encoders/raw_patch_bottleneck_mae/content_ordered_relation_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v22/config/content_ordered_relation.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v22",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v22"
+          }
+        },
+        "historical_mapping": "Current source entry only; original instance registries, checkpoint pins and frozen receipts remain authoritative."
+      },
+      {
+        "number": 23,
+        "registered_tag": "RPB-v23",
+        "navigation_directory": "versions/v23",
+        "entry_symbol": "ConsecutiveChangeModel",
+        "source_scope": "Existing consecutive-change API plus its frozen-level helper.",
+        "shared_dependencies": [
+          "v22 content model/config/checkpoint",
+          "v20 checkpoint utilities",
+          "shared core"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v23/include/embedding/encoders/raw_patch_bottleneck_mae/consecutive_change_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v23/config/consecutive_changes.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v23",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v23"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v23/include/embedding/encoders/raw_patch_bottleneck_mae/consecutive_change_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v23/config/consecutive_changes.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v23",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v23"
+          }
+        },
+        "historical_mapping": "Current source entry only; original instance registries, checkpoint pins and frozen receipts remain authoritative."
+      },
+      {
+        "number": 24,
+        "registered_tag": "RPB-v24",
+        "navigation_directory": "versions/v24",
+        "entry_symbol": "SeparatedChangeModel",
+        "source_scope": "Existing separate-change API. Native40 and native36 are separate declared configurations of this same implementation; native36 balanced reference is unchanged.",
+        "shared_dependencies": [
+          "v22 protected content parent",
+          "v23 change bank/config/TRAIN helpers",
+          "v20 checkpoint utilities",
+          "shared core"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v24/include/embedding/encoders/raw_patch_bottleneck_mae/separated_change_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v24/config/separated_changes.conf",
+              "code/encoders/raw_patch_bottleneck_mae/versions/v24/config/separated_changes_native36.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v24",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v24"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v24/include/embedding/encoders/raw_patch_bottleneck_mae/separated_change_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v24/config/separated_changes.conf",
+              "code/encoders/raw_patch_bottleneck_mae/versions/v24/config/separated_changes_native36.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v24",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v24"
+          }
+        },
+        "historical_mapping": "Current source entry only; original instance registries, checkpoint pins and frozen receipts remain authoritative."
+      },
+      {
+        "number": 25,
+        "registered_tag": "RPB-v25",
+        "navigation_directory": "versions/v25",
+        "entry_symbol": "EnergyChangeModel",
+        "source_scope": "Existing change-energy model/objective API and typed state.",
+        "shared_dependencies": [
+          "v24 protected parent/checkpoint/frozen-level helpers",
+          "v20 checkpoint utilities",
+          "shared core"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v25/include/embedding/encoders/raw_patch_bottleneck_mae/energy_change_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v25/config/energy_changes.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v25",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v25"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v25/include/embedding/encoders/raw_patch_bottleneck_mae/energy_change_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v25/config/energy_changes.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v25",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v25"
+          }
+        },
+        "historical_mapping": "Current source entry only; original instance registries, checkpoint pins and frozen receipts remain authoritative."
+      },
+      {
+        "number": 26,
+        "registered_tag": "RPB-v26",
+        "navigation_directory": "versions/v26",
+        "entry_symbol": "ConditionedChangeModel",
+        "source_scope": "Existing TRAIN-conditioned change model, bank and normalizer.",
+        "shared_dependencies": [
+          "v24 protected parent/checkpoint/frozen-level helpers",
+          "v23 change bank",
+          "v20 checkpoint utilities",
+          "shared core"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v26/include/embedding/encoders/raw_patch_bottleneck_mae/conditioned_change_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v26/config/conditioned_changes.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v26",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v26"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v26/include/embedding/encoders/raw_patch_bottleneck_mae/conditioned_change_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v26/config/conditioned_changes.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v26",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v26"
+          }
+        },
+        "historical_mapping": "Current source entry only; original instance registries, checkpoint pins and frozen receipts remain authoritative."
+      },
+      {
+        "number": 27,
+        "registered_tag": "RPB-v27",
+        "navigation_directory": "versions/v27",
+        "entry_symbol": "ParentConditionalChangeModel",
+        "source_scope": "Existing parent-conditional change model and map.",
+        "shared_dependencies": [
+          "v26 conditioned normalizer/bank",
+          "v24 protected parent/checkpoint/frozen-level helpers",
+          "shared core"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v27/include/embedding/encoders/raw_patch_bottleneck_mae/parent_conditional_change_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v27/config/parent_conditional_changes.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v27",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v27"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v27/include/embedding/encoders/raw_patch_bottleneck_mae/parent_conditional_change_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v27/config/parent_conditional_changes.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v27",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v27"
+          }
+        },
+        "historical_mapping": "Current source entry only; original instance registries, checkpoint pins and frozen receipts remain authoritative."
+      },
+      {
+        "number": 28,
+        "registered_tag": "RPB-v28",
+        "navigation_directory": "versions/v28",
+        "entry_symbol": "RelativeChangeModel",
+        "source_scope": "Existing raw-F64 relative-change model, bank and normalizer.",
+        "shared_dependencies": [
+          "v26 conditioned bank/normalizer",
+          "v24 protected parent/checkpoint/frozen-level helpers",
+          "v20 configurable model/checkpoint",
+          "shared core"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v28/include/embedding/encoders/raw_patch_bottleneck_mae/relative_change_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v28/config/relative_changes.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v28",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v28"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v28/include/embedding/encoders/raw_patch_bottleneck_mae/relative_change_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v28/config/relative_changes.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v28",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v28"
+          }
+        },
+        "historical_mapping": "Current source entry only; original instance registries, checkpoint pins and frozen receipts remain authoritative."
+      },
+      {
+        "number": 29,
+        "registered_tag": "RPB-v29",
+        "navigation_directory": "versions/v29",
+        "entry_symbol": "ParentModulatedDecoderModel",
+        "source_scope": "Existing parent-modulated decoder API and typed state.",
+        "shared_dependencies": [
+          "v28 relative config/normalizer/bank",
+          "v24 protected parent/checkpoint/frozen-level helpers",
+          "shared core"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v29/include/embedding/encoders/raw_patch_bottleneck_mae/parent_modulated_decoder_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v29/config/parent_modulated_decoder.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v29",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v29"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v29/include/embedding/encoders/raw_patch_bottleneck_mae/parent_modulated_decoder_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v29/config/parent_modulated_decoder.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v29",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v29"
+          }
+        },
+        "historical_mapping": "Current source entry only; original instance registries, checkpoint pins and frozen receipts remain authoritative."
+      },
+      {
+        "number": 30,
+        "registered_tag": "RPB-v30",
+        "navigation_directory": "versions/v30",
+        "entry_symbol": "LocationScaleDecoderModel",
+        "source_scope": "Existing location/scale decoder API and typed state.",
+        "shared_dependencies": [
+          "v28 relative config/normalizer/bank",
+          "v24 protected parent/checkpoint/frozen-level helpers",
+          "shared core"
+        ],
+        "repositories": {
+          "embedding": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v30/include/embedding/encoders/raw_patch_bottleneck_mae/location_scale_decoder_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v30/config/location_scale_decoder.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v30",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v30"
+          },
+          "integration": {
+            "availability": "existing current implementation/component",
+            "entry_header": "code/encoders/raw_patch_bottleneck_mae/versions/v30/include/embedding/encoders/raw_patch_bottleneck_mae/location_scale_decoder_model.h",
+            "configuration_templates": [
+              "code/encoders/raw_patch_bottleneck_mae/versions/v30/config/location_scale_decoder.conf"
+            ],
+            "implementation_owner_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v30",
+            "owned_component_directory": "code/encoders/raw_patch_bottleneck_mae/versions/v30"
+          }
+        },
+        "historical_mapping": "Current source entry only; original instance registries, checkpoint pins and frozen receipts remain authoritative."
+      }
+    ]
+  }
 }

@@ -1,3 +1,36 @@
+# Current integration selection — 15 October 2026
+
+The user explicitly selected **CPB-v1.market-01** as the sole active application
+encoder in sibling cuwacunu_dev. Read its
+[current integration record](../cuwacunu_dev/doc/CAUSAL_PRIMARY_INTEGRATION.md).
+Historical instructions below to keep RPB-v22 primary are preserved milestone
+records and no longer select the dev application encoder. This operational
+choice does not replace this research repository's balanced/task leaders,
+candidate ledger, frozen quality gates or historical defaults.
+
+The integration uses the saved native36 causal model with zero new causal
+training. The checkpoint remains local and ignored at
+../cuwacunu_dev/output/engineering/causal-patch-bottleneck-mae-v1/attempt-002/proof/inference.pt,
+SHA256 54c06e1c9af9215bd3477c343579feb63bce092c0f7dedf3c7355fc21d761895.
+The matching complete v1 implementation remains in both repos. Application
+geometry and runtime artifact settings are separate; inputs need genuine F64,
+actual timestamps and explicit cutoffs.
+
+Previous dev RPB implementations and research drivers have left its active
+source tree. Their580-file exact
+[archive](archive/cuwacunu_dev/2026-10-15-before-causal-primary/README.md) and
+[manifest](archive/cuwacunu_dev/2026-10-15-before-causal-primary/manifest.json)
+preserve original paths/bytes. All historical outputs/results/checkpoints
+remain in place; the portable RPB research implementations here remain intact.
+
+The research search remains stopped. Do not start training, tune heads, rerun
+quality, promote a research winner or commit/push from this integration request.
+Use the new integration record for runtime verification status; it is distinct
+from the already measured causal proof/quality evidence. The following text
+preserves previous research scope and decisions, subject to this current note.
+
+---
+
 # Project instructions
 
 ## Latest completed task: causal encoder, 15 October 2026

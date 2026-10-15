@@ -18,10 +18,10 @@ python3 -B "$helper" self-test
 python3 -B "$helper" freeze-admission --repo-root "$PWD" --target "$admission" --card-sha256 "$card_sha" --sources "${sources[@]}"
 make() {
   command make -f code/evaluation/protocols/visible_difference_v1/Makefile \
-    -W code/encoders/raw_patch_bottleneck_mae/src/workflow.cpp \
-    -W code/encoders/raw_patch_bottleneck_mae/src/learning_curve_adapter.cpp \
-    -W code/encoders/raw_patch_bottleneck_mae/src/early_mixer_adapter.cpp \
-    -W code/encoders/raw_patch_bottleneck_mae/src/visible_difference_adapter.cpp \
+    -W code/encoders/raw_patch_bottleneck_mae/shared/src/workflow.cpp \
+    -W code/encoders/raw_patch_bottleneck_mae/shared/src/learning_curve_adapter.cpp \
+    -W code/encoders/raw_patch_bottleneck_mae/shared/src/early_mixer_adapter.cpp \
+    -W code/encoders/raw_patch_bottleneck_mae/versions/v13/src/visible_difference_adapter.cpp \
     -W code/evaluation/protocols/visible_difference_v1/visible_difference_main.cpp "$@"
 }
 export -f make

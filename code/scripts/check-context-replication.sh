@@ -11,11 +11,11 @@ printf 'Context replication admission: %s\n' "$admission"
 mapfile -t production < <(make -s print-context-replication-sources)
 [[ ${#production[@]} -gt 0 ]] || { echo 'Production source list missing.' >&2; exit 1; }
 sources=("${production[@]}"
-    code/encoders/raw_patch_bottleneck_mae/tests/context_replication_adapter_test.cpp
-    code/encoders/raw_patch_bottleneck_mae/tests/context_deletion_test.cpp
-    code/encoders/raw_patch_bottleneck_mae/tests/context_deletion_adapter_test.cpp
-    code/encoders/raw_patch_bottleneck_mae/tests/training_policy_test.cpp
-    code/encoders/raw_patch_bottleneck_mae/tests/rpb_test_support.h
+    code/encoders/raw_patch_bottleneck_mae/shared/tests/context_replication_adapter_test.cpp
+    code/encoders/raw_patch_bottleneck_mae/versions/v6/tests/context_deletion_test.cpp
+    code/encoders/raw_patch_bottleneck_mae/shared/tests/context_deletion_adapter_test.cpp
+    code/encoders/raw_patch_bottleneck_mae/shared/tests/training_policy_test.cpp
+    code/encoders/raw_patch_bottleneck_mae/shared/tests/rpb_test_support.h
     code/shared/tests/shared_test_support.h
     code/shared/tests/native_curve_test.cpp
     code/shared/tests/paired_pooling_test.cpp

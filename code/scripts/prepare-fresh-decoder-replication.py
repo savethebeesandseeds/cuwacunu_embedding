@@ -28,9 +28,9 @@ REQUIRED_SOURCES = {CARD, 'Makefile', 'dependencies.lock',
     'code/scripts/prepare-fresh-decoder-replication.py',
     'code/shared/include/embedding/shared/fixed_feature_readouts.h',
     'code/shared/src/fixed_feature_readouts.cpp', 'code/shared/tests/fixed_feature_readouts_test.cpp',
-    'code/encoders/raw_patch_bottleneck_mae/include/embedding/encoders/raw_patch_bottleneck_mae/frozen_decoder_calibration.h',
-    'code/encoders/raw_patch_bottleneck_mae/src/frozen_decoder_calibration.cpp',
-    'code/encoders/raw_patch_bottleneck_mae/tests/frozen_decoder_calibration_test.cpp'}
+    'code/encoders/raw_patch_bottleneck_mae/versions/v7/include/embedding/encoders/raw_patch_bottleneck_mae/frozen_decoder_calibration.h',
+    'code/encoders/raw_patch_bottleneck_mae/versions/v7/src/frozen_decoder_calibration.cpp',
+    'code/encoders/raw_patch_bottleneck_mae/versions/v7/tests/frozen_decoder_calibration_test.cpp'}
 SOURCE_SUFFIXES = {'.h', '.cpp', '.py', '.sh', '.md', '.conf', '.lock'}
 
 def require(condition, message):

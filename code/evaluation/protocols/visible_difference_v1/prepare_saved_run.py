@@ -187,11 +187,11 @@ def freeze(args):
 
 def compile_records(log,binary,scopes):
     require('/embedding/.external/libtorch' not in log and 'not found' not in log,'internal LibTorch runtime')
-    old='code/encoders/raw_patch_bottleneck_mae/src/';od=binary.parent/'code/encoders/raw_patch_bottleneck_mae';nd=binary.parent/'code/protocols/visible_difference_v1'
+    old='code/encoders/raw_patch_bottleneck_mae/shared/src/';od=binary.parent/'code/encoders/raw_patch_bottleneck_mae';nd=binary.parent/'code/protocols/visible_difference_v1'
     requirements=[(old+'workflow.cpp',od/'workflow.o','RPB_SOURCE_ID','core_writer'),
                   (old+'learning_curve_adapter.cpp',od/'learning_curve_adapter.o','EVALUATION_SOURCE_ID','curve_training'),
                   (old+'early_mixer_adapter.cpp',od/'early_mixer_adapter.o','EARLY_MIXER_ADAPTER_SOURCE_ID','early_adapter'),
-                  (old+'visible_difference_adapter.cpp',nd/'visible_difference_adapter.o','VISIBLE_DIFFERENCE_ADAPTER_SOURCE_ID','visible_adapter'),
+                  ('code/encoders/raw_patch_bottleneck_mae/versions/v13/src/visible_difference_adapter.cpp',nd/'visible_difference_adapter.o','VISIBLE_DIFFERENCE_ADAPTER_SOURCE_ID','visible_adapter'),
                   (CODE+'/visible_difference_main.cpp',nd/'visible_difference_main.o','VISIBLE_DIFFERENCE_SOURCE_ID','visible_adapter')]
     lines=[]
     for line in log.splitlines():
@@ -326,8 +326,8 @@ def self_test(args):
     text=progress_text(dict(per_master=a),dict(cohorts=s));ok(len(text.splitlines())==6 and text.splitlines()[1].split('\t')[7].count(',')==511,'full metadata-derived target trace')
     s[0]['encoder_points'][0]['encoder_progress']['losses'].pop();reject(lambda:progress_text(dict(per_master=a),dict(cohorts=s)))
     scopes={n:dict(source_sha256='a'*64) for n in ['core_writer','curve_training','early_adapter','visible_adapter']}
-    old='code/encoders/raw_patch_bottleneck_mae/src/';od=BINARY.parent/'code/encoders/raw_patch_bottleneck_mae';nd=BINARY.parent/'code/protocols/visible_difference_v1'
-    specs=[(old+'workflow.cpp',od/'workflow.o','RPB_SOURCE_ID'),(old+'learning_curve_adapter.cpp',od/'learning_curve_adapter.o','EVALUATION_SOURCE_ID'),(old+'early_mixer_adapter.cpp',od/'early_mixer_adapter.o','EARLY_MIXER_ADAPTER_SOURCE_ID'),(old+'visible_difference_adapter.cpp',nd/'visible_difference_adapter.o','VISIBLE_DIFFERENCE_ADAPTER_SOURCE_ID'),(CODE+'/visible_difference_main.cpp',nd/'visible_difference_main.o','VISIBLE_DIFFERENCE_SOURCE_ID')]
+    old='code/encoders/raw_patch_bottleneck_mae/shared/src/';od=BINARY.parent/'code/encoders/raw_patch_bottleneck_mae';nd=BINARY.parent/'code/protocols/visible_difference_v1'
+    specs=[(old+'workflow.cpp',od/'workflow.o','RPB_SOURCE_ID'),(old+'learning_curve_adapter.cpp',od/'learning_curve_adapter.o','EVALUATION_SOURCE_ID'),(old+'early_mixer_adapter.cpp',od/'early_mixer_adapter.o','EARLY_MIXER_ADAPTER_SOURCE_ID'),('code/encoders/raw_patch_bottleneck_mae/versions/v13/src/visible_difference_adapter.cpp',nd/'visible_difference_adapter.o','VISIBLE_DIFFERENCE_ADAPTER_SOURCE_ID'),(CODE+'/visible_difference_main.cpp',nd/'visible_difference_main.o','VISIBLE_DIFFERENCE_SOURCE_ID')]
     lines=['g++ -D'+macro+'='+('a'*64)+' -c '+src+' -o '+str(obj) for src,obj,macro in specs]
     link='g++ '+' '.join(str(o) for _,o,_ in specs)+' -o '+str(BINARY)
     log='\n'.join([*lines,link]);ok(len(compile_records(log,BINARY,scopes)['commands'])==5,'exact object/macro/link positives')

@@ -113,16 +113,16 @@ EVALUATION_OBJECT_DIR := $(OBJECT_DIR)/evaluation
 EVALUATION_BIN ?= $(BUILD_DIR)/embedding_evaluate
 HARNESS_BIN ?= $(BUILD_DIR)/feature_harness
 
-RPB_CORE_HEADERS := $(filter-out $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/native_curve_gate.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/paired_pooling_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/optimization_diagnostic_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_replay_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_replication_adapter.h,$(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/*.h))
-RPB_PROVENANCE_INPUTS := $(sort $(RPB_CORE_HEADERS) $(RPB_ROOT)/src/workflow.cpp $(RPB_ROOT)/src/main.cpp $(wildcard $(RPB_ROOT)/config/*.conf) $(CODE_ROOT)/shared/include/embedding/shared/data.h $(CODE_ROOT)/shared/include/embedding/shared/types.h $(CODE_ROOT)/shared/include/embedding/shared/tensor_ops.h $(CODE_ROOT)/shared/src/data.cpp Makefile $(SDK_PROVENANCE_INPUTS))
+RPB_CORE_HEADERS := $(filter-out $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/native_curve_gate.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/paired_pooling_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/optimization_diagnostic_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_replay_adapter.h $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_replication_adapter.h,$(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/*.h)) $(wildcard $(RPB_ROOT)/shared/include/embedding/encoders/raw_patch_bottleneck_mae/*.h $(RPB_ROOT)/versions/*/include/embedding/encoders/raw_patch_bottleneck_mae/*.h)
+RPB_PROVENANCE_INPUTS := $(sort $(RPB_CORE_HEADERS) code/encoders/raw_patch_bottleneck_mae/shared/src/workflow.cpp code/encoders/raw_patch_bottleneck_mae/shared/src/main.cpp $(wildcard $(RPB_ROOT)/shared/config/*.conf $(RPB_ROOT)/versions/*/config/*.conf) $(CODE_ROOT)/shared/include/embedding/shared/data.h $(CODE_ROOT)/shared/include/embedding/shared/types.h $(CODE_ROOT)/shared/include/embedding/shared/tensor_ops.h $(CODE_ROOT)/shared/src/data.cpp Makefile $(SDK_PROVENANCE_INPUTS))
 RPB_SOURCE_ID := $(shell sha256sum $(RPB_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 SOURCE_GIT_HEAD := $(shell git -c safe.directory=$(CURDIR) rev-parse HEAD 2>/dev/null || printf unrecorded)
 SOURCE_GIT_DIRTY := $(shell if source_status=$$(git -c safe.directory=$(CURDIR) status --porcelain 2>/dev/null); then if test -n "$$source_status"; then printf dirty; else printf clean; fi; else printf unrecorded; fi)
 RPB_CPPFLAGS := -I$(RPB_ROOT)/include -I$(RPB_ROOT)/tests $(COMMON_CPPFLAGS) -DRPB_SOURCE_ID=\"$(RPB_SOURCE_ID)\" -DRPB_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DRPB_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
 
 MINIMUM_PROVENANCE_INPUTS := $(sort $(wildcard $(CODE_ROOT)/shared/include/embedding/shared/*.h $(CODE_ROOT)/shared/src/*.cpp $(ENCODER_ROOT)/include/embedding/encoders/mtf_jepa_mae_vicreg/*.h $(ENCODER_ROOT)/src/*.cpp $(ENCODER_ROOT)/config/*.conf $(EVALUATION_ROOT)/src/*.cpp $(EVALUATION_ROOT)/include/*.h) Makefile $(SDK_PROVENANCE_INPUTS))
-EVALUATION_PROVENANCE_INPUTS := $(sort $(MINIMUM_PROVENANCE_INPUTS) $(RPB_PROVENANCE_INPUTS) $(RPB_ROOT)/src/evaluation_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h $(RPB_ROOT)/src/reconstruction_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h $(RPB_ROOT)/src/learning_curve_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h $(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h))
-EVALUATION_PROVENANCE_INPUTS := $(sort $(EVALUATION_PROVENANCE_INPUTS) $(RPB_ROOT)/src/training_source_gain.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/training_source_gain.h)
+EVALUATION_PROVENANCE_INPUTS := $(sort $(MINIMUM_PROVENANCE_INPUTS) $(RPB_PROVENANCE_INPUTS) code/encoders/raw_patch_bottleneck_mae/shared/src/evaluation_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/evaluation_adapter.h code/encoders/raw_patch_bottleneck_mae/shared/src/reconstruction_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/reconstruction_adapter.h code/encoders/raw_patch_bottleneck_mae/shared/src/learning_curve_adapter.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/learning_curve_adapter.h $(wildcard $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h))
+EVALUATION_PROVENANCE_INPUTS := $(sort $(EVALUATION_PROVENANCE_INPUTS) code/encoders/raw_patch_bottleneck_mae/versions/v11/src/training_source_gain.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/training_source_gain.h)
 MINIMUM_SOURCE_ID := $(shell sha256sum $(MINIMUM_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 EVALUATION_SOURCE_ID := $(shell sha256sum $(EVALUATION_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 EVALUATION_PROVENANCE_CPPFLAGS := -DEVALUATION_SOURCE_ID=\"$(EVALUATION_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
@@ -146,7 +146,23 @@ rpb-mae: $(RPB_BIN)
 evaluation: $(EVALUATION_BIN)
 feature-harness: $(HARNESS_BIN)
 
-$(RPB_OBJECT_DIR)/%.o: $(RPB_ROOT)/src/%.cpp
+$(RPB_OBJECT_DIR)/%.o: code/encoders/raw_patch_bottleneck_mae/shared/src/%.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_OBJECT_DIR)/%.o: code/encoders/raw_patch_bottleneck_mae/versions/v11/src/%.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_OBJECT_DIR)/%.o: code/encoders/raw_patch_bottleneck_mae/versions/v13/src/%.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_OBJECT_DIR)/%.o: code/encoders/raw_patch_bottleneck_mae/versions/v7/src/%.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_OBJECT_DIR)/%.o: code/encoders/raw_patch_bottleneck_mae/versions/v9/src/%.cpp
 	mkdir -p "$(@D)"
 	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -180,11 +196,11 @@ $(MINIMUM_ADAPTER_OBJECT): $(ENCODER_ROOT)/src/evaluation_adapter.cpp $(MINIMUM_
 	mkdir -p "$(@D)"
 	$(CXX) $(MINIMUM_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_ADAPTER_OBJECT): $(RPB_ROOT)/src/evaluation_adapter.cpp $(EVALUATION_PROVENANCE_INPUTS)
+$(RPB_ADAPTER_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/evaluation_adapter.cpp $(EVALUATION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(RPB_CPPFLAGS) $(EVALUATION_PROVENANCE_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_RECONSTRUCTION_ADAPTER_OBJECT): $(RPB_ROOT)/src/reconstruction_adapter.cpp $(EVALUATION_PROVENANCE_INPUTS)
+$(RPB_RECONSTRUCTION_ADAPTER_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/reconstruction_adapter.cpp $(EVALUATION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(RPB_CPPFLAGS) $(EVALUATION_PROVENANCE_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -196,7 +212,103 @@ $(HARNESS_BIN): $(EVALUATION_OBJECT_DIR)/minimum_main.o $(EVALUATION_OBJECT_DIR)
 	mkdir -p "$(@D)"
 	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
 
-$(RPB_TEST_DIR)/%_test.o: $(RPB_ROOT)/tests/%_test.cpp
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/shared/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v10/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v12/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v13/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v14/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v15/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v16/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v17/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v18/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v19/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v20/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v21/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v22/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v23/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v24/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v25/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v26/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v27/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v28/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v29/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v30/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v6/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v7/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v8/tests/%_test.cpp
+	mkdir -p "$(@D)"
+	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(RPB_TEST_DIR)/%_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v9/tests/%_test.cpp
 	mkdir -p "$(@D)"
 	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -268,13 +380,13 @@ test-reconstruction-evaluation: $(SHARED_TEST_DIR)/reconstruction_evaluation_tes
 	$(SHARED_TEST_DIR)/reconstruction_evaluation_test
 
 smoke-rpb-mae: $(RPB_BIN)
-	EMBEDDING_BIN="$(abspath $(RPB_BIN))" EMBEDDING_RUN_ROOT="$(RUN_ROOT)" bash $(RPB_ROOT)/tests/cli_smoke.sh cpu
+	EMBEDDING_BIN="$(abspath $(RPB_BIN))" EMBEDDING_RUN_ROOT="$(RUN_ROOT)" bash code/encoders/raw_patch_bottleneck_mae/shared/tests/cli_smoke.sh cpu
 
 smoke-rpb-mae-cuda: $(RPB_BIN)
-	EMBEDDING_BIN="$(abspath $(RPB_BIN))" EMBEDDING_RUN_ROOT="$(RUN_ROOT)" bash $(RPB_ROOT)/tests/cli_smoke.sh cuda
+	EMBEDDING_BIN="$(abspath $(RPB_BIN))" EMBEDDING_RUN_ROOT="$(RUN_ROOT)" bash code/encoders/raw_patch_bottleneck_mae/shared/tests/cli_smoke.sh cuda
 
 periodic-rpb-mae: $(RPB_BIN)
-	EMBEDDING_BIN="$(abspath $(RPB_BIN))" EMBEDDING_RUN_ROOT="$(RUN_ROOT)" bash $(RPB_ROOT)/tests/periodic_checkpoint.sh
+	EMBEDDING_BIN="$(abspath $(RPB_BIN))" EMBEDDING_RUN_ROOT="$(RUN_ROOT)" bash code/encoders/raw_patch_bottleneck_mae/shared/tests/periodic_checkpoint.sh
 
 evaluate-minimum: $(HARNESS_BIN)
 	EMBEDDING_BIN="$(abspath $(HARNESS_BIN))" EMBEDDING_RUN_ROOT="$(RUN_ROOT)" bash $(CODE_ROOT)/scripts/evaluate-minimum.sh
@@ -299,7 +411,7 @@ $(EVALUATION_OBJECT_DIR)/learning_curve_main.o: $(EVALUATION_ROOT)/src/learning_
 	mkdir -p "$(@D)"
 	$(CXX) $(EVALUATION_CPPFLAGS) -I$(RPB_ROOT)/include $(CXXFLAGS) -c $< -o $@
 
-$(RPB_CURVE_ADAPTER_OBJECT): $(RPB_ROOT)/src/learning_curve_adapter.cpp $(EVALUATION_PROVENANCE_INPUTS)
+$(RPB_CURVE_ADAPTER_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/learning_curve_adapter.cpp $(EVALUATION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(RPB_CPPFLAGS) $(EVALUATION_PROVENANCE_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -406,7 +518,7 @@ evaluate-archive: $(ARCHIVE_READOUT_BIN)
 NATIVE_CURVE_BIN := $(BUILD_DIR)/embedding_native_curve
 NATIVE_CURVE_OBJECT := $(OBJECT_DIR)/shared/native_curve.o
 RPB_NATIVE_GATE_OBJECT := $(RPB_OBJECT_DIR)/native_curve_gate.o
-NATIVE_CURVE_PROVENANCE_INPUTS := $(sort $(wildcard $(CODE_ROOT)/shared/include/embedding/shared/*.h $(CODE_ROOT)/shared/src/*.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/*.h) $(RPB_ROOT)/src/workflow.cpp $(RPB_ROOT)/src/evaluation_adapter.cpp $(RPB_ROOT)/src/learning_curve_adapter.cpp $(RPB_ROOT)/src/native_curve_gate.cpp $(RPB_ROOT)/config/learned_global.conf $(EVALUATION_ROOT)/src/native_curve_main.cpp $(EVALUATION_ROOT)/cards/native_curve_v1.md $(CODE_ROOT)/scripts/evaluate-native-curve.sh Makefile dependencies.lock)
+NATIVE_CURVE_PROVENANCE_INPUTS := $(sort $(wildcard $(CODE_ROOT)/shared/include/embedding/shared/*.h $(CODE_ROOT)/shared/src/*.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/*.h) code/encoders/raw_patch_bottleneck_mae/shared/src/workflow.cpp code/encoders/raw_patch_bottleneck_mae/shared/src/evaluation_adapter.cpp code/encoders/raw_patch_bottleneck_mae/shared/src/learning_curve_adapter.cpp code/encoders/raw_patch_bottleneck_mae/shared/src/native_curve_gate.cpp code/encoders/raw_patch_bottleneck_mae/versions/v4/config/learned_global.conf $(EVALUATION_ROOT)/src/native_curve_main.cpp $(EVALUATION_ROOT)/cards/native_curve_v1.md $(CODE_ROOT)/scripts/evaluate-native-curve.sh Makefile dependencies.lock)
 NATIVE_CURVE_SOURCE_ID := $(shell sha256sum $(NATIVE_CURVE_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 NATIVE_CURVE_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(NATIVE_CURVE_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
 .PHONY: native-curve test-native-curve test-rpb-native-gate evaluate-native-curve
@@ -416,7 +528,7 @@ $(EVALUATION_OBJECT_DIR)/native_curve_main.o: $(EVALUATION_ROOT)/src/native_curv
 	mkdir -p "$(@D)"
 	$(CXX) $(NATIVE_CURVE_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_NATIVE_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(NATIVE_CURVE_PROVENANCE_INPUTS)
+$(RPB_NATIVE_GATE_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/native_curve_gate.cpp $(NATIVE_CURVE_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(NATIVE_CURVE_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -447,7 +559,7 @@ PAIRED_POOLING_BIN := $(BUILD_DIR)/embedding_paired_pooling
 PAIRED_POOLING_OBJECT := $(OBJECT_DIR)/shared/paired_pooling.o
 RPB_PAIRED_ADAPTER_OBJECT := $(RPB_OBJECT_DIR)/paired_pooling_adapter.o
 RPB_PAIRED_GATE_OBJECT := $(RPB_OBJECT_DIR)/paired_pooling_gate.o
-PAIRED_POOLING_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(RPB_ROOT)/config/learned_patch_global.conf $(EVALUATION_ROOT)/src/paired_pooling_main.cpp $(EVALUATION_ROOT)/cards/paired_pooling_v1.md $(CODE_ROOT)/scripts/evaluate-paired-pooling.sh)
+PAIRED_POOLING_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) code/encoders/raw_patch_bottleneck_mae/shared/src/paired_pooling_adapter.cpp code/encoders/raw_patch_bottleneck_mae/versions/v5/config/learned_patch_global.conf $(EVALUATION_ROOT)/src/paired_pooling_main.cpp $(EVALUATION_ROOT)/cards/paired_pooling_v1.md $(CODE_ROOT)/scripts/evaluate-paired-pooling.sh)
 PAIRED_POOLING_SOURCE_ID := $(shell sha256sum $(PAIRED_POOLING_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 PAIRED_POOLING_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(PAIRED_POOLING_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
 .PHONY: paired-pooling test-paired-pooling evaluate-paired-pooling
@@ -457,11 +569,11 @@ $(EVALUATION_OBJECT_DIR)/paired_pooling_main.o: $(EVALUATION_ROOT)/src/paired_po
 	mkdir -p "$(@D)"
 	$(CXX) $(PAIRED_POOLING_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_PAIRED_ADAPTER_OBJECT): $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(PAIRED_POOLING_PROVENANCE_INPUTS)
+$(RPB_PAIRED_ADAPTER_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/paired_pooling_adapter.cpp $(PAIRED_POOLING_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(PAIRED_POOLING_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_PAIRED_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(PAIRED_POOLING_PROVENANCE_INPUTS)
+$(RPB_PAIRED_GATE_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/native_curve_gate.cpp $(PAIRED_POOLING_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(PAIRED_POOLING_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -486,7 +598,7 @@ evaluate-paired-pooling: $(PAIRED_POOLING_BIN)
 OPTIMIZATION_DIAGNOSTIC_BIN := $(BUILD_DIR)/embedding_optimization_diagnostic
 RPB_OPTIMIZATION_ADAPTER_OBJECT := $(RPB_OBJECT_DIR)/optimization_diagnostic_adapter.o
 RPB_OPTIMIZATION_GATE_OBJECT := $(RPB_OBJECT_DIR)/optimization_diagnostic_gate.o
-OPTIMIZATION_DIAGNOSTIC_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/optimization_diagnostic_adapter.cpp $(RPB_ROOT)/config/learned_patch_global.conf $(EVALUATION_ROOT)/src/optimization_diagnostic_main.cpp $(EVALUATION_ROOT)/cards/optimization_validation_v1.md $(CODE_ROOT)/scripts/evaluate-optimization-diagnostic.sh)
+OPTIMIZATION_DIAGNOSTIC_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) code/encoders/raw_patch_bottleneck_mae/shared/src/optimization_diagnostic_adapter.cpp code/encoders/raw_patch_bottleneck_mae/versions/v5/config/learned_patch_global.conf $(EVALUATION_ROOT)/src/optimization_diagnostic_main.cpp $(EVALUATION_ROOT)/cards/optimization_validation_v1.md $(CODE_ROOT)/scripts/evaluate-optimization-diagnostic.sh)
 OPTIMIZATION_DIAGNOSTIC_SOURCE_ID := $(shell sha256sum $(OPTIMIZATION_DIAGNOSTIC_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 OPTIMIZATION_DIAGNOSTIC_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(OPTIMIZATION_DIAGNOSTIC_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
 .PHONY: optimization-diagnostic test-rpb-optimization-diagnostic evaluate-optimization-diagnostic
@@ -496,11 +608,11 @@ $(EVALUATION_OBJECT_DIR)/optimization_diagnostic_main.o: $(EVALUATION_ROOT)/src/
 	mkdir -p "$(@D)"
 	$(CXX) $(OPTIMIZATION_DIAGNOSTIC_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_OPTIMIZATION_ADAPTER_OBJECT): $(RPB_ROOT)/src/optimization_diagnostic_adapter.cpp $(OPTIMIZATION_DIAGNOSTIC_PROVENANCE_INPUTS)
+$(RPB_OPTIMIZATION_ADAPTER_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/optimization_diagnostic_adapter.cpp $(OPTIMIZATION_DIAGNOSTIC_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(OPTIMIZATION_DIAGNOSTIC_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_OPTIMIZATION_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(OPTIMIZATION_DIAGNOSTIC_PROVENANCE_INPUTS)
+$(RPB_OPTIMIZATION_GATE_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/native_curve_gate.cpp $(OPTIMIZATION_DIAGNOSTIC_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(OPTIMIZATION_DIAGNOSTIC_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -520,7 +632,7 @@ evaluate-optimization-diagnostic: $(OPTIMIZATION_DIAGNOSTIC_BIN)
 CONTEXT_DELETION_BIN := $(BUILD_DIR)/embedding_context_deletion
 RPB_CONTEXT_ADAPTER_OBJECT := $(RPB_OBJECT_DIR)/context_deletion_adapter.o
 RPB_CONTEXT_GATE_OBJECT := $(RPB_OBJECT_DIR)/context_deletion_gate.o
-CONTEXT_DELETION_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(RPB_ROOT)/src/context_deletion_adapter.cpp $(EVALUATION_ROOT)/src/context_deletion_main.cpp $(EVALUATION_ROOT)/cards/context_deletion_v1.md $(CODE_ROOT)/scripts/evaluate-context-deletion.sh $(CODE_ROOT)/scripts/check-context-deletion.sh)
+CONTEXT_DELETION_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) code/encoders/raw_patch_bottleneck_mae/shared/src/paired_pooling_adapter.cpp code/encoders/raw_patch_bottleneck_mae/shared/src/context_deletion_adapter.cpp $(EVALUATION_ROOT)/src/context_deletion_main.cpp $(EVALUATION_ROOT)/cards/context_deletion_v1.md $(CODE_ROOT)/scripts/evaluate-context-deletion.sh $(CODE_ROOT)/scripts/check-context-deletion.sh)
 CONTEXT_DELETION_SOURCE_ID := $(shell sha256sum $(CONTEXT_DELETION_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 CONTEXT_DELETION_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(CONTEXT_DELETION_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
 .PHONY: context-deletion test-rpb-context-deletion test-rpb-training-policy evaluate-context-deletion print-context-deletion-sources
@@ -533,11 +645,11 @@ $(EVALUATION_OBJECT_DIR)/context_deletion_main.o: $(EVALUATION_ROOT)/src/context
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_DELETION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_CONTEXT_ADAPTER_OBJECT): $(RPB_ROOT)/src/context_deletion_adapter.cpp $(CONTEXT_DELETION_PROVENANCE_INPUTS)
+$(RPB_CONTEXT_ADAPTER_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/context_deletion_adapter.cpp $(CONTEXT_DELETION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_DELETION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_CONTEXT_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(CONTEXT_DELETION_PROVENANCE_INPUTS)
+$(RPB_CONTEXT_GATE_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/native_curve_gate.cpp $(CONTEXT_DELETION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_DELETION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -568,7 +680,7 @@ evaluate-context-deletion: $(CONTEXT_DELETION_BIN)
 CONTEXT_OPTIMIZATION_BIN := $(BUILD_DIR)/embedding_context_optimization_validation
 RPB_CONTEXT_REPLAY_OBJECT := $(RPB_OBJECT_DIR)/context_replay_adapter.o
 RPB_CONTEXT_OPTIMIZATION_GATE_OBJECT := $(RPB_OBJECT_DIR)/context_optimization_gate.o
-CONTEXT_OPTIMIZATION_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/context_replay_adapter.cpp $(EVALUATION_ROOT)/src/context_optimization_validation_main.cpp $(EVALUATION_ROOT)/cards/context_optimization_validation_v1.md $(CODE_ROOT)/scripts/evaluate-context-optimization-validation.sh $(CODE_ROOT)/scripts/check-context-optimization-validation.sh)
+CONTEXT_OPTIMIZATION_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) code/encoders/raw_patch_bottleneck_mae/shared/src/context_replay_adapter.cpp $(EVALUATION_ROOT)/src/context_optimization_validation_main.cpp $(EVALUATION_ROOT)/cards/context_optimization_validation_v1.md $(CODE_ROOT)/scripts/evaluate-context-optimization-validation.sh $(CODE_ROOT)/scripts/check-context-optimization-validation.sh)
 CONTEXT_OPTIMIZATION_SOURCE_ID := $(shell sha256sum $(CONTEXT_OPTIMIZATION_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 CONTEXT_OPTIMIZATION_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(CONTEXT_OPTIMIZATION_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
 .PHONY: context-optimization-validation print-context-optimization-sources test-rpb-context-replay evaluate-context-optimization-validation
@@ -581,11 +693,11 @@ $(EVALUATION_OBJECT_DIR)/context_optimization_validation_main.o: $(EVALUATION_RO
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_OPTIMIZATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_CONTEXT_REPLAY_OBJECT): $(RPB_ROOT)/src/context_replay_adapter.cpp $(CONTEXT_OPTIMIZATION_PROVENANCE_INPUTS)
+$(RPB_CONTEXT_REPLAY_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/context_replay_adapter.cpp $(CONTEXT_OPTIMIZATION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_OPTIMIZATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_CONTEXT_OPTIMIZATION_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(CONTEXT_OPTIMIZATION_PROVENANCE_INPUTS)
+$(RPB_CONTEXT_OPTIMIZATION_GATE_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/native_curve_gate.cpp $(CONTEXT_OPTIMIZATION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_OPTIMIZATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -606,7 +718,7 @@ CONTEXT_REPLICATION_BIN := $(BUILD_DIR)/embedding_context_replication
 RPB_CONTEXT_REPLICATION_OBJECT := $(RPB_OBJECT_DIR)/context_replication_adapter.o
 RPB_CONTEXT_REPLICATION_GATE_OBJECT := $(RPB_OBJECT_DIR)/context_replication_gate.o
 RPB_CONTEXT_REPLICATION_RETAINED_OBJECT := $(RPB_OBJECT_DIR)/context_replication_retained.o
-CONTEXT_REPLICATION_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/context_replication_adapter.cpp $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(EVALUATION_ROOT)/src/context_replication_main.cpp $(EVALUATION_ROOT)/cards/context_replication_v1.md $(CODE_ROOT)/scripts/evaluate-context-replication.sh $(CODE_ROOT)/scripts/check-context-replication.sh)
+CONTEXT_REPLICATION_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) code/encoders/raw_patch_bottleneck_mae/shared/src/context_replication_adapter.cpp code/encoders/raw_patch_bottleneck_mae/shared/src/paired_pooling_adapter.cpp $(EVALUATION_ROOT)/src/context_replication_main.cpp $(EVALUATION_ROOT)/cards/context_replication_v1.md $(CODE_ROOT)/scripts/evaluate-context-replication.sh $(CODE_ROOT)/scripts/check-context-replication.sh)
 CONTEXT_REPLICATION_SOURCE_ID := $(shell sha256sum $(CONTEXT_REPLICATION_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 CONTEXT_REPLICATION_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(CONTEXT_REPLICATION_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
 .PHONY: context-replication print-context-replication-sources test-rpb-context-replication evaluate-context-replication
@@ -619,15 +731,15 @@ $(EVALUATION_OBJECT_DIR)/context_replication_main.o: $(EVALUATION_ROOT)/src/cont
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_REPLICATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_CONTEXT_REPLICATION_OBJECT): $(RPB_ROOT)/src/context_replication_adapter.cpp $(CONTEXT_REPLICATION_PROVENANCE_INPUTS)
+$(RPB_CONTEXT_REPLICATION_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/context_replication_adapter.cpp $(CONTEXT_REPLICATION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_REPLICATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_CONTEXT_REPLICATION_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(CONTEXT_REPLICATION_PROVENANCE_INPUTS)
+$(RPB_CONTEXT_REPLICATION_GATE_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/native_curve_gate.cpp $(CONTEXT_REPLICATION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_REPLICATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_CONTEXT_REPLICATION_RETAINED_OBJECT): $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(CONTEXT_REPLICATION_PROVENANCE_INPUTS)
+$(RPB_CONTEXT_REPLICATION_RETAINED_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/paired_pooling_adapter.cpp $(CONTEXT_REPLICATION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_REPLICATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -648,7 +760,7 @@ CONTEXT_LIGHTER_BIN := $(BUILD_DIR)/embedding_context_lighter_validation
 RPB_CONTEXT_LIGHTER_PAIR_GATE_OBJECT := $(RPB_OBJECT_DIR)/context_lighter_pair_gate.o
 RPB_CONTEXT_LIGHTER_RETAINED_OBJECT := $(RPB_OBJECT_DIR)/context_lighter_retained.o
 RPB_CONTEXT_LIGHTER_SERVING_GATE_OBJECT := $(RPB_OBJECT_DIR)/context_lighter_serving_gate.o
-CONTEXT_LIGHTER_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/context_replication_adapter.cpp $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(EVALUATION_ROOT)/src/context_lighter_validation_main.cpp $(EVALUATION_ROOT)/cards/context_lighter_validation_v1.md $(CODE_ROOT)/scripts/check-context-lighter-validation.sh $(CODE_ROOT)/scripts/evaluate-context-lighter-validation.sh)
+CONTEXT_LIGHTER_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) code/encoders/raw_patch_bottleneck_mae/shared/src/context_replication_adapter.cpp code/encoders/raw_patch_bottleneck_mae/shared/src/paired_pooling_adapter.cpp $(EVALUATION_ROOT)/src/context_lighter_validation_main.cpp $(EVALUATION_ROOT)/cards/context_lighter_validation_v1.md $(CODE_ROOT)/scripts/check-context-lighter-validation.sh $(CODE_ROOT)/scripts/evaluate-context-lighter-validation.sh)
 CONTEXT_LIGHTER_SOURCE_ID := $(shell sha256sum $(CONTEXT_LIGHTER_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 CONTEXT_LIGHTER_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(CONTEXT_LIGHTER_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
 .PHONY: context-lighter-validation print-context-lighter-sources test-rpb-context-lighter evaluate-context-lighter-validation
@@ -661,15 +773,15 @@ $(EVALUATION_OBJECT_DIR)/context_lighter_validation_main.o: $(EVALUATION_ROOT)/s
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_LIGHTER_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_CONTEXT_LIGHTER_PAIR_GATE_OBJECT): $(RPB_ROOT)/src/context_replication_adapter.cpp $(CONTEXT_LIGHTER_PROVENANCE_INPUTS)
+$(RPB_CONTEXT_LIGHTER_PAIR_GATE_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/context_replication_adapter.cpp $(CONTEXT_LIGHTER_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_LIGHTER_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_CONTEXT_LIGHTER_RETAINED_OBJECT): $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(CONTEXT_LIGHTER_PROVENANCE_INPUTS)
+$(RPB_CONTEXT_LIGHTER_RETAINED_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/paired_pooling_adapter.cpp $(CONTEXT_LIGHTER_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_LIGHTER_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_CONTEXT_LIGHTER_SERVING_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(CONTEXT_LIGHTER_PROVENANCE_INPUTS)
+$(RPB_CONTEXT_LIGHTER_SERVING_GATE_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/native_curve_gate.cpp $(CONTEXT_LIGHTER_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_LIGHTER_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -690,7 +802,7 @@ CONTEXT_BALANCED_BIN := $(BUILD_DIR)/embedding_context_balanced_validation
 RPB_CONTEXT_BALANCED_PAIR_GATE_OBJECT := $(RPB_OBJECT_DIR)/context_balanced_pair_gate.o
 RPB_CONTEXT_BALANCED_RETAINED_OBJECT := $(RPB_OBJECT_DIR)/context_balanced_retained.o
 RPB_CONTEXT_BALANCED_SERVING_GATE_OBJECT := $(RPB_OBJECT_DIR)/context_balanced_serving_gate.o
-CONTEXT_BALANCED_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/context_replication_adapter.cpp $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(EVALUATION_ROOT)/src/context_balanced_validation_main.cpp $(EVALUATION_ROOT)/cards/context_balanced_validation_v1.md $(CODE_ROOT)/scripts/check-context-balanced-validation.sh $(CODE_ROOT)/scripts/evaluate-context-balanced-validation.sh)
+CONTEXT_BALANCED_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) code/encoders/raw_patch_bottleneck_mae/shared/src/context_replication_adapter.cpp code/encoders/raw_patch_bottleneck_mae/shared/src/paired_pooling_adapter.cpp $(EVALUATION_ROOT)/src/context_balanced_validation_main.cpp $(EVALUATION_ROOT)/cards/context_balanced_validation_v1.md $(CODE_ROOT)/scripts/check-context-balanced-validation.sh $(CODE_ROOT)/scripts/evaluate-context-balanced-validation.sh)
 CONTEXT_BALANCED_SOURCE_ID := $(shell sha256sum $(CONTEXT_BALANCED_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 CONTEXT_BALANCED_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(CONTEXT_BALANCED_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
 .PHONY: context-balanced-validation print-context-balanced-sources test-rpb-context-balanced evaluate-context-balanced-validation
@@ -703,15 +815,15 @@ $(EVALUATION_OBJECT_DIR)/context_balanced_validation_main.o: $(EVALUATION_ROOT)/
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_BALANCED_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_CONTEXT_BALANCED_PAIR_GATE_OBJECT): $(RPB_ROOT)/src/context_replication_adapter.cpp $(CONTEXT_BALANCED_PROVENANCE_INPUTS)
+$(RPB_CONTEXT_BALANCED_PAIR_GATE_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/context_replication_adapter.cpp $(CONTEXT_BALANCED_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_BALANCED_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_CONTEXT_BALANCED_RETAINED_OBJECT): $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(CONTEXT_BALANCED_PROVENANCE_INPUTS)
+$(RPB_CONTEXT_BALANCED_RETAINED_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/paired_pooling_adapter.cpp $(CONTEXT_BALANCED_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_BALANCED_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_CONTEXT_BALANCED_SERVING_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(CONTEXT_BALANCED_PROVENANCE_INPUTS)
+$(RPB_CONTEXT_BALANCED_SERVING_GATE_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/native_curve_gate.cpp $(CONTEXT_BALANCED_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(CONTEXT_BALANCED_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -730,7 +842,7 @@ evaluate-context-balanced-validation: $(CONTEXT_BALANCED_BIN)
 # TRAIN-only frozen-weight diagnosis; no mixed-split evaluator or training driver.
 TRAINING_OBJECTIVE_BIN := $(BUILD_DIR)/embedding_training_objective_diagnostic
 RPB_TRAINING_OBJECTIVE_OBJECT := $(RPB_OBJECT_DIR)/training_objective_diagnostic.o
-TRAINING_OBJECTIVE_PROVENANCE_INPUTS := $(sort $(RPB_CORE_HEADERS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h $(RPB_ROOT)/src/workflow.cpp $(RPB_ROOT)/src/training_objective_diagnostic.cpp $(RPB_ROOT)/tests/training_objective_diagnostic_test.cpp $(RPB_ROOT)/tests/rpb_test_support.h $(wildcard $(CODE_ROOT)/shared/include/embedding/shared/*.h) $(CODE_ROOT)/shared/src/data.cpp $(EVALUATION_ROOT)/src/training_objective_diagnostic_main.cpp $(EVALUATION_ROOT)/cards/training_objective_diagnostic_v1.md $(CODE_ROOT)/scripts/prepare-training-objective-inputs.py $(CODE_ROOT)/scripts/check-training-objective-diagnostic.sh $(CODE_ROOT)/scripts/evaluate-training-objective-diagnostic.sh Makefile dependencies.lock)
+TRAINING_OBJECTIVE_PROVENANCE_INPUTS := $(sort $(RPB_CORE_HEADERS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/context_deletion.h code/encoders/raw_patch_bottleneck_mae/shared/src/workflow.cpp code/encoders/raw_patch_bottleneck_mae/shared/src/training_objective_diagnostic.cpp code/encoders/raw_patch_bottleneck_mae/shared/tests/training_objective_diagnostic_test.cpp code/encoders/raw_patch_bottleneck_mae/shared/tests/rpb_test_support.h $(wildcard $(CODE_ROOT)/shared/include/embedding/shared/*.h) $(CODE_ROOT)/shared/src/data.cpp $(EVALUATION_ROOT)/src/training_objective_diagnostic_main.cpp $(EVALUATION_ROOT)/cards/training_objective_diagnostic_v1.md $(CODE_ROOT)/scripts/prepare-training-objective-inputs.py $(CODE_ROOT)/scripts/check-training-objective-diagnostic.sh $(CODE_ROOT)/scripts/evaluate-training-objective-diagnostic.sh Makefile dependencies.lock)
 TRAINING_OBJECTIVE_SOURCE_ID := $(shell sha256sum $(TRAINING_OBJECTIVE_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 TRAINING_OBJECTIVE_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(TRAINING_OBJECTIVE_SOURCE_ID)\"
 .PHONY: training-objective-diagnostic print-training-objective-sources test-rpb-training-objective-diagnostic evaluate-training-objective-diagnostic
@@ -743,14 +855,14 @@ $(EVALUATION_OBJECT_DIR)/training_objective_diagnostic_main.o: $(EVALUATION_ROOT
 	mkdir -p "$(@D)"
 	$(CXX) $(TRAINING_OBJECTIVE_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_TRAINING_OBJECTIVE_OBJECT): $(RPB_ROOT)/src/training_objective_diagnostic.cpp $(TRAINING_OBJECTIVE_PROVENANCE_INPUTS)
+$(RPB_TRAINING_OBJECTIVE_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/training_objective_diagnostic.cpp $(TRAINING_OBJECTIVE_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(TRAINING_OBJECTIVE_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 $(TRAINING_OBJECTIVE_BIN): $(EVALUATION_OBJECT_DIR)/training_objective_diagnostic_main.o $(RPB_TRAINING_OBJECTIVE_OBJECT) $(RPB_WORKFLOW_OBJECT) $(OBJECT_DIR)/shared/data.o
 	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
 
-$(RPB_TEST_DIR)/training_objective_diagnostic_test.o: $(RPB_ROOT)/tests/training_objective_diagnostic_test.cpp $(TRAINING_OBJECTIVE_PROVENANCE_INPUTS)
+$(RPB_TEST_DIR)/training_objective_diagnostic_test.o: code/encoders/raw_patch_bottleneck_mae/shared/tests/training_objective_diagnostic_test.cpp $(TRAINING_OBJECTIVE_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(TRAINING_OBJECTIVE_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
 
@@ -769,7 +881,7 @@ RPB_NATIVE_VIEW_AGREEMENT_OBJECT := $(RPB_OBJECT_DIR)/native_view_agreement.o
 RPB_NATIVE_VIEW_AGREEMENT_PAIR_GATE_OBJECT := $(RPB_OBJECT_DIR)/native_view_agreement_pair_gate.o
 RPB_NATIVE_VIEW_AGREEMENT_RETAINED_OBJECT := $(RPB_OBJECT_DIR)/native_view_agreement_retained.o
 RPB_NATIVE_VIEW_AGREEMENT_SERVING_GATE_OBJECT := $(RPB_OBJECT_DIR)/native_view_agreement_serving_gate.o
-NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/native_view_agreement.cpp $(RPB_ROOT)/src/context_replication_adapter.cpp $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(EVALUATION_ROOT)/src/native_view_agreement_validation_main.cpp $(EVALUATION_ROOT)/cards/native_view_agreement_validation_v1.md $(CODE_ROOT)/scripts/check-native-view-agreement-validation.sh $(CODE_ROOT)/scripts/evaluate-native-view-agreement-validation.sh)
+NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) code/encoders/raw_patch_bottleneck_mae/versions/v9/src/native_view_agreement.cpp code/encoders/raw_patch_bottleneck_mae/shared/src/context_replication_adapter.cpp code/encoders/raw_patch_bottleneck_mae/shared/src/paired_pooling_adapter.cpp $(EVALUATION_ROOT)/src/native_view_agreement_validation_main.cpp $(EVALUATION_ROOT)/cards/native_view_agreement_validation_v1.md $(CODE_ROOT)/scripts/check-native-view-agreement-validation.sh $(CODE_ROOT)/scripts/evaluate-native-view-agreement-validation.sh)
 NATIVE_VIEW_AGREEMENT_VALIDATION_SOURCE_ID := $(shell sha256sum $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 NATIVE_VIEW_AGREEMENT_VALIDATION_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(NATIVE_VIEW_AGREEMENT_VALIDATION_SOURCE_ID)\" -DEVALUATION_GIT_HEAD=\"$(SOURCE_GIT_HEAD)\" -DEVALUATION_GIT_DIRTY=\"$(SOURCE_GIT_DIRTY)\"
 .PHONY: native-view-agreement-validation print-native-view-agreement-validation-sources test-rpb-native-view-agreement evaluate-native-view-agreement-validation
@@ -782,26 +894,26 @@ $(EVALUATION_OBJECT_DIR)/native_view_agreement_validation_main.o: $(EVALUATION_R
 	mkdir -p "$(@D)"
 	$(CXX) $(NATIVE_VIEW_AGREEMENT_VALIDATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_NATIVE_VIEW_AGREEMENT_OBJECT): $(RPB_ROOT)/src/native_view_agreement.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
+$(RPB_NATIVE_VIEW_AGREEMENT_OBJECT): code/encoders/raw_patch_bottleneck_mae/versions/v9/src/native_view_agreement.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(NATIVE_VIEW_AGREEMENT_VALIDATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_NATIVE_VIEW_AGREEMENT_PAIR_GATE_OBJECT): $(RPB_ROOT)/src/context_replication_adapter.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
+$(RPB_NATIVE_VIEW_AGREEMENT_PAIR_GATE_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/context_replication_adapter.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(NATIVE_VIEW_AGREEMENT_VALIDATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_NATIVE_VIEW_AGREEMENT_RETAINED_OBJECT): $(RPB_ROOT)/src/paired_pooling_adapter.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
+$(RPB_NATIVE_VIEW_AGREEMENT_RETAINED_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/paired_pooling_adapter.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(NATIVE_VIEW_AGREEMENT_VALIDATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_NATIVE_VIEW_AGREEMENT_SERVING_GATE_OBJECT): $(RPB_ROOT)/src/native_curve_gate.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
+$(RPB_NATIVE_VIEW_AGREEMENT_SERVING_GATE_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/native_curve_gate.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(NATIVE_VIEW_AGREEMENT_VALIDATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 $(NATIVE_VIEW_AGREEMENT_VALIDATION_BIN): $(EVALUATION_OBJECT_DIR)/native_view_agreement_validation_main.o $(RPB_NATIVE_VIEW_AGREEMENT_OBJECT) $(RPB_NATIVE_VIEW_AGREEMENT_PAIR_GATE_OBJECT) $(RPB_NATIVE_VIEW_AGREEMENT_RETAINED_OBJECT) $(RPB_NATIVE_VIEW_AGREEMENT_SERVING_GATE_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS)
 	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
 
-$(RPB_TEST_DIR)/native_view_agreement_test.o: $(RPB_ROOT)/tests/native_view_agreement_test.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
+$(RPB_TEST_DIR)/native_view_agreement_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v9/tests/native_view_agreement_test.cpp $(NATIVE_VIEW_AGREEMENT_VALIDATION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(NATIVE_VIEW_AGREEMENT_VALIDATION_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
 
@@ -818,7 +930,7 @@ evaluate-native-view-agreement-validation: $(NATIVE_VIEW_AGREEMENT_VALIDATION_BI
 V7_DECODER_CALIBRATION_BIN := $(BUILD_DIR)/embedding_v7_decoder_calibration
 RPB_DECODER_CALIBRATION_OBJECT := $(RPB_OBJECT_DIR)/decoder_calibration.o
 RPB_FROZEN_DECODER_CALIBRATION_OBJECT := $(RPB_OBJECT_DIR)/frozen_decoder_calibration.o
-V7_DECODER_CALIBRATION_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/frozen_decoder_calibration.h $(RPB_ROOT)/src/frozen_decoder_calibration.cpp $(RPB_ROOT)/src/decoder_calibration.cpp $(RPB_ROOT)/tests/decoder_calibration_test.cpp $(RPB_ROOT)/tests/rpb_test_support.h $(CODE_ROOT)/shared/tests/shared_test_support.h $(EVALUATION_ROOT)/src/v7_decoder_calibration_main.cpp $(EVALUATION_ROOT)/include/frozen_role_guard.h $(EVALUATION_ROOT)/tests/frozen_role_guard_test.cpp $(EVALUATION_ROOT)/cards/v7_decoder_calibration_v1.md $(CODE_ROOT)/scripts/check-v7-decoder-calibration.sh $(CODE_ROOT)/scripts/evaluate-v7-decoder-calibration.sh $(CODE_ROOT)/scripts/prepare-v7-decoder-inputs.py)
+V7_DECODER_CALIBRATION_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/frozen_decoder_calibration.h code/encoders/raw_patch_bottleneck_mae/versions/v7/src/frozen_decoder_calibration.cpp code/encoders/raw_patch_bottleneck_mae/versions/v7/src/decoder_calibration.cpp code/encoders/raw_patch_bottleneck_mae/versions/v7/tests/decoder_calibration_test.cpp code/encoders/raw_patch_bottleneck_mae/shared/tests/rpb_test_support.h $(CODE_ROOT)/shared/tests/shared_test_support.h $(EVALUATION_ROOT)/src/v7_decoder_calibration_main.cpp $(EVALUATION_ROOT)/include/frozen_role_guard.h $(EVALUATION_ROOT)/tests/frozen_role_guard_test.cpp $(EVALUATION_ROOT)/cards/v7_decoder_calibration_v1.md $(CODE_ROOT)/scripts/check-v7-decoder-calibration.sh $(CODE_ROOT)/scripts/evaluate-v7-decoder-calibration.sh $(CODE_ROOT)/scripts/prepare-v7-decoder-inputs.py)
 V7_DECODER_CALIBRATION_SOURCE_ID := $(shell sha256sum $(V7_DECODER_CALIBRATION_INPUTS) | sha256sum | cut -d ' ' -f 1)
 V7_DECODER_CALIBRATION_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(V7_DECODER_CALIBRATION_SOURCE_ID)\" -DDECODER_CALIBRATION_SOURCE_ID=\"$(V7_DECODER_CALIBRATION_SOURCE_ID)\"
 .PHONY: v7-decoder-calibration print-v7-decoder-calibration-sources test-rpb-decoder-calibration test-frozen-role-guard evaluate-v7-decoder-calibration
@@ -830,14 +942,14 @@ $(EVALUATION_OBJECT_DIR)/v7_decoder_calibration_main.o: $(EVALUATION_ROOT)/src/v
 	mkdir -p "$(@D)"
 	$(CXX) $(V7_DECODER_CALIBRATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_DECODER_CALIBRATION_OBJECT): $(RPB_ROOT)/src/decoder_calibration.cpp $(V7_DECODER_CALIBRATION_INPUTS)
+$(RPB_DECODER_CALIBRATION_OBJECT): code/encoders/raw_patch_bottleneck_mae/versions/v7/src/decoder_calibration.cpp $(V7_DECODER_CALIBRATION_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(V7_DECODER_CALIBRATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 $(V7_DECODER_CALIBRATION_BIN): $(EVALUATION_OBJECT_DIR)/v7_decoder_calibration_main.o $(RPB_DECODER_CALIBRATION_OBJECT) $(RPB_FROZEN_DECODER_CALIBRATION_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(RPB_WORKFLOW_OBJECT) $(EVALUATION_COMMON_OBJECTS)
 	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
 
-$(RPB_TEST_DIR)/decoder_calibration_test.o: $(RPB_ROOT)/tests/decoder_calibration_test.cpp $(V7_DECODER_CALIBRATION_INPUTS)
+$(RPB_TEST_DIR)/decoder_calibration_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v7/tests/decoder_calibration_test.cpp $(V7_DECODER_CALIBRATION_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(V7_DECODER_CALIBRATION_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
 
@@ -861,7 +973,7 @@ evaluate-v7-decoder-calibration: $(V7_DECODER_CALIBRATION_BIN)
 # separate public protocol bindings, artifact identities and producer scopes.
 FRESH_DECODER_REPLICATION_BIN := $(BUILD_DIR)/embedding_fresh_decoder_replication
 FIXED_FEATURE_READOUTS_OBJECT := $(OBJECT_DIR)/shared/fixed_feature_readouts.o
-FRESH_DECODER_REPLICATION_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/frozen_decoder_calibration.h $(RPB_ROOT)/src/frozen_decoder_calibration.cpp $(RPB_ROOT)/src/decoder_calibration.cpp $(RPB_ROOT)/tests/frozen_decoder_calibration_test.cpp $(RPB_ROOT)/tests/decoder_calibration_test.cpp $(RPB_ROOT)/tests/rpb_test_support.h $(CODE_ROOT)/shared/tests/shared_test_support.h $(CODE_ROOT)/shared/include/embedding/shared/fixed_feature_readouts.h $(CODE_ROOT)/shared/src/fixed_feature_readouts.cpp $(CODE_ROOT)/shared/tests/fixed_feature_readouts_test.cpp $(EVALUATION_ROOT)/src/fresh_decoder_replication_main.cpp $(EVALUATION_ROOT)/include/frozen_role_guard.h $(EVALUATION_ROOT)/tests/frozen_role_guard_test.cpp $(EVALUATION_ROOT)/cards/fresh_decoder_replication_v1.md $(CODE_ROOT)/scripts/check-fresh-decoder-replication.sh $(CODE_ROOT)/scripts/evaluate-fresh-decoder-replication.sh $(CODE_ROOT)/scripts/prepare-fresh-decoder-replication.py)
+FRESH_DECODER_REPLICATION_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/frozen_decoder_calibration.h code/encoders/raw_patch_bottleneck_mae/versions/v7/src/frozen_decoder_calibration.cpp code/encoders/raw_patch_bottleneck_mae/versions/v7/src/decoder_calibration.cpp code/encoders/raw_patch_bottleneck_mae/versions/v7/tests/frozen_decoder_calibration_test.cpp code/encoders/raw_patch_bottleneck_mae/versions/v7/tests/decoder_calibration_test.cpp code/encoders/raw_patch_bottleneck_mae/shared/tests/rpb_test_support.h $(CODE_ROOT)/shared/tests/shared_test_support.h $(CODE_ROOT)/shared/include/embedding/shared/fixed_feature_readouts.h $(CODE_ROOT)/shared/src/fixed_feature_readouts.cpp $(CODE_ROOT)/shared/tests/fixed_feature_readouts_test.cpp $(EVALUATION_ROOT)/src/fresh_decoder_replication_main.cpp $(EVALUATION_ROOT)/include/frozen_role_guard.h $(EVALUATION_ROOT)/tests/frozen_role_guard_test.cpp $(EVALUATION_ROOT)/cards/fresh_decoder_replication_v1.md $(CODE_ROOT)/scripts/check-fresh-decoder-replication.sh $(CODE_ROOT)/scripts/evaluate-fresh-decoder-replication.sh $(CODE_ROOT)/scripts/prepare-fresh-decoder-replication.py)
 FRESH_DECODER_REPLICATION_SOURCE_ID := $(shell sha256sum $(FRESH_DECODER_REPLICATION_INPUTS) | sha256sum | cut -d ' ' -f 1)
 FRESH_DECODER_REPLICATION_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(FRESH_DECODER_REPLICATION_SOURCE_ID)\" -DFROZEN_DECODER_CALIBRATION_SOURCE_ID=\"$(FRESH_DECODER_REPLICATION_SOURCE_ID)\"
 .PHONY: fresh-decoder-replication print-fresh-decoder-replication-sources test-rpb-frozen-decoder-calibration test-fixed-feature-readouts evaluate-fresh-decoder-replication
@@ -873,7 +985,7 @@ $(EVALUATION_OBJECT_DIR)/fresh_decoder_replication_main.o: $(EVALUATION_ROOT)/sr
 	mkdir -p "$(@D)"
 	$(CXX) $(FRESH_DECODER_REPLICATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(RPB_FROZEN_DECODER_CALIBRATION_OBJECT): $(RPB_ROOT)/src/frozen_decoder_calibration.cpp $(FRESH_DECODER_REPLICATION_INPUTS)
+$(RPB_FROZEN_DECODER_CALIBRATION_OBJECT): code/encoders/raw_patch_bottleneck_mae/versions/v7/src/frozen_decoder_calibration.cpp $(FRESH_DECODER_REPLICATION_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(FRESH_DECODER_REPLICATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -894,7 +1006,7 @@ test-fixed-feature-readouts: $(SHARED_TEST_DIR)/fixed_feature_readouts_test
 $(FRESH_DECODER_REPLICATION_BIN): $(EVALUATION_OBJECT_DIR)/fresh_decoder_replication_main.o $(RPB_FROZEN_DECODER_CALIBRATION_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS) $(FIXED_FEATURE_READOUTS_OBJECT)
 	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
 
-$(RPB_TEST_DIR)/frozen_decoder_calibration_test.o: $(RPB_ROOT)/tests/frozen_decoder_calibration_test.cpp $(FRESH_DECODER_REPLICATION_INPUTS)
+$(RPB_TEST_DIR)/frozen_decoder_calibration_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v7/tests/frozen_decoder_calibration_test.cpp $(FRESH_DECODER_REPLICATION_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(FRESH_DECODER_REPLICATION_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
 
@@ -946,7 +1058,7 @@ evaluate-saved-native-reliability: $(SAVED_NATIVE_RELIABILITY_BIN)
 # identity without changing legacy binary/object scopes or quality protocols.
 FROZEN_AMPLITUDE_TRANSFER_BIN := $(BUILD_DIR)/embedding_frozen_amplitude_transfer
 FROZEN_NATIVE_FEATURE_OBJECT := $(RPB_OBJECT_DIR)/frozen_native_feature_adapter.o
-FROZEN_AMPLITUDE_TRANSFER_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) $(RPB_ROOT)/src/frozen_decoder_calibration.cpp $(RPB_ROOT)/src/decoder_calibration.cpp $(RPB_ROOT)/tests/frozen_native_feature_adapter_test.cpp $(RPB_ROOT)/tests/frozen_decoder_calibration_test.cpp $(RPB_ROOT)/tests/rpb_test_support.h $(CODE_ROOT)/shared/tests/shared_test_support.h $(CODE_ROOT)/shared/tests/fixed_feature_readouts_test.cpp $(EVALUATION_ROOT)/src/frozen_amplitude_transfer_main.cpp $(EVALUATION_ROOT)/src/fresh_decoder_replication_main.cpp $(EVALUATION_ROOT)/include/frozen_role_guard.h $(EVALUATION_ROOT)/tests/frozen_role_guard_test.cpp $(EVALUATION_ROOT)/cards/frozen_amplitude_transfer_v1.md $(CODE_ROOT)/scripts/check-frozen-amplitude-transfer.sh $(CODE_ROOT)/scripts/evaluate-frozen-amplitude-transfer.sh $(CODE_ROOT)/scripts/prepare-frozen-amplitude-transfer.py $(CODE_ROOT)/scripts/prepare-fresh-decoder-replication.py)
+FROZEN_AMPLITUDE_TRANSFER_INPUTS := $(sort $(NATIVE_CURVE_PROVENANCE_INPUTS) code/encoders/raw_patch_bottleneck_mae/versions/v7/src/frozen_decoder_calibration.cpp code/encoders/raw_patch_bottleneck_mae/versions/v7/src/decoder_calibration.cpp code/encoders/raw_patch_bottleneck_mae/versions/v7/tests/frozen_native_feature_adapter_test.cpp code/encoders/raw_patch_bottleneck_mae/versions/v7/tests/frozen_decoder_calibration_test.cpp code/encoders/raw_patch_bottleneck_mae/shared/tests/rpb_test_support.h $(CODE_ROOT)/shared/tests/shared_test_support.h $(CODE_ROOT)/shared/tests/fixed_feature_readouts_test.cpp $(EVALUATION_ROOT)/src/frozen_amplitude_transfer_main.cpp $(EVALUATION_ROOT)/src/fresh_decoder_replication_main.cpp $(EVALUATION_ROOT)/include/frozen_role_guard.h $(EVALUATION_ROOT)/tests/frozen_role_guard_test.cpp $(EVALUATION_ROOT)/cards/frozen_amplitude_transfer_v1.md $(CODE_ROOT)/scripts/check-frozen-amplitude-transfer.sh $(CODE_ROOT)/scripts/evaluate-frozen-amplitude-transfer.sh $(CODE_ROOT)/scripts/prepare-frozen-amplitude-transfer.py $(CODE_ROOT)/scripts/prepare-fresh-decoder-replication.py)
 FROZEN_AMPLITUDE_TRANSFER_SOURCE_ID := $(shell sha256sum $(FROZEN_AMPLITUDE_TRANSFER_INPUTS) | sha256sum | cut -d ' ' -f 1)
 FROZEN_AMPLITUDE_TRANSFER_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(FROZEN_AMPLITUDE_TRANSFER_SOURCE_ID)\" -DFROZEN_NATIVE_FEATURE_SOURCE_ID=\"$(FROZEN_AMPLITUDE_TRANSFER_SOURCE_ID)\" -DFROZEN_DECODER_CALIBRATION_SOURCE_ID=\"$(FROZEN_AMPLITUDE_TRANSFER_SOURCE_ID)\"
 .PHONY: frozen-amplitude-transfer print-frozen-amplitude-transfer-sources test-rpb-frozen-native-feature test-frozen-amplitude-legacy evaluate-frozen-amplitude-transfer
@@ -958,14 +1070,14 @@ $(EVALUATION_OBJECT_DIR)/frozen_amplitude_transfer_main.o: $(EVALUATION_ROOT)/sr
 	mkdir -p "$(@D)"
 	$(CXX) $(FROZEN_AMPLITUDE_TRANSFER_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(FROZEN_NATIVE_FEATURE_OBJECT): $(RPB_ROOT)/src/frozen_decoder_calibration.cpp $(FROZEN_AMPLITUDE_TRANSFER_INPUTS)
+$(FROZEN_NATIVE_FEATURE_OBJECT): code/encoders/raw_patch_bottleneck_mae/versions/v7/src/frozen_decoder_calibration.cpp $(FROZEN_AMPLITUDE_TRANSFER_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(FROZEN_AMPLITUDE_TRANSFER_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 $(FROZEN_AMPLITUDE_TRANSFER_BIN): $(EVALUATION_OBJECT_DIR)/frozen_amplitude_transfer_main.o $(FROZEN_NATIVE_FEATURE_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS) $(FIXED_FEATURE_READOUTS_OBJECT)
 	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
 
-$(RPB_TEST_DIR)/frozen_native_feature_adapter_test.o: $(RPB_ROOT)/tests/frozen_native_feature_adapter_test.cpp $(FROZEN_AMPLITUDE_TRANSFER_INPUTS)
+$(RPB_TEST_DIR)/frozen_native_feature_adapter_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v7/tests/frozen_native_feature_adapter_test.cpp $(FROZEN_AMPLITUDE_TRANSFER_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(FROZEN_AMPLITUDE_TRANSFER_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
 
@@ -976,7 +1088,7 @@ test-rpb-frozen-native-feature: $(RPB_TEST_DIR)/frozen_native_feature_adapter_te
 	$(RPB_TEST_DIR)/frozen_native_feature_adapter_test
 
 # Execute the existing legacy test source against the new shared backend.
-$(RPB_TEST_DIR)/frozen_amplitude_legacy_test.o: $(RPB_ROOT)/tests/frozen_decoder_calibration_test.cpp $(FROZEN_AMPLITUDE_TRANSFER_INPUTS)
+$(RPB_TEST_DIR)/frozen_amplitude_legacy_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v7/tests/frozen_decoder_calibration_test.cpp $(FROZEN_AMPLITUDE_TRANSFER_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(FROZEN_AMPLITUDE_TRANSFER_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
 
@@ -994,7 +1106,7 @@ evaluate-frozen-amplitude-transfer: $(FROZEN_AMPLITUDE_TRANSFER_BIN)
 EARLY_MIXER_RELIABILITY_BIN := $(BUILD_DIR)/embedding_early_mixer_reliability
 EARLY_MIXER_ADAPTER_OBJECT := $(RPB_OBJECT_DIR)/early_mixer_adapter.o
 EARLY_MIXER_LEGACY_FROZEN_OBJECT := $(RPB_OBJECT_DIR)/early_mixer_legacy_frozen.o
-EARLY_MIXER_RELIABILITY_INPUTS := $(sort $(RPB_PROVENANCE_INPUTS) $(EVALUATION_PROVENANCE_INPUTS) $(NATIVE_CURVE_PROVENANCE_INPUTS) $(PAIRED_POOLING_PROVENANCE_INPUTS) $(ARCHIVE_READOUT_PROVENANCE_INPUTS) $(V7_DECODER_CALIBRATION_INPUTS) $(FRESH_DECODER_REPLICATION_INPUTS) $(wildcard $(RPB_ROOT)/src/*.cpp) $(RPB_ROOT)/tests/early_mixer_model_test.cpp $(RPB_ROOT)/tests/early_mixer_adapter_test.cpp $(RPB_ROOT)/tests/rpb_test_support.h $(CODE_ROOT)/shared/tests/shared_test_support.h $(CODE_ROOT)/shared/tests/fixed_feature_readouts_test.cpp $(EVALUATION_ROOT)/src/early_mixer_reliability_main.cpp $(EVALUATION_ROOT)/include/frozen_role_guard.h $(EVALUATION_ROOT)/tests/frozen_role_guard_test.cpp $(EVALUATION_ROOT)/cards/early_mixer_reliability_v1.md $(CODE_ROOT)/scripts/check-early-mixer-reliability.sh $(CODE_ROOT)/scripts/evaluate-early-mixer-reliability.sh $(CODE_ROOT)/scripts/prepare-early-mixer-reliability.py $(CODE_ROOT)/scripts/prepare-fresh-decoder-replication.py)
+EARLY_MIXER_RELIABILITY_INPUTS := $(sort $(RPB_PROVENANCE_INPUTS) $(EVALUATION_PROVENANCE_INPUTS) $(NATIVE_CURVE_PROVENANCE_INPUTS) $(PAIRED_POOLING_PROVENANCE_INPUTS) $(ARCHIVE_READOUT_PROVENANCE_INPUTS) $(V7_DECODER_CALIBRATION_INPUTS) $(FRESH_DECODER_REPLICATION_INPUTS) $(wildcard $(RPB_ROOT)/shared/src/*.cpp $(RPB_ROOT)/versions/*/src/*.cpp) code/encoders/raw_patch_bottleneck_mae/versions/v10/tests/early_mixer_model_test.cpp code/encoders/raw_patch_bottleneck_mae/shared/tests/early_mixer_adapter_test.cpp code/encoders/raw_patch_bottleneck_mae/shared/tests/rpb_test_support.h $(CODE_ROOT)/shared/tests/shared_test_support.h $(CODE_ROOT)/shared/tests/fixed_feature_readouts_test.cpp $(EVALUATION_ROOT)/src/early_mixer_reliability_main.cpp $(EVALUATION_ROOT)/include/frozen_role_guard.h $(EVALUATION_ROOT)/tests/frozen_role_guard_test.cpp $(EVALUATION_ROOT)/cards/early_mixer_reliability_v1.md $(CODE_ROOT)/scripts/check-early-mixer-reliability.sh $(CODE_ROOT)/scripts/evaluate-early-mixer-reliability.sh $(CODE_ROOT)/scripts/prepare-early-mixer-reliability.py $(CODE_ROOT)/scripts/prepare-fresh-decoder-replication.py)
 EARLY_MIXER_RELIABILITY_SOURCE_ID := $(shell sha256sum $(EARLY_MIXER_RELIABILITY_INPUTS) | sha256sum | cut -d ' ' -f 1)
 EARLY_MIXER_RELIABILITY_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(EARLY_MIXER_RELIABILITY_SOURCE_ID)\" -DEARLY_MIXER_ADAPTER_SOURCE_ID=\"$(EARLY_MIXER_RELIABILITY_SOURCE_ID)\"
 .PHONY: early-mixer-reliability print-early-mixer-reliability-sources test-rpb-early-mixer-model test-rpb-early-mixer-adapter evaluate-early-mixer-reliability
@@ -1006,18 +1118,18 @@ $(EVALUATION_OBJECT_DIR)/early_mixer_reliability_main.o: $(EVALUATION_ROOT)/src/
 	mkdir -p "$(@D)"
 	$(CXX) $(EARLY_MIXER_RELIABILITY_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(EARLY_MIXER_ADAPTER_OBJECT): $(RPB_ROOT)/src/early_mixer_adapter.cpp $(EARLY_MIXER_RELIABILITY_INPUTS)
+$(EARLY_MIXER_ADAPTER_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/early_mixer_adapter.cpp $(EARLY_MIXER_RELIABILITY_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(EARLY_MIXER_RELIABILITY_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(EARLY_MIXER_LEGACY_FROZEN_OBJECT): $(RPB_ROOT)/src/frozen_decoder_calibration.cpp $(EARLY_MIXER_RELIABILITY_INPUTS)
+$(EARLY_MIXER_LEGACY_FROZEN_OBJECT): code/encoders/raw_patch_bottleneck_mae/versions/v7/src/frozen_decoder_calibration.cpp $(EARLY_MIXER_RELIABILITY_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(EARLY_MIXER_RELIABILITY_CPPFLAGS) -DFROZEN_DECODER_CALIBRATION_SOURCE_ID=\"$(EARLY_MIXER_RELIABILITY_SOURCE_ID)\" -DFROZEN_NATIVE_FEATURE_SOURCE_ID=\"$(EARLY_MIXER_RELIABILITY_SOURCE_ID)\" $(CXXFLAGS) -c $< -o $@
 
 $(EARLY_MIXER_RELIABILITY_BIN): $(EVALUATION_OBJECT_DIR)/early_mixer_reliability_main.o $(EARLY_MIXER_ADAPTER_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS) $(FIXED_FEATURE_READOUTS_OBJECT)
 	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
 
-$(RPB_TEST_DIR)/early_mixer_model_test.o: $(RPB_ROOT)/tests/early_mixer_model_test.cpp $(EARLY_MIXER_RELIABILITY_INPUTS)
+$(RPB_TEST_DIR)/early_mixer_model_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v10/tests/early_mixer_model_test.cpp $(EARLY_MIXER_RELIABILITY_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -1027,7 +1139,7 @@ $(RPB_TEST_DIR)/early_mixer_model_test: $(RPB_TEST_DIR)/early_mixer_model_test.o
 test-rpb-early-mixer-model: $(RPB_TEST_DIR)/early_mixer_model_test
 	$(RPB_TEST_DIR)/early_mixer_model_test
 
-$(RPB_TEST_DIR)/early_mixer_adapter_test.o: $(RPB_ROOT)/tests/early_mixer_adapter_test.cpp $(EARLY_MIXER_RELIABILITY_INPUTS)
+$(RPB_TEST_DIR)/early_mixer_adapter_test.o: code/encoders/raw_patch_bottleneck_mae/shared/tests/early_mixer_adapter_test.cpp $(EARLY_MIXER_RELIABILITY_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(EARLY_MIXER_RELIABILITY_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
 
@@ -1044,7 +1156,7 @@ evaluate-early-mixer-reliability: $(EARLY_MIXER_RELIABILITY_BIN)
 # object. The closure includes every scope linked by the binary and admission.
 EARLY_MIXER_LEARNING_CURVE_BIN := $(BUILD_DIR)/embedding_early_mixer_learning_curve
 EARLY_MIXER_CURVE_ADAPTER_OBJECT := $(RPB_OBJECT_DIR)/early_mixer_curve_adapter.o
-EARLY_MIXER_LEARNING_CURVE_INPUTS := $(sort $(EARLY_MIXER_RELIABILITY_INPUTS) $(RPB_ROOT)/tests/early_mixer_curve_adapter_test.cpp $(EVALUATION_ROOT)/src/early_mixer_learning_curve_main.cpp $(EVALUATION_ROOT)/cards/early_mixer_learning_curve_v1.md $(CODE_ROOT)/scripts/check-early-mixer-learning-curve.sh $(CODE_ROOT)/scripts/evaluate-early-mixer-learning-curve.sh $(CODE_ROOT)/scripts/prepare-early-mixer-learning-curve.py)
+EARLY_MIXER_LEARNING_CURVE_INPUTS := $(sort $(EARLY_MIXER_RELIABILITY_INPUTS) code/encoders/raw_patch_bottleneck_mae/shared/tests/early_mixer_curve_adapter_test.cpp $(EVALUATION_ROOT)/src/early_mixer_learning_curve_main.cpp $(EVALUATION_ROOT)/cards/early_mixer_learning_curve_v1.md $(CODE_ROOT)/scripts/check-early-mixer-learning-curve.sh $(CODE_ROOT)/scripts/evaluate-early-mixer-learning-curve.sh $(CODE_ROOT)/scripts/prepare-early-mixer-learning-curve.py)
 EARLY_MIXER_LEARNING_CURVE_SOURCE_ID := $(shell sha256sum $(EARLY_MIXER_LEARNING_CURVE_INPUTS) | sha256sum | cut -d ' ' -f 1)
 EARLY_MIXER_LEARNING_CURVE_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(EARLY_MIXER_LEARNING_CURVE_SOURCE_ID)\" -DEARLY_MIXER_ADAPTER_SOURCE_ID=\"$(EARLY_MIXER_LEARNING_CURVE_SOURCE_ID)\"
 .PHONY: early-mixer-learning-curve print-early-mixer-learning-curve-sources test-rpb-early-mixer-curve-adapter evaluate-early-mixer-learning-curve
@@ -1056,14 +1168,14 @@ $(EVALUATION_OBJECT_DIR)/early_mixer_learning_curve_main.o: $(EVALUATION_ROOT)/s
 	mkdir -p "$(@D)"
 	$(CXX) $(EARLY_MIXER_LEARNING_CURVE_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(EARLY_MIXER_CURVE_ADAPTER_OBJECT): $(RPB_ROOT)/src/early_mixer_adapter.cpp $(EARLY_MIXER_LEARNING_CURVE_INPUTS)
+$(EARLY_MIXER_CURVE_ADAPTER_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/early_mixer_adapter.cpp $(EARLY_MIXER_LEARNING_CURVE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(EARLY_MIXER_LEARNING_CURVE_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 $(EARLY_MIXER_LEARNING_CURVE_BIN): $(EVALUATION_OBJECT_DIR)/early_mixer_learning_curve_main.o $(EARLY_MIXER_CURVE_ADAPTER_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS) $(FIXED_FEATURE_READOUTS_OBJECT)
 	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
 
-$(RPB_TEST_DIR)/early_mixer_curve_adapter_test.o: $(RPB_ROOT)/tests/early_mixer_curve_adapter_test.cpp $(EARLY_MIXER_LEARNING_CURVE_INPUTS)
+$(RPB_TEST_DIR)/early_mixer_curve_adapter_test.o: code/encoders/raw_patch_bottleneck_mae/shared/tests/early_mixer_curve_adapter_test.cpp $(EARLY_MIXER_LEARNING_CURVE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(EARLY_MIXER_LEARNING_CURVE_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
 
@@ -1079,7 +1191,7 @@ evaluate-early-mixer-learning-curve: $(EARLY_MIXER_LEARNING_CURVE_BIN)
 # Default-disabled source-gain primitive is shared by the learner. Every legacy
 # learner consumer links it explicitly; historical target recipes remain intact.
 RPB_TRAINING_SOURCE_GAIN_OBJECT := $(RPB_OBJECT_DIR)/training_source_gain.o
-$(RPB_TRAINING_SOURCE_GAIN_OBJECT): $(RPB_ROOT)/src/training_source_gain.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/training_source_gain.h $(EVALUATION_PROVENANCE_INPUTS)
+$(RPB_TRAINING_SOURCE_GAIN_OBJECT): code/encoders/raw_patch_bottleneck_mae/versions/v11/src/training_source_gain.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/training_source_gain.h $(EVALUATION_PROVENANCE_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include $(CXXFLAGS) -c $< -o $@
 
@@ -1090,7 +1202,7 @@ $(RPB_LEGACY_SOURCE_GAIN_CONSUMERS): $(RPB_TRAINING_SOURCE_GAIN_OBJECT)
 # matched-target source-gain view. Its enclosing capture unions all link scopes.
 MATCHED_TARGET_GAIN_BIN := $(BUILD_DIR)/embedding_matched_target_gain
 MATCHED_TARGET_GAIN_ADAPTER_OBJECT := $(RPB_OBJECT_DIR)/matched_target_gain_adapter.o
-MATCHED_TARGET_GAIN_INPUTS := $(sort $(EARLY_MIXER_LEARNING_CURVE_INPUTS) $(SDK_PROVENANCE_INPUTS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/training_source_gain.h $(RPB_ROOT)/src/training_source_gain.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/matched_target_gain_adapter.h $(RPB_ROOT)/src/matched_target_gain_adapter.cpp $(RPB_ROOT)/tests/matched_target_gain_adapter_test.cpp $(EVALUATION_ROOT)/src/matched_target_gain_main.cpp $(EVALUATION_ROOT)/cards/matched_target_gain_v1.md $(CODE_ROOT)/scripts/prepare-matched-target-gain.py $(CODE_ROOT)/scripts/check-matched-target-gain.sh $(CODE_ROOT)/scripts/evaluate-matched-target-gain.sh)
+MATCHED_TARGET_GAIN_INPUTS := $(sort $(EARLY_MIXER_LEARNING_CURVE_INPUTS) $(SDK_PROVENANCE_INPUTS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/training_source_gain.h code/encoders/raw_patch_bottleneck_mae/versions/v11/src/training_source_gain.cpp $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/matched_target_gain_adapter.h code/encoders/raw_patch_bottleneck_mae/shared/src/matched_target_gain_adapter.cpp code/encoders/raw_patch_bottleneck_mae/shared/tests/matched_target_gain_adapter_test.cpp $(EVALUATION_ROOT)/src/matched_target_gain_main.cpp $(EVALUATION_ROOT)/cards/matched_target_gain_v1.md $(CODE_ROOT)/scripts/prepare-matched-target-gain.py $(CODE_ROOT)/scripts/check-matched-target-gain.sh $(CODE_ROOT)/scripts/evaluate-matched-target-gain.sh)
 MATCHED_TARGET_GAIN_SOURCE_ID := $(shell sha256sum $(MATCHED_TARGET_GAIN_INPUTS) | sha256sum | cut -d ' ' -f 1)
 MATCHED_TARGET_GAIN_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(MATCHED_TARGET_GAIN_SOURCE_ID)\" -DMATCHED_TARGET_GAIN_ADAPTER_SOURCE_ID=\"$(MATCHED_TARGET_GAIN_SOURCE_ID)\"
 .PHONY: matched-target-gain print-matched-target-gain-sources test-rpb-matched-target-gain-adapter evaluate-matched-target-gain
@@ -1102,14 +1214,14 @@ $(EVALUATION_OBJECT_DIR)/matched_target_gain_main.o: $(EVALUATION_ROOT)/src/matc
 	mkdir -p "$(@D)"
 	$(CXX) $(MATCHED_TARGET_GAIN_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(MATCHED_TARGET_GAIN_ADAPTER_OBJECT): $(RPB_ROOT)/src/matched_target_gain_adapter.cpp $(MATCHED_TARGET_GAIN_INPUTS)
+$(MATCHED_TARGET_GAIN_ADAPTER_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/matched_target_gain_adapter.cpp $(MATCHED_TARGET_GAIN_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(MATCHED_TARGET_GAIN_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 $(MATCHED_TARGET_GAIN_BIN): $(EVALUATION_OBJECT_DIR)/matched_target_gain_main.o $(MATCHED_TARGET_GAIN_ADAPTER_OBJECT) $(RPB_TRAINING_SOURCE_GAIN_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS) $(FIXED_FEATURE_READOUTS_OBJECT)
 	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
 
-$(RPB_TEST_DIR)/matched_target_gain_adapter_test.o: $(RPB_ROOT)/tests/matched_target_gain_adapter_test.cpp $(MATCHED_TARGET_GAIN_INPUTS)
+$(RPB_TEST_DIR)/matched_target_gain_adapter_test.o: code/encoders/raw_patch_bottleneck_mae/shared/tests/matched_target_gain_adapter_test.cpp $(MATCHED_TARGET_GAIN_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(MATCHED_TARGET_GAIN_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
 
@@ -1126,7 +1238,7 @@ evaluate-matched-target-gain: $(MATCHED_TARGET_GAIN_BIN)
 # scope is included, while the new adapter keeps its own enclosing source ID.
 POOLED_CONTEXT_BIN := $(BUILD_DIR)/embedding_pooled_context
 POOLED_CONTEXT_ADAPTER_OBJECT := $(RPB_OBJECT_DIR)/pooled_context_adapter.o
-POOLED_CONTEXT_INPUTS := $(sort $(MATCHED_TARGET_GAIN_INPUTS) $(SDK_PROVENANCE_INPUTS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/pooled_context_adapter.h $(RPB_ROOT)/src/pooled_context_adapter.cpp $(RPB_ROOT)/tests/pooled_context_adapter_test.cpp $(RPB_ROOT)/tests/pooled_context_model_test.cpp $(RPB_ROOT)/tests/pooled_context_old_model_reference.h $(EVALUATION_ROOT)/src/pooled_context_main.cpp $(EVALUATION_ROOT)/cards/pooled_context_v1.md $(CODE_ROOT)/scripts/prepare-pooled-context.py $(CODE_ROOT)/scripts/check-pooled-context.sh $(CODE_ROOT)/scripts/evaluate-pooled-context.sh)
+POOLED_CONTEXT_INPUTS := $(sort $(MATCHED_TARGET_GAIN_INPUTS) $(SDK_PROVENANCE_INPUTS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/pooled_context_adapter.h code/encoders/raw_patch_bottleneck_mae/shared/src/pooled_context_adapter.cpp code/encoders/raw_patch_bottleneck_mae/shared/tests/pooled_context_adapter_test.cpp code/encoders/raw_patch_bottleneck_mae/versions/v12/tests/pooled_context_model_test.cpp code/encoders/raw_patch_bottleneck_mae/versions/v12/tests/pooled_context_old_model_reference.h $(EVALUATION_ROOT)/src/pooled_context_main.cpp $(EVALUATION_ROOT)/cards/pooled_context_v1.md $(CODE_ROOT)/scripts/prepare-pooled-context.py $(CODE_ROOT)/scripts/check-pooled-context.sh $(CODE_ROOT)/scripts/evaluate-pooled-context.sh)
 POOLED_CONTEXT_SOURCE_ID := $(shell sha256sum $(POOLED_CONTEXT_INPUTS) | sha256sum | cut -d ' ' -f 1)
 POOLED_CONTEXT_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(POOLED_CONTEXT_SOURCE_ID)\" -DPOOLED_CONTEXT_ADAPTER_SOURCE_ID=\"$(POOLED_CONTEXT_SOURCE_ID)\"
 .PHONY: pooled-context print-pooled-context-sources test-rpb-pooled-context-model test-rpb-pooled-context-adapter evaluate-pooled-context
@@ -1138,14 +1250,14 @@ $(EVALUATION_OBJECT_DIR)/pooled_context_main.o: $(EVALUATION_ROOT)/src/pooled_co
 	mkdir -p "$(@D)"
 	$(CXX) $(POOLED_CONTEXT_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(POOLED_CONTEXT_ADAPTER_OBJECT): $(RPB_ROOT)/src/pooled_context_adapter.cpp $(POOLED_CONTEXT_INPUTS)
+$(POOLED_CONTEXT_ADAPTER_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/pooled_context_adapter.cpp $(POOLED_CONTEXT_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(POOLED_CONTEXT_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 $(POOLED_CONTEXT_BIN): $(EVALUATION_OBJECT_DIR)/pooled_context_main.o $(POOLED_CONTEXT_ADAPTER_OBJECT) $(RPB_TRAINING_SOURCE_GAIN_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS) $(FIXED_FEATURE_READOUTS_OBJECT)
 	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
 
-$(RPB_TEST_DIR)/pooled_context_model_test.o: $(RPB_ROOT)/tests/pooled_context_model_test.cpp $(POOLED_CONTEXT_INPUTS)
+$(RPB_TEST_DIR)/pooled_context_model_test.o: code/encoders/raw_patch_bottleneck_mae/versions/v12/tests/pooled_context_model_test.cpp $(POOLED_CONTEXT_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(RPB_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -1155,7 +1267,7 @@ $(RPB_TEST_DIR)/pooled_context_model_test: $(RPB_TEST_DIR)/pooled_context_model_
 test-rpb-pooled-context-model: $(RPB_TEST_DIR)/pooled_context_model_test
 	$(RPB_TEST_DIR)/pooled_context_model_test
 
-$(RPB_TEST_DIR)/pooled_context_adapter_test.o: $(RPB_ROOT)/tests/pooled_context_adapter_test.cpp $(POOLED_CONTEXT_INPUTS)
+$(RPB_TEST_DIR)/pooled_context_adapter_test.o: code/encoders/raw_patch_bottleneck_mae/shared/tests/pooled_context_adapter_test.cpp $(POOLED_CONTEXT_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(POOLED_CONTEXT_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
 
@@ -1173,7 +1285,7 @@ evaluate-pooled-context: $(POOLED_CONTEXT_BIN)
 # identity binds the external cohort and fifth checkpoint companion separately.
 EARLY_MIXER_CONFIRMATION_BIN := $(BUILD_DIR)/embedding_early_mixer_confirmation
 EARLY_MIXER_CONFIRMATION_ADAPTER_OBJECT := $(RPB_OBJECT_DIR)/early_mixer_confirmation_adapter.o
-EARLY_MIXER_CONFIRMATION_INPUTS := $(sort $(POOLED_CONTEXT_INPUTS) $(SDK_PROVENANCE_INPUTS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/early_mixer_confirmation_adapter.h $(RPB_ROOT)/src/early_mixer_confirmation_adapter.cpp $(RPB_ROOT)/tests/early_mixer_confirmation_adapter_test.cpp $(EVALUATION_ROOT)/src/early_mixer_confirmation_main.cpp $(EVALUATION_ROOT)/cards/early_mixer_confirmation_v1.md $(CODE_ROOT)/scripts/prepare-early-mixer-confirmation.py $(CODE_ROOT)/scripts/check-early-mixer-confirmation.sh $(CODE_ROOT)/scripts/evaluate-early-mixer-confirmation.sh)
+EARLY_MIXER_CONFIRMATION_INPUTS := $(sort $(POOLED_CONTEXT_INPUTS) $(SDK_PROVENANCE_INPUTS) $(RPB_ROOT)/include/embedding/encoders/raw_patch_bottleneck_mae/early_mixer_confirmation_adapter.h code/encoders/raw_patch_bottleneck_mae/shared/src/early_mixer_confirmation_adapter.cpp code/encoders/raw_patch_bottleneck_mae/shared/tests/early_mixer_confirmation_adapter_test.cpp $(EVALUATION_ROOT)/src/early_mixer_confirmation_main.cpp $(EVALUATION_ROOT)/cards/early_mixer_confirmation_v1.md $(CODE_ROOT)/scripts/prepare-early-mixer-confirmation.py $(CODE_ROOT)/scripts/check-early-mixer-confirmation.sh $(CODE_ROOT)/scripts/evaluate-early-mixer-confirmation.sh)
 EARLY_MIXER_CONFIRMATION_SOURCE_ID := $(shell sha256sum $(EARLY_MIXER_CONFIRMATION_INPUTS) | sha256sum | cut -d ' ' -f 1)
 EARLY_MIXER_CONFIRMATION_CPPFLAGS := $(COMMON_CPPFLAGS) -I$(RPB_ROOT)/include -I$(EVALUATION_ROOT)/include -DEVALUATION_SOURCE_ID=\"$(EARLY_MIXER_CONFIRMATION_SOURCE_ID)\" -DEARLY_MIXER_CONFIRMATION_ADAPTER_SOURCE_ID=\"$(EARLY_MIXER_CONFIRMATION_SOURCE_ID)\"
 .PHONY: early-mixer-confirmation print-early-mixer-confirmation-sources test-rpb-early-mixer-confirmation-adapter evaluate-early-mixer-confirmation
@@ -1185,14 +1297,14 @@ $(EVALUATION_OBJECT_DIR)/early_mixer_confirmation_main.o: $(EVALUATION_ROOT)/src
 	mkdir -p "$(@D)"
 	$(CXX) $(EARLY_MIXER_CONFIRMATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-$(EARLY_MIXER_CONFIRMATION_ADAPTER_OBJECT): $(RPB_ROOT)/src/early_mixer_confirmation_adapter.cpp $(EARLY_MIXER_CONFIRMATION_INPUTS)
+$(EARLY_MIXER_CONFIRMATION_ADAPTER_OBJECT): code/encoders/raw_patch_bottleneck_mae/shared/src/early_mixer_confirmation_adapter.cpp $(EARLY_MIXER_CONFIRMATION_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(EARLY_MIXER_CONFIRMATION_CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 $(EARLY_MIXER_CONFIRMATION_BIN): $(EVALUATION_OBJECT_DIR)/early_mixer_confirmation_main.o $(EARLY_MIXER_CONFIRMATION_ADAPTER_OBJECT) $(EARLY_MIXER_ADAPTER_OBJECT) $(RPB_TRAINING_SOURCE_GAIN_OBJECT) $(RPB_CURVE_ADAPTER_OBJECT) $(RPB_ADAPTER_OBJECT) $(RPB_WORKFLOW_OBJECT) $(PAIRED_POOLING_OBJECT) $(NATIVE_CURVE_OBJECT) $(ARCHIVE_READOUT_OBJECT) $(EVALUATION_COMMON_OBJECTS) $(FIXED_FEATURE_READOUTS_OBJECT)
 	$(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $@
 
-$(RPB_TEST_DIR)/early_mixer_confirmation_adapter_test.o: $(RPB_ROOT)/tests/early_mixer_confirmation_adapter_test.cpp $(EARLY_MIXER_CONFIRMATION_INPUTS)
+$(RPB_TEST_DIR)/early_mixer_confirmation_adapter_test.o: code/encoders/raw_patch_bottleneck_mae/shared/tests/early_mixer_confirmation_adapter_test.cpp $(EARLY_MIXER_CONFIRMATION_INPUTS)
 	mkdir -p "$(@D)"
 	$(CXX) $(EARLY_MIXER_CONFIRMATION_CPPFLAGS) -I$(RPB_ROOT)/tests $(CXXFLAGS) -c $< -o $@
 
@@ -1206,10 +1318,10 @@ evaluate-early-mixer-confirmation: $(EARLY_MIXER_CONFIRMATION_BIN)
 	@EARLY_MIXER_CONFIRMATION_BIN="$(abspath $(EARLY_MIXER_CONFIRMATION_BIN))" EARLY_MIXER_CONFIRMATION_SOURCE_INPUTS="$(EARLY_MIXER_CONFIRMATION_INPUTS)" bash $(CODE_ROOT)/scripts/evaluate-early-mixer-confirmation.sh
 
 # Portable configurable encoder; independent of market ingestion and evaluation.
-include $(RPB_ROOT)/configurable_spectral.mk
+include code/encoders/raw_patch_bottleneck_mae/versions/v20/configurable_spectral.mk
 
 # Separate zero-start learned relation candidate; v20 defaults remain fixed.
-include $(RPB_ROOT)/learned_ordered_relation.mk
+include code/encoders/raw_patch_bottleneck_mae/versions/v21/learned_ordered_relation.mk
 
 # New dimension-aware synthetic capacity experiment; separate CUDA producer and CPU reader.
 include $(EVALUATION_ROOT)/protocols/configurable_capacity_v1/configurable_capacity.mk
@@ -1221,18 +1333,18 @@ include $(EVALUATION_ROOT)/protocols/configurable_branch_v1/configurable_branch.
 include $(EVALUATION_ROOT)/protocols/configurable_learned_relation_v1/configurable_learned_relation.mk
 
 # Separate content-only relation candidate; measured v20/v21 sources stay fixed.
-include $(RPB_ROOT)/content_ordered_relation.mk
+include code/encoders/raw_patch_bottleneck_mae/versions/v22/content_ordered_relation.mk
 include $(EVALUATION_ROOT)/protocols/configurable_content_relation_v1/configurable_content_relation.mk
-include $(RPB_ROOT)/streaming_scaler.mk
-include $(RPB_ROOT)/training_state.mk
-include $(RPB_ROOT)/consecutive_change.mk
-include code/encoders/raw_patch_bottleneck_mae/frozen_level.mk
-include code/encoders/raw_patch_bottleneck_mae/separated_change.mk
-include code/encoders/raw_patch_bottleneck_mae/separated_change_native36.mk
-include code/encoders/raw_patch_bottleneck_mae/energy_change.mk
-include code/encoders/raw_patch_bottleneck_mae/conditioned_change.mk
-include code/encoders/raw_patch_bottleneck_mae/parent_conditional_change.mk
-include code/encoders/raw_patch_bottleneck_mae/relative_change.mk
-include code/encoders/raw_patch_bottleneck_mae/parent_modulated_decoder.mk
-include code/encoders/raw_patch_bottleneck_mae/location_scale_decoder.mk
+include code/encoders/raw_patch_bottleneck_mae/shared/streaming_scaler.mk
+include code/encoders/raw_patch_bottleneck_mae/versions/v22/training_state.mk
+include code/encoders/raw_patch_bottleneck_mae/versions/v23/consecutive_change.mk
+include code/encoders/raw_patch_bottleneck_mae/versions/v23/frozen_level.mk
+include code/encoders/raw_patch_bottleneck_mae/versions/v24/separated_change.mk
+include code/encoders/raw_patch_bottleneck_mae/versions/v24/separated_change_native36.mk
+include code/encoders/raw_patch_bottleneck_mae/versions/v25/energy_change.mk
+include code/encoders/raw_patch_bottleneck_mae/versions/v26/conditioned_change.mk
+include code/encoders/raw_patch_bottleneck_mae/versions/v27/parent_conditional_change.mk
+include code/encoders/raw_patch_bottleneck_mae/versions/v28/relative_change.mk
+include code/encoders/raw_patch_bottleneck_mae/versions/v29/parent_modulated_decoder.mk
+include code/encoders/raw_patch_bottleneck_mae/versions/v30/location_scale_decoder.mk
 include code/encoders/causal_patch_bottleneck_mae/versions/v1/v1.mk

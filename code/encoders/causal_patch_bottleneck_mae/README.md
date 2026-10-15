@@ -9,7 +9,26 @@ input/bank normalization as data, with zero new encoder training updates or
 input/bank normalization fits. CUDA causal proof and fixed-head scoring are
 complete. CPB passes the original market 9/9 and strict 8/8 mean-score floors,
 but only 2/3 neural trend fits are positive and only 3/8 TEMPO-5 retention floors
-pass. It is a preserved causal reference, with no overall winner or promotion.
+pass. These remain measured quality limitations; the application selection below
+does not declare an overall research winner.
+
+## Current application selection — 15 October 2026
+
+The user selected **CPB-v1.market-01** as the sole active application encoder in
+cuwacunu_dev. Its [integration record](../../../../cuwacunu_dev/doc/CAUSAL_PRIMARY_INTEGRATION.md)
+carries current runtime verification status. Application config/encoder.conf
+fixes the evaluated geometry; separate config/encoder_runtime.conf selects
+the local ignored typed checkpoint and exact SHA256. The application facade
+uses frozen inference with raw CPU F64 values, actual timestamps, semantic IDs,
+masks and explicit cutoffs. It does not fit scalers or start causal training.
+
+Previous RPB implementations/drivers have left the active dev source tree.
+The exact former dev paths/bytes are in the sibling
+[archive](../../../../cuwacunu_embedding/archive/cuwacunu_dev/2026-10-15-before-causal-primary/README.md).
+Historical docs/results/checkpoints and portable research implementations remain
+preserved. This operational choice supersedes the old dev RPB-v22-primary
+selection, while retaining balanced/task research leaders and stopped research
+state. No new quality measurement, commit or push follows.
 
 ## Physical version entry
 
@@ -91,7 +110,9 @@ fits, decoder calls, old encoder replays or head tuning. New fixed heads were
 fitted once on TRAIN. Historical RPB targets retain their original window
 semantics and are not relabeled causal or forecasting results.
 
-RPB-v22 remains primary and native36 remains the balanced research reference.
+CPB-v1.market-01 is the selected dev application encoder; native36 remains the
+balanced research reference and all scoped leaders remain preserved.
 Preserve all historical source, checkpoints, cards and results, including the
 interrupted, unscored V30 synthetic extraction. This work is local and
-unpublished; no primary promotion, commit, push or deployment follows.
+unpublished. The later user-requested application selection above starts no
+new research, training, commit or push.

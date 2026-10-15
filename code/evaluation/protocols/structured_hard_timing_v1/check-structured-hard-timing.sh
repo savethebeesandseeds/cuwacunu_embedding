@@ -28,9 +28,9 @@ python3 -B "$helper" freeze-admission --repo-root "$PWD" --target "$admission" \
 # Argument forwarding is literal; no timestamps, objects or prior runs are changed.
 make() {
   command make -f code/evaluation/protocols/structured_hard_timing_v1/Makefile \
-    -W code/encoders/raw_patch_bottleneck_mae/src/workflow.cpp \
-    -W code/encoders/raw_patch_bottleneck_mae/src/learning_curve_adapter.cpp \
-    -W code/encoders/raw_patch_bottleneck_mae/src/early_mixer_adapter.cpp \
+    -W code/encoders/raw_patch_bottleneck_mae/shared/src/workflow.cpp \
+    -W code/encoders/raw_patch_bottleneck_mae/shared/src/learning_curve_adapter.cpp \
+    -W code/encoders/raw_patch_bottleneck_mae/shared/src/early_mixer_adapter.cpp \
     -W code/evaluation/protocols/structured_hard_timing_v1/structured_hard_timing_adapter.cpp \
     -W code/evaluation/protocols/structured_hard_timing_v1/paired_timing_run.cpp \
     -W code/evaluation/protocols/structured_hard_timing_v1/structured_hard_timing_main.cpp \
