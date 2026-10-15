@@ -1,5 +1,35 @@
 # Embedding version registry
 
+**CPB-v1.market-01**, separate family `causal_patch_bottleneck_mae`: exact V30
+weight transfer into a cutoff-enforced causal native36 encoder, zero new
+encoder updates. Its [physical version](../code/encoders/causal_patch_bottleneck_mae/versions/v1/)
+owns complete implementation/config/tests; the [family index](../code/encoders/causal_patch_bottleneck_mae/README.md)
+and [guide](CAUSAL_PATCH_BOTTLENECK_MAE_V1.md) locate its API, provenance and
+measured instance. The [report](../../cuwacunu_dev/doc/CAUSAL_PATCH_BOTTLENECK_MAE_V1_RESULTS.md)
+records passed causality, market9/9+8/8 but neural-trend2/3, and TEMPO-5 retention3/8.
+No primary/balanced promotion. Future causal versions require their own full
+implementation directories. Historical [RPB version metadata](../code/encoders/raw_patch_bottleneck_mae/versions/README.md)
+locates preserved definitions without relabeling old source/checkpoints/results.
+
+**RPB-v25.market-01**: exact protected trained v22 prefix32 and unchanged v24
+change4/native36 export, with a training-only zero-start moment decoder and
+fixed balanced signed-change/energy auxiliary. Its `.init` copies the entire
+saved native36 initialization, including the trained parent. The
+[completed market result](../../cuwacunu_dev/doc/MARKET_CHANGE_ENERGY_RESULTS.md)
+has trend R² 0.774 linear / 0.488 mean neural and improves activity/relation,
+but both volatility heads fail. Original conditions pass 7/9; strict native36
+floors pass 6/8. The full gate fails, stopping this exact recipe; no v25
+synthetic transfer or promotion follows. RPB-v22 stays primary and native36 v24
+remains the leading balanced research reference. The
+[v25 registry](change_energy_embedding_versions.json) pins the new architecture,
+both typed archive kinds, lineage, five local ignored checkpoints, all metrics
+and evidence identities. The [guide](CHANGE_ENERGY_V25.md) records the portable
+API, passed integration CUDA checks and 54 exact local file pairs. This later
+work remains local; earlier publication authorization does not cover it.
+
+The entries below preserve their historical evidence stages and milestone-local
+descriptions; consult CURRENT_STATUS.md for present direction.
+
 **RPB-v24.market-01.alt-01**: separately declared native36 variation preserving
 the entire trained v22 native32 prefix and adding four learned change
 coordinates with the same residual decoder design. Its `.init` control already

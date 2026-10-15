@@ -1229,3 +1229,10 @@ include $(RPB_ROOT)/consecutive_change.mk
 include code/encoders/raw_patch_bottleneck_mae/frozen_level.mk
 include code/encoders/raw_patch_bottleneck_mae/separated_change.mk
 include code/encoders/raw_patch_bottleneck_mae/separated_change_native36.mk
+include code/encoders/raw_patch_bottleneck_mae/energy_change.mk
+include code/encoders/raw_patch_bottleneck_mae/conditioned_change.mk
+include code/encoders/raw_patch_bottleneck_mae/parent_conditional_change.mk
+include code/encoders/raw_patch_bottleneck_mae/relative_change.mk
+include code/encoders/raw_patch_bottleneck_mae/parent_modulated_decoder.mk
+include code/encoders/raw_patch_bottleneck_mae/location_scale_decoder.mk
+include code/encoders/causal_patch_bottleneck_mae/versions/v1/v1.mk

@@ -1,5 +1,111 @@
 # Project instructions
 
+## Latest completed task: causal encoder, 15 October 2026
+
+The previous continuous search was stopped by the user. The separately requested
+**CPB-v1.market-01** conversion is complete; read
+[the portable guide](doc/CAUSAL_PATCH_BOTTLENECK_MAE_V1.md),
+[the integration results](../cuwacunu_dev/doc/CAUSAL_PATCH_BOTTLENECK_MAE_V1_RESULTS.md)
+and [the family entry](code/encoders/causal_patch_bottleneck_mae/README.md).
+The `causal_patch_bottleneck_mae/versions/v1/` directory owns its complete copied
+implementation, settings and tests in both repos. Future versions own complete
+copies too; no mutable shared encoder implementation or forwarding into RPB.
+Historical RPB metadata indexes locate existing definitions without rewriting
+their source or frozen results.
+
+V30 weights/scaler/normalizer import exactly with zero new encoder updates or
+input/bank fits. Actual CUDA proof passes all128 cutoffs,2350 suffix cases,
+30 internal temporal interventions, frozen-state and typed load/save checks.
+The same native36 heads pass original market9/9 and strict8/8, but only2/3
+neural trend fits are positive; TEMPO-5 passes3/8 exact native36 retention
+floors, with100% coverage and strong absolute timing accuracy. Preserve this
+first causal reference without declaring an overall winner. RPB-v22 remains
+primary, native36 remains balanced, and all previous scoped leaders/checkpoints
+remain available. Historical market windows ended at their anchor; neither a
+leak quantity nor forecasting performance follows from score differences.
+
+Only the existing integration GPU container executed proof/quality; mirrored
+bytes establish portable source parity, not a second run. Keep new/old weights
+local and ignored. Preserve failed engineering attempt001, successful002 and
+the single new quality run. No commit/push, training, primary change or automatic
+continuing search follows. Next propose separately declared causal training
+with neural-trend robustness and hard-signal retention guards.
+
+## Active search goal
+
+Preserved earlier stages: the integration TRAIN scale diagnosis is verified with3,263,004
+independent checks, zero model calls/fits. RPB-v26.market-01 is separately
+declared in integration/doc/MARKET_CONDITIONED_CHANGE_CARD.md, with frozen TRAIN
+coordinate conditioning of the unchanged change bank. Admission and quality
+are now complete: original8/9, strict5/8. V26's neural-volatility R²0.41926036121396154
+is a preserved former task/head leader; its linear volatility and strict activity-linear/
+relation-neural guards fail. See doc/TRAIN_CONDITIONED_CHANGE_V26.md. Stop this
+exact recipe. RPB-v27.market-01's separate unlabeled TRAIN parent-to-bank map
+is now measured and stopped: original5/9, strict2/8, all three final neural
+trend fits negative and100% coverage. Read
+[the v27 guide](doc/PARENT_CONDITIONAL_CHANGE_V27.md), its exact registry and
+integration's frozen MARKET_PARENT_CONDITIONAL_CHANGE_RESULTS.md. At that stage,
+all73 portable pairs matched and40 candidate checkpoints remained local/ignored. The new
+TRAIN map used512 frozen CUDA parent forwards and zero calibration updates;
+the existing v26 bank standardizer was reused. No v27 synthetic transfer ran.
+Preserve fixed gates, v22 primary, native36 balanced reference and all history.
+New reusable files remain local mirrors, not a primary promotion or publication.
+
+The user requested a continuing search for a verified9/9 market encoder while
+preserving the best encoders already found. Read [the search ledger](doc/ENCODER_SEARCH_LEDGER.md)
+and [its exact candidate index](doc/encoder_search_ledger.json). Keep all original
+records/checkpoints, v22 primary, native36's8/9 balanced reference and the scoped
+task/head leaders. Stopped recipes remain stopped; separately declared new
+mechanisms may advance the goal with fixed heads and explicit protection gates.
+V28's symmetric-relative bank from raw F64 levels is now measured and stopped:
+original7/9, strict4/8, all three final neural trend fits positive and full coverage,
+but both volatility heads fail. Read [its guide](doc/RAW_RELATIVE_CHANGE_V28.md)
+and exact registry. All83 portable pairs match and45 checkpoint pins remain
+available/ignored at that stage. V29's separate parent-modulated decoder is now
+measured and stopped: original 4/9, strict 4/8, all three final trend neural fits
+negative and full coverage. Preserve its then-leading linear activity/relation references
+0.8255824303229565/0.4539605718451353, with neural leaders unchanged. Read
+[its guide](doc/PARENT_MODULATED_DECODER_V29.md) and exact registry. All 91
+portable pairs matched and 50 checkpoint pins remained available/ignored at that stage. Initial
+full36 equals saved v28 initialization exactly; its initial scores are reused
+with zero refits, and only final heads are newly fitted. Fresh saved v24 weights
+and the original v28 normalizer are used, with zero new calibration fits/forwards.
+Preserve the failed reporter and additive v2 reporting-only correction; no
+quality rerun occurred. The separate V30 experiment is now measured: original9/9,
+strict8/8, all3 final neural trend fits positive and100% coverage. Read
+[its guide](doc/LOCATION_SCALE_DECODER_V30.md), exact registry and integration's
+frozen MARKET_LOCATION_SCALE_DECODER_RESULTS.md. It uses proper Gaussian
+waveform location/scale reconstruction, an unmodulated mean and variance
+matrix108/bias27. Native36,2048/B8, reused normalizer and initial scoring stay
+fixed, with zero initial refits or new calibration fits/forwards. Valid negative
+F64 NLL is retained; fixed-query mean MAE stays separate and does not improve
+uniformly. All99 portable pairs match and55 saved pins remain local/ignored.
+Keep v22 primary and native36 balanced until the separately declared frozen
+TEMPO-5 complexity5/5 transfer is verified. Both saved scaler policies and all
+eight retention floors are fixed; V30 synthetic quality is still unmeasured.
+No automatic promotion, publication or old-encoder retraining follows from the goal.
+
+## Latest completed research, 15 October 2026
+
+RPB-v30.market-01 keeps exact trained parent32 and four learned change
+coordinates. Its Gaussian waveform mean/variance objective passes the complete
+fixed market gate:9/9 original,8/8 protection,3/3 positive neural trend fits and
+full coverage. Preserve all five new checkpoints and every earlier result,
+including the stopped V29 recipe and its failed engineering/report attempts.
+V30 total/updated/protected parameters are297560/15039/282521; one CUDA2048/B8
+trajectory took131.75605979s including checkpoint/witness/loader-parity I/O.
+
+Keep RPB-v22 primary and RPB-v24.market-01.alt-01 the balanced research reference.
+V30 leads all four linear heads and neural volatility in the recorded matched
+scope. Preserve v25 neural trend/relation, native40 neural activity and every
+displaced leader, including v26/v29. The separate
+[V30 frozen-transfer card](../cuwacunu_dev/doc/MARKET_LOCATION_SCALE_SYNTHETIC_TRANSFER_CARD.md)
+is declared, pending admission/extraction/scoring with zero encoder updates.
+All later work
+remains local; the earlier native36 publication authorization does not cover it.
+The sections below preserve historical instructions and milestone-local status;
+use CURRENT_STATUS.md for present direction.
+
 ## Results and communication
 
 Follow [the reporting standard](doc/RESULTS_REPORTING_STANDARD.md) in final
@@ -365,3 +471,15 @@ nonbinary evidence payload to this public embedding remote and the private
 integration remote, superseding earlier local-only wording for this payload.
 Preserve licenses, visibility, primary selection and ignored local checkpoints.
 This is not standing publication authorization for later work.
+
+The saved-TRAIN volatility diagnosis is complete; read
+[the guide](doc/MARKET_TRAIN_VOLATILITY_DIAGNOSIS.md) and latest CURRENT_STATUS.md.
+Parent32 and the old predictor remain exact, while joint ridge fitting shifts
+coefficients and improves overall TRAIN volatility with uneven early/late benefit.
+Strong pairwise prefix/change duplication and large full-block cancellation are
+not supported; no causal held-out explanation follows from TRAIN alone.
+The proposed signed-change/RMS auxiliary was subsequently implemented and
+measured as RPB-v25.market-01; its [result](doc/CHANGE_ENERGY_V25.md) fails both
+volatility retention heads and stops that recipe. Keep v22 primary and all artifacts.
+This diagnosis executed no encoder, fit no head/scaler and opened no held-out
+diagnostic tensor. No reusable encoder arithmetic changed; new evidence remains local.

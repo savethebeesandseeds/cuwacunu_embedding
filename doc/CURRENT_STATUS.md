@@ -1,5 +1,135 @@
 # Current repository status
 
+## Latest completed task: causal conversion, 15 October 2026
+
+**CPB-v1.market-01** is the first verified causal reference, derived from the
+exact saved V30 tensors with zero new encoder training or input/bank fits. Read
+[the guide](CAUSAL_PATCH_BOTTLENECK_MAE_V1.md),
+[the family entry](../code/encoders/causal_patch_bottleneck_mae/README.md) and
+[the complete integration report](../../cuwacunu_dev/doc/CAUSAL_PATCH_BOTTLENECK_MAE_V1_RESULTS.md).
+Physical `causal_patch_bottleneck_mae/versions/v1/` owns the complete source,
+configuration and tests; future versions own full independent copies.
+
+Actual CUDA proof passed128 cutoffs/2350 suffix interventions/30 internal
+temporal cases, exact frozen/imported state and typed roundtrip. Same fixed
+heads pass market9/9 and strict8/8; neural trend is positive in2/3 repetitions.
+TEMPO-5 remains strong, with100% coverage, but only3/8 exact native36 retention
+floors pass across both scaler policies and intact/deleted views. No overall
+replacement follows: keep RPB-v22 primary, native36 balanced, V30's old market
+result and every historical/scoped reference. Checkpoints remain local/ignored.
+The previous continuous search was stopped by the user; do not resume it or
+start causal training automatically. Next propose separately declared causal
+training with robustness and retention guards. Source is mirrored; only the
+existing integration GPU container ran proof/quality. No commit/push occurred.
+
+The following sections preserve the earlier search history.
+
+Active goal, 15 October 2026: preserve every balanced/task reference while
+searching for the fully verified successor. The mirrored
+[search ledger](ENCODER_SEARCH_LEDGER.md) and [exact index](encoder_search_ledger.json)
+retain all eleven measured candidate records and 55 available, ignored checkpoint
+pins. RPB-v22 stays primary; RPB-v24.market-01.alt-01 stays the balanced research
+reference pending V30's separately declared frozen synthetic transfer.
+
+Latest completed market experiment: **RPB-v30.market-01** passes **9/9 original
+conditions, 8/8 strict native36 floors, all three positive neural trend fits and
+100% coverage**. Final linear/mean-neural R² are volatility0.953913/0.588277,
+trend0.794366/0.320210, activity0.865732/0.613572 and relation0.487476/0.406836.
+These are four separate past-window tasks on MKT-HIST-2, complexity4/5, with
+112 TRAIN and32 known chronological VALIDATION probes. One trained encoder and
+three fixed neural fits do not establish unseen confirmation or forecasting.
+
+V30 sets all four linear-head maxima and the neural-volatility maximum in the
+recorded matched scope. Preserve v25 neural trend0.4884646605379312 and
+relation0.4071495455067296, native40 neural activity0.6781894013517937, and all
+displaced v26/v29 records. The initial neural activity control0.7246054298126288
+is reused initialization scoring, not a trained-final leader. No universal
+encoder ranking follows.
+
+The Gaussian waveform location/scale objective keeps the unmodulated parent-
+plus-change mean and adds zero-start variance matrix108/bias27. Its anchored
+softplus link gives actual initial variance1. Targets/mean/variance are cast to
+CUDA F64 before NLL arithmetic; legitimate negative losses remain valid.
+Total/updated/protected parameters are297560/15039/282521. Native36 retains
+exact parent32 plus learned4, the raw-relative bank and unchanged V28 normalizer.
+Fresh saved v24 initial weights are used, never trained v28/v29 weights. Exact
+saved-v28 full initial36 parity permits zero initial head refits. Only final
+one ridge pipeline/four targets and three neural fits are new; no calibration
+fits/forwards or old encoder replays occur.
+
+One CUDA trajectory completed2048 new updates/B8 after2048 inherited updates on
+the RTX A2000 8GB. GPU segment time131.75605979s includes checkpoint/witness/
+loader-parity I/O. Initial/final feature I/O1.1259591679999998/0.782120961s and
+final saved-head fitting/scoring/I/O2.177286234s stay separate. The reused
+normalizer's historical fit2.929513154s is not new cost. Per-batch raw-loader
+checks and CPU parent preprocessing prevent a fair speed comparison.
+
+Fixed-query TRAIN/VALIDATION mean MAE changes from0.27862535204206196/
+0.39052824676036835 to0.28209757645215305/0.3901873007416725, so it does not
+improve uniformly. NLL first/last is0.3399173832780379/−0.27151144758246093;
+1449 of2048 minibatches have valid negative NLL. Learned variance includes
+mean error, not realized market volatility. The objective/distribution both
+change, so this does not isolate a causal explanation of past failures.
+
+All99 reusable pairs match locally:91 preserved plus8 new V30 pairs. The
+integration CUDA fixture proves masking, actual mean/variance/projection
+learning, exact parent32 and exact typed next-update optimizer/state resume.
+Both fixture compiles passed; the first formatting warning was corrected
+before the one passed GPU invocation. No standalone fixture/quality execution
+is claimed. Independent saved arithmetic passes941,513 checks; report
+verification binds198 assets,570 durable members and96 task rows:88 unchanged
+historical,4 explicitly reused initial and4 new final. All55 checkpoint files
+were rehashed and remain available, local, ignored and untracked.
+
+Read the [V30 portable guide](LOCATION_SCALE_DECODER_V30.md),
+[exact registry](location_scale_decoder_embedding_versions.json) and
+[frozen market result](../../cuwacunu_dev/doc/MARKET_LOCATION_SCALE_DECODER_RESULTS.md).
+Preserve the stopped V25–V29 mechanisms, their failed attempts, every checkpoint
+and every original result/card/source capsule. The V29 reporting-only repair
+remains historical; V30's producer/report each passed on their first invocation.
+
+Next: the [separate frozen TEMPO-5 transfer card](../../cuwacunu_dev/doc/MARKET_LOCATION_SCALE_SYNTHETIC_TRANSFER_CARD.md)
+is declared, pending admission/extraction/scoring. It uses the exact saved V30
+final inference checkpoint, zero encoder updates, both saved scaler policies,
+the eight native36 head/view floors and full coverage. TEMPO-5 is the compatible
+C3/H128/F9 slow lead/lag signal family, designed complexity5/5. V30 synthetic
+quality is unmeasured. Keep RPB-v22 primary and native36 balanced until transfer
+is verified. All later work remains local and unpublished; no primary promotion,
+commit, push or publication is implied.
+
+## Historical milestones and their original proposed next steps
+
+The records below retain the evidence and status wording from their dates.
+Their proposed auxiliary was completed and stopped as v25; v26 and v27 are
+separate later experiments. These historical proposals are not instructions
+to rerun any stopped recipe.
+
+Latest completed diagnosis, 14 October 2026: saved TRAIN arithmetic explains
+the joint-ridge fitting mechanism, without establishing the cause of worse
+held-out generalization. Parent32 and its old predictor remain exact. Native36
+TRAIN volatility linear R² improves0.767220→0.832289 despite its known validation
+failure, and prefix coefficients shift L2 0.602036. Strong pairwise level/change
+duplication is not observed (maximum|r|0.320435); full volatility contributions
+reinforce overall. First56 TRAIN R² improves0.654690→0.772730; last56 falls
+0.932627→0.910444. Both halves fitted the same head and are descriptive.
+
+The [diagnosis guide](MARKET_TRAIN_VOLATILITY_DIAGNOSIS.md) links all four task
+tables and the exact22-input evidence. Independent arithmetic passes15,428
+checks;1,249 historical files remain unchanged. There were zero encoder calls,
+updates, head/scaler fits or held-out tensor diagnostics. Keep RPB-v22 primary,
+the native36 leading research candidate and its8/9 market disposition, all
+checkpoints and frozen transfer evidence. No new encoder arithmetic was backported.
+
+**Next proposed experiment:** preserve the existing signed-change and RMS/energy
+moments while learning the same four-coordinate branch, by adding a balanced
+moment reconstruction auxiliary to the current waveform objective. The
+[next-direction note](../../cuwacunu_dev/doc/MARKET_CHANGE_ENERGY_NEXT_DIRECTION.md)
+specifies scope and strict protection of the other market and TEMPO-5 gains.
+It is not implemented or measured. Its exact recipe needs a separate instance,
+card and typed-state/GPU checks before execution. Generic decorrelation is not
+established as the remedy. These new diagnosis docs/evidence remain local;
+earlier paragraphs preserve their milestone-local status and proposals.
+
 Saved milestone, 14 October 2026: **RPB-v24.market-01.alt-01 native36 is the
 leading research candidate; RPB-v22 remains the primary encoder.** Read
 [the milestone](MILESTONE_2026-10-14_NATIVE36_TRANSFER.md) for completed evidence,
@@ -327,3 +457,28 @@ Update this page when implementation or completed evidence changes, then update
 the live guide links and machine-readable registry pointers. Preserve frozen
 historical reports/cards, artifact hashes and original model instances. Proposed
 work needs an explicit status until the required admission and measurements finish.
+Current search stage,15 October2026: integration's TRAIN scale diagnosis is
+verified with zero model calls/fits and3,263,004 independent checks. See
+`../cuwacunu_dev/doc/MARKET_CHANGE_SCALE_DIAGNOSIS_RESULTS.md` relative to the
+repository root. RPB-v26.market-01 is prospectively declared in integration's
+`doc/MARKET_CONDITIONED_CHANGE_CARD.md`: frozen TRAIN coordinate mean/std
+conditioning of the existing change bank. Admission/quality are pending;
+reusable new files are being mirrored locally. Keep RPB-v22 primary, native36
+the8/9 balanced reference, and the mirrored search ledger's individual leaders.
+The continuing goal has no verified9/9 winner yet. Later work remains local.
+
+Latest stage,15 October2026: [RPB-v26.market-01](TRAIN_CONDITIONED_CHANGE_V26.md)
+is measured and stopped: original8/9, strict5/8, all trend repetitions and
+coverage pass. Preserve its neural-volatility reference R²0.41926036121396154;
+linear volatility and strict linear activity/neural relation fail. All7 ledger
+entries and35 checkpoint pins are preserved, with64 portable pairs matched.
+RPB-v22 stays primary; native36 stays the balanced reference. New source and
+evidence remain local and unpublished.
+
+The next [RPB-v27.market-01 card](../../cuwacunu_dev/doc/MARKET_PARENT_CONDITIONAL_CHANGE_CARD.md)
+declares an unlabeled TRAIN parent-to-bank conditional map before the learned4
+branch, reusing v26's frozen standardizer. Same budget/data/heads and protection
+floors; necessary new frozen parent calibration forwards are explicit. Admission
+and quality are pending. The mirrored [search ledger](ENCODER_SEARCH_LEDGER.md)
+retains balanced and individual task/head leaders. Earlier notes below describe
+the prior stages, not another primary selection.
