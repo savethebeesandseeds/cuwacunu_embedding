@@ -79,6 +79,23 @@ Immutable publication reserves a private sibling staging name and atomically
 links a new destination, refusing replacement. The parent directory must exist.
 The caller is responsible for external file integrity/hash validation.
 
+New runs use `cuwacunu/networks/predictive_training/v1/artifact.h` and
+`predictive_training::v1::artifact` for checked save/load. One immutable
+`.manifest.json` sidecar pins the original joint archive bytes, each component's
+source/state/configuration and exact Encoder parent. The Dynamics Model binds
+both the State Representation Network and Target State Representation Network.
+`Context` supplies the verified Encoder selection, repository source root,
+cadence, history spacing, semantic order, export layout and availability policy.
+Checked inference owns frozen private modules and ignores training-only settings;
+checked exact resume retains every original strict optimizer/RNG/counter/EMA
+check. Additive `adopt` requires independently verified historical ModuleRefs for
+all three components; unknown source ancestry cannot be labeled as current.
+The historical Trainer/archive arithmetic remains unchanged. Include
+`versions/v1/artifact.mk` for `build-predictive-snapshot` and
+`test-predictive-snapshot`; it reuses `v1.mk` when needed and requires the
+`code/artifacts/versions/v1/include` root. These are artificial engineering
+fixtures, with no market or quality run.
+
 `serving.h` folds state-history, forecasts and arbitrary unchanged linear
 readouts into an affine function of native embedding history. It includes the
 frozen input transform, singular/rectangular State Representation Network,

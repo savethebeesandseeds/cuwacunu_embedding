@@ -1,29 +1,296 @@
-# Current selection and publication — 15 October 2026
+# Active clean causal encoder goal — V10 measured, 16 October 2026
 
-The user selected **CPB-v3.market-01** as the sole active encoder in
-`cuwacunu_dev` and authorized committing and pushing all pending source and
-documentation in both repositories. Checkpoints and datasets stay local and
-ignored. This instruction supersedes historical v1 application selection and
-local-only publication wording below. No new encoder training or quality test
-is part of this integration.
+CPB-v3.market-01 remains the clean baseline and sole DEV encoder. The research
+goal remains active. CPB-v10.market-01 is a fully trusted measured candidate with
+3/22 strongest V3–V9 conditions passed and 100% coverage. The separate final trust
+join passes; advancement, overall winner and winner selection remain false.
+Independent training and quality audits pass 326495 checks and 13089 checks,
+respectively, with zero mismatches. All 13 full native40/statistic pairings versus
+saved V9 evidence are exact. Frozen producer pending-trust fields remain unchanged.
 
-V3 is the completed clean causal baseline: all learned weights started fresh
-(seed943001), with fresh TRAIN-only input/bank statistics and optimizer,
-source_updates=0 and causal_updates=2048. Its native36 checkpoint SHA256 is
-`50e1d6514076ab34dcfa1194d8f0d97296f176e76174a78efadc97c5c0d1c34e`.
-The full owned v3 implementation is synchronized byte for byte into dev.
-Read the [integration record](../cuwacunu_dev/doc/CAUSAL_PRIMARY_INTEGRATION.md)
-and [research results](doc/CAUSAL_FRESH_V3_RESULTS.md).
+V10 adds one live joint Gaussian NLL to unit Huber(delta1), replacing V9's
+detached-error variance term. Gaussian variance is supervised once; the reporting
+NLL copy stays detached. The V9 forward architecture, half-local/half-global
+pooling, native40, constructor draw order, data, seeds, fixed heads and budget are
+unchanged. One fresh CUDA trajectory completes 2048 updates at batch 8, with
+source_updates=0. All learned values and TRAIN statistics start fresh.
 
-CPB-v1/v2 retain pretrained noncausal weight ancestry and remain historical
-references only; their scores are never oracle targets or clean quality floors.
-V3 has mixed task quality and is not an overall winner. Preserve every historical
-source, result and local checkpoint. The former dev v1 source/settings are
-[archived exactly](archive/cuwacunu_dev/2026-10-15-before-cpb-v3-primary/README.md).
-Before changing live status metadata, all50 earlier finalization metadata pins
-were preserved under the local integration prior-metadata snapshot.
-The next research direction remains saved TRAIN-only relation/variance diagnosis;
-no later experiment is started by this cutover.
+No new quality-scope or reconstruction leader is set. Neural trend improves
+relative to V9, while V4 retains the protected neural-trend record. Preserve every
+V3–V9 scoped leader and all historical sources, checkpoints, reports and failures,
+plus V10's measured evidence. The exact V10 recipe is closed without coefficient,
+seed, rate, budget or head rescue. Historical pass counts retain their own frozen
+floors; TRAIN NLL is descriptive and adds no gate.
+
+The proposed next source review is a fresh V9-based variation-retention
+architecture: four mean-export rows and four centered-dispersion rows per anchored
+temporal bin, under the same normalized half-local/half-global attention mixture.
+It would retain V9's detached-mean objective, parameter count, native40, seeds,
+budget and fixed heads. This is a hypothesis, not an established validation cause
+or promised improvement. Exact moment/layout semantics, full attention-dependent
+adjoints and causal/learning/resume proofs require a separate prospective review.
+No new candidate, code, card, build, training or quality run is admitted by this note.
+
+See the [results](doc/CAUSAL_FRESH_V10_RESULTS.md),
+[detailed evidence](doc/CAUSAL_FRESH_V10_DETAIL.md),
+[review](doc/CAUSAL_FRESH_V10_REVIEW.md),
+[final trust join](doc/causal_fresh_v10/final-establishment.json) and
+[clean research ledger](doc/clean_causal_encoder_research_ledger.json).
+This front note records the current state; the complete prior text below is
+retained as historical context.
+
+---
+
+# Active clean causal encoder goal — V9 measured, 16 October 2026
+
+CPB-v3.market-01 remains the clean baseline and sole dev encoder. The research
+goal remains active. The separately declared CPB-v9.market-01 completes one fresh
+2048/B8 CUDA trajectory and passes6/22 strongest-V3–V8 conditions with100% coverage.
+Independent training/quality audits pass326469/13411 checks with zero mismatches;
+the separate final evidence join confirms measured-candidate/full-trust admission.
+Advancement, overall winner and winner selection remain false. Frozen producer
+pending-trust fields remain exact; historical pass counts retain their own cards.
+
+Preserve three new TEMPO-5 scoped references: synthetic-TRAIN-scaler deleted-view
+linear accuracy0.9557291666666666 and neural0.9361979166666666; market-scaler intact
+linear0.9986979166666666. Synthetic-TRAIN intact linear0.9869791666666666 ties V6,
+so the earlier record remains. All eight market retention floors fail. Neural
+trend mean R²−0.1336738736969567 includes one negative head fit; no reconstruction
+record is set. VALIDATION NLL0.47538792454983048 is worse than V8 and the V4 ceiling.
+TRAIN NLL remains descriptive, with no added gate. Keep every V3–V8 strength.
+
+V9 gives each nonempty original bin half anchored-local and half shared-global
+hidden context before its eight export rows and bias are applied once. One fresh
+shared32-row export tensor retains V8 shapes/registration/draw order; all294752
+learned values, optimizer and TRAIN statistics start fresh, source0. Native40,
+Huber1 mean plus detached-error variance calibration, global clip1/single AdamW,
+seeds/data/2048/B8 and fixed heads stay unchanged. Empty local slices are zero
+after bias. Every slice describes the current cutoff endpoint; shared context
+cannot bypass future-value or future-mask exclusion.75 identifiable tensors show
+CUDA data-gradient/movement events;294751 is tensor capacity, not per-scalar proof.
+The common score-bias gauge is observed separately. Four row/local-position groups
+and all three between-bin directions learn, with positive overall final projection.
+Initial13 DATA/statistic pairings compare20:40 only plus five whole statistics;
+content20 may differ, no whole40 equality or trained-weight import is claimed.
+
+Read [results](doc/CAUSAL_FRESH_V9_RESULTS.md), [detail](doc/CAUSAL_FRESH_V9_DETAIL.md), [review](doc/CAUSAL_FRESH_V9_REVIEW.md) and the ledger.
+This is known chronological VALIDATION and designed TEMPO-5 evidence, not a fresh
+period forecast or causal explanation. Downstream global mixing already existed;
+the blend changes routing/scales/work. Complexity4/5 and5/5 are ordinal recipes.
+The reporting guard failure happened after extraction/all fixed heads finished;
+external report-only recovery preserved all531 original files/118 sources with
+zero scientific replay. Audit001 refused before numeric archives; additive002
+fixed the runtime-label selector and passed. Preserve every failed/source/card/log.
+Future preflight must check reporter/comparator literal metadata compatibility,
+including criteria.establishment wording and host-label/runtime-path distinctions,
+before expensive scientific work.
+
+Stop the exact fixed-half V9 recipe without blend/coefficient/seed/rate/budget/head
+rescue. Next is separately declared saved TRAIN-only V8/V9 diagnosis before any V10
+selection; source preparation is not execution admission. Protect all earlier and
+new scoped gains before later quality. Use only existing managed GPU cuwacunu,
+exclusive frozen capsules and independent proofs/audits; no old encoder/head replay,
+held-out tensor diagnosis, PCA, tuning, dev promotion, Git publication or deletion.
+Concurrent Latent Roadmap work stays untouched. The complete earlier six live files
+remain byte-exact in output/engineering/causal-fresh-v9-finalization/prior-live-001/.
+All older notes below are preserved historical context superseded by this update.
+
+---
+# Active clean causal encoder goal — V8 measured,16 October2026
+
+CPB-v3.market-01 remains the clean baseline and sole dev encoder. The research
+goal remains active. CPB-v8.market-01 completes one fresh2048/B8 CUDA trajectory
+and passes4/22 prospective strongest-V3/V4/V5/V6/V7 conditions,100% coverage.
+Independent training/quality audits pass310003/12643 checks with0mismatches.
+The separate final evidence join establishes full trust/measured-candidate
+admission and13 declared initial DATA/statistic pairings; advancement/winner/
+winner-selection remain false. Frozen producer pending-trust bytes stay exact.
+
+V8 changes only the temporal summary relative to V6: four original-position
+bins pool valid contextual states, each supplying eight disjoint rows of the
+same existing32-row export projection in both temporal paths. Native40 remains
+20learned content+12literal spectral+mean4+uncertainty4. V6's unit Huber1 mean
+plus detached-error Gaussian variance objective, shared global clip1/single
+AdamW, constructor draws, freshTRAIN statistics, seeds and fixed heads remain.
+All76tensors/294752learned values start fresh, source0;75 identifiable tensors
+show nonzero CUDA data-gradient/movement events. Their294751values are capacity,
+not per-scalar learning proof. The retained pool-score bias is a registered
+softmax gauge, observed separately; decay/movement is not data learning.
+All four export-row groups and centered within-bin position contrasts learn.
+
+Preserve V8's new neural-volatility R²0.7359692462937604 and intact market-scaler
+TEMPO-5 neural accuracy0.9926215277777778, plus every V3–V7 scope/checkpoint/result.
+V8 sets no reconstruction record. Trend/relation fixed-head robustness and18
+conditions fail; this is no overall winner, forecast or fresh-period test.
+The13 partial pairings versusV6 compare feature coordinates20:40 and five
+whole-statistic archives; learned content0:20 is not required equal, and no
+whole40 claim is made. Both V8 initial/final fixed heads are newly measured.
+Historic pass counts retain their own frozen thresholds; V8 usesc0a465…,
+the reviewed strongest-V3–V7 retention22 protocol, without a TRAIN-NLL gate.
+Complexity4/5 and5/5 are ordinal recipe labels, not accuracy or observed difficulty.
+
+Read [results](doc/CAUSAL_FRESH_V8_RESULTS.md), [detail](doc/CAUSAL_FRESH_V8_DETAIL.md),
+[review](doc/CAUSAL_FRESH_V8_REVIEW.md) and [the ledger](doc/clean_causal_encoder_research_ledger.json).
+Stop the exact V8 recipe without bin/cap/coefficient/rate/seed/budget/checkpoint/
+head rescue. Next propose separately declared savedTRAIN-only V6/V8 diagnosis
+before choosing another mechanism; no next encoder is selected here. Protect
+every scoped leader before future candidate quality; no old model/head replay,
+refit or held-out tensor diagnosis. Use only existing managed GPU cuwacunu with
+exclusive frozen capsules, preserve all failures and concurrent Latent Roadmap
+work. No dev replacement, commit/push or container lifecycle follows.
+All436main artifacts/340ignored PT archives are mirrored; PT includes data,
+heads and fixtures, not340trained encoders. One failed host Stage before Docker
+was repaired by an independently pinned external full-copy wrapper, preserving
+the scientific113sources and all failures without model/head/training replay.
+The complete earlier live bytes remain under prior-live-001/manifest607ad940….
+
+---
+
+# Active clean causal encoder goal — V7 measured, 16 October 2026
+
+CPB-v3.market-01 remains the clean baseline and sole dev encoder. The authorized
+research goal stays active. CPB-v7.market-01 completes one fresh 2048/B8 CUDA
+trajectory and passes 4/22 prospectively strengthened V3/V4/V5/V6 retention
+conditions, full causal/CUDA/typed-resume admission and 100% coverage. Separate
+independent training/quality audits pass 283252/12493 checks with zero mismatches;
+all 13 full native40 initial DATA/statistic pairings versus V6 are exact. The
+final evidence join establishes the measured candidate and full trust, with
+advancement false and no winner/application selection.
+
+V7 keeps V6's native40 forward, objective, fresh constructor draws and fixed
+heads. It changes only clipping: disjoint mean73/293537 and uncertainty3/1215
+learned parameter groups each have norm2 max1 before one AdamW; fixed1/3888 is
+excluded. Combined norm may reach sqrt2; future residual/optimizer coupling
+remains. All 294752 learned values and TRAIN statistics start fresh, source0;
+every learned tensor receives nonzero CUDA gradients and changes. Recorded
+clipping occurs on mean0 and uncertainty1313 of2048 steps; this is V7 evidence,
+not a counterfactual V6 gradient explanation.
+
+Preserve V7's new neural-volatility R²0.6733049756106732, TRAIN query MAE
+0.24180533789857825 and descriptive TRAIN NLL-0.40882727825899934, plus all earlier
+V3/V4/V5/V6 strengths/checkpoints/history. TRAIN NLL adds no advancement gate.
+V7 fails18 conditions, including all8 TEMPO-5 floors and neural-trend robustness.
+Read [results](doc/CAUSAL_FRESH_V7_RESULTS.md), [review](doc/CAUSAL_FRESH_V7_REVIEW.md),
+[detail](doc/CAUSAL_FRESH_V7_DETAIL.md) and [the ledger](doc/clean_causal_encoder_research_ledger.json).
+Historic counts keep their own frozen cards; V7 uses096584… strongest-V3–V6 floors,
+so historical counts are not equivalent thresholds. Complexity 4/5 and 5/5 are
+ordinal signal-recipe labels, not accuracy or observed difficulty.
+
+Stop the exact V7 clipping recipe without cap/rate/seed/coefficient/budget/head
+rescue. Next is separately declared saved TRAIN-only V6/V7 diagnosis before a
+broader causal temporal-summary architecture; no V8 is selected or running.
+Protect every scoped gain in any future floor protocol before candidate quality.
+No old encoder/head replay, refit or held-out tensor diagnosis. Use only existing
+managed GPU cuwacunu with exclusive frozen capsules; preserve all historical
+artifacts and concurrent Latent Roadmap work. Research stays here: no dev
+replacement, commit or push follows. All431 main artifacts are mirrored locally;340 PT archives are ignored by Git.
+They include embeddings/heads/tests, not340 trained encoders.
+The exact earlier live bytes remain in the prior-live14a1… snapshot below.
+
+---
+
+# Active clean causal encoder goal — V6 measured, 16 October 2026
+
+CPB-v3.market-01 remains the clean baseline and sole dev encoder. The authorized
+research goal remains active. The separately declared CPB-v6.market-01 completes
+one fresh2048/B8 CUDA trajectory and passes12/22 strongest-V3/V4/V5 conditions,
+full causal/CUDA/typed-resume admission and100% coverage. This is a different,
+stronger floor set from V4's historical19/22; preserve each original card/count.
+
+V6 keeps V5's native40 forward capacity and constructor draw order; it changes
+only the objective to live unweighted Huber1 mean supervision plus detached-error
+Gaussian variance calibration. All294752 learned values and TRAIN statistics
+start fresh. Independent training/quality audits pass270721/12218 checks; all13
+whole40 initial DATA/statistic pairings match V5. Preserve the failed proof-path
+invocation and quality-auditor selector attempt alongside their additive repairs.
+No encoder training or quality fit was repeated for either repair.
+
+V6 adds seven TEMPO-5 timing leaders, linear market relation and TRAIN query MAE.
+Volatility, trend, activity, neural relation and held-out reconstruction still
+fail protected conditions. Preserve every V3/V4/V5 strength and all V6 gains; V6
+is a scoped reference, not an overall winner or application replacement. Read
+[results](doc/CAUSAL_FRESH_V6_RESULTS.md), [review](doc/CAUSAL_FRESH_V6_REVIEW.md)
+and [the ledger](doc/clean_causal_encoder_research_ledger.json). All400 main
+artifacts are mirrored locally with hashes;307 PT archives include tests,
+features and heads, not307 trained encoders. Keep all five main checkpoints.
+
+Next is a separately declared saved TRAIN-only V5/V6 diagnosis of native blocks,
+readout contributions and reconstruction/objective tradeoffs, without old model
+or head execution, refits or held-out tensor diagnosis. Do not rescue the exact
+stopped V6 recipe by changing seeds, rates, coefficients, budget or fixed heads.
+Freeze any later named mechanism and strongest retained floors before quality.
+Use only existing managed GPU cuwacunu and exclusive source/build/run leaves.
+Research stays in cuwacunu_embedding; no dev promotion, commit or push was
+requested. Preserve concurrent Latent Roadmap work. Complete pre-V6 live bytes
+are saved under output/engineering/causal-fresh-v6-finalization/attempt-001/prior-live/.
+
+---
+
+# Active clean causal encoder goal — 16 October 2026
+
+CPB-v3.market-01 remains the clean baseline and sole dev encoder. The user
+authorized continuing research as a goal; historical stopped-search wording
+does not stop new separately declared mechanisms. V1/v2/RPB remain preserved
+historical references, never pretrained initializers or clean quality floors.
+
+The saved TRAIN-only v3/v4 diagnosis and independent154629-check audit are
+complete. The resulting CPB-v5.market-01 experiment is also complete and stopped:
+native40 adds independent mean4/uncertainty4 projections, with every294752 learned
+value freshly initialized and fresh TRAIN-only statistics. One2048/B8 CUDA
+trajectory, unchanged initial/final fixed heads, full causal/typed-resume trust
+and100% coverage are verified. V5 passes7/22 strongest-v3/v4 goal conditions.
+V4's historical19/22 used a different, weaker v3-protection card; do not compare
+those counts as identical thresholds.
+
+Preserve v5's neural volatility/relation gains, tiny market-scaler intact neural
+timing gain and TRAIN MAE improvement, alongside every v3/v4 strength. Validation
+MAE/NLL and multiple retention conditions regress. V5 is a scoped reference,
+not an overall winner or application replacement. Read [the per-task results](doc/CAUSAL_FRESH_V5_RESULTS.md),
+[the review](doc/CAUSAL_FRESH_V5_REVIEW.md) and [the clean ledger](doc/clean_causal_encoder_research_ledger.json). Training/quality audits pass192589/11300 checks;
+all13 saved initial prefix/statistic pairings pass. All355 main artifacts and
+five checkpoints are available locally with matching hashes;266 PT files ignored.
+
+Continue with a separately declared saved TRAIN-only v4/v5 diagnosis before
+choosing the next mechanism. Inspect existing native blocks, saved readout
+contributions and bounded query derivatives without old encoder/head execution,
+refits or held-out tensor diagnosis. Freeze the next named source/card, fixed
+head settings and reference protection criteria before quality. No coefficient,
+seed, rate, budget or head rescue of the stopped v4/v5 recipes.
+
+Use only the existing managed GPU cuwacunu container and exclusive source/build/
+run leaves. Preserve concurrent Latent Roadmap work and every historical source,
+result, checkpoint and failed attempt. Research stays in cuwacunu_embedding;
+no dev promotion, commit or push was authorized. Pre-v5 live metadata is preserved
+at [output/engineering/causal-fresh-v5-finalization/attempt-001/prior-live/manifest.json](output/engineering/causal-fresh-v5-finalization/attempt-001/prior-live/manifest.json). The search goal remains active.
+---
+# Completed clean causal research — 15 October 2026
+
+**CPB-v3.market-01 remains the clean baseline and sole dev encoder.** The newly
+measured CPB-v4.market-01 passes19/22 frozen numeric conditions, full causal/CUDA/
+resume admission and100% coverage. It improves trend/relation, both neural
+volatility/activity heads, all eight TEMPO-5 retention checks and VALIDATION
+MAE/NLL. It fails linear volatility, linear activity and TRAIN query MAE. Preserve
+it as a scoped clean reference, not an overall winner or application replacement.
+Read [results](doc/CAUSAL_FRESH_V4_RESULTS.md), [review](doc/CAUSAL_FRESH_V4_REVIEW.md)
+and [the clean ledger](doc/clean_causal_encoder_research_ledger.json).
+
+V4 starts all293672 learned values fresh, with fresh TRAIN-only statistics and
+zero pretrained ancestry. The sole mechanism change stops the variance-head
+input gradient at change4 while keeping its conditional forward capacity/head
+learning and live mean residual. This is intentionally partial-gradient NLL
+training, not a complete joint-NLL gradient. One2048/B8 CUDA trajectory and the
+unchanged initial/final fixed heads are complete. All13 paired initial feature/
+statistic archives match v3 numerically exactly. Training/quality independent
+audits pass192545/10927 checks. The frozen88 sources, report-only correction,
+failed audit attempts, all embeddings/heads/checkpoints and old results remain.
+
+The exact v4 recipe is stopped without rescue. Next is only a proposed saved
+TRAIN-only comparison of v3/v4 volatility/activity/reconstruction contributions;
+no later encoder is running or scheduled. Any new encoder needs a separate
+prospective declaration protecting v3 and v4's scoped gains. V1/v2/RPB remain
+historical, never oracle floors. Use only existing GPU cuwacunu and exclusive
+research capsules; preserve the concurrent Latent Roadmap task. New research
+stays local: no commit/push or dev replacement was requested by this continuation.
 
 ---
 # Authorized causal research continuation — 15 October 2026

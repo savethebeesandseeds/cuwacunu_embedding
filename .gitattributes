@@ -174,3 +174,25 @@ code/networks/** -text -whitespace
 code/evaluation/latent_dynamics/** -text -whitespace
 
 doc/LATENT_MARKET_NETWORKS_V1_BACKPORT_2026-10-15_DOCS.json -text -whitespace
+
+doc/CAUSAL_V3_TRAIN_DIAGNOSIS_CARD.* -text -whitespace
+
+doc/causal_v3_train_diagnosis/** -text -whitespace
+
+code/research/causal_v3_train_diagnosis/** -text -whitespace
+
+doc/CAUSAL_FRESH_V4_CARD.* -text -whitespace
+
+doc/causal_fresh_v4/** -text -whitespace
+
+code/research/causal_fresh_v4/** -text -whitespace
+
+doc/results/causal_fresh_v4/** -text -whitespace
+
+code/research/causal_fresh_v4_audit/** -text -whitespace
+code/research/causal_fresh_v4_training_audit/** -text -whitespace
+code/research/causal_fresh_v4_reporting_attempt_002/** -text -whitespace
+doc/CAUSAL_V3_TRAIN_DIAGNOSIS.md -text -whitespace
+doc/CAUSAL_FRESH_V4_RESULTS.md -text -whitespace
+doc/CAUSAL_FRESH_V4_DETAIL.md -text -whitespace
+doc/CAUSAL_FRESH_V4_REVIEW.md -text -whitespace

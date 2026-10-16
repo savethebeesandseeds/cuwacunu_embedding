@@ -1,6 +1,6 @@
 {
   "kind": "causal_encoder_live_catalog_v1",
-  "date": "2026-10-15",
+  "date": "2026-10-16",
   "research_candidate": {
     "instance": "CPB-v2.market-01",
     "design_file": "CPB-v2.json",
@@ -26,13 +26,179 @@
     "overall_winner": false
   },
   "fresh_research_candidate": {
-    "instance": "CPB-v3.market-01",
-    "design_file": "CPB-v3.json",
-    "physical_version_root": "v3",
-    "stage": "complete_fresh_causal_baseline_established",
+    "instance": "CPB-v10.market-01",
+    "stage": "complete_stopped_failed_stronger_goal22",
     "pretrained_ancestor": "none",
-    "historical_reference_is_quality_gate": false,
-    "measured_instance_file": "instances/CPB-v3.market-01.json"
+    "source_updates": 0,
+    "new_causal_updates": 2048,
+    "gradient_policy": "huber1-mean-live;joint-gaussian-mean-live-and-uncertainty4-live;shared-global-clip1-v1",
+    "objective_policy": "huber1-mean-plus-joint-gaussian-nll-v1",
+    "mean_huber_delta": 1,
+    "loss_coefficients": [
+      1,
+      1
+    ],
+    "variance_error_detached": false,
+    "reporting_nll_backpropagated": false,
+    "direct_gradient_routes": "Huber->parent32+mean4;Gaussian-mean->parent32+mean4;Gaussian-variance->uncertainty4;mean-reads0:36;variance-reads36:40;shared-global-clip1",
+    "temporal_pooling_policy": "original-position-four-bin-shared-global-half-mixture-v1",
+    "temporal_pooling_partition": [
+      4,
+      16,
+      32,
+      4,
+      8
+    ],
+    "temporal_pooling_mix": [
+      0.5,
+      0.5
+    ],
+    "empty_local_bin_policy": "zero-whole-export-slice-after-bias-v1",
+    "registered_learned_tensors": 76,
+    "mandatory_identifiable_learned_tensors": 75,
+    "data_gradient_gauge_exemption": "core.encoder.level.base.backbone.pool_score.bias",
+    "shared_global_clip": true,
+    "optimizer_independence_claimed": false,
+    "card": {
+      "path": "doc/CAUSAL_FRESH_V10_CARD.json",
+      "bytes": 119685,
+      "sha256": "42b16f266e8b34af31db5de83edb1943d899fb4bf1141e4b5cc5c7308dacb865"
+    },
+    "report": "doc/CAUSAL_FRESH_V10_RESULTS.md",
+    "review": "doc/CAUSAL_FRESH_V10_REVIEW.md",
+    "detail": "doc/CAUSAL_FRESH_V10_DETAIL.md",
+    "instance_record": "code/encoders/causal_patch_bottleneck_mae/versions/instances/CPB-v10.market-01.json",
+    "comparison": {
+      "path": "doc/results/causal_fresh_v10/comparison.json",
+      "bytes": 446538,
+      "sha256": "029cdc0548e8e38b6583f846743ed9f9fd249f4de2b8bd20266b9803d5b3613b"
+    },
+    "table_rows": {
+      "path": "doc/results/causal_fresh_v10/table_rows.json",
+      "bytes": 399754,
+      "sha256": "9b27a3f0de6fc49f36c11d473f192f299b06addc2bc213e5c124caad724cb789"
+    },
+    "baseline": "CPB-v3.market-01",
+    "baseline_changed": false,
+    "full_coverage": true,
+    "runtime_trust_admission_passed": true,
+    "trust_admission_passed": true,
+    "measured_candidate_established": true,
+    "overall_establishment_passed": false,
+    "postmeasurement_establishment": {
+      "path": "doc/causal_fresh_v10/final-establishment.json",
+      "bytes": 7709,
+      "sha256": "551f7a31be44dcc68e61f4d0be7390843e66ac8138b542a3e47bd3526128946b"
+    },
+    "initial_full40_and_statistics_pairings": {
+      "path": "doc/causal_fresh_v10/quality-independent-audit.json",
+      "bytes": 243065,
+      "sha256": "724b3df988fcc2ee74e568734d76f4c5f985ddacfaeebae6bc12e102cc3b11a8"
+    },
+    "initial_pairing_native_coordinate_slice": [
+      0,
+      40
+    ],
+    "whole_native40_initial_equality_claimed": true,
+    "temporal_pooling_proof": {
+      "path": "doc/results/causal_fresh_v10/temporal-pooling-proof.json",
+      "bytes": 1897,
+      "sha256": "2eb59fce7a473dc574517406e101c55bbb240e85b48924c24990c4ac1339881f"
+    },
+    "temporal_pooling_learning": {
+      "path": "doc/results/causal_fresh_v10/temporal-projection-learning.json",
+      "bytes": 3803,
+      "sha256": "2364ec48002acf16aac61ad5ff4f660e93d4d756c6a3c82f52b10a1862b31c17"
+    },
+    "mandatory_identifiable_tensor_value_capacity": 294751,
+    "mandatory_identifiable_count_semantics": "tensor numel capacity, not every-scalar gradient/movement proof",
+    "per_scalar_nonzero_gradient_proof_claimed": false,
+    "all_three_between_bin_position_directions_learned": true,
+    "final_between_bin_position_projection_changed": true,
+    "individual_final_coefficient_nonzero_gate": false,
+    "normal_prospective_source_admission": {
+      "source_files": 127,
+      "owner_source_files": 82,
+      "freeze_and_preflight_bound": true,
+      "normal_quality_all_stages_passed": true,
+      "scientific_model_head_or_training_replay": false
+    },
+    "historical_V9_reporting_recovery": {
+      "card": {
+        "path": "doc/causal_fresh_v9/reporting-recovery-card-001.json",
+        "bytes": 203096,
+        "sha256": "9c61e4517bc74f0e6a9327ba7f8ec11908b1c1c4f0f804bd7ac76a51631aa82d"
+      },
+      "receipt": {
+        "path": "doc/causal_fresh_v9/reporting-recovery-receipt-001.json",
+        "bytes": 268051,
+        "sha256": "5f96dfab1b22a6c2df7f4bd8a0f55eeb0cb15ef072b05f80473707a31c63de72"
+      },
+      "failure_mirror": {
+        "path": "doc/causal_fresh_v9/failure-mirror-before-report-recovery-001.json",
+        "bytes": 208493,
+        "sha256": "e30f6cd71267be7b97337423b9fa2029922ee059685736bcff0fa53ac9cba532"
+      },
+      "scope": "HistoricalV9 reporting-only/no-science-replay evidence;not a V10 recovery or recipe change"
+    },
+    "prospective_freeze": {
+      "path": "doc/causal_fresh_v10/prospective-freeze.json",
+      "bytes": 1587,
+      "sha256": "c36d27a42d430d6587f8a2ca288ff48eee40cdfc1b46c080e1b901158dee774b"
+    },
+    "protocol_preflight": {
+      "path": "doc/causal_fresh_v10/protocol-preflight.json",
+      "bytes": 29110,
+      "sha256": "25e9eee0b601fa0b3061dcf511d88d4cbd05a122f8879faf1d0898d129db9fb1"
+    },
+    "numeric_passed": 3,
+    "numeric_total": 22,
+    "advancement_passed": false,
+    "failed_conditions": [
+      "past_volatility:linear_r2",
+      "past_volatility:neural_mean_r2",
+      "past_trend:linear_r2",
+      "past_trend:neural_mean_r2",
+      "past_activity:linear_r2",
+      "past_activity:neural_mean_r2",
+      "past_relation:linear_r2",
+      "past_relation:neural_mean_r2",
+      "synthetic_train:validation_intact:linear_head_accuracy",
+      "synthetic_train:validation_intact:neural_head_accuracy",
+      "synthetic_train:validation_deleted:linear_head_accuracy",
+      "synthetic_train:validation_deleted:neural_head_accuracy",
+      "market_scaler:validation_intact:linear_head_accuracy",
+      "market_scaler:validation_intact:neural_head_accuracy",
+      "market_scaler:validation_deleted:linear_head_accuracy",
+      "market_scaler:validation_deleted:neural_head_accuracy",
+      "train:standardized_MAE",
+      "validation:standardized_MAE",
+      "known_validation:Gaussian_NLL_F64"
+    ],
+    "gate_scope": "V10 prospective strongest-final-V3-through-V9 retention22; historical counts retain their own cards",
+    "quality": "Preserve each saved scoped gain and failure; initial stages descriptive; no automatic application selection",
+    "overall_winner": false,
+    "application_changed": false,
+    "human_report_assets": {
+      "results": {
+        "path": "doc/CAUSAL_FRESH_V10_RESULTS.md",
+        "bytes": 28666,
+        "sha256": "2cd73cd233c946f07ff0911a704856fd4b1260a5ffd3918b3f777c6aa3fc7c46"
+      },
+      "review": {
+        "path": "doc/CAUSAL_FRESH_V10_REVIEW.md",
+        "bytes": 8512,
+        "sha256": "998254c05cc17b57455ecbebec3aedbb20a48f91f8011d0bac979db0a10d1b39"
+      },
+      "detail": {
+        "path": "doc/CAUSAL_FRESH_V10_DETAIL.md",
+        "bytes": 33484,
+        "sha256": "276896b56153cc0135e173f611e7729562005b4b0ed61c02b089ddb224f51b94"
+      }
+    },
+    "design_file": "CPB-v10.json",
+    "physical_version_root": "v10",
+    "measured_instance_file": "instances/CPB-v10.market-01.json"
   },
   "historical_reference_and_application": {
     "instance": "CPB-v1.market-01",
@@ -47,5 +213,663 @@
   },
   "active_application": "CPB-v3.market-01",
   "interpretation": "CPB-v3 is the clean causal baseline and sole selected dev application encoder; v1/v2 are preserved historical references, never oracle targets; no overall quality winner",
-  "application_selection_record": "../../../../../cuwacunu_dev/doc/CAUSAL_PRIMARY_INTEGRATION.md"
+  "application_selection_record": "../../../../../cuwacunu_dev/doc/CAUSAL_PRIMARY_INTEGRATION.md",
+  "fresh_research_candidate_history": [
+    {
+      "instance": "CPB-v4.market-01",
+      "design_file": "CPB-v4.json",
+      "physical_version_root": "v4",
+      "stage": "complete_stopped_failed_frozen_advancement_conditions",
+      "measured_instance_file": "instances/CPB-v4.market-01.json",
+      "pretrained_ancestor": "none",
+      "source_updates": 0,
+      "new_causal_updates": 2048,
+      "gradient_policy": "variance_input_gradient_stop-v1",
+      "historical_reference_is_quality_gate": false,
+      "baseline": "CPB-v3.market-01",
+      "baseline_changed": false,
+      "card": "doc/CAUSAL_FRESH_V4_CARD.json",
+      "report": "doc/CAUSAL_FRESH_V4_RESULTS.md",
+      "review": "doc/CAUSAL_FRESH_V4_REVIEW.md",
+      "detail": "doc/CAUSAL_FRESH_V4_DETAIL.md",
+      "numeric_passed": 19,
+      "numeric_total": 22,
+      "trust_admission_passed": true,
+      "full_coverage": true,
+      "advancement_passed": false,
+      "application_changed": false,
+      "overall_winner": false
+    },
+    {
+      "instance": "CPB-v5.market-01",
+      "stage": "complete_stopped_failed_stronger_goal22",
+      "pretrained_ancestor": "none",
+      "source_updates": 0,
+      "new_causal_updates": 2048,
+      "gradient_policy": "separate-mean-and-uncertainty-bank-projections-live-gaussian-nll-v1",
+      "card": {
+        "path": "doc/CAUSAL_FRESH_V5_CARD.json",
+        "bytes": 36991,
+        "sha256": "a6da3a9501dd4247c40e3e24e42faf2c2c46620fda7e0a0568709276d0e84d09"
+      },
+      "report": "doc/CAUSAL_FRESH_V5_RESULTS.md",
+      "review": "doc/CAUSAL_FRESH_V5_REVIEW.md",
+      "detail": "doc/CAUSAL_FRESH_V5_DETAIL.md",
+      "instance_record": "code/encoders/causal_patch_bottleneck_mae/versions/instances/CPB-v5.market-01.json",
+      "comparison": {
+        "path": "doc/results/causal_fresh_v5/comparison.json",
+        "bytes": 157617,
+        "sha256": "09addbeafdc80c5a9f8917d05122499b07e131a19522c7097cc433fdb0b010a7"
+      },
+      "table_rows": {
+        "path": "doc/results/causal_fresh_v5/table_rows.json",
+        "bytes": 336740,
+        "sha256": "768e0dd063bf60a544d35ed8d884c5126cac91b52022fb1e397e16789c990e7e"
+      },
+      "baseline": "CPB-v3.market-01",
+      "baseline_changed": false,
+      "full_coverage": true,
+      "trust_admission_passed": true,
+      "numeric_passed": 7,
+      "numeric_total": 22,
+      "advancement_passed": false,
+      "failed_conditions": [
+        "past_volatility:linear_r2",
+        "past_trend:linear_r2",
+        "past_trend:neural_mean_r2",
+        "past_activity:linear_r2",
+        "past_activity:neural_mean_r2",
+        "past_relation:linear_r2",
+        "synthetic_train:validation_intact:linear_head_accuracy",
+        "synthetic_train:validation_intact:neural_head_accuracy",
+        "synthetic_train:validation_deleted:linear_head_accuracy",
+        "synthetic_train:validation_deleted:neural_head_accuracy",
+        "market_scaler:validation_intact:linear_head_accuracy",
+        "market_scaler:validation_deleted:linear_head_accuracy",
+        "market_scaler:validation_deleted:neural_head_accuracy",
+        "validation:standardized_MAE",
+        "known_validation:Gaussian_NLL_F64"
+      ],
+      "gate_scope": "V5 stronger best-of-V3/V4 prospective22; V4 old19/22 is a different card",
+      "quality": "Retain three scoped quality leaders and TRAIN MAE gain; stop this exact recipe without promotion",
+      "overall_winner": false,
+      "application_changed": false,
+      "human_report_assets": {
+        "results": {
+          "path": "doc/CAUSAL_FRESH_V5_RESULTS.md",
+          "bytes": 11744,
+          "sha256": "c92c299ecfa13200ea1e8e51f95d02f390d4cf03852792d85848fb9b67d34d16"
+        },
+        "review": {
+          "path": "doc/CAUSAL_FRESH_V5_REVIEW.md",
+          "bytes": 4584,
+          "sha256": "28b4bf78e4338df5fc534c3376f03959998fb67249c35803ca0bda0672ea63b9"
+        },
+        "detail": {
+          "path": "doc/CAUSAL_FRESH_V5_DETAIL.md",
+          "bytes": 21797,
+          "sha256": "cedab60c256fb173bc5beb58e67dbe5dd05d61eea4db096266ce97e3f2c41c72"
+        }
+      },
+      "design_file": "CPB-v5.json",
+      "physical_version_root": "v5",
+      "measured_instance_file": "instances/CPB-v5.market-01.json"
+    },
+    {
+      "instance": "CPB-v6.market-01",
+      "stage": "complete_stopped_failed_stronger_goal22",
+      "pretrained_ancestor": "none",
+      "source_updates": 0,
+      "new_causal_updates": 2048,
+      "gradient_policy": "huber1-mean-live;gaussian-variance-detached-error-live-uncertainty4;shared-global-clip1-v1",
+      "objective_policy": "huber1-mean-plus-detached-error-gaussian-variance-v1",
+      "mean_huber_delta": 1,
+      "loss_coefficients": [
+        1,
+        1
+      ],
+      "variance_error_detached": true,
+      "reporting_nll_backpropagated": false,
+      "card": {
+        "path": "doc/CAUSAL_FRESH_V6_CARD.json",
+        "bytes": 74773,
+        "sha256": "7cbda7aaa756bf775e09e3e8bc2a2e8cc7c3a34703171ad95cdd5e291bea847d"
+      },
+      "report": "doc/CAUSAL_FRESH_V6_RESULTS.md",
+      "review": "doc/CAUSAL_FRESH_V6_REVIEW.md",
+      "detail": "doc/CAUSAL_FRESH_V6_DETAIL.md",
+      "instance_record": "code/encoders/causal_patch_bottleneck_mae/versions/instances/CPB-v6.market-01.json",
+      "comparison": {
+        "path": "doc/results/causal_fresh_v6/comparison.json",
+        "bytes": 226032,
+        "sha256": "d4af012a653f85b8fcbd98f2d3d38bb7737305a61c8a6270477794c6b5035203"
+      },
+      "table_rows": {
+        "path": "doc/results/causal_fresh_v6/table_rows.json",
+        "bytes": 394229,
+        "sha256": "0e4b665b7e7086271fe5a2556303c90383f467508ef1ab0e76507737414c491c"
+      },
+      "baseline": "CPB-v3.market-01",
+      "baseline_changed": false,
+      "full_coverage": true,
+      "runtime_trust_admission_passed": true,
+      "trust_admission_passed": true,
+      "measured_candidate_established": true,
+      "overall_establishment_passed": false,
+      "postmeasurement_establishment": {
+        "path": "doc/causal_fresh_v6/final-establishment.json",
+        "bytes": 3938,
+        "sha256": "ff3a26ea261fb9a8aa9ce681ee37ff882ef703f0056dce421eefc3e1a641c6fd"
+      },
+      "initial_full40_pairings": {
+        "path": "doc/causal_fresh_v6/quality-independent-audit.json",
+        "bytes": 219068,
+        "sha256": "a1bcd600e7be558132eb2e77911e423a7f008d048951aed68c579671fb255fe3"
+      },
+      "numeric_passed": 12,
+      "numeric_total": 22,
+      "advancement_passed": false,
+      "failed_conditions": [
+        "past_volatility:linear_r2",
+        "past_volatility:neural_mean_r2",
+        "past_trend:linear_r2",
+        "past_trend:neural_mean_r2",
+        "past_activity:linear_r2",
+        "past_activity:neural_mean_r2",
+        "past_relation:neural_mean_r2",
+        "market_scaler:validation_deleted:neural_head_accuracy",
+        "validation:standardized_MAE",
+        "known_validation:Gaussian_NLL_F64"
+      ],
+      "gate_scope": "V6 prospective strongest-final-V3/V4/V5 retention22; historical counts retain their own cards",
+      "quality": "Preserve each saved scoped gain and failure; initial stages descriptive; no automatic application selection",
+      "overall_winner": false,
+      "application_changed": false,
+      "human_report_assets": {
+        "results": {
+          "path": "doc/CAUSAL_FRESH_V6_RESULTS.md",
+          "bytes": 15159,
+          "sha256": "7b628d074769eac6b98af81772d4b151f82196fab9ad84f6f482340d7d2792ef"
+        },
+        "review": {
+          "path": "doc/CAUSAL_FRESH_V6_REVIEW.md",
+          "bytes": 6716,
+          "sha256": "581110d8bc4f5dc69a48d42fb08bf7f1c26fae72100ef37fcd5274853057854f"
+        },
+        "detail": {
+          "path": "doc/CAUSAL_FRESH_V6_DETAIL.md",
+          "bytes": 29997,
+          "sha256": "8ab47c493536e0d620b3df8959b5f824c7d876756f4ebb90e61b705cc34d4d9b"
+        }
+      },
+      "design_file": "CPB-v6.json",
+      "physical_version_root": "v6",
+      "measured_instance_file": "instances/CPB-v6.market-01.json"
+    },
+    {
+      "instance": "CPB-v7.market-01",
+      "stage": "complete_stopped_failed_stronger_goal22",
+      "pretrained_ancestor": "none",
+      "source_updates": 0,
+      "new_causal_updates": 2048,
+      "gradient_policy": "huber1-mean-live;gaussian-variance-detached-error-live-uncertainty4;disjoint-mean-uncertainty-clip1-v1",
+      "objective_policy": "huber1-mean-plus-detached-error-gaussian-variance-v1",
+      "mean_huber_delta": 1,
+      "loss_coefficients": [
+        1,
+        1
+      ],
+      "variance_error_detached": true,
+      "reporting_nll_backpropagated": false,
+      "gradient_clip_policy": "disjoint-mean-uncertainty-norm2-clip1-v1",
+      "gradient_clip_max_norms": [
+        1,
+        1
+      ],
+      "gradient_clip_norm_type": 2,
+      "mean_clip_tensors": 73,
+      "mean_clip_values": 293537,
+      "uncertainty_clip_tensors": 3,
+      "uncertainty_clip_values": 1215,
+      "fixed_excluded_tensors": 1,
+      "fixed_excluded_values": 3888,
+      "shared_global_clip": false,
+      "combined_post_clip_norm_upper_bound": "sqrt2",
+      "optimizer_independence_claimed": false,
+      "direct_gradient_routes": "mean->parent32+mean4;variance->uncertainty4;no-direct-cross-paths;disjoint-mean-uncertainty-clip1",
+      "card": {
+        "path": "doc/CAUSAL_FRESH_V7_CARD.json",
+        "bytes": 84463,
+        "sha256": "f913044fd4bdbeff637991087f91d0b47bca451b31dfe664fb70b9555bbae593"
+      },
+      "report": "doc/CAUSAL_FRESH_V7_RESULTS.md",
+      "review": "doc/CAUSAL_FRESH_V7_REVIEW.md",
+      "detail": "doc/CAUSAL_FRESH_V7_DETAIL.md",
+      "instance_record": "code/encoders/causal_patch_bottleneck_mae/versions/instances/CPB-v7.market-01.json",
+      "comparison": {
+        "path": "doc/results/causal_fresh_v7/comparison.json",
+        "bytes": 280725,
+        "sha256": "1c1e22763231080bbb4b243f6c4fbc9d576364926c2d78da32289edfc697ed51"
+      },
+      "table_rows": {
+        "path": "doc/results/causal_fresh_v7/table_rows.json",
+        "bytes": 396737,
+        "sha256": "08da35cffed8d933a4d1f859691f032ad40293e8087ec940b4159c12a515f78d"
+      },
+      "baseline": "CPB-v3.market-01",
+      "baseline_changed": false,
+      "full_coverage": true,
+      "runtime_trust_admission_passed": true,
+      "trust_admission_passed": true,
+      "measured_candidate_established": true,
+      "overall_establishment_passed": false,
+      "postmeasurement_establishment": {
+        "path": "doc/causal_fresh_v7/final-establishment.json",
+        "bytes": 2923,
+        "sha256": "7678e84a676453c0294f0654af6117e06246f1639f4e67f9ff78e9cf51049512"
+      },
+      "initial_full40_pairings": {
+        "path": "doc/causal_fresh_v7/quality-independent-audit.json",
+        "bytes": 217616,
+        "sha256": "7e70495f509000063ae32f145c705fe0662fb8121b06a2e5cc3d4ec519926404"
+      },
+      "numeric_passed": 4,
+      "numeric_total": 22,
+      "advancement_passed": false,
+      "failed_conditions": [
+        "past_volatility:linear_r2",
+        "past_trend:linear_r2",
+        "past_trend:neural_mean_r2",
+        "past_activity:linear_r2",
+        "past_activity:neural_mean_r2",
+        "past_relation:linear_r2",
+        "past_relation:neural_mean_r2",
+        "synthetic_train:validation_intact:linear_head_accuracy",
+        "synthetic_train:validation_intact:neural_head_accuracy",
+        "synthetic_train:validation_deleted:linear_head_accuracy",
+        "synthetic_train:validation_deleted:neural_head_accuracy",
+        "market_scaler:validation_intact:linear_head_accuracy",
+        "market_scaler:validation_intact:neural_head_accuracy",
+        "market_scaler:validation_deleted:linear_head_accuracy",
+        "market_scaler:validation_deleted:neural_head_accuracy",
+        "validation:standardized_MAE",
+        "known_validation:Gaussian_NLL_F64",
+        "past_trend:all3_neural_R2_positive"
+      ],
+      "gate_scope": "V7 prospective strongest-final-V3/V4/V5/V6 retention22; historical counts retain their own cards",
+      "quality": "Preserve each saved scoped gain and failure; initial stages descriptive; no automatic application selection",
+      "overall_winner": false,
+      "application_changed": false,
+      "human_report_assets": {
+        "results": {
+          "path": "doc/CAUSAL_FRESH_V7_RESULTS.md",
+          "bytes": 12345,
+          "sha256": "03688509bee4b141c1a303b631273657cea8b856a7ead0c74a6e1aeccd5fecb7"
+        },
+        "review": {
+          "path": "doc/CAUSAL_FRESH_V7_REVIEW.md",
+          "bytes": 5709,
+          "sha256": "d2aef992ccb2385d9cbae7efe0f1aae3e0b1fe7ea3aa4168e6e0e908e2f5b37a"
+        },
+        "detail": {
+          "path": "doc/CAUSAL_FRESH_V7_DETAIL.md",
+          "bytes": 22986,
+          "sha256": "ec526a8eb7e739aaee21f88100167a1475c3b88399bbdbe6bd6d43dca179e8fb"
+        }
+      },
+      "design_file": "CPB-v7.json",
+      "physical_version_root": "v7",
+      "measured_instance_file": "instances/CPB-v7.market-01.json"
+    },
+    {
+      "instance": "CPB-v8.market-01",
+      "stage": "complete_stopped_failed_stronger_goal22",
+      "pretrained_ancestor": "none",
+      "source_updates": 0,
+      "new_causal_updates": 2048,
+      "gradient_policy": "huber1-mean-live;gaussian-variance-detached-error-live-uncertainty4;shared-global-clip1-v1",
+      "objective_policy": "huber1-mean-plus-detached-error-gaussian-variance-v1",
+      "mean_huber_delta": 1,
+      "loss_coefficients": [
+        1,
+        1
+      ],
+      "variance_error_detached": true,
+      "reporting_nll_backpropagated": false,
+      "temporal_pooling_policy": "original-position-four-bin-disjoint-export-rows-v1",
+      "temporal_pooling_partition": [
+        4,
+        16,
+        32,
+        4,
+        8
+      ],
+      "registered_learned_tensors": 76,
+      "mandatory_identifiable_learned_tensors": 75,
+      "data_gradient_gauge_exemption": "core.encoder.level.base.backbone.pool_score.bias",
+      "shared_global_clip": true,
+      "optimizer_independence_claimed": false,
+      "card": {
+        "path": "doc/CAUSAL_FRESH_V8_CARD.json",
+        "bytes": 109378,
+        "sha256": "6acfaadfe758c0d252c8138fc2830807d40444f9a9adfa61f85ec13dde7c63a6"
+      },
+      "report": "doc/CAUSAL_FRESH_V8_RESULTS.md",
+      "review": "doc/CAUSAL_FRESH_V8_REVIEW.md",
+      "detail": "doc/CAUSAL_FRESH_V8_DETAIL.md",
+      "instance_record": "code/encoders/causal_patch_bottleneck_mae/versions/instances/CPB-v8.market-01.json",
+      "comparison": {
+        "path": "doc/results/causal_fresh_v8/comparison.json",
+        "bytes": 336980,
+        "sha256": "a7308c1b1b4e1719eb5ffc4c82bc9a7e446a7a174c66daef53b2845ee59025dc"
+      },
+      "table_rows": {
+        "path": "doc/results/causal_fresh_v8/table_rows.json",
+        "bytes": 398100,
+        "sha256": "61da557336146325bc496c9ff24d3d8a8e1d6eb110a90346fbe9036b52e259f9"
+      },
+      "baseline": "CPB-v3.market-01",
+      "baseline_changed": false,
+      "full_coverage": true,
+      "runtime_trust_admission_passed": true,
+      "trust_admission_passed": true,
+      "measured_candidate_established": true,
+      "overall_establishment_passed": false,
+      "postmeasurement_establishment": {
+        "path": "doc/causal_fresh_v8/final-establishment.json",
+        "bytes": 6452,
+        "sha256": "0ea5b99a8417c74d589cef79ce83953450f0b499eec85d1359ab8f40e7878cba"
+      },
+      "initial_native20_40_and_statistics_pairings": {
+        "path": "doc/causal_fresh_v8/quality-independent-audit.json",
+        "bytes": 229500,
+        "sha256": "bf3c0bc14b09745535795122fb747990c40ee9d26ccbb795c161dda955406c7a"
+      },
+      "initial_pairing_native_coordinate_slice": [
+        20,
+        40
+      ],
+      "whole_native40_initial_equality_claimed": false,
+      "temporal_pooling_proof": {
+        "path": "doc/results/causal_fresh_v8/temporal-pooling-proof.json",
+        "bytes": 1642,
+        "sha256": "8aa8187dcc54ac597f8567b75deb17cc5d1dc55da7966d4136f6202f06408699"
+      },
+      "temporal_pooling_learning": {
+        "path": "doc/results/causal_fresh_v8/temporal-projection-learning.json",
+        "bytes": 2927,
+        "sha256": "f9e2dee0d932cbd66c9723cad37c36dce06ec8996749d66c89e6c60efb4adaa6"
+      },
+      "host_orchestration_recovery": {
+        "preserved_host_Stage_failures": 1,
+        "failure_before_Docker_or_project_operations": true,
+        "successful_exclusive_container_source_Stage_passes": 1,
+        "scientific_card_or_source_revision": false,
+        "scientific_model_head_or_training_replay": false,
+        "original_scientific_source_files": 113,
+        "actual_external_helper_sha256": "0e9b471cb89bc7cecd363551a684c61f4f894409bd0c774cf4b4a5b37920366d",
+        "scope": "Full-copy host wrapper repair only; original113 source/binaries and all failures preserved."
+      },
+      "host_recovery_card": {
+        "path": "doc/causal_fresh_v8/host-orchestration-recovery-001.json",
+        "bytes": 2939,
+        "sha256": "526e51c1357d6f89b289cd96e202a7853ad54c17e991f01c8bcb293e3cbd28b9"
+      },
+      "host_recovery_review": {
+        "path": "doc/causal_fresh_v8/recovery-independent-review-001.json",
+        "bytes": 3937,
+        "sha256": "8557b4e386ebe43a7f8cfd1bf50d3222a0e3371f8fde66306114d99bc1fcd67f"
+      },
+      "numeric_passed": 4,
+      "numeric_total": 22,
+      "advancement_passed": false,
+      "failed_conditions": [
+        "past_volatility:linear_r2",
+        "past_trend:linear_r2",
+        "past_trend:neural_mean_r2",
+        "past_activity:linear_r2",
+        "past_activity:neural_mean_r2",
+        "past_relation:linear_r2",
+        "past_relation:neural_mean_r2",
+        "synthetic_train:validation_intact:linear_head_accuracy",
+        "synthetic_train:validation_intact:neural_head_accuracy",
+        "synthetic_train:validation_deleted:linear_head_accuracy",
+        "synthetic_train:validation_deleted:neural_head_accuracy",
+        "market_scaler:validation_intact:linear_head_accuracy",
+        "market_scaler:validation_deleted:linear_head_accuracy",
+        "market_scaler:validation_deleted:neural_head_accuracy",
+        "train:standardized_MAE",
+        "validation:standardized_MAE",
+        "known_validation:Gaussian_NLL_F64",
+        "past_trend:all3_neural_R2_positive"
+      ],
+      "gate_scope": "V8 prospective strongest-final-V3/V4/V5/V6/V7 retention22; historical counts retain their own cards",
+      "quality": "Preserve each saved scoped gain and failure; initial stages descriptive; no automatic application selection",
+      "overall_winner": false,
+      "application_changed": false,
+      "human_report_assets": {
+        "results": {
+          "path": "doc/CAUSAL_FRESH_V8_RESULTS.md",
+          "bytes": 15037,
+          "sha256": "d62d65f2df718ffa6d74189d39970d6c79c973571546f944a8384b933be5d3b4"
+        },
+        "review": {
+          "path": "doc/CAUSAL_FRESH_V8_REVIEW.md",
+          "bytes": 6747,
+          "sha256": "9eb4f2bdfb7207c1372c5a859a52c1ef386cec6805abba93b15f7efdcbdbebcb"
+        },
+        "detail": {
+          "path": "doc/CAUSAL_FRESH_V8_DETAIL.md",
+          "bytes": 32376,
+          "sha256": "a7343e3beb01d050b050fc22a89970a7cc1845a0da206a2798cb63de416691d7"
+        }
+      },
+      "design_file": "CPB-v8.json",
+      "physical_version_root": "v8",
+      "measured_instance_file": "instances/CPB-v8.market-01.json"
+    },
+    {
+      "instance": "CPB-v9.market-01",
+      "stage": "complete_stopped_failed_stronger_goal22",
+      "pretrained_ancestor": "none",
+      "source_updates": 0,
+      "new_causal_updates": 2048,
+      "gradient_policy": "huber1-mean-live;gaussian-variance-detached-error-live-uncertainty4;shared-global-clip1-v1",
+      "objective_policy": "huber1-mean-plus-detached-error-gaussian-variance-v1",
+      "mean_huber_delta": 1,
+      "loss_coefficients": [
+        1,
+        1
+      ],
+      "variance_error_detached": true,
+      "reporting_nll_backpropagated": false,
+      "temporal_pooling_policy": "original-position-four-bin-shared-global-half-mixture-v1",
+      "temporal_pooling_partition": [
+        4,
+        16,
+        32,
+        4,
+        8
+      ],
+      "temporal_pooling_mix": [
+        0.5,
+        0.5
+      ],
+      "empty_local_bin_policy": "zero-whole-export-slice-after-bias-v1",
+      "registered_learned_tensors": 76,
+      "mandatory_identifiable_learned_tensors": 75,
+      "data_gradient_gauge_exemption": "core.encoder.level.base.backbone.pool_score.bias",
+      "shared_global_clip": true,
+      "optimizer_independence_claimed": false,
+      "card": {
+        "path": "doc/CAUSAL_FRESH_V9_CARD.json",
+        "bytes": 114322,
+        "sha256": "94488bf2d42751b5a38c054eb5b6bbd7674e45d6e0bd444818b7f6fbcb34346d"
+      },
+      "report": "doc/CAUSAL_FRESH_V9_RESULTS.md",
+      "review": "doc/CAUSAL_FRESH_V9_REVIEW.md",
+      "detail": "doc/CAUSAL_FRESH_V9_DETAIL.md",
+      "instance_record": "code/encoders/causal_patch_bottleneck_mae/versions/instances/CPB-v9.market-01.json",
+      "comparison": {
+        "path": "doc/results/causal_fresh_v9/comparison.json",
+        "bytes": 391743,
+        "sha256": "6efe04164fdfff0d61190cfe63f0f7dbc1750f29b8102dd2649d33cfa8f7859f"
+      },
+      "table_rows": {
+        "path": "doc/results/causal_fresh_v9/table_rows.json",
+        "bytes": 398749,
+        "sha256": "2ab024401e56737523db40823388f9c026e1ace7f064018e4be069dcc26660ea"
+      },
+      "baseline": "CPB-v3.market-01",
+      "baseline_changed": false,
+      "full_coverage": true,
+      "runtime_trust_admission_passed": true,
+      "trust_admission_passed": true,
+      "measured_candidate_established": true,
+      "overall_establishment_passed": false,
+      "postmeasurement_establishment": {
+        "path": "doc/causal_fresh_v9/final-establishment.json",
+        "bytes": 8847,
+        "sha256": "aeb9fbadcf8afad2bb48812b957ca23b122c3df92d5459c18859dd16637e4cdf"
+      },
+      "initial_native20_40_and_statistics_pairings": {
+        "path": "doc/causal_fresh_v9/quality-independent-audit.json",
+        "bytes": 286407,
+        "sha256": "3ee9c6121279f7ee4db5d828d17c65e55c6b8b8615ad8c1fbad00d849639c701"
+      },
+      "initial_pairing_native_coordinate_slice": [
+        20,
+        40
+      ],
+      "whole_native40_initial_equality_claimed": false,
+      "temporal_pooling_proof": {
+        "path": "doc/results/causal_fresh_v9/temporal-pooling-proof.json",
+        "bytes": 1891,
+        "sha256": "bb01b4d8c9013219777530778bf9f9066d186ced7b77cdb07d985b945ab7deb8"
+      },
+      "temporal_pooling_learning": {
+        "path": "doc/results/causal_fresh_v9/temporal-projection-learning.json",
+        "bytes": 3799,
+        "sha256": "8699686a8fd6b9013157f1bd99c430ebd154b7a00b11a78d1aa57227ee221be8"
+      },
+      "mandatory_identifiable_tensor_value_capacity": 294751,
+      "mandatory_identifiable_count_semantics": "tensor numel capacity, not every-scalar gradient/movement proof",
+      "per_scalar_nonzero_gradient_proof_claimed": false,
+      "all_three_between_bin_position_directions_learned": true,
+      "final_between_bin_position_projection_changed": true,
+      "individual_final_coefficient_nonzero_gate": false,
+      "normal_prospective_source_admission": {
+        "source_files": 118,
+        "owner_source_files": 82,
+        "freeze_and_preflight_bound": true,
+        "invented_V9_host_recovery": false,
+        "scientific_model_head_or_training_replay": false
+      },
+      "report_only_recovery": {
+        "status": "passed",
+        "card": {
+          "id": "reporting_recovery_card",
+          "path": "doc/causal_fresh_v9/reporting-recovery-card-001.json",
+          "bytes": 203096,
+          "sha256": "9c61e4517bc74f0e6a9327ba7f8ec11908b1c1c4f0f804bd7ac76a51631aa82d",
+          "staged_path": "inputs/reporting_recovery_card.json"
+        },
+        "receipt": {
+          "id": "reporting_recovery_receipt",
+          "path": "doc/causal_fresh_v9/reporting-recovery-receipt-001.json",
+          "bytes": 268051,
+          "sha256": "5f96dfab1b22a6c2df7f4bd8a0f55eeb0cb15ef072b05f80473707a31c63de72",
+          "staged_path": "inputs/reporting_recovery_receipt.json"
+        },
+        "original_quality_stage_status": "failed",
+        "completed_scientific_stages": 5,
+        "science_stages_replayed": 0,
+        "scientific_inputs_before_after_exact": true,
+        "frozen_scientific_source_unchanged": true,
+        "failed_quality_stage": {
+          "path": "/opt/cuwacunu/research/causal-fresh-v9/attempt-001/quality-stage.json",
+          "host_path": "output/engineering/causal-fresh-v9/attempt-001/quality-stage.json",
+          "bytes": 1683,
+          "sha256": "e9af7531e5b817e0db1c34aab372415658cb6fcb5be090af55c05126d3e31cd0"
+        },
+        "failed_report_stage": {
+          "path": "/opt/cuwacunu/research/causal-fresh-v9/attempt-001/quality-001/report-stage.json",
+          "host_path": "output/runs/causal-fresh-v9/run-001/quality-001/report-stage.json",
+          "bytes": 979,
+          "sha256": "81e284e66037c7d90b79503837706d40de9ae0060f7234b73e43dec1e05f24aa"
+        },
+        "failure_mirror": {
+          "path": "/opt/cuwacunu/research/causal-fresh-v9-report-recovery/attempt-001/source/failure-mirror.json",
+          "host_path": "doc/causal_fresh_v9/failure-mirror-before-report-recovery-001.json",
+          "bytes": 208493,
+          "sha256": "e30f6cd71267be7b97337423b9fa2029922ee059685736bcff0fa53ac9cba532"
+        }
+      },
+      "reporting_recovery_card": {
+        "path": "doc/causal_fresh_v9/reporting-recovery-card-001.json",
+        "bytes": 203096,
+        "sha256": "9c61e4517bc74f0e6a9327ba7f8ec11908b1c1c4f0f804bd7ac76a51631aa82d"
+      },
+      "reporting_recovery_receipt": {
+        "path": "doc/causal_fresh_v9/reporting-recovery-receipt-001.json",
+        "bytes": 268051,
+        "sha256": "5f96dfab1b22a6c2df7f4bd8a0f55eeb0cb15ef072b05f80473707a31c63de72"
+      },
+      "prospective_freeze": {
+        "path": "doc/causal_fresh_v9/prospective-freeze.json",
+        "bytes": 1581,
+        "sha256": "2744b461d0e5c6c78769eb10ce75d60915113cf9ec31ca4808ceeef82d9f176b"
+      },
+      "protocol_preflight": {
+        "path": "doc/causal_fresh_v9/protocol-preflight.json",
+        "bytes": 27222,
+        "sha256": "7ecc0889e0cbfeb143a272b6f37e2c349841e766603b1f5fa42d081c6f46f6fe"
+      },
+      "numeric_passed": 6,
+      "numeric_total": 22,
+      "advancement_passed": false,
+      "failed_conditions": [
+        "past_volatility:linear_r2",
+        "past_volatility:neural_mean_r2",
+        "past_trend:linear_r2",
+        "past_trend:neural_mean_r2",
+        "past_activity:linear_r2",
+        "past_activity:neural_mean_r2",
+        "past_relation:linear_r2",
+        "past_relation:neural_mean_r2",
+        "synthetic_train:validation_intact:neural_head_accuracy",
+        "market_scaler:validation_intact:neural_head_accuracy",
+        "market_scaler:validation_deleted:linear_head_accuracy",
+        "market_scaler:validation_deleted:neural_head_accuracy",
+        "train:standardized_MAE",
+        "validation:standardized_MAE",
+        "known_validation:Gaussian_NLL_F64",
+        "past_trend:all3_neural_R2_positive"
+      ],
+      "gate_scope": "V9 prospective strongest-final-V3/V4/V5/V6/V7/V8 retention22; historical counts retain their own cards",
+      "quality": "Preserve each saved scoped gain and failure; initial stages descriptive; no automatic application selection",
+      "overall_winner": false,
+      "application_changed": false,
+      "human_report_assets": {
+        "results": {
+          "path": "doc/CAUSAL_FRESH_V9_RESULTS.md",
+          "bytes": 14458,
+          "sha256": "829b31666b2d8f364c61d829ae563b30a93045c13927f86f84abbe68de6355dc"
+        },
+        "review": {
+          "path": "doc/CAUSAL_FRESH_V9_REVIEW.md",
+          "bytes": 7372,
+          "sha256": "1aa30273a391e682ba35c0e85af6439d04d0ea75c170f03b0fdcab57e3df1f56"
+        },
+        "detail": {
+          "path": "doc/CAUSAL_FRESH_V9_DETAIL.md",
+          "bytes": 32481,
+          "sha256": "8a1d2103036b9d54c413389fdd4efc10bde712d1f5da554161e7c77ec90e68ac"
+        }
+      },
+      "design_file": "CPB-v9.json",
+      "physical_version_root": "v9",
+      "measured_instance_file": "instances/CPB-v9.market-01.json"
+    }
+  ]
 }
