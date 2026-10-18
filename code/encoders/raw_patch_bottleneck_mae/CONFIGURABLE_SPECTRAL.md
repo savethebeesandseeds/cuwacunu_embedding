@@ -91,7 +91,5 @@ There is no standalone v20 training/serving CLI target in this module.
 
 The new model remains an explicit API; historical CLI flags, defaults, readers,
 research/evaluation drivers and measured reports keep their original semantics.
-There is no market loader dependency here. The integration repository's
-`doc/CONFIGURABLE_ENCODER_BACKPORT.json` records identical reusable file hashes.
-The next market work belongs there: select a common candle grid, streaming TRAIN
-statistics, chronological evaluation and a bounded GPU pilot before long training.
+Market experiments declare their own observation grid, TRAIN statistics,
+chronological evaluation and resource budget independently of this model API.

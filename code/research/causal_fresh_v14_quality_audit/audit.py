@@ -3,7 +3,8 @@
 """Independent saved-scalar audit. Standard library only; never loads a model."""
 # Complete owned final V13 normal saved-quality auditor SOURCE copy, adapted for V14.
 # No producer/comparator/training-auditor implementation is imported.
-# SOURCE PREPARATION IN PROGRESS: family fixture/count/flag literals below remain pending; no execution is admitted.
+# SOURCE PREPARATION ONLY: source-derived proof counts/fields await independent review;
+# no audit card, helper or scientific execution is admitted by these source files.
 import argparse
 import datetime
 import hashlib
@@ -583,13 +584,20 @@ def comparison_audit(a,args,card,tables):
     retention_review_path=a.bound(card['retention_independent_review'],origin)
     retention_admission_path=a.bound(card['retention_application_admission'],origin)
     retention_review,retention_admission=read(retention_review_path),read(retention_admission_path)
+    retention_source=card['retention_source_bindings']
     a.check(retention_review['kind']=='clean_causal_encoder_search_goal_v13_retention_independent_review_v1'
             and retention_review['status']=='passed' and retention_review['checks']>0
+            and retention_source['protocol']['path']=='doc/clean_causal_encoder_search_goal_v13_retention.json'
+            and retention_source['protocol']['bytes']==goal_path.stat().st_size
+            and retention_source['protocol']['sha256']==sha(goal_path)
+            and retention_review['protocol']==retention_source['protocol']
             and retention_review['protocol']['sha256']==sha(goal_path)
             and retention_review['protocol']['bytes']==goal_path.stat().st_size
             and retention_admission['kind']=='clean_causal_encoder_search_goal_v13_retention_future_application_v1'
             and retention_admission['status']=='passed' and retention_admission['prospective_future_use_eligible'] is True
             and retention_admission['applied'] is True
+            and retention_admission['protocol']==retention_source['protocol']
+            and retention_admission['independent_review']==retention_source['independent_review']
             and retention_admission['protocol']['sha256']==sha(goal_path)
             and retention_admission['protocol']['bytes']==goal_path.stat().st_size
             and retention_admission['independent_review']['sha256']==sha(retention_review_path)
@@ -955,6 +963,21 @@ def main():
             engineering['internal_temporal_cases_per_stage'] == 30 and engineering['typed_negative_cases'] == 821 and
             all(v['nonzero_gradient_parameter_events'] > 0 and v['weight_movement_parameter_events'] > 0
                 for v in engineering['actual_cuda_learning'].values()), 'Full fresh CUDA/trust matrix')
+    for key,want in {'typed_negative_full_archive_files':817,
+                     'typed_negative_direct_loader_requests':4,
+                     'typed_negative_compact_archive_files':0,
+                     'typed_negative_restored_target_controls':0,
+                     'typed_negative_legacy_conflict_files':5}.items():
+        a.check(type(engineering.get(key)) is int and engineering[key]==want,
+                'Actual full archive/refusal source contract '+key)
+    witness_contract=card['actual_step_temporal_witness_contract']
+    a.check(witness_contract['total_fields']==60 and witness_contract['base_fields']==23
+            and witness_contract['parameter_arrays']==12 and witness_contract['temporal_trace_fields']==25
+            and witness_contract['extra_encoder_calls']==0
+            and witness_contract['per_window_local_weight_fields']==[
+                'temporal_pool_local_weights','temporal_contextual_pool_local_weights']
+            and witness_contract['per_window_local_weight_shape']==['R',4,'T'],
+            'Exact two same-forward per-window local fields within unchanged60-field witness')
     a.check({f'temporal_export_bin_{i}' for i in range(4)} |
             {f'temporal_pool_mean_bin_{i}' for i in range(4)} |
             {f'temporal_pool_regularized_stddev_bin_{i}' for i in range(4)} |

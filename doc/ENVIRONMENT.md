@@ -1,12 +1,10 @@
 # Shared embedding development environment
 
-For the 15 October causal continuation, the explicit user execution constraint
-is **only the existing GPU-enabled `cuwacunu` container**. The research checkout
-is not mounted there. Stage an exclusive, hash-verified source capsule under
-`/opt/cuwacunu/research/`, read existing `/cuwacunu` inputs without mutation and
-copy new exclusive run outputs back to research storage. Preserve the container,
-mounts and active dev source. The historical separate-container commands below
-do not apply to this experiment.
+Historical causal experiments used verified source capsules in an existing
+GPU-enabled environment. Their frozen cards and execution receipts retain the
+exact environment, input and output bindings. Preserve those records and follow
+the experiment-specific constraints when reproducing evidence. The general
+standalone launcher below does not replace a frozen experiment's procedure.
 
 This repository uses the existing managed `cuwacunu_embedding` Linux container
 for compilation, tests and training. Named task sessions keep their build

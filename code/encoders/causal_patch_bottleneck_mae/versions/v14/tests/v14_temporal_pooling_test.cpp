@@ -41,14 +41,14 @@ Reference reference(const torch::Tensor &h0,const torch::Tensor &s0,const torch:
   const auto h=f64(h0),s=f64(s0),w=f64(w0),b=f64(b0),scorew=f64(scorew0),up=f64(up0);
   const auto p=p0.detach().to(torch::kCPU).contiguous();const auto R=h.size(0),T=h.size(1),W=h.size(2),D=w.size(0);
   Reference out{torch::zeros({R,D},torch::kFloat64),torch::zeros({R,T},torch::kFloat64),torch::zeros({R,4},torch::kBool),
-      torch::zeros({R,T},torch::kFloat64),torch::zeros({R,T},torch::kFloat64),torch::zeros({R,4,T},torch::kFloat64),
+      torch::zeros({R,4,T},torch::kFloat64),torch::zeros({R,T},torch::kFloat64),torch::zeros({R,4,T},torch::kFloat64),
       torch::zeros({R,4,W},torch::kFloat64),torch::zeros({R,4,W},torch::kFloat64),
       torch::full({R,4,W},cp::kTemporalDispersionRootOffset,torch::kFloat64),torch::zeros({R,4,W},torch::kFloat64),
       torch::zeros_like(h),torch::zeros_like(w),torch::zeros_like(b),torch::zeros({K,1},torch::kFloat64),torch::zeros_like(scorew)};
   const auto hv=h.accessor<double,3>();const auto sv=s.accessor<double,2>(),wv=w.accessor<double,2>();
   const auto bv=b.accessor<double,1>();const auto pv=p.accessor<int64_t,2>();
   const auto uv=up.accessor<double,2>(),sw=scorew.accessor<double,2>();
-  auto ov=out.output.accessor<double,2>(),aw=out.weights.accessor<double,2>(),lw=out.local.accessor<double,2>(),gw0=out.global.accessor<double,2>();
+  auto ov=out.output.accessor<double,2>(),aw=out.weights.accessor<double,2>(),gw0=out.global.accessor<double,2>();auto lw=out.local.accessor<double,3>();
   auto mw=out.mixture.accessor<double,3>(),bm=out.bin_mean.accessor<double,3>(),bv0=out.bin_variance.accessor<double,3>();auto bins=out.bins.accessor<bool,2>();
   auto root0=out.bin_regularized_root.accessor<double,3>(),disp0=out.bin_dispersion.accessor<double,3>();
   // Captured-F32 adjoint mode uses actual saved intermediates, never observed
@@ -68,11 +68,11 @@ Reference reference(const torch::Tensor &h0,const torch::Tensor &s0,const torch:
     for(auto t:all){global[t]=captured?cg[r][t].item<double>():std::exp(sv[r][t]-maximum)/denominator;gw0[r][t]=global[t];
       for(int64_t k=0;k<W;++k)global_hidden[k]+=global[t]*hv[r][t][k];}
     for(int64_t j=0;j<4;++j){
-      std::vector<int64_t> keys;for(auto t:all)if(pv[r][t]>=j*(K/4)&&pv[r][t]<(j+1)*(K/4))keys.push_back(t);
+      std::vector<int64_t> keys;for(auto t:all)if(pv[r][t]>=16-(j+1)*4&&pv[r][t]<16)keys.push_back(t);
       if(keys.empty())continue;bins[r][j]=true;maximum=-INFINITY;denominator=0.;
       for(auto t:keys)maximum=std::max(maximum,sv[r][t]);for(auto t:keys)denominator+=std::exp(sv[r][t]-maximum);
       std::vector<double> local(T,0.),local_hidden(W,0.),pooled(W,0.),variance(W,0.),residual(W,0.),a(W,0.),b_adj(W,0.),mixture(T,0.),q(T,0.);
-      for(auto t:keys){local[t]=captured?cl[r][t].item<double>():std::exp(sv[r][t]-maximum)/denominator;lw[r][t]=local[t];
+      for(auto t:keys){local[t]=captured?cl[r][j][t].item<double>():std::exp(sv[r][t]-maximum)/denominator;lw[r][j][t]=local[t];
         for(int64_t k=0;k<W;++k)local_hidden[k]+=local[t]*hv[r][t][k];}
       for(int64_t k=0;k<W;++k)pooled[k]=.5*local_hidden[k]+.5*global_hidden[k];
       if(captured)for(int64_t k=0;k<W;++k)pooled[k]=cu[r][j][k].item<double>();
@@ -165,7 +165,7 @@ void actual_model_paths(im::Model &model,const im::Config &c){
   torch::NoGradGuard guard;model->eval();const int64_t B=2,C=3,H=128,F=9;
   auto data=torch::sin(torch::arange(B*C*H*F,torch::TensorOptions().dtype(torch::kFloat32).device(c.device))*.017).reshape({B,C,H,F});
   auto observed=torch::ones({B,C,H,F},torch::TensorOptions().dtype(torch::kBool).device(c.device));
-  observed[0][1].zero_();observed[0][1].narrow(0,120,8).fill_(true);observed[0][2].zero_();
+  observed[0][1].zero_();observed[0][1].narrow(0,0,8).fill_(true);observed[0][2].zero_();
   observed[1][0].zero_();for(auto p:{0,4,8,12,15})observed[1][0].narrow(0,p*8,8).fill_(true);
   im::Input input{data,observed,torch::tensor(std::vector<int64_t>{2,0,1},torch::kInt64),torch::tensor(std::vector<double>{100.,200.},torch::kFloat64),c.sampling_interval};
   im::TemporalExecutionTrace trace;const auto out=model->encode(input,&trace);const auto named=model->named_parameters();
@@ -197,14 +197,14 @@ int main(int argc,char **argv){try{
   TORCH_CHECK(argc==3&&std::string(argv[1])=="--settings","--settings CONFIG required");
   check(torch::cuda::is_available(),"actual CUDA required");const auto settings=cp::read_settings(argv[2]);auto c=im::configurable_spectral_backbone_config(settings.level);
   check(c.history_length==128&&c.patch_length==8&&c.export_width==32&&c.encoder_width==64&&
-      cp::temporal_pooling_partition(settings)==std::vector<int64_t>({4,16,32,4,8})&&cp::temporal_pooling_mix()==std::vector<double>({.5,.5})&&
+      cp::temporal_pooling_geometry(settings)==std::vector<int64_t>({4,16,32,8})&&cp::temporal_pooling_trailing_lengths()==std::vector<int64_t>({4,8,12,16})&&cp::temporal_pooling_mix()==std::vector<double>({.5,.5})&&
       cp::temporal_moment_partition()==std::vector<int64_t>({4,4}),"declared exact profile, moment layout and fixed mix");
   torch::manual_seed(943001);im::Model model(c);const auto named=model->named_parameters();auto w=named["export_projection.weight"],b=named["export_projection.bias"],sw=named["pool_score.weight"],sb=named["pool_score.bias"],pp=named["pool_positions.weight"];
   {torch::NoGradGuard guard;w.copy_(torch::sin(torch::arange(w.numel(),w.options()).reshape_as(w)*.031)*.07);
     b.copy_(torch::arange(32,b.options())*.003+.04);sw.copy_(torch::cos(torch::arange(64,sw.options()).reshape_as(sw)*.021)*.04);
     sb.fill_(.17);pp.copy_(torch::arange(16,pp.options()).reshape_as(pp)*.011);}
   actual_model_paths(model,c);
-  const auto positions=torch::tensor(std::vector<int64_t>{0,3,4,7,8,11,12,15,12,15,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,4,8,12,-1,-1,-1,-1},torch::kInt64).reshape({4,8}).to(c.device);
+  const auto positions=torch::tensor(std::vector<int64_t>{0,3,4,7,8,11,12,15,0,3,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,4,8,12,-1,-1,-1,-1},torch::kInt64).reshape({4,8}).to(c.device);
   const auto valid=positions.ge(0);auto h=torch::sin(torch::arange(4*8*64,w.options()).reshape({4,8,64})*.029)*.7;
   h=torch::where(valid.unsqueeze(-1),h,torch::full_like(h,NAN)).detach().set_requires_grad(true);
   const auto safe=torch::where(valid.unsqueeze(-1),h,torch::zeros_like(h));
@@ -213,6 +213,10 @@ int main(int argc,char **argv){try{
   const auto up=torch::arange(4*32,w.options()).reshape({4,32})*.007+.13;
   const auto manual=reference(h,scores,positions,w,b,sw,up,16);
   const auto pooled=counted_pool(h,scores,valid,positions,w,b,c);
+  check(pooled.local_weights.sizes()==torch::IntArrayRef({4,4,8}),"exact per-window local softmax capture, never aggregate inversion");
+  check(torch::equal(pooled.local_weights.select(1,3),pooled.global_weights)&&
+      torch::equal(pooled.mixture_weights.select(1,3),pooled.global_weights),
+      "length16 local equals global on original support; actual half-plus-half expression retained");
   check(pooled.projected.is_cuda()&&torch::isfinite(pooled.projected).all().item<bool>()&&torch::isfinite(pooled.mixture_weights).all().item<bool>(),"finite CUDA despite unsupported NaNs");
   near(pooled.projected,manual.output,"manual original-position half-mixture pooling parity");near(pooled.weights,manual.weights,"manual aggregate mixture parity");
   near(pooled.local_weights,manual.local,"manual local weights");near(pooled.global_weights,manual.global,"manual global weights");near(pooled.mixture_weights,manual.mixture,"manual per-export mixtures");
@@ -231,17 +235,31 @@ int main(int argc,char **argv){try{
         "first4 unchanged parent mean projection expression is bitwise exact");}
   for(int64_t r=0;r<4;++r){check(std::abs(pooled.weights[r].sum().item<double>()-pooled.bin_valid[r].sum().item<int64_t>())<8e-6,"aggregate mass equals number of nonempty local bins");
     check(std::abs(pooled.global_weights[r].sum().item<double>()-double(valid[r].any().item<bool>()))<2e-6,"shared global mass1 or all-padding0");
-    for(int64_t j=0;j<4;++j){const auto member=valid[r].logical_and(positions[r].ge(j*4)).logical_and(positions[r].lt((j+1)*4));const bool present=member.any().item<bool>();
-      check(std::abs(pooled.local_weights[r].masked_select(member).sum().item<double>()-double(present))<2e-6,"anchored local bin mass1 or0");
+    for(int64_t j=0;j<4;++j){const auto member=valid[r].logical_and(positions[r].ge(16-(j+1)*4)).logical_and(positions[r].lt(16));const bool present=member.any().item<bool>();
+      check(std::abs(pooled.local_weights[r][j].masked_select(member).sum().item<double>()-double(present))<2e-6,"anchored local bin mass1 or0");
+      check(pooled.local_weights[r][j].masked_select(member.logical_not()).eq(0).all().item<bool>(),"per-window captured local weights have exact zero outside their original support");
       check(std::abs(pooled.mixture_weights[r][j].sum().item<double>()-double(present))<2e-6,"per-export mixture mass1 or exact empty0");}}
-  check(pooled.mixture_weights[0][0].masked_select(positions[0].ge(4)).gt(0).all().item<bool>(),"nonempty first-bin mixture genuinely includes outside-bin global states");
+  check(pooled.mixture_weights[0][0].masked_select(positions[0].lt(12)).gt(0).all().item<bool>(),"nonempty first-bin mixture genuinely includes outside-bin global states");
   {torch::NoGradGuard guard;
+    const auto tail_positions=torch::tensor(std::vector<int64_t>{15,-1},positions.options()).reshape({1,2});
+    const auto tail_hidden=torch::cat({torch::linspace(-.2,.8,64,w.options()).reshape({1,1,64}),torch::full({1,1,64},NAN,w.options())},1);
+    const auto tail_scores=torch::tensor(std::vector<float>{.125f,NAN},w.options()).reshape({1,2});
+    const auto tail=counted_pool(tail_hidden,tail_scores,tail_positions.ge(0),tail_positions,w,b,c);
+    check(tail.bin_valid.all().item<bool>()&&tail.local_weights.select(2,0).eq(1).all().item<bool>()&&
+        tail.local_weights.select(2,1).eq(0).all().item<bool>(),"position15 belongs to all four nested windows; unsupported slot stays zero");
+    const auto pad_h=torch::cat({h.detach(),torch::full({4,3,64},NAN,w.options())},1);
+    const auto pad_s=torch::cat({scores.detach(),torch::full({4,3},INFINITY,w.options())},1);
+    const auto pad_p=torch::cat({positions,torch::full({4,3},-1,positions.options())},1);
+    const auto padded=counted_pool(pad_h,pad_s,pad_p.ge(0),pad_p,w,b,c);
+    check(torch::equal(padded.bin_valid,pooled.bin_valid)&&padded.local_weights.narrow(2,8,3).eq(0).all().item<bool>(),
+        "fixed edge16 original membership unchanged by arbitrary packed padding/length");
+    near(padded.projected,pooled.projected,"packed-padding output tolerance; support thresholds never follow packed length");
     const auto common=counted_pool(h,scores+2.,valid,positions,w,b,c);
     near(common.projected,pooled.projected,"common score-shift invariance",kGaugeTolerance);near(common.mixture_weights,pooled.mixture_weights,"common bias remains softmax gauge",kGaugeTolerance);
     for(int direction=0;direction<3;++direction){auto shifts=torch::zeros_like(scores);
       for(int j=0;j<4;++j)shifts=torch::where(valid.logical_and(positions.ge(j*4)).logical_and(positions.lt((j+1)*4)),torch::full_like(scores,kSigns[direction][j]/4.),shifts);
       const auto shifted=counted_pool(h,scores+shifts,valid,positions,w,b,c);
-      near(shifted.local_weights,pooled.local_weights,"bin-constant shifts still cancel inside local denominators",kGaugeTolerance);
+      check(!torch::allclose(shifted.local_weights[0][3],pooled.local_weights[0][3],kGaugeTolerance,kGaugeTolerance),"nonconstant disjoint-quarter score contrasts affect longest nested local support");
       check(!torch::allclose(shifted.global_weights[0],pooled.global_weights[0],kGaugeTolerance,kGaugeTolerance)&&
           !torch::allclose(shifted.projected[0],pooled.projected[0],kGaugeTolerance,kGaugeTolerance),"three relative-bin Hadamard directions affect shared-global pooling");
     }
@@ -284,7 +302,7 @@ int main(int argc,char **argv){try{
     else check(test.bin_variance.gt(0).all().item<bool>()&&test.bin_dispersion.gt(0).all().item<bool>()&&grads[0].ne(0).any().item<bool>(),"tiny/large variance preserves nonzero dispersion and hidden route");
   }
   {torch::NoGradGuard guard;
-    const auto singleton_positions=torch::tensor(std::vector<int64_t>{15,-1},positions.options()).reshape({1,2});
+    const auto singleton_positions=torch::tensor(std::vector<int64_t>{0,-1},positions.options()).reshape({1,2});
     const auto singleton_hidden=torch::cat({torch::full({1,1,64},1e20,w.options()),torch::full({1,1,64},NAN,w.options())},1);
     const auto singleton_scores=torch::tensor(std::vector<float>{0.f,NAN},w.options()).reshape({1,2});
     const auto singleton=counted_pool(singleton_hidden,singleton_scores,
@@ -327,9 +345,9 @@ int main(int argc,char **argv){try{
     const auto change=pp.detach().to(torch::kFloat64)-before[2].to(torch::kFloat64);const auto bin=change.narrow(0,j*4,4);
     check((bin-bin.mean()).ne(0).any().item<bool>(),"four within-bin-centered position movements, F64 before subtraction");}
   check(between_contrasts(pp.detach().to(torch::kFloat64)-before[2].to(torch::kFloat64)).ne(0).all().item<bool>(),"all three between-bin position contrast movements");
-  auto wrong=c;wrong.history_length=112;rejects([&]{im::validate_temporal_pooling_config(wrong);},"nondivisible original patch count refused");wrong=c;wrong.export_width=30;rejects([&]{im::validate_temporal_pooling_config(wrong);},"nondivisible export width refused");
+  auto wrong=c;wrong.history_length=112;rejects([&]{im::validate_temporal_pooling_config(wrong);},"changed fixed original-position bound refused");wrong=c;wrong.export_width=30;rejects([&]{im::validate_temporal_pooling_config(wrong);},"nondivisible export width refused");
   wrong=c;wrong.export_width=64;rejects([&]{im::validate_temporal_pooling_config(wrong);},"standalone divisible width cannot contradict fixed4/4 moment layout");
-  check(direct_pool_kernel_calls==51,"source-derived51 calls:44 parent+3 zero/tiny/large+1 huge singleton+3 numerical refusals");
-  std::cout<<std::setprecision(17)<<"PASS CPB-v14 "<<cp::kTemporalPoolingPolicy<<": manual full-attention mean/raw-variance/regularized-stddev parity; independent full-expression F64 finite differences; actual CUDA F32 kernel finite differences; four mean4 and regularized_stddev4 projection gradient and movement; three between-bin Hadamard contrast gradient and movement; present constant variance dtype tolerance; equal mean different spread; empty-bin finite zero; relative-bin global sensitivity; common softmax gauge invariance; synthetic optimizer steps=1; scope=owned-backbone-pooling; backbone_encode_calls=1; public_encoder_calls=0; direct_pool_kernel_calls="<<direct_pool_kernel_calls<<"; head_fits=0; manual_F32_abs_rel_tolerance="<<kManualTolerance<<"; F64_FD_step="<<kF64FiniteDifferenceStep<<"; F64_FD_abs_rel_tolerance="<<kF64FiniteDifferenceTolerance<<"; actual_F32_FD_step="<<kF32FiniteDifferenceStep<<"; actual_F32_FD_abs_rel_tolerance="<<kF32FiniteDifferenceTolerance<<"; present_constant_F32_variance_bound=1e-10*(1+max_abs_hidden_squared); gauge_abs_rel_tolerance=2e-6; F64_finite_difference_coordinates=18; F32_finite_difference_coordinates=18; isolated_autograd_grad_calls=4; mean4_regularized_stddev4_export_layout=true; full_attention_dependent_regularized_moment_adjoints=true; live_dispersion_score_gradient=true; raw_variance_root_dispersion_trace=true; zero_tiny_large_analytic_dispersion_adjoints=true; supported_nonfinite_and_variance_overflow_refused=true; absent_local_huge_singleton_sanitized=true; captured_F32_residual_correction=true; raw_root_absent_offset_exception=true; temporal_dispersion_regularizer=0.0009765625; transform_derivative_upper_bound=16; gauge_bias_data_gradient_observed="<<gauge_gradient<<"; gauge_bias_movement_observed="<<(sb.detach().item<double>()-gauge_before)<<"; gauge_bias_gradient_required_nonzero=false; gauge_bias_decay_movement_is_data_learning=false; checks="<<checks<<"\n";
+  check(direct_pool_kernel_calls==53,"source-derived53 calls:36 F32 FD+14 ordinary successes+3 supported numerical refusals");
+  std::cout<<std::setprecision(17)<<"PASS CPB-v14 "<<cp::kTemporalPoolingPolicy<<": manual full-attention mean/raw-variance/regularized-stddev parity; independent full-expression F64 finite differences; actual CUDA F32 kernel finite differences; four mean4 and regularized_stddev4 projection gradient and movement; three between-bin Hadamard contrast gradient and movement; present constant variance dtype tolerance; equal mean different spread; empty-bin finite zero; relative-bin global sensitivity; common softmax gauge invariance; synthetic optimizer steps=1; scope=owned-backbone-pooling; backbone_encode_calls=1; public_encoder_calls=0; direct_pool_kernel_calls="<<direct_pool_kernel_calls<<"; head_fits=0; manual_F32_abs_rel_tolerance="<<kManualTolerance<<"; F64_FD_step="<<kF64FiniteDifferenceStep<<"; F64_FD_abs_rel_tolerance="<<kF64FiniteDifferenceTolerance<<"; actual_F32_FD_step="<<kF32FiniteDifferenceStep<<"; actual_F32_FD_abs_rel_tolerance="<<kF32FiniteDifferenceTolerance<<"; present_constant_F32_variance_bound=1e-10*(1+max_abs_hidden_squared); gauge_abs_rel_tolerance=2e-6; F64_finite_difference_coordinates=18; F32_finite_difference_coordinates=18; isolated_autograd_grad_calls=4; mean4_regularized_stddev4_export_layout=true; full_attention_dependent_regularized_moment_adjoints=true; live_dispersion_score_gradient=true; raw_variance_root_dispersion_trace=true; zero_tiny_large_analytic_dispersion_adjoints=true; supported_nonfinite_and_variance_overflow_refused=true; absent_local_huge_singleton_sanitized=true; captured_F32_residual_correction=true; raw_root_absent_offset_exception=true; nested_trailing_supports_fixed_edge16=true; per_window_local_weights_captured=true; longest_local_equals_global_two_sum=true; packed_padding_membership_invariance=true; temporal_dispersion_regularizer=0.0009765625; transform_derivative_upper_bound=16; gauge_bias_data_gradient_observed="<<gauge_gradient<<"; gauge_bias_movement_observed="<<(sb.detach().item<double>()-gauge_before)<<"; gauge_bias_gradient_required_nonzero=false; gauge_bias_decay_movement_is_data_learning=false; checks="<<checks<<"\n";
   return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

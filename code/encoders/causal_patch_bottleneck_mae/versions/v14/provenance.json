@@ -1,932 +1,1328 @@
 {
   "copyright": "Copyright (c) 2026 Waajacu. All rights reserved. See LICENSE.",
-  "kind": "cpb_v13_owned_family_source_v1",
-  "status": "source_prepared_pending_independent_static_review",
-  "created_utc": "2026-10-17T20:53:33.5618102Z",
+  "kind": "cpb_v14_complete_owned_family_source_provenance_v1",
+  "status": "SOURCE_PREPARED_pending_independent_static_review_no_execution",
+  "created_utc": "2026-10-18T07:33:59.3206437Z",
   "source_admission": {
-    "path": "doc/causal_fresh_v13/design-source-plan.ADMITTED-002.json",
-    "bytes": 27667,
-    "sha256": "4d1648ed842a13bae850b47567a67cb8939f55b192e54f0c2f67afbaf6ef4a59"
+    "path": "doc/causal_fresh_v14/design-source-plan.ADMITTED-001.json",
+    "bytes": 47424,
+    "sha256": "7df193a3f74c0c99ee88318d12052dbb55c9ceb90fdd008d029cf43eb1c58d76"
   },
   "central_complete_parent_manifest": {
-    "path": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/manifest.json",
-    "bytes": 69004,
-    "sha256": "0a0a345a141898db81900cb903151bc1c42785e3b7bf9fbb5b27d9e21153ea07"
+    "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/manifest.json",
+    "bytes": 86831,
+    "sha256": "2d72b4066571a9a65c037164aa33dd3f37fe24b80fc18daaf8ef2296073e237e"
   },
-  "initial_all102_copy_receipt": {
-    "path": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/initial-owned-copy-receipt.json",
-    "bytes": 24411,
-    "sha256": "e5fe8fc3c9c32fd8b7c917125bca178341062321eafbd8796392e40178ae890a"
+  "initial_all104_copy_receipt": {
+    "path": "doc/causal_fresh_v14/initial-owned-copy-001.json",
+    "bytes": 95942,
+    "sha256": "e8fb5362a73c6dce353fd52fd3ac692ba8a9c9d00cc89cfdf59502b34b90ac78"
   },
-  "all102_original_and_preserved_parent_pins_rechecked": true,
-  "owned_parent_count": 55,
+  "source_interface_clarification": {
+    "path": "doc/causal_fresh_v14/source-interface-clarification-001.json",
+    "bytes": 3445,
+    "sha256": "c44f0753ffb9980aa899984c798399408c40e1780595860bf9dfc47cf7f232c0"
+  },
+  "owned_parent_count": 56,
+  "all56_original_and_preserved_parents_rehashed_exact": true,
   "physical_family_assets": 51,
   "research_fixture_assets": 3,
-  "descriptor_draft_assets": 1,
-  "source_parent": "FINAL CPB-v11 source only; all new learned state/optimizer/statistics fresh",
+  "descriptor_DRAFT_assets": 1,
+  "documentary_parent_assets": 1,
+  "source_parent": "CPB-v13 SOURCE only; source_updates0/no weight/statistics/optimizer import",
   "parents": [
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/provenance.json",
-        "bytes": 51708,
-        "sha256": "a66f69c0b4cb7a20c846e818504802967174bb851d288fad30eb93224b237472"
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/provenance.json",
+        "bytes": 66552,
+        "sha256": "d4e8e4c337496655e37dc21d3d8be7c32012dd87738c588cb2c61fbaf3f4c75c"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/provenance.json",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/provenance.json",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/provenance.json",
+        "bytes": 66552,
+        "sha256": "d4e8e4c337496655e37dc21d3d8be7c32012dd87738c588cb2c61fbaf3f4c75c"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/provenance.json",
+        "bytes": 66552,
+        "sha256": "d4e8e4c337496655e37dc21d3d8be7c32012dd87738c588cb2c61fbaf3f4c75c"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/README.md",
-        "bytes": 7386,
-        "sha256": "92b54b363f7c3edb4a873455d4f9bd4ae39915a0ab0cbb928a68fb8c818838d2"
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/README.md",
+        "bytes": 7645,
+        "sha256": "0fa80d1b90868356bf0870d7f3b6bb888527cf2f8dd7222c7d48cfbc18cc722f"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/README.md",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/README.md",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/README.md",
+        "bytes": 7645,
+        "sha256": "0fa80d1b90868356bf0870d7f3b6bb888527cf2f8dd7222c7d48cfbc18cc722f"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/README.md",
+        "bytes": 7645,
+        "sha256": "0fa80d1b90868356bf0870d7f3b6bb888527cf2f8dd7222c7d48cfbc18cc722f"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/v11.mk",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/v13.mk",
         "bytes": 2351,
-        "sha256": "769de77d4bce586d128f711b6cf809d70c30584e67a497f5fd5f8b2c9f7a5d99"
+        "sha256": "04be9e038cb27111e7401eaa1649ab0bf23e24cebebec2bc6afc571406986652"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/v11.mk",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/v13.mk",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/v13.mk",
+        "bytes": 2351,
+        "sha256": "04be9e038cb27111e7401eaa1649ab0bf23e24cebebec2bc6afc571406986652"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/v14.mk",
+        "bytes": 2351,
+        "sha256": "04be9e038cb27111e7401eaa1649ab0bf23e24cebebec2bc6afc571406986652"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/config/v11.conf",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/config/v13.conf",
         "bytes": 687,
-        "sha256": "e89c30013d1de17e03c2e84c3a2ce0a109f04b2dc88699f161761414f7d5b776"
+        "sha256": "ed6e13e85a2d9ac13e0c9add23f400c8397e3ebdc86a313a42bba10cd1284a50"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/config/v11.conf",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/config/v13.conf",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/config/v13.conf",
+        "bytes": 687,
+        "sha256": "ed6e13e85a2d9ac13e0c9add23f400c8397e3ebdc86a313a42bba10cd1284a50"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/config/v14.conf",
+        "bytes": 687,
+        "sha256": "ed6e13e85a2d9ac13e0c9add23f400c8397e3ebdc86a313a42bba10cd1284a50"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/conditioned_change_bank.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/conditioned_change_bank.h",
         "bytes": 1655,
-        "sha256": "2a0e80c40608d71f568544e350f2b863b9746e2b530be4f95f2b074248335df4"
+        "sha256": "4283af3994c5d92fb42eda74a38036d85a7908f4290cfd398a5b638bd2504870"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/conditioned_change_bank.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/conditioned_change_bank.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/conditioned_change_bank.h",
+        "bytes": 1655,
+        "sha256": "4283af3994c5d92fb42eda74a38036d85a7908f4290cfd398a5b638bd2504870"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/conditioned_change_bank.h",
+        "bytes": 1655,
+        "sha256": "4283af3994c5d92fb42eda74a38036d85a7908f4290cfd398a5b638bd2504870"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/conditioned_change_config.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/conditioned_change_config.h",
         "bytes": 1483,
-        "sha256": "7275511c2643a1bb23089f92f0e25e22a7dbe9dfaaadefa69c7382240165e189"
+        "sha256": "6899a8a5fe3c5396db52691443cfd75e304b1339f1e824913e87163c41ffca22"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/conditioned_change_config.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/conditioned_change_config.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/conditioned_change_config.h",
+        "bytes": 1483,
+        "sha256": "6899a8a5fe3c5396db52691443cfd75e304b1339f1e824913e87163c41ffca22"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/conditioned_change_config.h",
+        "bytes": 1483,
+        "sha256": "6899a8a5fe3c5396db52691443cfd75e304b1339f1e824913e87163c41ffca22"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/conditioned_change_normalizer.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/conditioned_change_normalizer.h",
         "bytes": 11397,
-        "sha256": "6e8fb9e62846b109ebf8f7223fcb6e2cdd2dbd50191cd27cf5cd8a8529772222"
+        "sha256": "eca9c2ff50ceb5a8fa0c3c9f96d868c9f6e5cbbd1e5d48c20e6303e8620640cf"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/conditioned_change_normalizer.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/conditioned_change_normalizer.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/conditioned_change_normalizer.h",
+        "bytes": 11397,
+        "sha256": "eca9c2ff50ceb5a8fa0c3c9f96d868c9f6e5cbbd1e5d48c20e6303e8620640cf"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/conditioned_change_normalizer.h",
+        "bytes": 11397,
+        "sha256": "eca9c2ff50ceb5a8fa0c3c9f96d868c9f6e5cbbd1e5d48c20e6303e8620640cf"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/config.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/config.h",
         "bytes": 5962,
-        "sha256": "01a8a3a74a20df68b949d396fe9456311a9f0da328eb26d838ec0c783c6e7177"
+        "sha256": "bed87155d4bed759d7de5a078c3c046eac46f416557cac09866f1ae73afebaa5"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/config.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/config.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/config.h",
+        "bytes": 5962,
+        "sha256": "bed87155d4bed759d7de5a078c3c046eac46f416557cac09866f1ae73afebaa5"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/config.h",
+        "bytes": 5962,
+        "sha256": "bed87155d4bed759d7de5a078c3c046eac46f416557cac09866f1ae73afebaa5"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/configurable_spectral_checkpoint_io.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_checkpoint_io.h",
         "bytes": 3105,
-        "sha256": "4c3a21d518172ea95af6deefa908e16373a59b400d335a78149ebc4a4afb6f28"
+        "sha256": "20ee24dbb97756c0e641760eddcd09ee99b4d03d0ea8c597364a291dccf47576"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/configurable_spectral_checkpoint_io.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_checkpoint_io.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_checkpoint_io.h",
+        "bytes": 3105,
+        "sha256": "20ee24dbb97756c0e641760eddcd09ee99b4d03d0ea8c597364a291dccf47576"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/configurable_spectral_checkpoint_io.h",
+        "bytes": 3105,
+        "sha256": "20ee24dbb97756c0e641760eddcd09ee99b4d03d0ea8c597364a291dccf47576"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/configurable_spectral_checkpoint.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_checkpoint.h",
         "bytes": 7357,
-        "sha256": "0a5d60c05c435baf089fbef5ead49643db9596b43c433b60a56d0deebe53d91a"
+        "sha256": "35bcfa7a257cf51b7727f62132b19b06864a59c0c70cc0f4d690e11265fc5bb1"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/configurable_spectral_checkpoint.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_checkpoint.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_checkpoint.h",
+        "bytes": 7357,
+        "sha256": "35bcfa7a257cf51b7727f62132b19b06864a59c0c70cc0f4d690e11265fc5bb1"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/configurable_spectral_checkpoint.h",
+        "bytes": 7357,
+        "sha256": "35bcfa7a257cf51b7727f62132b19b06864a59c0c70cc0f4d690e11265fc5bb1"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/configurable_spectral_config.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_config.h",
         "bytes": 4944,
-        "sha256": "02aa0ab0944efee85d1664c9193bc891809474c555965bcfe5e334fe0e998707"
+        "sha256": "1f58e0190c1f466577971334b9cbd216ef227dcf80c2bb3c189145e85ea7b5ed"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/configurable_spectral_config.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_config.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_config.h",
+        "bytes": 4944,
+        "sha256": "1f58e0190c1f466577971334b9cbd216ef227dcf80c2bb3c189145e85ea7b5ed"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/configurable_spectral_config.h",
+        "bytes": 4944,
+        "sha256": "1f58e0190c1f466577971334b9cbd216ef227dcf80c2bb3c189145e85ea7b5ed"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/configurable_spectral_model.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_model.h",
         "bytes": 13757,
-        "sha256": "b2ee5f5e0d174b6b54db0b8762e120622c63333192c6bb3869bd649dad0f7b45"
+        "sha256": "ff1da71996667f0099b9cf3b3e4f1873350eac90a60c97311256d6f78336c172"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/configurable_spectral_model.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_model.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_model.h",
+        "bytes": 13757,
+        "sha256": "ff1da71996667f0099b9cf3b3e4f1873350eac90a60c97311256d6f78336c172"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/configurable_spectral_model.h",
+        "bytes": 13757,
+        "sha256": "ff1da71996667f0099b9cf3b3e4f1873350eac90a60c97311256d6f78336c172"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/configurable_spectral_relation.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_relation.h",
         "bytes": 8185,
-        "sha256": "09db4ccdf489850f14eea2653ef3ad5e35210441dda85cc81ceb143b7ded9c57"
+        "sha256": "849a0e08aee2643ae6660288684ed5dcd43b0e1ed237c9cf4bfd8f437ab4c3fc"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/configurable_spectral_relation.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_relation.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_relation.h",
+        "bytes": 8185,
+        "sha256": "849a0e08aee2643ae6660288684ed5dcd43b0e1ed237c9cf4bfd8f437ab4c3fc"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/configurable_spectral_relation.h",
+        "bytes": 8185,
+        "sha256": "849a0e08aee2643ae6660288684ed5dcd43b0e1ed237c9cf4bfd8f437ab4c3fc"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/consecutive_change_bank.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_bank.h",
         "bytes": 3583,
-        "sha256": "aed4447fbf2fc5f90d44dcdb5e57374fc97a6daf66f7d0e65e0500833e9f2e4e"
+        "sha256": "3499e2552cdc74bf502037c6868ffc1f5226db3dd291ba414abd9961b8e5fdbf"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/consecutive_change_bank.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_bank.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_bank.h",
+        "bytes": 3583,
+        "sha256": "3499e2552cdc74bf502037c6868ffc1f5226db3dd291ba414abd9961b8e5fdbf"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/consecutive_change_bank.h",
+        "bytes": 3583,
+        "sha256": "3499e2552cdc74bf502037c6868ffc1f5226db3dd291ba414abd9961b8e5fdbf"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/consecutive_change_checkpoint.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_checkpoint.h",
         "bytes": 5188,
-        "sha256": "0f454f6222eda8ba22761fd6ff0021f0717db6587328f2f9bc4f1bc557d218ab"
+        "sha256": "2e87710ba74b88dfb306733657c62bf85adc97eba037a8a0c2d7651ce8374f8f"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/consecutive_change_checkpoint.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_checkpoint.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_checkpoint.h",
+        "bytes": 5188,
+        "sha256": "2e87710ba74b88dfb306733657c62bf85adc97eba037a8a0c2d7651ce8374f8f"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/consecutive_change_checkpoint.h",
+        "bytes": 5188,
+        "sha256": "2e87710ba74b88dfb306733657c62bf85adc97eba037a8a0c2d7651ce8374f8f"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/consecutive_change_config.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_config.h",
         "bytes": 1707,
-        "sha256": "1eb47f6710066d3382c182100c44ff42fa828652cea4f1ae33279abd4e97da19"
+        "sha256": "84c7c52a914c36f76dc6647f8eb8c3c5560854f4e6b317a513235686a8a473b5"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/consecutive_change_config.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_config.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_config.h",
+        "bytes": 1707,
+        "sha256": "84c7c52a914c36f76dc6647f8eb8c3c5560854f4e6b317a513235686a8a473b5"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/consecutive_change_config.h",
+        "bytes": 1707,
+        "sha256": "84c7c52a914c36f76dc6647f8eb8c3c5560854f4e6b317a513235686a8a473b5"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/consecutive_change_model.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_model.h",
         "bytes": 4020,
-        "sha256": "31f8b263a4cf94429f89d4dacfe80e3a80a1b281eb9139530edb719c1398f362"
+        "sha256": "23da2a46d054b8adb8f05ed9b736de756ac5d6be5efe48c0085d3a3224f2e00d"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/consecutive_change_model.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_model.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_model.h",
+        "bytes": 4020,
+        "sha256": "23da2a46d054b8adb8f05ed9b736de756ac5d6be5efe48c0085d3a3224f2e00d"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/consecutive_change_model.h",
+        "bytes": 4020,
+        "sha256": "23da2a46d054b8adb8f05ed9b736de756ac5d6be5efe48c0085d3a3224f2e00d"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/consecutive_change_training_state.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_training_state.h",
         "bytes": 14191,
-        "sha256": "857acbfe27ef37521c9f40fab414bd13e12fec7e139cc15255883475aff8e61d"
+        "sha256": "d5f3b61d136d310827250ed08fa3d285f54feb66c691b3ff1bed25c8e8f46c06"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/consecutive_change_training_state.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_training_state.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_training_state.h",
+        "bytes": 14191,
+        "sha256": "d5f3b61d136d310827250ed08fa3d285f54feb66c691b3ff1bed25c8e8f46c06"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/consecutive_change_training_state.h",
+        "bytes": 14191,
+        "sha256": "d5f3b61d136d310827250ed08fa3d285f54feb66c691b3ff1bed25c8e8f46c06"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/content_ordered_relation_bank.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_bank.h",
         "bytes": 5887,
-        "sha256": "62cbc5f38e1ac610b197e5245c6482b9d0b38ee28cd333718212368104879cbe"
+        "sha256": "c797159ec9bb7e90137fbbd55e5326866b5c4772fbd788a18cc024648365e3f9"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/content_ordered_relation_bank.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_bank.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_bank.h",
+        "bytes": 5887,
+        "sha256": "c797159ec9bb7e90137fbbd55e5326866b5c4772fbd788a18cc024648365e3f9"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/content_ordered_relation_bank.h",
+        "bytes": 5887,
+        "sha256": "c797159ec9bb7e90137fbbd55e5326866b5c4772fbd788a18cc024648365e3f9"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/content_ordered_relation_checkpoint.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_checkpoint.h",
         "bytes": 5525,
-        "sha256": "6c97c65b7e3f5c2c2d14e896e95b09959ea5e3116ac5874b7ef00c3ded0580f2"
+        "sha256": "0bb99129a0b2b789f6cf90f19a3d3913ca939643c03bb3c6ea235c286a559a6e"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/content_ordered_relation_checkpoint.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_checkpoint.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_checkpoint.h",
+        "bytes": 5525,
+        "sha256": "0bb99129a0b2b789f6cf90f19a3d3913ca939643c03bb3c6ea235c286a559a6e"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/content_ordered_relation_checkpoint.h",
+        "bytes": 5525,
+        "sha256": "0bb99129a0b2b789f6cf90f19a3d3913ca939643c03bb3c6ea235c286a559a6e"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/content_ordered_relation_config.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_config.h",
         "bytes": 2709,
-        "sha256": "125c6c4bf26538bf4389202ef0e76d58b2db8ddc1a2a5d1667b2c36b80d22a0f"
+        "sha256": "d6a07e2ce05b306b60430bcfd946218d7784864dd62620674b808a97e19379a2"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/content_ordered_relation_config.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_config.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_config.h",
+        "bytes": 2709,
+        "sha256": "d6a07e2ce05b306b60430bcfd946218d7784864dd62620674b808a97e19379a2"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/content_ordered_relation_config.h",
+        "bytes": 2709,
+        "sha256": "d6a07e2ce05b306b60430bcfd946218d7784864dd62620674b808a97e19379a2"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/content_ordered_relation_model.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_model.h",
         "bytes": 6473,
-        "sha256": "7111c441e9f030e2de9e19b07262e12029d7ceb1a678c100edfead6cdf18a52e"
+        "sha256": "13fa78465c6cf0ac5749cbfbeeac04cbd561e75fd0e536de2c53bf8a59dfcffb"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/content_ordered_relation_model.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_model.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_model.h",
+        "bytes": 6473,
+        "sha256": "13fa78465c6cf0ac5749cbfbeeac04cbd561e75fd0e536de2c53bf8a59dfcffb"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/content_ordered_relation_model.h",
+        "bytes": 6473,
+        "sha256": "13fa78465c6cf0ac5749cbfbeeac04cbd561e75fd0e536de2c53bf8a59dfcffb"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/document.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/document.h",
         "bytes": 8107,
-        "sha256": "ad883e0f44cf97acc8c1e7aaa7bcc8ad7e56fd997241acc5132b138a10fcb232"
+        "sha256": "832e92bcee5a1a7b044ef2f80eeb977960d67a09e2c1d6aa37c83bf8e822fa31"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/document.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/document.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/document.h",
+        "bytes": 8107,
+        "sha256": "832e92bcee5a1a7b044ef2f80eeb977960d67a09e2c1d6aa37c83bf8e822fa31"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/document.h",
+        "bytes": 8107,
+        "sha256": "832e92bcee5a1a7b044ef2f80eeb977960d67a09e2c1d6aa37c83bf8e822fa31"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/encoder.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/encoder.h",
         "bytes": 3782,
-        "sha256": "cd29ca55a3c0ef86f9f0177931167a474a88f7efc461bde7a8296fa67e319b9c"
+        "sha256": "7540a0a175a8f3b7f4360ceaab6b5b2b0bd950d7330a487b57a7eada645d3a5f"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/encoder.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/encoder.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/encoder.h",
+        "bytes": 3782,
+        "sha256": "7540a0a175a8f3b7f4360ceaab6b5b2b0bd950d7330a487b57a7eada645d3a5f"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/encoder.h",
+        "bytes": 3782,
+        "sha256": "7540a0a175a8f3b7f4360ceaab6b5b2b0bd950d7330a487b57a7eada645d3a5f"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/location_scale_decoder_checkpoint.h",
-        "bytes": 12978,
-        "sha256": "771c3fc0aab48b1fdf09c7c6add9d4fa650a862bfca8731fe64217a10a8e0cb5"
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_checkpoint.h",
+        "bytes": 13506,
+        "sha256": "7c0ab8aea2d4d5a01d4397c3c80f409d998b01b0367dd0d80e601bda4bd2578d"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/location_scale_decoder_checkpoint.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_checkpoint.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_checkpoint.h",
+        "bytes": 13506,
+        "sha256": "7c0ab8aea2d4d5a01d4397c3c80f409d998b01b0367dd0d80e601bda4bd2578d"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/location_scale_decoder_checkpoint.h",
+        "bytes": 13506,
+        "sha256": "7c0ab8aea2d4d5a01d4397c3c80f409d998b01b0367dd0d80e601bda4bd2578d"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/location_scale_decoder_config.h",
-        "bytes": 3588,
-        "sha256": "f0d5be101abfefac35b47f5effa7d53b6a35fb7ba41bf06be0b0e8b70b7319d8"
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_config.h",
+        "bytes": 3589,
+        "sha256": "1c5cf501c2ec3893b0d36d53a127431135c1e25590850a71637601ac1a440fcf"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/location_scale_decoder_config.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_config.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_config.h",
+        "bytes": 3589,
+        "sha256": "1c5cf501c2ec3893b0d36d53a127431135c1e25590850a71637601ac1a440fcf"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/location_scale_decoder_config.h",
+        "bytes": 3589,
+        "sha256": "1c5cf501c2ec3893b0d36d53a127431135c1e25590850a71637601ac1a440fcf"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/location_scale_decoder_model.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_model.h",
         "bytes": 17650,
-        "sha256": "0f9f9696416815f3c70b3e73c131d6d3a81b66cb078c2ef8cceb14771e63f1f0"
+        "sha256": "7fcff7342e214e2e1f21c81b3d81207613b14765ee60457fb3bdc46699bdb459"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/location_scale_decoder_model.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_model.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_model.h",
+        "bytes": 17650,
+        "sha256": "7fcff7342e214e2e1f21c81b3d81207613b14765ee60457fb3bdc46699bdb459"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/location_scale_decoder_model.h",
+        "bytes": 17650,
+        "sha256": "7fcff7342e214e2e1f21c81b3d81207613b14765ee60457fb3bdc46699bdb459"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/location_scale_decoder_settings.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_settings.h",
         "bytes": 3235,
-        "sha256": "87ffa8b332344578cc2c8a2c1e5c171c043880b505546f25172fa08edc80bde4"
+        "sha256": "260c8ba6f643b7d970ca2e4f382b34873f2915b109eb3ba6dec3b3c0bf56014d"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/location_scale_decoder_settings.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_settings.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_settings.h",
+        "bytes": 3235,
+        "sha256": "260c8ba6f643b7d970ca2e4f382b34873f2915b109eb3ba6dec3b3c0bf56014d"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/location_scale_decoder_settings.h",
+        "bytes": 3235,
+        "sha256": "260c8ba6f643b7d970ca2e4f382b34873f2915b109eb3ba6dec3b3c0bf56014d"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/location_scale_decoder_training_state.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_training_state.h",
         "bytes": 342,
-        "sha256": "d805c2ec56b702ee1bbbbb01320b48520f8f25958d0c846d88c211af02c355ac"
+        "sha256": "505e000a14c12dc4f5731bb4190ce7ead00a509e45eadc2f961214d4c6d7a0b1"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/location_scale_decoder_training_state.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_training_state.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_training_state.h",
+        "bytes": 342,
+        "sha256": "505e000a14c12dc4f5731bb4190ce7ead00a509e45eadc2f961214d4c6d7a0b1"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/location_scale_decoder_training_state.h",
+        "bytes": 342,
+        "sha256": "505e000a14c12dc4f5731bb4190ce7ead00a509e45eadc2f961214d4c6d7a0b1"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/masking.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/masking.h",
         "bytes": 3881,
-        "sha256": "301e853d1c4be917059539a79e4de752af44d6683f1331eb75ee89de8de1b2db"
+        "sha256": "b98557d3dc701e55b3f53e250aa6442f7cf7e065e974c29d0f44d054ff23a139"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/masking.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/masking.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/masking.h",
+        "bytes": 3881,
+        "sha256": "b98557d3dc701e55b3f53e250aa6442f7cf7e065e974c29d0f44d054ff23a139"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/masking.h",
+        "bytes": 3881,
+        "sha256": "b98557d3dc701e55b3f53e250aa6442f7cf7e065e974c29d0f44d054ff23a139"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/model.h",
-        "bytes": 22683,
-        "sha256": "414fa0d486fd8b04fc2d5ff05233f28b3e7d1894154499274e00dc82a86b289a"
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/model.h",
+        "bytes": 23327,
+        "sha256": "d76ec42b1010610ab182320eaa5130584c713bcd1816681f328c5cdce4cc0a82"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/model.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/model.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/model.h",
+        "bytes": 23327,
+        "sha256": "d76ec42b1010610ab182320eaa5130584c713bcd1816681f328c5cdce4cc0a82"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/model.h",
+        "bytes": 23327,
+        "sha256": "d76ec42b1010610ab182320eaa5130584c713bcd1816681f328c5cdce4cc0a82"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/objectives.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/objectives.h",
         "bytes": 3163,
-        "sha256": "a7192cdc5cdb8eb6db23695d5d27ef5b2098bc0b1e30f94b1647dde726f0a4c6"
+        "sha256": "bfdb10944879449c4861ca6e44aba8ad6601bf6de0907b23ca18ea1f16d38f01"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/objectives.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/objectives.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/objectives.h",
+        "bytes": 3163,
+        "sha256": "bfdb10944879449c4861ca6e44aba8ad6601bf6de0907b23ca18ea1f16d38f01"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/objectives.h",
+        "bytes": 3163,
+        "sha256": "bfdb10944879449c4861ca6e44aba8ad6601bf6de0907b23ca18ea1f16d38f01"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/preprocessing.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/preprocessing.h",
         "bytes": 10350,
-        "sha256": "3cf011b61150116c6021f99eedd36b5f5957ce898ee08715c88d1223863d5f0e"
+        "sha256": "223055dc40d6ec8d1f2d292b2d89c413a0cbe5ad816d81d95b3fc52eb1db8762"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/preprocessing.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/preprocessing.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/preprocessing.h",
+        "bytes": 10350,
+        "sha256": "223055dc40d6ec8d1f2d292b2d89c413a0cbe5ad816d81d95b3fc52eb1db8762"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/preprocessing.h",
+        "bytes": 10350,
+        "sha256": "223055dc40d6ec8d1f2d292b2d89c413a0cbe5ad816d81d95b3fc52eb1db8762"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/relative_change_bank.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/relative_change_bank.h",
         "bytes": 4789,
-        "sha256": "bd169998af81b3030ae9679dd47717db69bb639af60007892283a75f9eb4da2f"
+        "sha256": "5be2dd49910acd62c1e4e7472e94cf4b193c0cd1e9596fb4a9b15c6d6d81236c"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/relative_change_bank.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/relative_change_bank.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/relative_change_bank.h",
+        "bytes": 4789,
+        "sha256": "5be2dd49910acd62c1e4e7472e94cf4b193c0cd1e9596fb4a9b15c6d6d81236c"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/relative_change_bank.h",
+        "bytes": 4789,
+        "sha256": "5be2dd49910acd62c1e4e7472e94cf4b193c0cd1e9596fb4a9b15c6d6d81236c"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/relative_change_config.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/relative_change_config.h",
         "bytes": 1930,
-        "sha256": "2051f13cfe835f79a9838834f0ef9bbea182505d6244ea46c13f736c3fb396b8"
+        "sha256": "14958a33d940d12edba2fd6ddfbbe79b81de546627ce6f3ce410e1f4b6533ea9"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/relative_change_config.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/relative_change_config.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/relative_change_config.h",
+        "bytes": 1930,
+        "sha256": "14958a33d940d12edba2fd6ddfbbe79b81de546627ce6f3ce410e1f4b6533ea9"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/relative_change_config.h",
+        "bytes": 1930,
+        "sha256": "14958a33d940d12edba2fd6ddfbbe79b81de546627ce6f3ce410e1f4b6533ea9"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/relative_change_normalizer.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/relative_change_normalizer.h",
         "bytes": 3051,
-        "sha256": "c7a69aa1fe7bb0509ca5f27d94abbe589696e6baa90dbfd21aa0de3b0b80b35b"
+        "sha256": "253fa5d815a44895bba1a79bf7999faf036d23ab3c2ddfe58a828e8a17109cd3"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/relative_change_normalizer.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/relative_change_normalizer.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/relative_change_normalizer.h",
+        "bytes": 3051,
+        "sha256": "253fa5d815a44895bba1a79bf7999faf036d23ab3c2ddfe58a828e8a17109cd3"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/relative_change_normalizer.h",
+        "bytes": 3051,
+        "sha256": "253fa5d815a44895bba1a79bf7999faf036d23ab3c2ddfe58a828e8a17109cd3"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/separated_change_checkpoint.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_checkpoint.h",
         "bytes": 5383,
-        "sha256": "e2c0ad9f3fb0ab0d6a4a1ee17ad969c202cf2291437d8a02c17038207cc12f54"
+        "sha256": "a4afef6c203607096bb12ffe263c558392d7ad6e4712010486d02159e5e8d294"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/separated_change_checkpoint.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_checkpoint.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_checkpoint.h",
+        "bytes": 5383,
+        "sha256": "a4afef6c203607096bb12ffe263c558392d7ad6e4712010486d02159e5e8d294"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/separated_change_checkpoint.h",
+        "bytes": 5383,
+        "sha256": "a4afef6c203607096bb12ffe263c558392d7ad6e4712010486d02159e5e8d294"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/separated_change_config.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_config.h",
         "bytes": 1632,
-        "sha256": "c1016dc9181c5ed8a9f337a7cb877a33286d1abe6273a55e2c3afc7754d0ec00"
+        "sha256": "80c5306a4517b7c5457f714fb01d39a4f541e3b1e3148441352aef2f994b8e51"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/separated_change_config.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_config.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_config.h",
+        "bytes": 1632,
+        "sha256": "80c5306a4517b7c5457f714fb01d39a4f541e3b1e3148441352aef2f994b8e51"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/separated_change_config.h",
+        "bytes": 1632,
+        "sha256": "80c5306a4517b7c5457f714fb01d39a4f541e3b1e3148441352aef2f994b8e51"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/separated_change_frozen_level.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_frozen_level.h",
         "bytes": 4538,
-        "sha256": "03fdd816703c3cb6622f9c3e5c5efccb1c58efaedddb39f703e0536d7d780871"
+        "sha256": "036262d880eb4e0ebb635acaf0d506c75e014d7e168945c2a258a5f6f66dd66f"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/separated_change_frozen_level.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_frozen_level.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_frozen_level.h",
+        "bytes": 4538,
+        "sha256": "036262d880eb4e0ebb635acaf0d506c75e014d7e168945c2a258a5f6f66dd66f"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/separated_change_frozen_level.h",
+        "bytes": 4538,
+        "sha256": "036262d880eb4e0ebb635acaf0d506c75e014d7e168945c2a258a5f6f66dd66f"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/separated_change_model.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_model.h",
         "bytes": 5728,
-        "sha256": "b7e3d95eca42fdde87a0af9caf11c763c5914f86532da02f8ef4867565116329"
+        "sha256": "2128efb76bd7bf742433edfaabbc23fac99fd1a0bb65684d914c05504bad5892"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/separated_change_model.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_model.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_model.h",
+        "bytes": 5728,
+        "sha256": "2128efb76bd7bf742433edfaabbc23fac99fd1a0bb65684d914c05504bad5892"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/separated_change_model.h",
+        "bytes": 5728,
+        "sha256": "2128efb76bd7bf742433edfaabbc23fac99fd1a0bb65684d914c05504bad5892"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/separated_change_training_state.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_training_state.h",
         "bytes": 7346,
-        "sha256": "c6db709175f529214289774ac9bb33dd7509d11f5c57b1e0d5e513c2bbe41b6e"
+        "sha256": "cfcabf5e299026850c75a645662a5d1951669004c8cca539da5dc050a3c61a2c"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/separated_change_training_state.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_training_state.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_training_state.h",
+        "bytes": 7346,
+        "sha256": "cfcabf5e299026850c75a645662a5d1951669004c8cca539da5dc050a3c61a2c"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/separated_change_training_state.h",
+        "bytes": 7346,
+        "sha256": "cfcabf5e299026850c75a645662a5d1951669004c8cca539da5dc050a3c61a2c"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/simple_kv_block.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/simple_kv_block.h",
         "bytes": 8409,
-        "sha256": "50dafc7574bf8fb7ccde09147c537e2c879658ee5651be4a55f4b12e9e530b92"
+        "sha256": "9e1f6815520869635b73f060c011e2055e6b59106877d574137b2d9381834118"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/simple_kv_block.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/simple_kv_block.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/simple_kv_block.h",
+        "bytes": 8409,
+        "sha256": "9e1f6815520869635b73f060c011e2055e6b59106877d574137b2d9381834118"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/simple_kv_block.h",
+        "bytes": 8409,
+        "sha256": "9e1f6815520869635b73f060c011e2055e6b59106877d574137b2d9381834118"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/temporal_pooling.h",
-        "bytes": 7749,
-        "sha256": "6c2eb9081c72d0d7a42f5b6af1b11028af857fcced67a8eaf715155f7c8c2841"
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/temporal_pooling.h",
+        "bytes": 9292,
+        "sha256": "04e2adaecf3da9913763be7f9189dc9aff3824fa34a1321c8942650d8e1c4e4b"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/temporal_pooling.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/temporal_pooling.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/temporal_pooling.h",
+        "bytes": 9292,
+        "sha256": "04e2adaecf3da9913763be7f9189dc9aff3824fa34a1321c8942650d8e1c4e4b"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/temporal_pooling.h",
+        "bytes": 9292,
+        "sha256": "04e2adaecf3da9913763be7f9189dc9aff3824fa34a1321c8942650d8e1c4e4b"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/tokenization.h",
-        "bytes": 4304,
-        "sha256": "656049f3dbf6e73e6eaca8f8426dff08db38e21407bbe5704f1337d111b481d0"
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/tokenization.h",
+        "bytes": 4491,
+        "sha256": "f8348b3b06a67f853f4cc587a82aa5e6e1611114dd7df0b829e059e025b102b5"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/tokenization.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/tokenization.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/tokenization.h",
+        "bytes": 4491,
+        "sha256": "f8348b3b06a67f853f4cc587a82aa5e6e1611114dd7df0b829e059e025b102b5"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/tokenization.h",
+        "bytes": 4491,
+        "sha256": "f8348b3b06a67f853f4cc587a82aa5e6e1611114dd7df0b829e059e025b102b5"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/types.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/types.h",
         "bytes": 5714,
-        "sha256": "b2e9c527eba49bee9e908bd0a8264702efe5b7957b955a18220ece818890c625"
+        "sha256": "705053b8077771b9c918b20a2920d96c8f075a9e6895d4d1e628f997e87804c1"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/types.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/types.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/types.h",
+        "bytes": 5714,
+        "sha256": "705053b8077771b9c918b20a2920d96c8f075a9e6895d4d1e628f997e87804c1"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/types.h",
+        "bytes": 5714,
+        "sha256": "705053b8077771b9c918b20a2920d96c8f075a9e6895d4d1e628f997e87804c1"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/visible_difference.h",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/visible_difference.h",
         "bytes": 4818,
-        "sha256": "c119b7bc0daaea64392cb80b733d943b25cb13cc32651a96eb889537388b42e4"
+        "sha256": "9585b316269a1078f05e044fb5954b8448702e20b7897e26d06719789f3391b7"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v11/visible_difference.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/visible_difference.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/visible_difference.h",
+        "bytes": 4818,
+        "sha256": "9585b316269a1078f05e044fb5954b8448702e20b7897e26d06719789f3391b7"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/visible_difference.h",
+        "bytes": 4818,
+        "sha256": "9585b316269a1078f05e044fb5954b8448702e20b7897e26d06719789f3391b7"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/versions/v11.h",
-        "bytes": 35688,
-        "sha256": "ce40fede83dc9049036db09125fee8b277d7f7ef86ab935132f15b8aaa1397ba"
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/versions/v13.h",
+        "bytes": 36008,
+        "sha256": "906a9cc636fe28a893528fc09c6035ef1a2811291439caaf5005a7e5b1be7020"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/include/embedding/encoders/causal_patch_bottleneck_mae/versions/v11.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/versions/v13.h",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/versions/v13.h",
+        "bytes": 36008,
+        "sha256": "906a9cc636fe28a893528fc09c6035ef1a2811291439caaf5005a7e5b1be7020"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/versions/v14.h",
+        "bytes": 36008,
+        "sha256": "906a9cc636fe28a893528fc09c6035ef1a2811291439caaf5005a7e5b1be7020"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/tests/v11_temporal_pooling_test.cpp",
-        "bytes": 25319,
-        "sha256": "9afb33ee0bdb8f1a3d476d69ef0bf65c6e612d9ba7732b129cd34d45ee996acb"
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/tests/v13_temporal_pooling_test.cpp",
+        "bytes": 34336,
+        "sha256": "8e7d68207d815c043b824bd46fdcc5a822d8c39dee9aa95f84b83f716bd4385a"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/tests/v11_temporal_pooling_test.cpp",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/tests/v13_temporal_pooling_test.cpp",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/tests/v13_temporal_pooling_test.cpp",
+        "bytes": 34336,
+        "sha256": "8e7d68207d815c043b824bd46fdcc5a822d8c39dee9aa95f84b83f716bd4385a"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/tests/v14_temporal_pooling_test.cpp",
+        "bytes": 34336,
+        "sha256": "8e7d68207d815c043b824bd46fdcc5a822d8c39dee9aa95f84b83f716bd4385a"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/tests/v11_test.cpp",
-        "bytes": 61558,
-        "sha256": "963c4f006a2598af4602b23f7c9dfc8277f57fa68ca13fa0e8439ce777ca85da"
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/tests/v13_test.cpp",
+        "bytes": 66296,
+        "sha256": "41b95ff3767e3808c2fd61e079f9d5101e599e3bdd81d2eaf8a9977564aeaf1a"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/tests/v11_test.cpp",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/tests/v13_test.cpp",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/tests/v13_test.cpp",
+        "bytes": 66296,
+        "sha256": "41b95ff3767e3808c2fd61e079f9d5101e599e3bdd81d2eaf8a9977564aeaf1a"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/tests/v14_test.cpp",
+        "bytes": 66296,
+        "sha256": "41b95ff3767e3808c2fd61e079f9d5101e599e3bdd81d2eaf8a9977564aeaf1a"
+      }
     },
     {
+      "role": "family_directory50",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11/tests/v11_variance_gradient_test.cpp",
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/tests/v13_variance_gradient_test.cpp",
         "bytes": 16472,
-        "sha256": "2aa668d7d3878c47469448ec596df3fd2e2c4227cf47521f1bdaad2eacdfaa37"
+        "sha256": "6c60cc4d238d5839f66a59b09cc7013b614d5a52ca6ccaddc7348a0417294ed3"
       },
-      "role": "V11_family",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11/tests/v11_variance_gradient_test.cpp",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/tests/v13_variance_gradient_test.cpp",
-      "immutable_capsule_parent_exact": true
-    },
-    {
-      "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v11.h",
-        "bytes": 35688,
-        "sha256": "ce40fede83dc9049036db09125fee8b277d7f7ef86ab935132f15b8aaa1397ba"
-      },
-      "role": "V11_public_family_header",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v11.h",
-      "owned_path": "code/encoders/causal_patch_bottleneck_mae/versions/v13.h",
-      "immutable_capsule_parent_exact": true
-    },
-    {
-      "parent": {
-        "path": "code/research/causal_fresh_v11/tests/v11_separation_test.cpp",
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13/tests/v13_variance_gradient_test.cpp",
         "bytes": 16472,
-        "sha256": "2aa668d7d3878c47469448ec596df3fd2e2c4227cf47521f1bdaad2eacdfaa37"
+        "sha256": "6c60cc4d238d5839f66a59b09cc7013b614d5a52ca6ccaddc7348a0417294ed3"
       },
-      "role": "V11_training_support_tests",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/research/causal_fresh_v11/tests/v11_separation_test.cpp",
-      "owned_path": "code/research/causal_fresh_v13/tests/v13_separation_test.cpp",
-      "immutable_capsule_parent_exact": true
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/tests/v14_variance_gradient_test.cpp",
+        "bytes": 16472,
+        "sha256": "6c60cc4d238d5839f66a59b09cc7013b614d5a52ca6ccaddc7348a0417294ed3"
+      }
     },
     {
+      "role": "public_wrapper1",
       "parent": {
-        "path": "code/research/causal_fresh_v11/tests/v11_temporal_pooling_test.cpp",
-        "bytes": 25319,
-        "sha256": "9afb33ee0bdb8f1a3d476d69ef0bf65c6e612d9ba7732b129cd34d45ee996acb"
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13.h",
+        "bytes": 36008,
+        "sha256": "906a9cc636fe28a893528fc09c6035ef1a2811291439caaf5005a7e5b1be7020"
       },
-      "role": "V11_training_support_tests",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/research/causal_fresh_v11/tests/v11_temporal_pooling_test.cpp",
-      "owned_path": "code/research/causal_fresh_v13/tests/v13_temporal_pooling_test.cpp",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/v13.h",
+        "bytes": 36008,
+        "sha256": "906a9cc636fe28a893528fc09c6035ef1a2811291439caaf5005a7e5b1be7020"
+      },
+      "owned_copy": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14.h",
+        "bytes": 36008,
+        "sha256": "906a9cc636fe28a893528fc09c6035ef1a2811291439caaf5005a7e5b1be7020"
+      }
     },
     {
+      "role": "research_tests3",
       "parent": {
-        "path": "code/research/causal_fresh_v11/tests/v11_test.cpp",
-        "bytes": 71121,
-        "sha256": "8a55b9ce041e6eca84b91300ad3d44f9bd77b1a3ffd077a2dfd3a8d4e84f1b20"
+        "path": "code/research/causal_fresh_v13/tests/v13_separation_test.cpp",
+        "bytes": 16472,
+        "sha256": "6c60cc4d238d5839f66a59b09cc7013b614d5a52ca6ccaddc7348a0417294ed3"
       },
-      "role": "V11_training_support_tests",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/research/causal_fresh_v11/tests/v11_test.cpp",
-      "owned_path": "code/research/causal_fresh_v13/tests/v13_test.cpp",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/research/causal_fresh_v13/tests/v13_separation_test.cpp",
+        "bytes": 16472,
+        "sha256": "6c60cc4d238d5839f66a59b09cc7013b614d5a52ca6ccaddc7348a0417294ed3"
+      },
+      "owned_copy": {
+        "path": "code/research/causal_fresh_v14/tests/v14_separation_test.cpp",
+        "bytes": 16472,
+        "sha256": "6c60cc4d238d5839f66a59b09cc7013b614d5a52ca6ccaddc7348a0417294ed3"
+      }
     },
     {
+      "role": "research_tests3",
       "parent": {
-        "path": "code/encoders/causal_patch_bottleneck_mae/versions/CPB-v11.json",
-        "bytes": 3706,
-        "sha256": "2cb25d674aa9cf9ebd136359c259e5498b0dd00786cf6606e07afb7e2f5b0db8"
+        "path": "code/research/causal_fresh_v13/tests/v13_temporal_pooling_test.cpp",
+        "bytes": 34336,
+        "sha256": "8e7d68207d815c043b824bd46fdcc5a822d8c39dee9aa95f84b83f716bd4385a"
       },
-      "role": "V11_descriptor_DATA",
-      "preserved_copy": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/CPB-v11.json",
-      "owned_path": "doc/causal_fresh_v13/CPB-v13.descriptor-draft.json",
-      "immutable_capsule_parent_exact": true
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/research/causal_fresh_v13/tests/v13_temporal_pooling_test.cpp",
+        "bytes": 34336,
+        "sha256": "8e7d68207d815c043b824bd46fdcc5a822d8c39dee9aa95f84b83f716bd4385a"
+      },
+      "owned_copy": {
+        "path": "code/research/causal_fresh_v14/tests/v14_temporal_pooling_test.cpp",
+        "bytes": 34336,
+        "sha256": "8e7d68207d815c043b824bd46fdcc5a822d8c39dee9aa95f84b83f716bd4385a"
+      }
+    },
+    {
+      "role": "research_tests3",
+      "parent": {
+        "path": "code/research/causal_fresh_v13/tests/v13_test.cpp",
+        "bytes": 74604,
+        "sha256": "dfd464196603e4b642315d2871f1e4f796f9fe8802a6a9e170e55e059c0bd842"
+      },
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/research/causal_fresh_v13/tests/v13_test.cpp",
+        "bytes": 74604,
+        "sha256": "dfd464196603e4b642315d2871f1e4f796f9fe8802a6a9e170e55e059c0bd842"
+      },
+      "owned_copy": {
+        "path": "code/research/causal_fresh_v14/tests/v14_test.cpp",
+        "bytes": 74604,
+        "sha256": "dfd464196603e4b642315d2871f1e4f796f9fe8802a6a9e170e55e059c0bd842"
+      }
+    },
+    {
+      "role": "canonical_descriptor_DATA1",
+      "parent": {
+        "path": "code/encoders/causal_patch_bottleneck_mae/versions/CPB-v13.json",
+        "bytes": 5575,
+        "sha256": "0c90bc5f673283ca463b3652e3c53899238bb6a9628833e03498c0cc8f4b3349"
+      },
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/code/encoders/causal_patch_bottleneck_mae/versions/CPB-v13.json",
+        "bytes": 5575,
+        "sha256": "0c90bc5f673283ca463b3652e3c53899238bb6a9628833e03498c0cc8f4b3349"
+      },
+      "owned_copy": {
+        "path": "doc/causal_fresh_v14/CPB-v14.descriptor-draft.json",
+        "bytes": 5575,
+        "sha256": "0c90bc5f673283ca463b3652e3c53899238bb6a9628833e03498c0cc8f4b3349"
+      }
+    },
+    {
+      "role": "family_and_evaluation_documentary_provenance2",
+      "parent": {
+        "path": "doc/causal_fresh_v13/family-source-provenance.json",
+        "bytes": 23275,
+        "sha256": "76fa301085757dc451b2bc59771b917f9f7e4fbcde90ecd212eb1f0acb3ef620"
+      },
+      "preserved_copy": {
+        "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/parents/files/doc/causal_fresh_v13/family-source-provenance.json",
+        "bytes": 23275,
+        "sha256": "76fa301085757dc451b2bc59771b917f9f7e4fbcde90ecd212eb1f0acb3ef620"
+      },
+      "owned_copy": {
+        "path": "doc/causal_fresh_v14/family-source-provenance.json",
+        "bytes": 23275,
+        "sha256": "76fa301085757dc451b2bc59771b917f9f7e4fbcde90ecd212eb1f0acb3ef620"
+      }
     }
   ],
-  "current_owned_files_excluding_self": [
+  "current_owned_files_excluding_self_and_mutual_doc_provenance": [
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/README.md",
-      "bytes": 7645,
-      "sha256": "0fa80d1b90868356bf0870d7f3b6bb888527cf2f8dd7222c7d48cfbc18cc722f"
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/README.md",
+      "bytes": 8222,
+      "sha256": "f5f8751e66d9ea6191c2f6b08a0e978426a9bb7308f94f7ab0e8617f613b9889"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/v13.mk",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/v14.mk",
       "bytes": 2351,
-      "sha256": "04be9e038cb27111e7401eaa1649ab0bf23e24cebebec2bc6afc571406986652"
+      "sha256": "5146f886513b0c35206cb920c735caf11cc3288f424688462dd0dc9af4a0009e"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/config/v13.conf",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/config/v14.conf",
       "bytes": 687,
-      "sha256": "ed6e13e85a2d9ac13e0c9add23f400c8397e3ebdc86a313a42bba10cd1284a50"
+      "sha256": "a954a32a8bac374944a07e2b0be96710de8a3b72a4631bce387b955de46a91da"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/conditioned_change_bank.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/conditioned_change_bank.h",
       "bytes": 1655,
-      "sha256": "4283af3994c5d92fb42eda74a38036d85a7908f4290cfd398a5b638bd2504870"
+      "sha256": "6766a685a38c40aabb166867e31bbe67060abc2b59b8608fde51ebae95bc675b"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/conditioned_change_config.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/conditioned_change_config.h",
       "bytes": 1483,
-      "sha256": "6899a8a5fe3c5396db52691443cfd75e304b1339f1e824913e87163c41ffca22"
+      "sha256": "fb2445a1a7b1f341ba0222eb77ffaf834450518b7276d0b4b53bf4ad4e0d7d79"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/conditioned_change_normalizer.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/conditioned_change_normalizer.h",
       "bytes": 11397,
-      "sha256": "eca9c2ff50ceb5a8fa0c3c9f96d868c9f6e5cbbd1e5d48c20e6303e8620640cf"
+      "sha256": "ffd8b0391e4c575f4e7fcd103e201e50f7662da234f68eee0a5c64c0ab682d97"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/config.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/config.h",
       "bytes": 5962,
-      "sha256": "bed87155d4bed759d7de5a078c3c046eac46f416557cac09866f1ae73afebaa5"
+      "sha256": "3d62124798d569010733f4d2440837977b11f66df469bda523183e77b86e8662"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_checkpoint_io.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/configurable_spectral_checkpoint_io.h",
       "bytes": 3105,
-      "sha256": "20ee24dbb97756c0e641760eddcd09ee99b4d03d0ea8c597364a291dccf47576"
+      "sha256": "1bbdf3d6a876580d976a672f353f244a658ab59a0a19204f56fe4184ad44a709"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_checkpoint.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/configurable_spectral_checkpoint.h",
       "bytes": 7357,
-      "sha256": "35bcfa7a257cf51b7727f62132b19b06864a59c0c70cc0f4d690e11265fc5bb1"
+      "sha256": "4289b743da418dabf3e86b867e61fa42df925dd430f21ed916c98546c89d1cd9"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_config.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/configurable_spectral_config.h",
       "bytes": 4944,
-      "sha256": "1f58e0190c1f466577971334b9cbd216ef227dcf80c2bb3c189145e85ea7b5ed"
+      "sha256": "3416135dabe917618b47c27d69eb3118f01f7693e144731f22277798d24a8eb5"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_model.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/configurable_spectral_model.h",
       "bytes": 13757,
-      "sha256": "ff1da71996667f0099b9cf3b3e4f1873350eac90a60c97311256d6f78336c172"
+      "sha256": "a39ee6dc701d52851033929ee15eaacbf17982a6b4a15d619c4e5c44dd57218c"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/configurable_spectral_relation.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/configurable_spectral_relation.h",
       "bytes": 8185,
-      "sha256": "849a0e08aee2643ae6660288684ed5dcd43b0e1ed237c9cf4bfd8f437ab4c3fc"
+      "sha256": "283e9c06f1d048ddca5a1ef9f75a8c1c04f1ad93c15c12166c0222a29017aab1"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_bank.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/consecutive_change_bank.h",
       "bytes": 3583,
-      "sha256": "3499e2552cdc74bf502037c6868ffc1f5226db3dd291ba414abd9961b8e5fdbf"
+      "sha256": "d84db4ccf87d8dfc5eea4b8dad25e1a4b7a9426f8bb05f3d0042ecb2f4825304"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_checkpoint.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/consecutive_change_checkpoint.h",
       "bytes": 5188,
-      "sha256": "2e87710ba74b88dfb306733657c62bf85adc97eba037a8a0c2d7651ce8374f8f"
+      "sha256": "48a30eb45d47642eccdbd818fa00a86fdf0cdeeaec4c324ce6ad52b61885a019"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_config.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/consecutive_change_config.h",
       "bytes": 1707,
-      "sha256": "84c7c52a914c36f76dc6647f8eb8c3c5560854f4e6b317a513235686a8a473b5"
+      "sha256": "35237445b45007dfdfce0005df756308bf674fba660dec9a92be887c62e52680"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_model.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/consecutive_change_model.h",
       "bytes": 4020,
-      "sha256": "23da2a46d054b8adb8f05ed9b736de756ac5d6be5efe48c0085d3a3224f2e00d"
+      "sha256": "5477a45f407d716b66542b9734da23ddd22936c8c01463f5b9475b8f48e3bcbb"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/consecutive_change_training_state.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/consecutive_change_training_state.h",
       "bytes": 14191,
-      "sha256": "d5f3b61d136d310827250ed08fa3d285f54feb66c691b3ff1bed25c8e8f46c06"
+      "sha256": "98bacb61e052ff259354f5835fb42a460cca4dc8968609e9d99268a1dee8f1cb"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_bank.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/content_ordered_relation_bank.h",
       "bytes": 5887,
-      "sha256": "c797159ec9bb7e90137fbbd55e5326866b5c4772fbd788a18cc024648365e3f9"
+      "sha256": "e4daed613d7e58726f32ac20c20f165b26bc1504394e0b34bb229382f8c232ec"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_checkpoint.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/content_ordered_relation_checkpoint.h",
       "bytes": 5525,
-      "sha256": "0bb99129a0b2b789f6cf90f19a3d3913ca939643c03bb3c6ea235c286a559a6e"
+      "sha256": "a5cc6263c6de0470f3b785dd7fd5e05e49657cb9ec9ffc7721227aa86c30b893"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_config.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/content_ordered_relation_config.h",
       "bytes": 2709,
-      "sha256": "d6a07e2ce05b306b60430bcfd946218d7784864dd62620674b808a97e19379a2"
+      "sha256": "032c2439a02cde24df034267f9c6ba6e6245d704c71216d4b7751593b150937c"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/content_ordered_relation_model.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/content_ordered_relation_model.h",
       "bytes": 6473,
-      "sha256": "13fa78465c6cf0ac5749cbfbeeac04cbd561e75fd0e536de2c53bf8a59dfcffb"
+      "sha256": "498700e99b5012eb988efe3ce3ec9b5762a17a8348864daaad0975ec6b226774"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/document.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/document.h",
       "bytes": 8107,
-      "sha256": "832e92bcee5a1a7b044ef2f80eeb977960d67a09e2c1d6aa37c83bf8e822fa31"
+      "sha256": "200c453cfa4f705fe731b9e6024eb904ec274e868f7aaad63209e37d5deebdb3"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/encoder.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/encoder.h",
       "bytes": 3782,
-      "sha256": "7540a0a175a8f3b7f4360ceaab6b5b2b0bd950d7330a487b57a7eada645d3a5f"
+      "sha256": "21a673d8adcbffa4f3061c79fa611a0ea181aa4851eb0997714490940c7d913d"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_checkpoint.h",
-      "bytes": 13506,
-      "sha256": "7c0ab8aea2d4d5a01d4397c3c80f409d998b01b0367dd0d80e601bda4bd2578d"
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/location_scale_decoder_checkpoint.h",
+      "bytes": 14044,
+      "sha256": "315eec4091bc1d6a782a66b44bdd8828c426bb7aad6a6de3b353b79f773846eb"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_config.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/location_scale_decoder_config.h",
       "bytes": 3589,
-      "sha256": "1c5cf501c2ec3893b0d36d53a127431135c1e25590850a71637601ac1a440fcf"
+      "sha256": "6b717ed0b84c0a69efacd23f0be9c95296c3407d338ef602ca56b202ab57710c"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_model.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/location_scale_decoder_model.h",
       "bytes": 17650,
-      "sha256": "7fcff7342e214e2e1f21c81b3d81207613b14765ee60457fb3bdc46699bdb459"
+      "sha256": "2b39ea5133a3d54df94451bdff6b0c6f6ebdc5741f79100c05247dd39e3c296a"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_settings.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/location_scale_decoder_settings.h",
       "bytes": 3235,
-      "sha256": "260c8ba6f643b7d970ca2e4f382b34873f2915b109eb3ba6dec3b3c0bf56014d"
+      "sha256": "3140677cbcfd1e9fa0b540b20f701dfcfe023123f4729e6e1b66b9e7fffe0745"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_training_state.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/location_scale_decoder_training_state.h",
       "bytes": 342,
-      "sha256": "505e000a14c12dc4f5731bb4190ce7ead00a509e45eadc2f961214d4c6d7a0b1"
+      "sha256": "26fe6925c751cf59d2d91fa3211c96d1b7ce9fcf5aaaf2fa7e73c2fb08ad6e6b"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/masking.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/masking.h",
       "bytes": 3881,
-      "sha256": "b98557d3dc701e55b3f53e250aa6442f7cf7e065e974c29d0f44d054ff23a139"
+      "sha256": "ef16b0e605d44555a7cdd5e0819be06b5601622b5afe93b4b019e1479e906460"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/model.h",
-      "bytes": 23327,
-      "sha256": "d76ec42b1010610ab182320eaa5130584c713bcd1816681f328c5cdce4cc0a82"
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/model.h",
+      "bytes": 23420,
+      "sha256": "e08d9c8556e0d6dee7b6bb3ecb167642405ee75f99b8c335f8cb7d949382e64a"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/objectives.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/objectives.h",
       "bytes": 3163,
-      "sha256": "bfdb10944879449c4861ca6e44aba8ad6601bf6de0907b23ca18ea1f16d38f01"
+      "sha256": "d0e0446769e32eebae4c167fb0c1716fdb64dab3037cedb07b7be5dab58c0614"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/preprocessing.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/preprocessing.h",
       "bytes": 10350,
-      "sha256": "223055dc40d6ec8d1f2d292b2d89c413a0cbe5ad816d81d95b3fc52eb1db8762"
+      "sha256": "37de9c8b8edb07f944a1763e62873fd621e4f4ab9569515430fb829363783000"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/relative_change_bank.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/relative_change_bank.h",
       "bytes": 4789,
-      "sha256": "5be2dd49910acd62c1e4e7472e94cf4b193c0cd1e9596fb4a9b15c6d6d81236c"
+      "sha256": "a361bbf2cf305360172a08bc6e0795c6d8337773073baaa15fd059d46f5d2061"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/relative_change_config.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/relative_change_config.h",
       "bytes": 1930,
-      "sha256": "14958a33d940d12edba2fd6ddfbbe79b81de546627ce6f3ce410e1f4b6533ea9"
+      "sha256": "c82f35712e7b997bfeb5f5a7b1b28e9b397bf4d460775b1f2c5eaf54e60e25b3"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/relative_change_normalizer.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/relative_change_normalizer.h",
       "bytes": 3051,
-      "sha256": "253fa5d815a44895bba1a79bf7999faf036d23ab3c2ddfe58a828e8a17109cd3"
+      "sha256": "5568470f4eb96b66b6703f9f45560c010f584b2d106dc4cef915f4d3e5677939"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_checkpoint.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/separated_change_checkpoint.h",
       "bytes": 5383,
-      "sha256": "a4afef6c203607096bb12ffe263c558392d7ad6e4712010486d02159e5e8d294"
+      "sha256": "7ebd6c612374473f87f2196971b61aa04291840bc92435e6f04a5ccda0a37b88"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_config.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/separated_change_config.h",
       "bytes": 1632,
-      "sha256": "80c5306a4517b7c5457f714fb01d39a4f541e3b1e3148441352aef2f994b8e51"
+      "sha256": "f07d1cae813b3c07698dda001081f62d63f54ee64796e00c4291bc96bdf79186"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_frozen_level.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/separated_change_frozen_level.h",
       "bytes": 4538,
-      "sha256": "036262d880eb4e0ebb635acaf0d506c75e014d7e168945c2a258a5f6f66dd66f"
+      "sha256": "52ec99ddd25fddea12b19619fd0eb90b56a27f7ee4fa9328a5a60ed3e6dd086c"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_model.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/separated_change_model.h",
       "bytes": 5728,
-      "sha256": "2128efb76bd7bf742433edfaabbc23fac99fd1a0bb65684d914c05504bad5892"
+      "sha256": "0256a10552d96e31ba148e99872ef9467a7a7be38b939f88e67bae9fcbe1b25e"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/separated_change_training_state.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/separated_change_training_state.h",
       "bytes": 7346,
-      "sha256": "cfcabf5e299026850c75a645662a5d1951669004c8cca539da5dc050a3c61a2c"
+      "sha256": "d0c1cb0a0208e31488bbc20d2f7143214f6efd85cddd58dc3d5688587eeeaadc"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/simple_kv_block.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/simple_kv_block.h",
       "bytes": 8409,
-      "sha256": "9e1f6815520869635b73f060c011e2055e6b59106877d574137b2d9381834118"
+      "sha256": "7e5fb6ac309bbe49c9b74609bc6e591254c78c3c1963fa38fc65c27afe2d5ef0"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/temporal_pooling.h",
-      "bytes": 9292,
-      "sha256": "04e2adaecf3da9913763be7f9189dc9aff3824fa34a1321c8942650d8e1c4e4b"
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/temporal_pooling.h",
+      "bytes": 9964,
+      "sha256": "1539d0e6684c39c8ae5fc6d461a0c7bf3ab836b8643d9deb97a2a7d2d0006785"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/tokenization.h",
-      "bytes": 4491,
-      "sha256": "f8348b3b06a67f853f4cc587a82aa5e6e1611114dd7df0b829e059e025b102b5"
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/tokenization.h",
+      "bytes": 4507,
+      "sha256": "fe84813453ba4a91029dbce5ccc4e6502a8276ae56561d3ffb0ecec45621dced"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/types.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/types.h",
       "bytes": 5714,
-      "sha256": "705053b8077771b9c918b20a2920d96c8f075a9e6895d4d1e628f997e87804c1"
+      "sha256": "53a5021faf5b82d44293bdd7a8b80b300922b3736f2ce36161267b681a8d35d2"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/visible_difference.h",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v14/visible_difference.h",
       "bytes": 4818,
-      "sha256": "9585b316269a1078f05e044fb5954b8448702e20b7897e26d06719789f3391b7"
+      "sha256": "4dcad790141cd30f898810a5b5c9decf0c0561836895ee92f6e0497a99064c6a"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/versions/v13.h",
-      "bytes": 36008,
-      "sha256": "906a9cc636fe28a893528fc09c6035ef1a2811291439caaf5005a7e5b1be7020"
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/include/embedding/encoders/causal_patch_bottleneck_mae/versions/v14.h",
+      "bytes": 36131,
+      "sha256": "551c08d90a816b9711639d2b22b0d0736ab240070665a8cc3e68f884dce307e8"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/tests/v13_temporal_pooling_test.cpp",
-      "bytes": 34336,
-      "sha256": "8e7d68207d815c043b824bd46fdcc5a822d8c39dee9aa95f84b83f716bd4385a"
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/tests/v14_temporal_pooling_test.cpp",
+      "bytes": 36611,
+      "sha256": "94a46f417465e691a47b303609777ae41a1348957fcd98cbf9eb0c5be2a025b1"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/tests/v13_test.cpp",
-      "bytes": 66296,
-      "sha256": "41b95ff3767e3808c2fd61e079f9d5101e599e3bdd81d2eaf8a9977564aeaf1a"
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/tests/v14_test.cpp",
+      "bytes": 70666,
+      "sha256": "0c78c7579e173a91a5476c3b40cd11f1eb53649cb7b14c084c1b36959704c5cb"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13/tests/v13_variance_gradient_test.cpp",
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14/tests/v14_variance_gradient_test.cpp",
       "bytes": 16472,
-      "sha256": "6c60cc4d238d5839f66a59b09cc7013b614d5a52ca6ccaddc7348a0417294ed3"
+      "sha256": "9482ea483517a343667e1c428bb9342151da330018610165044d8e2dacf97453"
     },
     {
-      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v13.h",
-      "bytes": 36008,
-      "sha256": "906a9cc636fe28a893528fc09c6035ef1a2811291439caaf5005a7e5b1be7020"
+      "path": "code/encoders/causal_patch_bottleneck_mae/versions/v14.h",
+      "bytes": 36131,
+      "sha256": "551c08d90a816b9711639d2b22b0d0736ab240070665a8cc3e68f884dce307e8"
     },
     {
-      "path": "code/research/causal_fresh_v13/tests/v13_separation_test.cpp",
+      "path": "code/research/causal_fresh_v14/tests/v14_separation_test.cpp",
       "bytes": 16472,
-      "sha256": "6c60cc4d238d5839f66a59b09cc7013b614d5a52ca6ccaddc7348a0417294ed3"
+      "sha256": "9482ea483517a343667e1c428bb9342151da330018610165044d8e2dacf97453"
     },
     {
-      "path": "code/research/causal_fresh_v13/tests/v13_temporal_pooling_test.cpp",
-      "bytes": 34336,
-      "sha256": "8e7d68207d815c043b824bd46fdcc5a822d8c39dee9aa95f84b83f716bd4385a"
+      "path": "code/research/causal_fresh_v14/tests/v14_temporal_pooling_test.cpp",
+      "bytes": 36611,
+      "sha256": "94a46f417465e691a47b303609777ae41a1348957fcd98cbf9eb0c5be2a025b1"
     },
     {
-      "path": "code/research/causal_fresh_v13/tests/v13_test.cpp",
-      "bytes": 74604,
-      "sha256": "dfd464196603e4b642315d2871f1e4f796f9fe8802a6a9e170e55e059c0bd842"
+      "path": "code/research/causal_fresh_v14/tests/v14_test.cpp",
+      "bytes": 79047,
+      "sha256": "25453ad30f77b6043c652e42c278b8e53f7176e4f7ada162bf40297d7622e0f2"
     },
     {
-      "path": "doc/causal_fresh_v13/CPB-v13.descriptor-draft.json",
-      "bytes": 5462,
-      "sha256": "4869d2e8e77a0fca9a7be641d36097e481d5d4362e56103b3f35144d2643bf69"
+      "path": "doc/causal_fresh_v14/CPB-v14.descriptor-draft.json",
+      "bytes": 6333,
+      "sha256": "04b1016ffb6fb1c9803a7eea4077f87916c5d08a2e2ae01094c180f010e3d14c"
     }
   ],
   "self_digest_excluded": true,
   "doc_provenance_not_bound_to_avoid_hash_cycle": true,
-  "code_changes_beyond_mechanical_retag_and_subgroup_label": [
-    "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_checkpoint.h",
-    "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/location_scale_decoder_config.h",
-    "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/model.h",
-    "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/temporal_pooling.h",
-    "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/detail/v13/tokenization.h",
-    "code/encoders/causal_patch_bottleneck_mae/versions/v13/include/embedding/encoders/causal_patch_bottleneck_mae/versions/v13.h",
-    "code/encoders/causal_patch_bottleneck_mae/versions/v13/tests/v13_temporal_pooling_test.cpp",
-    "code/encoders/causal_patch_bottleneck_mae/versions/v13/tests/v13_test.cpp",
-    "code/encoders/causal_patch_bottleneck_mae/versions/v13.h",
-    "code/research/causal_fresh_v13/tests/v13_temporal_pooling_test.cpp",
-    "code/research/causal_fresh_v13/tests/v13_test.cpp"
-  ],
-  "scientific_change": "Existing last4 export rows now read actual F32 sqrt(raw_attention_centered_variance+2^-10)-1/32; first4 parent mean expression unchanged",
-  "support_safety_change": "Mask both hidden and broadcast center with present&&valid BEFORE subtract/square. Absent-local rows AND padded tokens inside present bins never evaluate unsupported squared offsets; present valid-token arithmetic unchanged;rawroot1/32/servedzeroafterbias unchanged.",
+  "scientific_change": "Fixed original-position nested trailing4/8/12/16 local supports; original edge16, half-global/two-sum/live attention variance and regularizedsqrt remain",
+  "instrumentation": "Two existing exactsameforward localsoftmax captures now[R,4,T], other58 fields/shapes unchanged; no newforward",
+  "typed_change": "GeometryLong[4]=[4,16,32,8], trailingLong[4]=[4,8,12,16], newpooling/layout strings, rejectoldpartitionevenasextra atall5nodes",
   "no_registered_parameter_buffer_RNG_constructor_draw_change": true,
-  "raw_root_absent_offset_exception": "Raw regularized-root trace is UNMASKED1/32 at absent/allpadding; raw variance0/dispersion0 and whole8 served slice0 AFTER bias",
   "proof_contract": {
     "scope": "Prospective source-derived synthetic fixture contract, no execution",
-    "pooling_policy": "original-position-four-bin-half-mixture-mean4-regularized-stddev4-v1",
+    "pooling_policy": "original-position-nested-trailing-local-global-half-mixture-mean4-regularized-stddev4-v1",
     "moment_policy": "componentwise-centered-variance-two-sum-mean-live-attention-regularized-sqrt-v1",
-    "export_layout": "per-original-bin-eight-rows:first4-mean;last4-zero-based-regularized-stddev-v1",
+    "export_layout": "per-trailing-window-eight-rows:first4-mean;last4-zero-based-regularized-stddev-v1",
     "dispersion_transform_policy": "sqrt-variance-plus-tau-minus-sqrt-tau-F32-add-sqrt-subtract-v1",
     "dispersion_regularizer": 0.0009765625,
     "root_offset": 0.03125,
@@ -940,18 +1336,24 @@
       "supported_nonfinite_and_variance_overflow_refused",
       "absent_local_huge_singleton_sanitized",
       "captured_F32_residual_correction",
-      "raw_root_absent_offset_exception"
+      "raw_root_absent_offset_exception",
+      "nested_trailing_supports_fixed_edge16",
+      "per_window_local_weights_captured",
+      "longest_local_equals_global_two_sum",
+      "packed_padding_membership_invariance"
     ],
-    "direct_pool_kernel_calls": 51,
+    "direct_pool_kernel_calls": 53,
     "direct_calls_decomposition": {
       "base": 1,
+      "position15_singleton_all_windows": 1,
+      "packed_padding_invariance": 1,
       "common_gauge": 1,
-      "between_bin_Hadamard": 3,
+      "fixed_quarter_Hadamard": 3,
       "constant": 1,
       "equal_mean_spreads": 2,
       "F32_finite_difference_evaluations": 36,
       "zero_tiny_large": 3,
-      "finite_huge_singleton": 1,
+      "position0_finite_huge_singleton": 1,
       "supported_numeric_refusals": 3
     },
     "F64_finite_difference_coordinates": 18,
@@ -971,23 +1373,10 @@
     "significant_derivative_threshold": 0.01,
     "minimum_significant_FD_coordinates": 3,
     "transform_derivative_upper_bound": 16,
-    "typed_negative_cases_research": 636,
-    "typed_negative_cases_family": 491,
-    "typed_negative_research_formula": "33+10*(21+37)+19+4=636",
-    "typed_negative_family_formula": "33+10*(6+38)+14+4=491",
-    "new_same_forward_trace_fields": [
-      "pool_bin_regularized_root",
-      "pool_bin_dispersion",
-      "contextual_pool_bin_regularized_root",
-      "contextual_pool_bin_dispersion"
-    ],
-    "new_actual_TRAIN_archive_fields": [
-      "temporal_pool_bin_regularized_root",
-      "temporal_pool_bin_dispersion",
-      "temporal_contextual_pool_bin_regularized_root",
-      "temporal_contextual_pool_bin_dispersion"
-    ],
-    "trace_shape": "Float32[R,4,64]",
+    "typed_negative_cases_research": 821,
+    "typed_negative_cases_family": 676,
+    "typed_negative_research_formula": "33+10*(21+55)+19+4+5=821",
+    "typed_negative_family_formula": "33+10*(6+56)+14+4+5=676",
     "typed_nodes": [
       "inference_root",
       "inference_payload",
@@ -1008,53 +1397,75 @@
     "primary_subgroup_key": "temporal_pool_regularized_stddev_bin_{0..3}",
     "raw_variance_retained": true,
     "no_additional_capture_forward": true,
-    "full_encoder_or_global_norm_reconstruction_claimed": false
+    "full_encoder_or_global_norm_reconstruction_claimed": false,
+    "temporal_pooling_geometry": [
+      4,
+      16,
+      32,
+      8
+    ],
+    "temporal_pooling_trailing_lengths": [
+      4,
+      8,
+      12,
+      16
+    ],
+    "shape_changed_same_forward_fields": [
+      "pool_local_weights",
+      "contextual_pool_local_weights"
+    ],
+    "shape_changed_actual_TRAIN_fields": [
+      "temporal_pool_local_weights",
+      "temporal_contextual_pool_local_weights"
+    ],
+    "local_weight_old_shape": [
+      "R",
+      "T"
+    ],
+    "local_weight_new_shape": [
+      "R",
+      4,
+      "T"
+    ],
+    "actual_TRAIN_archive_fields": 60,
+    "actual_TRAIN_temporal_fields": 25,
+    "legacy_extra_key_refused": "temporal_pooling_partition_v1 even beside correct new metadata at all5nodes",
+    "typed_negative_full_archive_files_research": 817,
+    "typed_negative_full_archive_files_family": 672,
+    "typed_negative_direct_loader_requests": 4,
+    "typed_negative_compact_archive_files": 0,
+    "typed_negative_restored_target_controls": 0,
+    "typed_negative_legacy_conflict_files": 5,
+    "full_fixture_fallback": "Optional compact fixtures not implemented; all817/672 deliberately-invalid files preserve full payloads. Four direct requests use existing real archives. Real checkpoints, positive reload/resume, late state/optimizer cases and all causal/learning proofs retained."
   },
-  "primary_oracle_copy": "Family primary includes full research-owned token_oracle/same_trace body plus V13 checks; no forwarding",
-  "manual_reference_scope": "Independent F64 scalar full graph/FD; captured-F32 mode consumes actual values/roots but no observed gradients, retaining residual and separate two-sum center coefficient",
-  "parameter_capacity": {
-    "learned_tensors": 76,
-    "learned_values": 294752,
-    "fixed_values": 3888,
-    "total": 298640,
-    "native": 40,
-    "runtime_parity_proved": false
-  },
+  "public_headers_full_byte_identical": true,
+  "family_research_temporal_fixture_full_byte_identical": true,
+  "model_parameter_native_data_shapes_unchanged": true,
+  "fixed_quarter_position_diagnostics": "Original four-position-quarter centered contrasts and R16 Hadamard basis remain; not the nested supports",
   "historical_outputs_unchanged": true,
-  "baseline": "CPB-v3.market-01 sole DEV",
+  "baseline": "CPB-v3.market-01",
   "canonical_descriptor_created": false,
   "measured_results": false,
   "metadata_preparation_refusals": [
-    "Initial in-memory provenance ownership selection included all11 training-support rows instead of3 tests; ownership55 guard refused BEFORE any provenance write, corrected to bounded owned paths. No scientific/source execution or mutation."
+    "PowerShell brace-list syntax in a read-only rg command was refused before any file read/write. Reissued explicit paths.",
+    "Two quoting-heavy metadata editing command strings were refused before their dependent writes; explicit apply_patch completed intended source edits. No project/helper/scientific execution.",
+    "apply_patch refused delete+add of the same README path; a direct UTF8 replacement then edited only the owned README."
   ],
   "actions": {
-    "AST": 0,
+    "source_edit": true,
     "helpers": 0,
+    "AST": 0,
+    "imports": 0,
+    "compiles": 0,
+    "tests": 0,
     "Docker": 0,
-    "build": 0,
-    "test": 0,
-    "model": 0,
-    "training_updates": 0,
+    "model_calls": 0,
     "head_fits": 0,
-    "quality": 0,
-    "DEV": 0,
-    "Git": 0,
-    "deletion": 0
+    "training_updates": 0,
+    "PT_CSV_reads": 0,
+    "DEV_changes": 0,
+    "Git_operations": 0
   },
   "blockers": [],
-  "next": "Independent static source review, actual source closure/card freeze and separate execution admissions; no scientific execution admitted",
-  "padded_token_support_repair_001": {
-    "kind": "cpb_v13_padded_token_support_source_repair_v1",
-    "before_manifest": {
-      "path": "output/engineering/causal-fresh-v13-source-preparation/attempt-001/padded-token-support-repair-001/before-manifest.json",
-      "bytes": 4260,
-      "sha256": "0c506e024ffcfcff8bedcb4ff1a143dcd798175e343a214f460285846f9706a8"
-    },
-    "root_source_only_authorized": true,
-    "source_change": "Mask BOTH hidden and broadcast center with active=present&&valid BEFORE subtraction/square, eliminating invalid-token0*Inf in a present bin while keeping valid-token attention/two-sum/rawvariance arithmetic order unchanged.",
-    "fixture_change": "Replace existing one huge singleton call with T2 originalpositions[15,-1], valid hidden1e20 and unsupported NaN hidden/score; both owned temporal copies identical.",
-    "unchanged": "51direct/18F64/18F32/4isolated;all9flags/tolerances/constants/typed636/parameters/RNG/objective/training/evaluation;rawroot unmasked1/32 and served whole8zeroafterbias",
-    "scientific_execution": 0,
-    "extra_forward_or_autograd_calls": 0
-  }
+  "next": "Independent source review before any actual card/freeze/helper/AST/build/test or scientific admission"
 }

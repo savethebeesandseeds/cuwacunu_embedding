@@ -29,8 +29,6 @@ them. This preserves the original syntax rather than introducing another DSL.
 
 The wrapper rejects unterminated block comments, duplicate blocks and empty
 integer-list items and avoids the legacy parser's temporary `single_block()`
-storage. It contains no Hero service,
-runtime policy, graph, save operation, or backup management. The module and its
-tests can be copied unchanged to `cuwacunu_embedding`.
+storage. The module is limited to reusable settings parsing and validation.
 
 See [IMPORT.md](IMPORT.md) for parser provenance.

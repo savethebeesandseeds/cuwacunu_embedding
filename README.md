@@ -1,12 +1,12 @@
-Current causal research: **CPB-v3.market-01 remains the clean from-scratch baseline and sole dev encoder.** The new [CPB-v4.market-01 results](doc/CAUSAL_FRESH_V4_RESULTS.md) pass19/22 conditions: stronger trend/relation and hard timing, with linear volatility/activity and TRAIN MAE regressions. See [review and next direction](doc/CAUSAL_FRESH_V4_REVIEW.md), [live versions](code/encoders/causal_patch_bottleneck_mae/versions/current.json) and [current status](doc/CURRENT_STATUS.md). V1/v2 remain pretrained historical references without oracle floors. V3 publication was completed earlier; this new research remains local with weights ignored. Historical selections below are milestone records.
+Current causal research: **CPB-v3.market-01 remains the clean from-scratch baseline.** The new [CPB-v4.market-01 results](doc/CAUSAL_FRESH_V4_RESULTS.md) pass19/22 conditions: stronger trend/relation and hard timing, with linear volatility/activity and TRAIN MAE regressions. See [review and next direction](doc/CAUSAL_FRESH_V4_REVIEW.md), [live versions](code/encoders/causal_patch_bottleneck_mae/versions/current.json) and [current status](doc/CURRENT_STATUS.md). V1/v2 remain pretrained historical references without oracle floors. V3 publication was completed earlier; this new research remains local with weights ignored. Historical selections below are milestone records.
 
 # cuwacunu_embedding
 
 Standalone C++20/LibTorch representation models and independent evaluation
 research. The retained MTF-JEPA-MAE-VICReg encoder and the RPB-MAE design family
 share tensor/archive utilities, core settings and frozen-feature evaluation.
-Market ingestion and application integration live in the sibling `cuwacunu`
-repository.
+Research includes synthetic signals and historical market signals. Reusable
+encoder contracts and measured experiments are documented within this repository.
 
 Start with [current status](doc/CURRENT_STATUS.md) and the
 [documentation index](doc/README.md). They distinguish implemented APIs,
@@ -16,7 +16,7 @@ output, architecture and training in plain words.
 
 | Track | What is available | Guide |
 | --- | --- | --- |
-| RPB-v22.alt-01 | Content-only relation API selected as primary in `cuwacunu`; both completed development stages pass | [Encoder guide](doc/RPB_V22_ENCODER_GUIDE.md) and [measured report](doc/CONFIGURABLE_CONTENT_RELATION_V1.md) |
+| RPB-v22.alt-01 | Content-only relation API; both completed development stages pass | [Encoder guide](doc/RPB_V22_ENCODER_GUIDE.md) and [measured report](doc/CONFIGURABLE_CONTENT_RELATION_V1.md) |
 | RPB-v21.alt-01 | Stopped candidate: learned timing improves, but extra-deletion protection fails | [Preserved report](doc/CONFIGURABLE_LEARNED_RELATION_V1.md) |
 | RPB-v20 | Preserved configurable spectral API and three-profile TEMPO-5 capacity record | [API](code/encoders/raw_patch_bottleneck_mae/CONFIGURABLE_SPECTRAL.md) and [capacity report](doc/CONFIGURABLE_CAPACITY_V1.md) |
 | RPB-v19.alt-01 | Preserved confirmation of unchanged v19 on fresh synthetic timing and component-balance sources | [Confirmation](doc/SPECTRAL_CONFIRMATION_V1.md) |
@@ -39,8 +39,7 @@ runs them. RPB-v20 is a C++ API; it is not selected by the historical
 Its recorded config/model/checkpoint/integrity checks passed in the managed
 container. The preserved capacity study retains compact RPB-v20.alt-01
 (W64/D32); larger profiles show no consistent final classification benefit at
-its fixed budget. Original v20 measurements and checkpoints remain preserved;
-its sibling application settings are retained as `config/encoder_v20.conf`.
+its fixed budget. Original v20 measurements, settings and checkpoints remain preserved.
 Historical standalone CLI defaults stay fixed.
 
 The latest completed RPB-v22 content-only relation experiment passes its two-cohort
@@ -51,20 +50,9 @@ from the relation projection. See the [content module](code/encoders/raw_patch_b
 and [continuation](doc/CONTINUATION_2026-10-13_AFTER_CONTENT_RELATION.md).
 The `rpb-v22` and `test-rpb-v22` targets build/run its separate artificial CUDA
 engineering check, rather than selecting it through the historical CLI.
-The user has selected its RPB-v22 architecture as the primary encoder in
-sibling `cuwacunu`: the public application API and `config/encoder.conf` now
-select v22. V20 remains an explicit reference, and `config/encoder_v22.conf`
-remains available as a version-specific settings file. See the sibling
-[primary selection record](../cuwacunu_dev/doc/PRIMARY_ENCODER_SELECTION.md).
-The focused primary-entry GPU check passed, covering initialized inference,
-typed reload, an actual CUDA update and preserved v20/config integrity checks.
-The earlier optional API sync check also passed. No trained market checkpoint
-is selected.
-This is an application choice; encoder architecture and saved quality remain
-unchanged, with no new TEST or confirmation evidence.
 These results use known development data; unchanged-v22 fresh synthetic
-confirmation is proposed, and market quality remains unmeasured. The stopped
-RPB-v21 recipe and all of its failed-stage evidence remain preserved.
+confirmation is proposed, and market quality remains unmeasured in that study.
+The stopped RPB-v21 recipe and all of its failed-stage evidence remain preserved.
 
 RPB-v19's confirmed scores apply to its declared synthetic datasets and fixed
 geometry. They do not measure the separate v20 profiles. Market quality remains
@@ -99,8 +87,7 @@ reused, including stopped ones; a conflicting container is preserved and rejecte
 
 `setup.sh` installs the pinned Debian and NVIDIA dependency versions in
 `dependencies.lock` with `--no-install-recommends` and checks LibTorch dependencies.
-Its installation steps are adapted from `cuwacunu_torch/setup.sh`: C++ build/debug
-tools (GCC, GDB, Valgrind, ccache, mold, clang-format), Git/cURL/shell tools,
+Its installation steps provide C++ build/debug tools (GCC, GDB, Valgrind, ccache, mold, clang-format), Git/cURL/shell tools,
 CUDA toolkit 12.4.1 and cuDNN 9 from NVIDIA's Debian 12 repository.
 It does not build, train, or manage containers. No Dockerfile is used.
 `container.ps1 status`, `stop`, and `shell` provide the other lifecycle operations.
@@ -416,9 +403,6 @@ agree within `rtol=1e-5, atol=1e-6` (maximum absolute difference `2.4e-7`).
 See the [validation record](output/runs/source-ownership/validation.json) for
 sessions, checks and retained artifacts. This is source-refactor evidence, not
 representation-quality evidence.
-
-The original `cuwacunu_torch` tracked tree remains clean, and its representation
-header matches the unmodified extraction reference.
 
 ## Representation evaluation
 

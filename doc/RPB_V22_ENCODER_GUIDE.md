@@ -13,15 +13,6 @@ representation combines 20 learned coordinates with 12 fixed-formula frequency
 relationship coordinates. It is a hybrid representation, rather than a wholly
 learned embedding.
 
-The user has selected this RPB-v22 architecture as the primary encoder in
-sibling `cuwacunu`. Its public application API and `config/encoder.conf` select
-v22; v20 remains an explicit reference through `config/encoder_v20.conf`.
-See the [primary selection record](../../cuwacunu_dev/doc/PRIMARY_ENCODER_SELECTION.md).
-This changes application selection, not the architecture or saved quality
-experiment. It does not choose one synthetic trained checkpoint for market use.
-The focused primary-entry GPU check passed, including initialized inference,
-typed reload, an actual CUDA update and preserved v20/config integrity checks.
-
 ## Saved results and their scope
 
 No new experiment. The values below reuse the
@@ -102,16 +93,10 @@ float32 values. Channel IDs are int64. Direct `model.encode(input)` calls requir
 normalized float32; they do not automatically apply the checkpoint's scaler.
 Endpoints are optional for direct model calls but required by workflow archives.
 
-The quality experiments use synthetic TEMPO-5 features, not actual market
-klines. In the sibling `cuwacunu` market adapter, F9 has this exact order:
-open, high, low, close, volume, quote volume, trade count, taker-buy base volume
-and taker-buy quote volume. These are raw loader values before the encoder's
-TRAIN-fitted standardization. Timestamps remain separate metadata.
-
-The loader's row mask `[B,C,H]` expands over features. A missing candle marks
-all its features absent; a nonfinite individual feature marks only that value
-absent. Future values, masks and timestamps from the loader do not enter this
-past-only adapter. Market loading remains outside `cuwacunu_embedding`.
+The cited quality experiments use synthetic TEMPO-5 features. Market experiments
+declare their own numerical feature order and mask semantics in their dataset
+card. Timestamps remain separate metadata; preprocessing must use only information
+available at the declared window endpoint.
 
 ## What is added to the values
 
@@ -170,7 +155,7 @@ distinguishes its fields from the separate decoder output:
 
 The inherited per-channel summaries and ordinary `z_global` do not include the
 final learned/fixed relation composition. Extract the complete output through
-`compact_reconstruction_export(output, config)`, or the sibling public API's
+`compact_reconstruction_export(output, config)`, or the public API's
 `native_embedding(output, config)`. Entirely absent samples return a finite zero
 native vector and false validity. Validity records support, not certainty or
 guaranteed task information.
@@ -371,21 +356,10 @@ and [typed API guide](../code/encoders/raw_patch_bottleneck_mae/CONTENT_ORDERED_
 The inference checkpoint binds the scaler, geometry, semantic IDs, architecture
 layout and completed update count; it is not an optimizer/RNG resume checkpoint.
 
-`cuwacunu_embedding` owns reusable encoders and evaluation research. The sibling
-`cuwacunu` owns market loading and its past-only adapter. Its v22 API sync has
-passed a focused artificial CUDA integration check. The user has now chosen
-v22 as the primary application encoder. `config/encoder.conf` selects v22;
-the original v20 settings are preserved as `config/encoder_v20.conf`, and
-the explicit `config/encoder_v22.conf` remains available. The focused primary-entry
-GPU check passed: full W64/H128 mmap initialized inference and typed reload,
-H129 with one actual CUDA update, and five preserved v20/config/integrity checks.
-All 21 portable file pairs remain byte-exact. The earlier sync check is a separate
-completed witness. These engineering checks ran no quality evaluation,
-classifier fit or market training.
-See the sibling [primary selection record](../../cuwacunu_dev/doc/PRIMARY_ENCODER_SELECTION.md)
-and [sync manifest](../../cuwacunu_dev/doc/CONTENT_ENCODER_SYNC.json).
-No trained market checkpoint has been selected. Standalone encoder APIs, saved
-quality evidence and historical CLI defaults retain their existing semantics.
+`cuwacunu_embedding` documents reusable encoders and their evaluation research.
+Consumers supply values, masks, semantic IDs and timestamp metadata through the
+declared API. Standalone encoder APIs, saved quality evidence and historical CLI
+defaults retain their existing semantics.
 
 The next quality direction is an unchanged-v22 fresh synthetic confirmation,
 specified prospectively before allocating data. It has not been implemented

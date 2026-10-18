@@ -1,3 +1,14 @@
+# Paused research and migration handoff — 18 October 2026
+
+Start with [the migration handoff](HANDOFF_2026-10-18_V14_PAUSED_MIGRATION.md)
+and [current status](CURRENT_STATUS.md). The latest measured candidate is
+CPB-v14.market-01 (full trust, 3/22 protected conditions); CPB-v3.market-01 remains
+the clean baseline. Research is paused. The handoff identifies the saved results,
+ignored artifacts to copy, unfinished metadata work and steps requiring a resume.
+The dated index below is retained as historical context.
+
+---
+
 # Documentation index
 
 Start with [CURRENT_STATUS.md](CURRENT_STATUS.md), reviewed on 13 October 2026.
@@ -60,8 +71,8 @@ H256 encoder quality and market quality remain unmeasured.
 
 [CONFIGURABLE_BRANCH_V1.md](CONFIGURABLE_BRANCH_V1.md) and its
 [saved record](results/configurable_branch_v1.json) separate the usefulness of
-fixed12 and learned20 while reusing complete32 results. The encoder remains
-unchanged and all15 reusable file pairs match the `cuwacunu` integration.
+fixed12 and learned20 while reusing complete32 results. The encoder remains unchanged; saved source-parity checks cover all15 reusable
+file pairs.
 Use the [historical coordinate continuation](CONTINUATION_2026-10-12_AFTER_CONFIGURABLE_BRANCH.md)
 for the focused learned-path investigation; retain the capacity continuation as
 the preceding milestone.
@@ -95,10 +106,10 @@ masked-autoencoder and VICReg papers as methodological background; their image
 benchmarks are not measurements for this encoder.
 See [vendor provenance](vendor/PROVENANCE.md).
 
-From this `doc/` directory, reuse the existing paper environment:
+From this `doc/` directory, use the configured paper builder with its existing
+LaTeX container running:
 
 ```powershell
-& C:\Work\documents\cv.ps1 start
 .\build.ps1 -Render
 ```
 

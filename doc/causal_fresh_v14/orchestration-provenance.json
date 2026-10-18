@@ -1,7 +1,7 @@
 {
   "kind": "causal_fresh_v14_complete_owned_orchestration_provenance_v1",
-  "status": "SOURCE_ONLY_REVIEW_READY_NO_INVOCATION",
-  "prepared_utc": "2026-10-18T06:06:45.8053845Z",
+  "status": "SOURCE_ONLY_REVIEW_READY_AFTER_METADATA_INTEGER_GUARD_REPAIR",
+  "prepared_utc": "2026-10-18T07:46:15.4185771Z",
   "source_admission": {
     "path": "doc/causal_fresh_v14/design-source-plan.ADMITTED-001.json",
     "bytes": 47424,
@@ -250,8 +250,8 @@
       },
       "owned": {
         "path": "doc/causal_fresh_v14/prepare-draft-card.ps1",
-        "bytes": 50925,
-        "sha256": "56ea1b3747ffc1f9982c410a5f38d31aa77ff61e6fc0cf9ef8f506973a303028"
+        "bytes": 51110,
+        "sha256": "555763b639e163b461a4a5b4d6c0ae972343a23e60d682ad87fd24812f7a5823"
       }
     },
     {
@@ -267,8 +267,8 @@
       },
       "owned": {
         "path": "doc/causal_fresh_v14/freeze-card.ps1",
-        "bytes": 36800,
-        "sha256": "89d76c7abc0301dbfcb78002502a29ce9efee1fa76a7244bb05af7bea63364d4"
+        "bytes": 36910,
+        "sha256": "ddb233e73bdfb9911928db3c52544b79397d893d026b260935c144356246938b"
       }
     },
     {
@@ -284,8 +284,8 @@
       },
       "owned": {
         "path": "doc/causal_fresh_v14/preflight.ps1",
-        "bytes": 34919,
-        "sha256": "6fc822de507bdc1b04f7f3c067a05ba2eeed9f5dc7782c957c38ec3567c71606"
+        "bytes": 35029,
+        "sha256": "43cab85a4d4455302b4c0b25127829c7f3a0390234c9dd1de1e95aca5e6d0ae1"
       }
     },
     {
@@ -760,7 +760,8 @@
   "preparation_observations": [
     "Host source-authoring parser refusals occurred before their commands executed;corrected quoting/brace usage without helper or scientific effects.",
     "Bounded source-text self-review corrected copied version/config labels,actualcached v13 audit gate,PSCustomObject property-presence check and guard call order before source freeze;not a runtime failure.",
-    "All V13 parents/history/main evidence remain untouched;only assigned12 sourcecopies and additive readiness are authored."
+    "All V13 parents/history/main evidence remain untouched;only assigned12 sourcecopies and additive readiness are authored.",
+    "Root firstmetadata-onlyprepare refusedvalidInt64JSON beforeanyoutput. Newsourcegeneration repairs8numeric-type predicates in3helpers only;complete4beforefiles preserved;no helperorprojectexecutionduringrepair."
   ],
   "prohibited_invocations": {
     "helpers": 0,
@@ -781,5 +782,129 @@
     "Independent review of actualnew family/research/auditor/evaluation/workflow source and combinedclosure before any metadatahelper invocation.",
     "Actual separatelyderived/reviewed/applied newV13-retention3pins and completeactual family descriptorDRAFT,then falseprospectiveinputplan and independent/root review.",
     "Separate prospectivecard/AST/build/CUDA/training/quality authorities;no execution authorized by this source receipt."
-  ]
+  ],
+  "narrow_integer_guard_revision": {
+    "kind": "cpb_v14_JSON_integer_type_guard_repair_v1",
+    "before_manifest": {
+      "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/orchestration/source-revision-001/before-manifest.json",
+      "bytes": 3141,
+      "sha256": "ff8388c20bef8b4a08aa0c6ef8ec167fabf8c0b288410372eb8e844f4165a272"
+    },
+    "original_generation_aliases": [
+      {
+        "original": {
+          "path": "doc/causal_fresh_v14/prepare-draft-card.ps1",
+          "bytes": 50925,
+          "sha256": "56ea1b3747ffc1f9982c410a5f38d31aa77ff61e6fc0cf9ef8f506973a303028"
+        },
+        "preserved_copy": {
+          "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/orchestration/source-revision-001/before/prepare-draft-card.ps1",
+          "bytes": 50925,
+          "sha256": "56ea1b3747ffc1f9982c410a5f38d31aa77ff61e6fc0cf9ef8f506973a303028"
+        }
+      },
+      {
+        "original": {
+          "path": "doc/causal_fresh_v14/freeze-card.ps1",
+          "bytes": 36800,
+          "sha256": "89d76c7abc0301dbfcb78002502a29ce9efee1fa76a7244bb05af7bea63364d4"
+        },
+        "preserved_copy": {
+          "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/orchestration/source-revision-001/before/freeze-card.ps1",
+          "bytes": 36800,
+          "sha256": "89d76c7abc0301dbfcb78002502a29ce9efee1fa76a7244bb05af7bea63364d4"
+        }
+      },
+      {
+        "original": {
+          "path": "doc/causal_fresh_v14/preflight.ps1",
+          "bytes": 34919,
+          "sha256": "6fc822de507bdc1b04f7f3c067a05ba2eeed9f5dc7782c957c38ec3567c71606"
+        },
+        "preserved_copy": {
+          "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/orchestration/source-revision-001/before/preflight.ps1",
+          "bytes": 34919,
+          "sha256": "6fc822de507bdc1b04f7f3c067a05ba2eeed9f5dc7782c957c38ec3567c71606"
+        }
+      },
+      {
+        "original": {
+          "path": "doc/causal_fresh_v14/orchestration-provenance.json",
+          "bytes": 34899,
+          "sha256": "ffaff21978856f3e21b2a6912798a1b663163703bb0906bc5349b868335c1b67"
+        },
+        "preserved_copy": {
+          "path": "output/engineering/causal-fresh-v14-source-preparation/attempt-001/orchestration/source-revision-001/before/orchestration-provenance.json",
+          "bytes": 34899,
+          "sha256": "ffaff21978856f3e21b2a6912798a1b663163703bb0906bc5349b868335c1b67"
+        }
+      }
+    ],
+    "failed_metadata_plan": {
+      "path": "doc/causal_fresh_v14/draft-input-plan-001.ADMITTED.json",
+      "bytes": 90300,
+      "sha256": "ff5511b1785fad94879fccc859fc7f6d65573d9e155836533e8c4211c9a4a516"
+    },
+    "root_observed_parser": "PowerShell7.6.5 ConvertFrom-Json -AsHashtable parsed validJSON7/11/821 asSystem.Int64",
+    "metadata_refusal": "Firstprepare invocation refusedatline61beforepreservation-before/card/parentcopyorDocker/science. Thisis a metadataadapter refusal,notexperimentfailure.",
+    "exact_source_substitutions": [
+      {
+        "path": "doc/causal_fresh_v14/prepare-draft-card.ps1",
+        "before": "$plan.static_build.binaries-isnot[int]",
+        "after": "($plan.static_build.binaries-isnot[int]-and$plan.static_build.binaries-isnot[long])",
+        "occurrences": 1
+      },
+      {
+        "path": "doc/causal_fresh_v14/prepare-draft-card.ps1",
+        "before": "$plan.static_build.translation_units-isnot[int]",
+        "after": "($plan.static_build.translation_units-isnot[int]-and$plan.static_build.translation_units-isnot[long])",
+        "occurrences": 1
+      },
+      {
+        "path": "doc/causal_fresh_v14/prepare-draft-card.ps1",
+        "before": "$proof[$key]-isnot[int]",
+        "after": "($proof[$key]-isnot[int]-and$proof[$key]-isnot[long])",
+        "occurrences": 1
+      },
+      {
+        "path": "doc/causal_fresh_v14/prepare-draft-card.ps1",
+        "before": "$plan.engineering_typed_negative_cases-isnot[int]",
+        "after": "($plan.engineering_typed_negative_cases-isnot[int]-and$plan.engineering_typed_negative_cases-isnot[long])",
+        "occurrences": 1
+      },
+      {
+        "path": "doc/causal_fresh_v14/freeze-card.ps1",
+        "before": "$card.engineering_typed_negative_cases-is[int]",
+        "after": "($card.engineering_typed_negative_cases-is[int]-or$card.engineering_typed_negative_cases-is[long])",
+        "occurrences": 1
+      },
+      {
+        "path": "doc/causal_fresh_v14/freeze-card.ps1",
+        "before": "$fixtureContract.required_proof_fields[$key]-is[int]",
+        "after": "($fixtureContract.required_proof_fields[$key]-is[int]-or$fixtureContract.required_proof_fields[$key]-is[long])",
+        "occurrences": 1
+      },
+      {
+        "path": "doc/causal_fresh_v14/preflight.ps1",
+        "before": "$card.engineering_typed_negative_cases-is[int]",
+        "after": "($card.engineering_typed_negative_cases-is[int]-or$card.engineering_typed_negative_cases-is[long])",
+        "occurrences": 1
+      },
+      {
+        "path": "doc/causal_fresh_v14/preflight.ps1",
+        "before": "$fixtureContract.required_proof_fields[$key]-is[int]",
+        "after": "($fixtureContract.required_proof_fields[$key]-is[int]-or$fixtureContract.required_proof_fields[$key]-is[long])",
+        "occurrences": 1
+      }
+    ],
+    "accepted": "System.Int32 OR System.Int64 only",
+    "rejected": "Boolean,String,Double andallother types;exactpositive/count comparisons unchanged",
+    "existing_latestCount_Int32_or_Int64_predicates_unchanged": true,
+    "scientific_sources_values_flags_tolerances_unchanged": true,
+    "source_author_helper_invocations": 0,
+    "root_prior_metadata_prepare_attempts": 1,
+    "root_successful_card_generations": 0,
+    "AST_Docker_build_model_head_update_calls": 0,
+    "old_readiness001_false001_admitted001_and_rootclosures_remain_immutable": true
+  }
 }

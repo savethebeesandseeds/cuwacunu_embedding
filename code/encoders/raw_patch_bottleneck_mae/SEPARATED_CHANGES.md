@@ -58,15 +58,13 @@ additional branch training, while parent exposure is declared in the recipe.
 Build/check in the managed container:
 
 ```bash
-bash code/scripts/task.sh market-study -j2 test-v24
-bash code/scripts/run-market-separate-changes.sh
+bash code/scripts/task.sh rpb-v24 -j2 test-rpb-v24
 ```
 
-The [prospective card](../../../../cuwacunu_dev/doc/MARKET_SEPARATE_CHANGE_CARD.md) fixes one
+The [recorded experiment](../../../doc/EMBEDDING_VERSIONS.md) fixes one
 initial/final MKT-HIST-2 experiment and unchanged evaluator. Wider native40
 means164/724 head parameters and different width-derived seeds compared with
 native32's132/596; both new views use the same D40 seeds. An initial control
 distinguishes architecture information from learned improvement. Keep data,
-targets and fixed-head evaluation outside the portable model. The six headers,
-settings and focused fixture are locally mirrored into cuwacunu_embedding;
-its separate check target is `test-rpb-v24`. A copy is not another test run.
+targets and fixed-head evaluation outside the portable model. The six headers, settings and focused fixture are available here;
+the check target is `test-rpb-v24`. A copy is not another test run.

@@ -1,8 +1,42 @@
+# Active research - V14 source preparation, 18 October 2026
+
+CPB-v3.market-01 remains the clean baseline. V13 is the
+latest measured reference:8/22 under its original strongest protocol, five new
+scoped records,100% coverage and full causal/fresh/CUDA/typed-resume trust.
+Preserve every earlier leader, source, checkpoint, result, review and failure.
+No overall winner, Git publication or deletion is declared.
+
+The saved TRAIN-only V11/V13 diagnosis and report are complete:73778 independent
+checks,zero mismatches and2035 documentary completion checks. TRAIN results do
+not establish a validation cause, dead route, clipping damage or a tau-tuning
+justification. The diagnosis reused saved DATA and audited old summaries, with
+no old encoder/head replay or training.
+
+CPB-v14.market-01 is separately selected for SOURCE PREPARATION ONLY. Starting
+from complete owned V13 SOURCE copies, replace disjoint local supports with
+nested trailing original-position supports [12,16),[8,16),[4,16),[0,16), anchored
+to the retained H128/P8 edge16 after cutoff crop/retention/left padding. Keep the
+actual half-local/half-global two-sum attention mean, regularized dispersion,
+empty-window semantics, native40, learned shapes/counts/draws, fresh TRAIN
+statistics,objective,2048/B8 budget and unchanged fixed heads. V13 supplies no
+trained weights or fitted statistics. Both temporal paths retain live full
+adjoints; two same-forward local-weight witnesses become exact[R,4,T].
+
+The prospective22 conditions preserve earlier leaders and tighten five floors
+to V13's new records. Actual new protocol review/application must precede card
+freeze; old866 remains historical ancestry. V14 has no measured performance.
+Source counts,typed refusals,causal/CUDA proofs and saved initial/final fixed-head
+quality require their own source review and subsequent execution admission.
+The V3 baseline and all historical evidence remain unchanged. Earlier scientific notes remain below; original text is preserved in the
+whole before-copy manifest.
+
+---
+
 # Latest measured research instance - CPB-v13.market-01, 18 October 2026
 
 V13 is a fully trusted measured candidate with 8/22 unchanged strongest conditions
-and 100% coverage, not an overall winner or application selection. V3 remains the
-clean baseline and sole DEV encoder. The research goal remains active. Preserve
+and 100% coverage, not an overall winner or reference selection. V3 remains the
+clean baseline. The research goal remains active. Preserve
 all earlier versions, models, checkpoints, results, failures and scoped leaders.
 
 Five new scoped records cover market activity/relation neural mean R2 and TEMPO-5
@@ -25,22 +59,21 @@ trust. Keep exact original producer bytes and every historical pairing contract.
 
 Close the exact V13 recipe. Next separately declare saved TRAIN-only V11/V13
 scales/gradients, native blocks, own saved readout contributions and reconstruction
-diagnosis. No V14 is selected; no refit/old replay, DEV replacement, Git
+diagnosis. No V14 is selected; no refit/old replay, Git
 publication or deletion is admitted. No new experiment for this note.
 
 Read [results](CAUSAL_FRESH_V13_RESULTS.md), [detail](CAUSAL_FRESH_V13_DETAIL.md),
 [review](CAUSAL_FRESH_V13_REVIEW.md),
 [final trust join](causal_fresh_v13/final-establishment.json) and
 [research ledger](clean_causal_encoder_research_ledger.json).
-Complete earlier version notes remain below byte-exactly.
+Earlier version notes remain below with the documentation scope edits; original bytes remain in the preserved snapshots.
 
 ---
 
 # Latest measured version — CPB-v12.market-01, 2026-10-17
 
 CPB-v12.market-01 is a fully trusted measured research candidate, not a new
-application selection. CPB-v3.market-01 remains the clean baseline and sole DEV
-encoder. V12 passes 3/22 strongest V3–V11 conditions with 100% coverage: three
+reference selection. CPB-v3.market-01 remains the clean baseline. V12 passes 3/22 strongest V3–V11 conditions with 100% coverage: three
 positivity conditions only; all 19 retention/reconstruction floors fail. It sets
 no new quality or reconstruction record. Preserve V11's five scoped leaders,
 all earlier leaders, original version semantics and every historical artifact.
@@ -74,7 +107,7 @@ Complete earlier version notes remain below.
 
 # Active clean causal encoder goal — V11 measured,17 October2026
 
-CPB-v3.market-01 remains the clean baseline and sole DEV encoder. The research
+CPB-v3.market-01 remains the clean baseline. The research
 goal remains active. CPB-v11.market-01 is a fully trusted measured candidate:
 8/22 frozen strongest-V3–V9 conditions pass, with100% coverage. The separate final
 evidence join passes; advancement, overall winner and winner selection are false.
@@ -121,8 +154,7 @@ protect all established V3–V11 gains. Then separately declare saved TRAIN-only
 V9/V11 diagnosis of moments, native blocks, saved readout contributions and
 reconstruction tradeoffs before selecting a mechanism. No old model/head replay
 or refit, held-out diagnostic tensors, PCA or tuning. No next encoder is selected.
-Keep the existing GPU cuwacunu container and preserve concurrent DEV Latent
-Roadmap work. No DEV replacement, Git commit/push, deletion or publication follows.
+Keep the existing GPU cuwacunu container and preserve concurrent research work. No Git commit/push, deletion or publication follows.
 
 No new experiment: this update joins and records already saved V11 measurements.
 Known chronological VALIDATION and designed TEMPO-5 evidence are not a fresh
@@ -130,13 +162,13 @@ future-period forecast. Three readout fits are head variation, not three encoder
 runs. Complexity4/5 and5/5 are ordinal recipe levels; native36/native40 head and
 capacity confounds remain explicit in the reports.
 
-Read [results](CAUSAL_FRESH_V11_RESULTS.md), [detail](CAUSAL_FRESH_V11_DETAIL.md), [review](CAUSAL_FRESH_V11_REVIEW.md), [final trust join](causal_fresh_v11/final-establishment.json) and [research ledger](clean_causal_encoder_research_ledger.json). The complete prior text remains below as historical context.
+Read [results](CAUSAL_FRESH_V11_RESULTS.md), [detail](CAUSAL_FRESH_V11_DETAIL.md), [review](CAUSAL_FRESH_V11_REVIEW.md), [final trust join](causal_fresh_v11/final-establishment.json) and [research ledger](clean_causal_encoder_research_ledger.json). Earlier scientific notes remain below as historical context.
 
 ---
 
 # Active clean causal encoder goal — V10 measured, 16 October 2026
 
-CPB-v3.market-01 remains the clean baseline and sole DEV encoder. The research
+CPB-v3.market-01 remains the clean baseline. The research
 goal remains active. CPB-v10.market-01 is a fully trusted measured candidate with
 3/22 strongest V3–V9 conditions passed and 100% coverage. The separate final trust
 join passes; advancement, overall winner and winner selection remain false.
@@ -172,14 +204,14 @@ See the [results](CAUSAL_FRESH_V10_RESULTS.md),
 [review](CAUSAL_FRESH_V10_REVIEW.md),
 [final trust join](causal_fresh_v10/final-establishment.json) and
 [clean research ledger](clean_causal_encoder_research_ledger.json).
-This front note records the current state; the complete prior text below is
+This front note records the current state; the earlier scientific notes below are
 retained as historical context.
 
 ---
 
 # Active clean causal encoder goal — V9 measured, 16 October 2026
 
-CPB-v3.market-01 remains the clean baseline and sole dev encoder. The research
+CPB-v3.market-01 remains the clean baseline. The research
 goal remains active. The separately declared CPB-v9.market-01 completes one fresh
 2048/B8 CUDA trajectory and passes6/22 strongest-V3–V8 conditions with100% coverage.
 Independent training/quality audits pass326469/13411 checks with zero mismatches;
@@ -226,15 +258,15 @@ rescue. Next is separately declared saved TRAIN-only V8/V9 diagnosis before any 
 selection; source preparation is not execution admission. Protect all earlier and
 new scoped gains before later quality. Use only existing managed GPU cuwacunu,
 exclusive frozen capsules and independent proofs/audits; no old encoder/head replay,
-held-out tensor diagnosis, PCA, tuning, dev promotion, Git publication or deletion.
-Concurrent Latent Roadmap work stays untouched. The complete earlier six live files
+held-out tensor diagnosis, PCA, tuning, Git publication or deletion.
+The complete earlier six live files
 remain byte-exact in output/engineering/causal-fresh-v9-finalization/prior-live-001/.
 All older notes below are preserved historical context superseded by this update.
 
 ---
 # Latest measured clean causal version — CPB-v8.market-01
 
-CPB-v3.market-01 stays the clean baseline and sole dev/application selection.
+CPB-v3.market-01 stays the clean baseline.
 CPB-v8.market-01 is a separate fresh native40 temporal-pooling experiment,
 fully trust-established with4/22 strongest-V3–V7 prospective conditions and
 100% coverage; advancement and winner/winner-selection remain false.
@@ -274,8 +306,8 @@ by this metadata. Complete earlier file bytes remain in snapshot607ad940….
 
 CPB-v7.market-01 is a fully verified measured native40 research reference,
 source_updates0/new_causal_updates2048/B8, with4/22 strengthened V3/V4/V5/V6
-retention conditions and100% coverage. CPB-v3.market-01 stays the clean baseline
-and sole dev encoder; no overall winner or automatic application selection is
+retention conditions and100% coverage. CPB-v3.market-01 stays the clean baseline;
+no overall winner or automatic reference selection is
 made. Preserve all old version definitions, checkpoints, cards and result counts.
 
 The prospective [CPB-v7 descriptor](../code/encoders/causal_patch_bottleneck_mae/versions/CPB-v7.json)
@@ -316,7 +348,7 @@ weights/statistics start fresh; one2048/B8 CUDA run. No pretrained ancestry.
 report12/22 strongest-V3/V4/V5 conditions, full causal/training/quality admission
 and100% coverage. Seven timing scopes, linear relation and TRAIN MAE set new
 scoped records; other market and validation conditions fail retention. Preserve
-all prior versions and leaders. V3 stays the clean baseline and sole dev encoder.
+all prior versions and leaders. V3 stays the clean baseline.
 The research goal continues with a saved TRAIN-only V5/V6 diagnosis. Historical
 V4's19/22 and V5's7/22 use their preserved different floor cards.
 
@@ -330,20 +362,20 @@ analytic prior values. Full causal/CUDA/resume admission and100% coverage pass;
 the candidate passes7/22 strongest-v3/v4 conditions and is stopped without rescue.
 Preserve its neural volatility/relation, small intact timing and TRAIN MAE gains;
 validation MAE/NLL and other retention failures remain visible. **V3 remains the
-clean baseline and selected dev encoder; V4 keeps its scoped gains.** V4's older
+clean baseline; V4 keeps its scoped gains.** V4's older
 19/22 used different thresholds. Read [v5 results](CAUSAL_FRESH_V5_RESULTS.md),
 [review](CAUSAL_FRESH_V5_REVIEW.md), [descriptor](../code/encoders/causal_patch_bottleneck_mae/versions/CPB-v5.json)
 and [measured instance](../code/encoders/causal_patch_bottleneck_mae/versions/instances/CPB-v5.market-01.json).
 The active goal next uses saved TRAIN-only diagnosis; no new encoder is yet
 declared. Older milestone entries below retain their original evidence scope.
-**Current clean baseline: CPB-v3.market-01**, fresh causal2048/B8, native36, zero inherited weights; also the sole dev selection. **CPB-v4.market-01** is a separately owned fresh controlled variance-gradient experiment, measured19/22 with improved trend/relation and all eight hard-timing retention checks, but linear volatility/activity and TRAIN reconstruction regressions. It is a scoped reference, not a promotion. Read [v4 results](CAUSAL_FRESH_V4_RESULTS.md), [review](CAUSAL_FRESH_V4_REVIEW.md), [live catalog](../code/encoders/causal_patch_bottleneck_mae/versions/current.json) and [clean ledger](clean_causal_encoder_research_ledger.json). Physical versions/v3 and versions/v4 each own complete files; measured instances are additive records. The historical entries below keep their original milestone semantics; v1/v2/RPB quality supplies no clean-candidate floors.
+**Current clean baseline: CPB-v3.market-01**, fresh causal2048/B8, native36, zero inherited weights. **CPB-v4.market-01** is a separately owned fresh controlled variance-gradient experiment, measured19/22 with improved trend/relation and all eight hard-timing retention checks, but linear volatility/activity and TRAIN reconstruction regressions. It is a scoped reference, not a promotion. Read [v4 results](CAUSAL_FRESH_V4_RESULTS.md), [review](CAUSAL_FRESH_V4_REVIEW.md), [live catalog](../code/encoders/causal_patch_bottleneck_mae/versions/current.json) and [clean ledger](clean_causal_encoder_research_ledger.json). Physical versions/v3 and versions/v4 each own complete files; measured instances are additive records. The historical entries below keep their original milestone semantics; v1/v2/RPB quality supplies no clean-candidate floors.
 
 **CPB-v1.market-01**, separate family `causal_patch_bottleneck_mae`: exact V30
 weight transfer into a cutoff-enforced causal native36 encoder, zero new
 encoder updates. Its [physical version](../code/encoders/causal_patch_bottleneck_mae/versions/v1/)
 owns complete implementation/config/tests; the [family index](../code/encoders/causal_patch_bottleneck_mae/README.md)
 and [guide](CAUSAL_PATCH_BOTTLENECK_MAE_V1.md) locate its API, provenance and
-measured instance. The [report](../../cuwacunu_dev/doc/CAUSAL_PATCH_BOTTLENECK_MAE_V1_RESULTS.md)
+measured instance. The [report](CAUSAL_PATCH_BOTTLENECK_MAE_V1.md)
 records passed causality, market9/9+8/8 but neural-trend2/3, and TEMPO-5 retention3/8.
 No primary/balanced promotion. Future causal versions require their own full
 implementation directories. Historical [RPB version metadata](../code/encoders/raw_patch_bottleneck_mae/versions/README.md)
@@ -353,11 +385,11 @@ locates preserved definitions without relabeling old source/checkpoints/results.
 change4/native36 export, with a training-only zero-start moment decoder and
 fixed balanced signed-change/energy auxiliary. Its `.init` copies the entire
 saved native36 initialization, including the trained parent. The
-[completed market result](../../cuwacunu_dev/doc/MARKET_CHANGE_ENERGY_RESULTS.md)
+[completed market result](CHANGE_ENERGY_V25.md)
 has trend R² 0.774 linear / 0.488 mean neural and improves activity/relation,
 but both volatility heads fail. Original conditions pass 7/9; strict native36
 floors pass 6/8. The full gate fails, stopping this exact recipe; no v25
-synthetic transfer or promotion follows. RPB-v22 stays primary and native36 v24
+synthetic transfer or promotion follows. RPB-v22 stays a preserved reference and native36 v24
 remains the leading balanced research reference. The
 [v25 registry](change_energy_embedding_versions.json) pins the new architecture,
 both typed archive kinds, lineage, five local ignored checkpoints, all metrics
@@ -371,9 +403,9 @@ descriptions; consult CURRENT_STATUS.md for present direction.
 **RPB-v24.market-01.alt-01**: separately declared native36 variation preserving
 the entire trained v22 native32 prefix and adding four learned change
 coordinates with the same residual decoder design. Its `.init` control already
-contains the trained parent. The [completed market result](../../cuwacunu_dev/doc/MARKET_SEPARATE_CHANGE_NATIVE36_RESULTS.md)
+contains the trained parent. The [completed market result](SEPARATED_CHANGE_NATIVE36.md)
 reaches trend R² 0.655 linear / 0.134 mean neural and passes 8/9 conditions;
-linear volatility retention fails. Keep v22 primary and all v23/native40/native36
+linear volatility retention fails. Keep the v22 reference and all v23/native40/native36
 instances. The [new instance registry](separated_change_native36_embedding_versions.json)
 pins the exact checkpoints and two new portable pairs; the
 [native36 guide](SEPARATED_CHANGE_NATIVE36.md) records contracts and the proposed
@@ -383,9 +415,9 @@ execution is claimed. The preserved entries below retain their original stage.
 **RPB-v24.market-01**: exact frozen trained v22 native32 prefix plus8 separate
 learned change coordinates and a small residual decoder, native40.
 **RPB-v24.market-01.init** retains the same trained parent and initializes only
-the new path; it is not a fully untrained encoder. The [completed result](../../cuwacunu_dev/doc/MARKET_SEPARATE_CHANGE_RESULTS.md)
+the new path; it is not a fully untrained encoder. The recorded candidate
 has the strongest tested market trend score0.599 linear/0.066 neural mean in
-this development sequence, with volatility/relation tradeoffs. Keep v22 primary,
+this development sequence, with volatility/relation tradeoffs. Keep the v22 reference,
 v23's useful native32 reference and every original checkpoint. The
 [instance registry](separated_change_embedding_versions.json) pins parent,
 initial/final archives, geometry and all eight portable pairs.
@@ -393,8 +425,8 @@ initial/final archives, geometry and all eight portable pairs.
 **RPB-v23.market-01.alt-01**: trained v22 level/relation child and decoder held
 fixed; only the zero-start change projection learns. Same native32 design,
 2048 new branch updates after2048 inherited parent updates. Its
-[completed result](../../cuwacunu_dev/doc/MARKET_FROZEN_CHANGE_RESULTS.md) fails
-the full development preference and leaves primary RPB-v22 selected. The
+[recorded result](frozen_change_embedding_versions.json) fails
+the full development preference and leaves RPB-v22 preserved as a reference. The
 [new instance registry](frozen_change_embedding_versions.json) pins lineage,
 checkpoint hashes and the two locally mirrored portable additions. Preserve
 the earlier fresh RPB-v23.market-01 and all v22 instances.
@@ -407,14 +439,14 @@ extension below preserve original model/receipt identities.
 **RPB-v23.market-01** instance uses C3/H128/F9/W64/D32 and2048 GPU updates on
 the exact MKT-HIST-2 bank. **RPB-v23.market-01.init** has zero added projection
 and matches the saved v22 matched initialization, including feature validity/
-row associations. The [completed comparison](../../cuwacunu_dev/doc/MARKET_CONSECUTIVE_CHANGE_RESULTS.md)
+row associations. The [recorded comparison](consecutive_change_embedding_versions.json)
 improves linear trend and relation, with a volatility tradeoff and negative
 neural trend; it is retained without primary promotion. Its
 [instance registry](consecutive_change_embedding_versions.json) pins geometry,
 checkpoints and all eight source pairs. The input/output
 contract, native32 and fixed12 tail remain; no post-encoder PCA is used.
 
-The completed [market study](../../cuwacunu_dev/doc/MARKET_TRAINING_STUDY_RESULTS.md)
+The completed market study
 adds separately saved instances of the unchanged RPB-v22 design:
 **RPB-v22.market-01.alt-01** continues the original512 state to2048 updates;
 **RPB-v22.market-02** is the fresh matched H128/W64/D32 baseline;
@@ -426,10 +458,9 @@ continuation uses MKT-HIST-1; fresh profiles use MKT-HIST-2, with different
 panels/scalers. All original checkpoints and synthetic instances stay fixed.
 
 **RPB-v22.market-01** is the unchanged v22 architecture trained separately on
-MKT-HIST-1 in sibling integration. **RPB-v22.market-01.init** names its0-update
+MKT-HIST-1. **RPB-v22.market-01.init** names its0-update
 control. Native32 remains20 learned+12 fixed; no original synthetic bundle
-changes. The [market result](../../cuwacunu_dev/doc/MARKET_HISTORY_PILOT_RESULTS.md)
-and [instance receipt](../../cuwacunu_dev/doc/results/market_history_pilot_v1/completion.json)
+changes. The recorded market result and instance provenance
 identify the512-update checkpoint, source/split/config/binary identities and
 engineering replay. It is a development historical-representation pilot with
 weak trend readouts, not a new universally best model or serving default.

@@ -43,11 +43,9 @@ sum of parent and branch exposure.
 The focused artificial CUDA fixture verifies typed warm-parent parity,
 nonzero/mismatched restart rejection, branch learning, exact protected values,
 no child moments/decay, typed inference reload and exact next resumed loss and
-weights. Integration target: `test-v23-frozen`; mirrored research target:
-`test-rpb-v23-frozen`. A mirrored fixture is not a second test execution.
+weights. Research check target: `test-rpb-v23-frozen`. A mirrored fixture is not a second test execution.
 
 The separately declared market experiment is
-[RPB-v23.market-01.alt-01](../../../../cuwacunu_dev/doc/MARKET_FROZEN_CHANGE_CARD.md).
-Its market loader, prospective card, runner and evaluation remain outside the
-portable model. The primary v22 configuration and existing sources/archives
-are preserved.
+[RPB-v23.market-01.alt-01](../../../doc/EMBEDDING_VERSIONS.md).
+Its dataset, recipe and fixed-head evaluation remain separate from the portable
+model. Existing v22 configurations and source/archives are preserved.

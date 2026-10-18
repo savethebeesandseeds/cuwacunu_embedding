@@ -8,8 +8,8 @@ version or an experiment.
 
 The additive [streaming TRAIN and resume support](../../../doc/STREAMING_TRAINING_SUPPORT.md)
 provides a bounded statistics accumulator and a separate v22 AdamW continuation
-archive. The matched portable headers/tests are shared with `cuwacunu_dev`;
-focused CUDA engineering checks change no historical model or inference format.
+archive. Focused CUDA engineering checks cover the portable headers/tests and
+change no historical model or inference format.
 
 ## Content-only ordered relation API: RPB-v22
 
@@ -42,15 +42,13 @@ These targets provide engineering checks, not a general training/serving CLI.
 The [completed RPB-v22.alt-01 experiment](../../../doc/CONFIGURABLE_CONTENT_RELATION_V1.md)
 passes the two-cohort screen and third known development check on TEMPO-5,
 designed complexity 5/5, at the unchanged 512-update/B8 budget. This is synthetic
-development evidence, not fresh confirmation or market quality. The portable
-API is the primary architecture in sibling `cuwacunu_dev`; v20 remains an
-explicit reference. All historical instances and standalone CLI defaults remain
+development evidence, not fresh confirmation or market quality. RPB-v20 remains
+an explicit reference. All historical instances and standalone CLI defaults remain
 preserved.
 
 ## Configurable spectral API: RPB-v20
 
-[RPB-v20](CONFIGURABLE_SPECTRAL.md) is the separate reusable engineering backport
-from `cuwacunu`. It accepts values and observation masks `[B,C,H,F]` and returns
+[RPB-v20](CONFIGURABLE_SPECTRAL.md) is a separate reusable configurable API. It accepts values and observation masks `[B,C,H,F]` and returns
 native global `[B,D]`; the model-only file defaults to C3/H128/F9/P8/D32.
 C/H/F/D and semantic IDs are fixed per model/checkpoint, while batch size varies.
 H>=17 and D>4×channel-pair count are required. Private padding supports histories

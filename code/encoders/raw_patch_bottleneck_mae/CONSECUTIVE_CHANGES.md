@@ -11,11 +11,10 @@ the encoder. Historical defaults, v22 checkpoints and synthetic results remain
 preserved.
 
 The six `consecutive_change_*.h` portable headers, artificial CUDA fixture and
-`config/consecutive_changes.conf` match integration byte-for-byte. They depend
+`config/consecutive_changes.conf` have recorded source-parity checks. They depend
 only on reusable v22/v20/model/settings code, without a market loader. Explicit
 build/check targets are `rpb-v23` and `test-rpb-v23`; run them in the managed
-embedding container. The integration GPU fixture is the initial engineering
-execution; copied files alone do not claim another standalone test run.
+embedding container. The recorded GPU fixture is the initial engineering execution; copied files alone do not claim another standalone test run.
 
 Changes require two adjacent visible values and retain original-time quarters.
 Unsupported/constant moments are zero; minimum support2 and RMS floor1e-6
@@ -25,14 +24,13 @@ The fixed spectral tail and decoder are inherited. H>=17 and the base geometry
 rules still apply. Distinct typed immutable inference/training formats bind
 architecture, configuration, scaler and standard AdamW/counter state.
 
-Read the [integration module](../../../../cuwacunu_dev/code/encoders/rpb_changes/README.md)
-and [prospective card](../../../../cuwacunu_dev/doc/MARKET_CONSECUTIVE_CHANGE_CARD.md)
-for exact formulas, masks and the single matched market development recipe.
-Fresh chronological confirmation and synthetic quality remain separate work.
+The [version registry](../../../doc/EMBEDDING_VERSIONS.md) records the matched
+market development recipe and measured instance. Fresh chronological confirmation
+and synthetic quality remain separate work.
 
 The additive [frozen-level recipe](FROZEN_LEVEL_TRAINING.md) imports a trained
 v22 child, preserves its complete state and updates only the change projection.
 It uses the same v23 inference arithmetic and a distinct instance/recipe.
-Its test-rpb-v23-frozen target is separate; integration's CUDA gate passed.
-The [market result](../../../../cuwacunu_dev/doc/MARKET_FROZEN_CHANGE_RESULTS.md)
-misses the full goal; keep the original fresh v23 instance and v22 primary.
+Its test-rpb-v23-frozen target is separate; the recorded CUDA gate passed.
+The [market result](../../../doc/EMBEDDING_VERSIONS.md)
+misses the full goal; keep the original fresh v23 instance and the v22 reference.
