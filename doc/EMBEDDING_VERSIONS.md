@@ -1,3 +1,139 @@
+# Latest measured research instance - CPB-v13.market-01, 18 October 2026
+
+V13 is a fully trusted measured candidate with 8/22 unchanged strongest conditions
+and 100% coverage, not an overall winner or application selection. V3 remains the
+clean baseline and sole DEV encoder. The research goal remains active. Preserve
+all earlier versions, models, checkpoints, results, failures and scoped leaders.
+
+Five new scoped records cover market activity/relation neural mean R2 and TEMPO-5
+synthetic-TRAIN-scaler intact linear, deleted linear and deleted neural accuracy.
+No reconstruction record or overall advancement follows; see the per-task tables.
+Latest measured instance is a research label, not a selected baseline or a claim
+that the ledger/catalog/instance proposals have already been applied.
+
+V11 supplies SOURCE, not weights. Learned values, optimizer and TRAIN statistics
+start fresh at source_updates=0, with no trained ancestor/oracle. V13 retains
+attention mean4 and uses regularized dispersion4, sqrt(v + 2^-10) - 1/32 in actual
+F32 add/sqrt/subtract order, with live attention and finite-F32 residual correction.
+Raw roots retain 1/32 at zero variance; transformed dispersion is zero, and absent
+local bins zero the whole eight served rows after bias. Native40, parameter count,
+objective, 2048/B8 and fixed initial/final head recipes remain unchanged.
+
+Saved causal/CUDA/typed-resume proofs and independent TRAIN/quality audits pass
+566082/13624 checks with zero mismatches; the separate final join admits measured
+trust. Keep exact original producer bytes and every historical pairing contract.
+
+Close the exact V13 recipe. Next separately declare saved TRAIN-only V11/V13
+scales/gradients, native blocks, own saved readout contributions and reconstruction
+diagnosis. No V14 is selected; no refit/old replay, DEV replacement, Git
+publication or deletion is admitted. No new experiment for this note.
+
+Read [results](CAUSAL_FRESH_V13_RESULTS.md), [detail](CAUSAL_FRESH_V13_DETAIL.md),
+[review](CAUSAL_FRESH_V13_REVIEW.md),
+[final trust join](causal_fresh_v13/final-establishment.json) and
+[research ledger](clean_causal_encoder_research_ledger.json).
+Complete earlier version notes remain below byte-exactly.
+
+---
+
+# Latest measured version — CPB-v12.market-01, 2026-10-17
+
+CPB-v12.market-01 is a fully trusted measured research candidate, not a new
+application selection. CPB-v3.market-01 remains the clean baseline and sole DEV
+encoder. V12 passes 3/22 strongest V3–V11 conditions with 100% coverage: three
+positivity conditions only; all 19 retention/reconstruction floors fail. It sets
+no new quality or reconstruction record. Preserve V11's five scoped leaders,
+all earlier leaders, original version semantics and every historical artifact.
+The frozen strongest 866dec floors remain; TRAIN NLL is descriptive only.
+
+V12 owns complete version files derived from V11 SOURCE, with fresh learned
+weights, optimizer and TRAIN statistics (source_updates=0). It keeps native40,
+294752 learned values, parameter shapes/draw order, objective, seeds and one
+2048-update/B8 budget. Each intermediate temporal bin retains attention mean4;
+its dispersion4 switches to mask/original-position uniform half-local/global
+weights and an OWN two-sum center. This is separate from native uncertainty4
+and decoder variance. Initial/final saved embeddings use unchanged fixed heads;
+no old encoder/head replay, PCA or tuning.
+
+Independent TRAIN/quality audits pass 570648/13441 checks with zero mismatches;
+the separate final evidence join establishes trust, with advancement/winner/
+application false. Initial/final proofs cover all 128 cutoffs and future values/
+masks; actual CUDA learning and typed resume512 pass. Thirteen initial references
+compare eight V11 DATA tails20:40 plus five whole fresh statistics, with learned
+0:20 unpaired. Producer pending-trust fields retain their original bytes.
+
+Stop this exact V12 recipe without rescue. Before selecting V13, separately
+declare saved TRAIN-only V11/V12 moments/native blocks/own saved readout
+contributions/reconstruction diagnosis. No new candidate or DEV/Git publication.
+
+See [descriptor](../code/encoders/causal_patch_bottleneck_mae/versions/CPB-v12.json),
+[results](CAUSAL_FRESH_V12_RESULTS.md) and [trust join](causal_fresh_v12/final-establishment.json).
+Complete earlier version notes remain below.
+
+---
+
+# Active clean causal encoder goal — V11 measured,17 October2026
+
+CPB-v3.market-01 remains the clean baseline and sole DEV encoder. The research
+goal remains active. CPB-v11.market-01 is a fully trusted measured candidate:
+8/22 frozen strongest-V3–V9 conditions pass, with100% coverage. The separate final
+evidence join passes; advancement, overall winner and winner selection are false.
+Independent TRAIN/quality audits pass516865/13287 checks with zero mismatches.
+All13 initial references are exact: eight saved V9 feature DATA archives compare
+ONLY native20:40 plus five whole fresh-statistic archives. Learned content0:20
+is unpaired; historical V10 whole40 semantics remain unchanged.
+
+Preserve five new scoped records: activity linear R²0.9094387755129657 and neural
+mean R²0.7324899092829259; relation neural mean R²0.4487745118258597; TEMPO-5
+synthetic-TRAIN-scaler intact linear accuracy0.98828125 and deleted neural
+accuracy0.9427083333333334. Retain every earlier V3–V10 scoped leader and all
+historical sources, results, checkpoints, failures and reviews. V11 sets no
+reconstruction record. Volatility, trend, linear relation, six timing floors
+and reconstruction floors still fail. Five quality-floor passes plus three
+positivity passes yield8/22; historical counts retain their own frozen cards.
+TRAIN NLL remains descriptive and adds no gate.
+
+V11 changes each original temporal bin's existing eight intermediate export
+rows from mean8 to mean4 plus componentwise centered-variance4 under the same
+half-local/half-global attention. Actual two-sum mean arithmetic, original
+positions, full attention-dependent variance derivatives and post-bias empty-bin
+zeros remain. Intermediate variance is distinct from native uncertainty4 and
+decoder variance. V9 is the SOURCE/OBJECTIVE parent only; all294752 learned
+values, optimizer and TRAIN statistics start fresh, source0. V10 is a historical
+control, not a trained initializer. Native40, shapes/counts/draw order, seeds,
+2048/B8, fixed heads and globalclip1/singleAdamW remain unchanged. The objective
+is unit Huber1 mean plus detached-error Gaussian variance calibration; reporting
+NLL stays detached. No oracle weights, teacher, old fitted statistics or old
+encoder/head replay are used.
+
+Engineering360571 checks/491 typed negative cases, saved initial/final179097
+checks each, actual CUDA learning and typed resume512 pass.75 identifiable
+tensors and eight moment subgroups have gradient/movement events;294751 values
+is tensor capacity, not every-scalar learning. The common score-bias gauge is
+observed separately. Actual step1/2048 local adjoints bind56-field same-forward
+witnesses with PRECLIP upstreams and one observed clip factor. No full encoder,
+global norm or remaining2046 raw-gradient reconstruction is claimed. Frozen
+producer pending-trust bytes stay unchanged; the separate join establishes trust.
+
+Close the exact V11 recipe without coefficient/seed/rate/budget/head/checkpoint
+rescue. Before any next candidate quality, strengthen prospective floors to
+protect all established V3–V11 gains. Then separately declare saved TRAIN-only
+V9/V11 diagnosis of moments, native blocks, saved readout contributions and
+reconstruction tradeoffs before selecting a mechanism. No old model/head replay
+or refit, held-out diagnostic tensors, PCA or tuning. No next encoder is selected.
+Keep the existing GPU cuwacunu container and preserve concurrent DEV Latent
+Roadmap work. No DEV replacement, Git commit/push, deletion or publication follows.
+
+No new experiment: this update joins and records already saved V11 measurements.
+Known chronological VALIDATION and designed TEMPO-5 evidence are not a fresh
+future-period forecast. Three readout fits are head variation, not three encoder
+runs. Complexity4/5 and5/5 are ordinal recipe levels; native36/native40 head and
+capacity confounds remain explicit in the reports.
+
+Read [results](CAUSAL_FRESH_V11_RESULTS.md), [detail](CAUSAL_FRESH_V11_DETAIL.md), [review](CAUSAL_FRESH_V11_REVIEW.md), [final trust join](causal_fresh_v11/final-establishment.json) and [research ledger](clean_causal_encoder_research_ledger.json). The complete prior text remains below as historical context.
+
+---
+
 # Active clean causal encoder goal — V10 measured, 16 October 2026
 
 CPB-v3.market-01 remains the clean baseline and sole DEV encoder. The research
