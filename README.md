@@ -1,3 +1,9 @@
+This entire project has been migrated to https://github.com/savethebeesandseeds/Mityane-geometrics
+Please consult that link for the most up to date versions of these embeddings.
+
+
+
+
 Current causal research: **CPB-v3.market-01 remains the clean from-scratch baseline.** The new [CPB-v4.market-01 results](doc/CAUSAL_FRESH_V4_RESULTS.md) pass19/22 conditions: stronger trend/relation and hard timing, with linear volatility/activity and TRAIN MAE regressions. See [review and next direction](doc/CAUSAL_FRESH_V4_REVIEW.md), [live versions](code/encoders/causal_patch_bottleneck_mae/versions/current.json) and [current status](doc/CURRENT_STATUS.md). V1/v2 remain pretrained historical references without oracle floors. V3 publication was completed earlier; this new research remains local with weights ignored. Historical selections below are milestone records.
 
 # cuwacunu_embedding
